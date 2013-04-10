@@ -10,16 +10,14 @@
     @{
         Boolean auth = true;
         int user_type = 1;
+        string name = "User1";
      }
 </head>
 
 <body>
     <div class="navbar-fixed-top main-nav">
         <div class="header-form">
-            <form class="navbar-form">
-                <input type="text">
-                <button type="submit" class="btn">Submit</button>
-            </form>
+            @RenderPage("_Authentification.cshtml", auth, name)
         </div>
 
         <div class="header-logo span2 pull-right">

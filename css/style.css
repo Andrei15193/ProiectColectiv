@@ -20,6 +20,34 @@
         padding: 5px 0;
     }
 
+        .main-nav .header-form .logout
+        {
+            height: 30px;
+            padding: 10px 0;
+            margin: 0;
+        }
+
+            .main-nav .header-form .logout img
+            {
+                height: 30px;
+                width: 30px;
+                border: none;
+            }
+
+            .main-nav .header-form .logout .user-name
+            {
+                font-style: italic;
+                font-family: Verdana;
+                font-size: 16px;
+            }
+
+        .main-nav .header-form .login
+        {
+            height: 30px;
+            padding: 10px 0;
+            margin: 0;
+        }
+
     .main-nav .header-logo
     {
 	    position: fixed;

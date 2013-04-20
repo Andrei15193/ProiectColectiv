@@ -39,6 +39,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Feature.cs" />
+    <Compile Include="Entities\FeatureSet.cs" />
+    <Compile Include="Entities\Guest.cs" />
+    <Compile Include="Entities\GuestRole.cs" />
+    <Compile Include="Entities\Member.cs" />
+    <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\RoleSet.cs" />
+    <Compile Include="Entities\SuperUser.cs" />
+    <Compile Include="Entities\SuperUserRole.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

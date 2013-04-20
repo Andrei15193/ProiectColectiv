@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@Page.Title</title>
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/img/favico.ico" rel="shortcut icon" type="img/x-icon" />
+    <!-- <meta name="viewport" content="width=device-width"> -->
+</head>
+
+<body>
+    <div class="menu">
+        <div class="icon selected">
+            <a href="/">
+                <img src="/img/ico-home.png" alt="">
+                <span>Home</span>
+            </a>
+        </div>
+        <!-- 
+        if (auth)
+        {
+            <div class="icon cpl-user_type">
+                <a href="1">
+				    <img src="/img/ico-setting.png" alt="">
+				    <span>CPanel</span>	
+                </a>
+			</div>
+        }
+            -->
+        <div class="icon">
+            <a href="#">
+                <img src="/img/ico-sch.png" alt="">
+                <span>Schedule</span>
+            </a>
+        </div>
+
+        <div class="icon">
+            <a href="#">
+                <img src="/img/ico-user.png" alt="">
+                <span>Members</span>
+            </a>
+        </div>
+
+        <div class="icon">
+            <a href="#">
+                <img src="/img/ico-report.png" alt="">
+                <span>Projects</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="header-logo span2 pull-right">
+            <img src="/img/logo.png" alt="221/1" />
+        </div>
+        <h2>Test</h2>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+    </div>
+
+    <div class="info">
+        <div class="header-form">
+            @RenderPage("~/Views/_Authentification.cshtml")
+        </div>
+
+        <div id="myContent" class="content well">
+            @RenderSection("body", required: false)
+
+            <h1>tampenii</h1>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+        </div>
+    </div>
+
+    <script>
+        var myContent = document.getElementById("myContent");
+        var headerForm = document.getElementById("header-form");
+        onresize = function () {
+            myContent.style.height = (window.innerHeight - 130) + "px";
+        }
+        onresize();
+    </script>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+</html>

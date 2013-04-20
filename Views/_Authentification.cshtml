@@ -1,0 +1,32 @@
+﻿@{
+    UserInterface.ViewModels.MemberViewModel memberViewModel = Session["memberViewModel"] as UserInterface.ViewModels.MemberViewModel;
+}
+
+
+@if (memberViewModel.IsAuthenticated)
+{   
+    <form class="logout" action="index.cshtml" method="get">
+        <input name="logout" type="hidden" value="true" />
+        <div class="pull-left">
+            <img src="/img/user.png" />
+            <span class="user-name">@memberViewModel.Username</span>
+        </div>
+        <div class="pull-right">
+            <input class="btn" type="submit" value="Logout" />
+        </div>
+    </form>
+}
+else
+{
+    <form class="form-inline login" method="post" action="index.cshtml">
+        <div class="pull-left">
+            <input name="email" type="text" class="input-small" placeholder="Email">
+            <input name="password" type="password" class="input-small" placeholder="Password">
+        </div>
+        <div class="pull-right">
+            <input type="submit" class="btn" value="Sign in" />
+        </div>
+    </form>
+}
+
+

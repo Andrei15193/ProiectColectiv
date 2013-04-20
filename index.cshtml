@@ -1,11 +1,24 @@
 ﻿@{
-    Layout = "~/_MainLayout.cshtml";
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
     Page.Title = "Home Page";
+
+    string message = string.Empty;
+    UserInterface.ViewModels.MemberViewModel memberViewModel = Session["memberViewModel"] as UserInterface.ViewModels.MemberViewModel;
+    if (IsPost && Request["email"] != null && Request["password"] != null)
+    {
+        if (!memberViewModel.TryAuthenticate(Request["email"], Request["password"]))
+        {
+            message = "You failed!";
+        }
+    }
+    if (Request["logout"] != null)
+    {
+        memberViewModel.LogOut();
+    }
 }
 
 @section body{
     <h1>ADSSWSDAD</h1>
-
     <p>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,

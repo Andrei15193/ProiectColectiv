@@ -1,0 +1,29 @@
+﻿
+@if (PageData[0])  
+{   
+    <form class="logout">
+        <div class="pull-left">
+            <img src="/img/user.png" />
+            <span class="user-name">@PageData[1]</span>  
+        </div>
+    
+        <div class="span1 pull-right">
+            <button class="btn" type="submit">Logout</button>
+        </div> 
+    </form>
+}
+else
+{
+    <form class="form-inline login">
+        <div class="pull-left">
+            <input type="text" class="input-small" placeholder="Email">
+            <input type="password" class="input-small" placeholder="Password">
+        </div> 
+
+        <div class="span1 pull-right">
+            <button type="submit" class="btn">Sign in</button>
+        </div> 
+    </form>
+}
+
+

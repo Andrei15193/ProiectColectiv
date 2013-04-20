@@ -46,7 +46,7 @@
         right: 0;
 	    width: 300px;*/
         text-align: center;
-        margin: 0 auto;
+        margin: 0 auto 30px;
     }
 
     /*.main-nav*/ .header-logo img
@@ -192,3 +192,17 @@ body, .menu, .sidebar, .header-form
     display: block;
     height: 500px;
 }
+
+#myCarousel ol
+{
+    margin: 3px 0 0;
+}
+
+.carousel-indicators li 
+{
+    width: 15px;
+    height: 15px;
+    border-radius: 0;
+    margin: 0 3px 0 0;
+}
+

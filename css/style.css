@@ -4,21 +4,40 @@
     /*background-color: #f1f1f1;*/
 }
 
-.main-nav
-{
-    background-color: #f1f1f1;
-    margin: 0;
-}
-
-    .main-nav .header-form
+.header-form
     {
-        /*margin: 0 300px 0 100px;
         height: 50px;
-        min-width: 300px;
         border: none;
-        background-color: #f1f1f1;*/
         padding: 5px 0;
     }
+
+        .header-form .logout
+        {
+            height: 30px;
+            padding: 10px 0;
+            margin: 0;
+        }
+
+            .header-form .logout img
+            {
+                height: 30px;
+                width: 30px;
+                border: none;
+            }
+
+            .header-form .logout .user-name
+            {
+                font-style: italic;
+                font-family: Verdana;
+                font-size: 16px;
+            }
+
+        .header-form .login
+        {
+            height: 30px;
+            padding: 10px 0;
+            margin: 0;
+        }
 
     /*.main-nav*/ .header-logo
     {
@@ -117,13 +136,16 @@
 	    /*position: fixed;
 	    top: 60px;
         right: 0;*/
-	    width: 280px;
+        padding:0 30px;
+        width:200px;
+        float:right;
     }
+
         .sidebar h2
         {
             margin-top: 0;
         }
-
+        /*
         .top-border-sidebar
         {
             position: fixed;
@@ -132,12 +154,12 @@
             height: 100px;
             min-width: 300px;
 	        border-top: 1px solid #f1f1f1;
-        }
+        }*/
 
 /* Adaugat */
 body
 {
-    min-width:500px;
+    min-width: 906px;
 }
 
 body, .menu, .sidebar, .header-form
@@ -151,15 +173,9 @@ body, .menu, .sidebar, .header-form
     float:left;
 }
 
-.sidebar
-{
-    padding:0 30px;
-    width:200px;
-    float:right;
-}
-
 .header-form
 {
+    min-width: 300px;
 	border-top: 1px solid #ccc;
     border-width:0 0 1px;
 }
@@ -169,9 +185,10 @@ body, .menu, .sidebar, .header-form
     margin: 0 260px 0 100px;
 }
 
-.content
+#myContent
 {
-    overflow:auto;
-    display:block;
-    height:500px;
+    min-width: 500px;
+    overflow: auto;
+    display: block;
+    height: 500px;
 }

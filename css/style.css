@@ -106,6 +106,20 @@
             opacity: 0.5;
         }
 
+        .menu .icon ul
+        {
+            margin-left: 40px;
+            top: -1px;
+            border: 2px solid #867c70;
+            border-bottom: 3px solid #867c70;
+        }
+
+        .menu .icon ul li a:hover
+        {
+            background-image: none;
+            background-color: #aa381d;
+        }
+
     /*.top-border
     {
         position: fixed;

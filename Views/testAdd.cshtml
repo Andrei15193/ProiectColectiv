@@ -1,0 +1,49 @@
+﻿@{
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "TestAdd";
+}
+
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#">Add</a></li>
+        <li><a href="#">Update</a></li>
+        <li><a href="#">Delete</a></li>
+    </ul>
+
+    <ul class="breadcrumb">
+        <li class="active">Pas 1<span class="divider">></span></li>
+        <li>Pas 2<span class="divider">></span></li>
+        <li>Pas 3</li>
+    </ul>
+
+    <div class="well">
+        <h4>Adaugare idioti.</h4>
+        <form class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="inputEmail">Email</label>
+                <div class="controls">
+                    <input type="text" id="inputEmail" placeholder="Email">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputPassword">Password</label>
+                <div class="controls">
+                    <input type="password" id="inputPassword" placeholder="Password">
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <label class="checkbox">
+                        <input type="checkbox">
+                        Remember me
+                    </label>
+                    <button type="submit" class="btn">Sign in</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <button type="submit" class="btn span1 pull-right">Next</button>
+        </div>
+    </div>
+}

@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@Page.Title</title>
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/img/favico.ico" rel="shortcut icon" type="img/x-icon" />
+    <!-- <meta name="viewport" content="width=device-width"> -->
+    @{
+        UserInterface.ViewModels.MemberViewModel memberViewModel = Session["memberViewModel"] as UserInterface.ViewModels.MemberViewModel;
+    }
+</head>
+
+<body>
+    <div class="menu">
+        <div class="icon selected">
+            <a href="/">
+                <img src="/img/ico-home.png" alt="">
+                <span>Home</span>
+            </a>
+        </div>
+        @if (memberViewModel.IsAuthenticated)
+        { 
+            <div class="dropdown icon">
+                <div class="cpl-dropdown" data-toggle="dropdown">
+                    <img src="/img/ico-setting.png" alt="">
+				    <span>CPanel</span>
+                </div>
+
+                <ul id="menu2" class="dropdown-menu" role="menu" aria-labelledby="drop5">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="Views/testForm.cshtml">Action</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+                </ul>
+            </div>
+        }
+        <div class="icon">
+            <a href="#">
+                <img src="/img/ico-sch.png" alt="">
+                <span>Schedule</span>
+            </a>
+        </div>
+
+        <div class="icon">
+            <a href="#">
+                <img src="/img/ico-user.png" alt="">
+                <span>Members</span>
+            </a>
+        </div>
+
+        <div class="icon">
+            <a href="#">
+                <img src="/img/ico-report.png" alt="">
+                <span>Projects</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="header-logo">
+            <img src="/img/logo.png" alt="221/1" />
+        </div>
+        @RenderPage("~/Views/_SideCalendar.cshtml")
+    </div>
+
+    <div class="info">
+        <div class="header-form">
+            @RenderPage("~/Views/_Authentification.cshtml")
+        </div>
+
+        <div id="myContent" class="content well">
+            @RenderSection("body", required: false)
+        </div>
+    </div>
+
+    <script>
+        var myContent = document.getElementById("myContent");
+        var headerForm = document.getElementById("header-form");
+        onresize = function () {
+            myContent.style.height = (window.innerHeight - 130) + "px";
+        }
+        onresize();
+    </script>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+</html>

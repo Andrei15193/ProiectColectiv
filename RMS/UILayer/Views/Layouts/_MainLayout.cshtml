@@ -7,6 +7,9 @@
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
     <link href="/img/favico.ico" rel="shortcut icon" type="img/x-icon" />
     <!-- <meta name="viewport" content="width=device-width"> -->
+    @{
+        UserInterface.ViewModels.MemberViewModel memberViewModel = Session["memberViewModel"] as UserInterface.ViewModels.MemberViewModel;
+    }
 </head>
 
 <body>
@@ -17,17 +20,23 @@
                 <span>Home</span>
             </a>
         </div>
-        <!-- 
-        if (auth)
-        {
-            <div class="icon cpl-user_type">
-                <a href="1">
-				    <img src="/img/ico-setting.png" alt="">
-				    <span>CPanel</span>	
-                </a>
-			</div>
+        @if (memberViewModel.IsAuthenticated)
+        { 
+            <div class="dropdown icon">
+                <div class="cpl-dropdown" data-toggle="dropdown">
+                    <img src="/img/ico-setting.png" alt="">
+				    <span>CPanel</span>
+                </div>
+
+                <ul id="menu2" class="dropdown-menu" role="menu" aria-labelledby="drop5">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="Views/testForm.cshtml">Action</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+                </ul>
+            </div>
         }
-            -->
         <div class="icon">
             <a href="#">
                 <img src="/img/ico-sch.png" alt="">
@@ -51,18 +60,10 @@
     </div>
 
     <div class="sidebar">
-        <div class="header-logo span2 pull-right">
+        <div class="header-logo">
             <img src="/img/logo.png" alt="221/1" />
         </div>
-        <h2>Test</h2>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
+        @RenderPage("~/Views/_SideCalendar.cshtml")
     </div>
 
     <div class="info">
@@ -72,58 +73,6 @@
 
         <div id="myContent" class="content well">
             @RenderSection("body", required: false)
-
-            <h1>tampenii</h1>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
-            <p>asd</p>
         </div>
     </div>
 

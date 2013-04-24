@@ -39,15 +39,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\ApplicationDomain.cs" />
+    <Compile Include="Entities\ApplicationState.cs" />
+    <Compile Include="Entities\ClassFrequency.cs" />
+    <Compile Include="Entities\ClassType.cs" />
+    <Compile Include="Entities\Currency.cs" />
     <Compile Include="Entities\Feature.cs" />
     <Compile Include="Entities\FeatureSet.cs" />
+    <Compile Include="Entities\FormationType.cs" />
     <Compile Include="Entities\Guest.cs" />
     <Compile Include="Entities\GuestRole.cs" />
+    <Compile Include="Entities\Language.cs" />
+    <Compile Include="Entities\LearningDegree.cs" />
     <Compile Include="Entities\Member.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\RoleSet.cs" />
+    <Compile Include="Entities\Specialization.cs" />
     <Compile Include="Entities\SuperUser.cs" />
     <Compile Include="Entities\SuperUserRole.cs" />
+    <Compile Include="Entities\TaskPeriodicity.cs" />
+    <Compile Include="Entities\TaskState.cs" />
+    <Compile Include="Entities\TaskType.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0E72F80E-CB0F-432B-8106-0A595D5E5213}</ProjectGuid>
+    <ProjectGuid>{1D297F64-DB1B-4FBB-AE70-FB2C1FE38B26}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DALayer</RootNamespace>
-    <AssemblyName>DALayer</AssemblyName>
+    <RootNamespace>BLEntities</RootNamespace>
+    <AssemblyName>BLEntities</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,17 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Feature.cs" />
+    <Compile Include="Entities\FeatureSet.cs" />
+    <Compile Include="Entities\Guest.cs" />
+    <Compile Include="Entities\GuestRole.cs" />
+    <Compile Include="Entities\Member.cs" />
+    <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\RoleSet.cs" />
+    <Compile Include="Entities\SuperUser.cs" />
+    <Compile Include="Entities\SuperUserRole.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BLEntities\BLEntities.csproj">
-      <Project>{1d297f64-db1b-4fbb-ae70-fb2c1fe38b26}</Project>
-      <Name>BLEntities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DAOInterface\DAOInterface.csproj">
-      <Project>{fefd3abb-0935-4320-ae21-e0bcc01cdff7}</Project>
-      <Name>DAOInterface</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

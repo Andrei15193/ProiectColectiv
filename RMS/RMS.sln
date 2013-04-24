@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLTest", "BLTest\BLTest.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DATest", "DATest\DATest.csproj", "{7B9EAA7E-73D8-4F91-AB40-2F8CD4BC290A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLEntities", "BLEntities\BLEntities.csproj", "{1D297F64-DB1B-4FBB-AE70-FB2C1FE38B26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAOInterface", "DAOInterface\DAOInterface.csproj", "{FEFD3ABB-0935-4320-AE21-E0BCC01CDFF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +47,14 @@ Global
 		{7B9EAA7E-73D8-4F91-AB40-2F8CD4BC290A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B9EAA7E-73D8-4F91-AB40-2F8CD4BC290A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B9EAA7E-73D8-4F91-AB40-2F8CD4BC290A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D297F64-DB1B-4FBB-AE70-FB2C1FE38B26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D297F64-DB1B-4FBB-AE70-FB2C1FE38B26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D297F64-DB1B-4FBB-AE70-FB2C1FE38B26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D297F64-DB1B-4FBB-AE70-FB2C1FE38B26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEFD3ABB-0935-4320-AE21-E0BCC01CDFF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEFD3ABB-0935-4320-AE21-E0BCC01CDFF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEFD3ABB-0935-4320-AE21-E0BCC01CDFF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEFD3ABB-0935-4320-AE21-E0BCC01CDFF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

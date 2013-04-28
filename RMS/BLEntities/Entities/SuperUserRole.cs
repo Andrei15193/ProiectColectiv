@@ -7,5 +7,6 @@ namespace BusinessLogic.Entities
 {
     class SuperUserRole : Role
     {
+        
     }
 }

@@ -7,5 +7,6 @@ namespace BusinessLogic.Entities
 {
     class GuestRole : Role
     {
+        
     }
 }

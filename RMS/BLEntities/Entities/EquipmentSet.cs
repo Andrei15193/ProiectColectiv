@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLEntities.Entities
+namespace BusinessLogic.Entities
 {
     class EquipmentSet : ISet<Equipment>
     {

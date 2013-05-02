@@ -1,4 +1,4 @@
-﻿namespace BLEntities.Entities
+﻿namespace BusinessLogic.Entities
 {        
     public enum Currency
     {

@@ -12,6 +12,27 @@ namespace BusinessLogic.Entities
         private string email;
         private string password;
 
+        public Member() { }
+        public Member(Role r) : base(r) { }
+
+        public Member(Role r,string firstName, string lastName, string email, string password): base(r)
+        {
+
+            this.lastName = lastName;
+            this.firstName = firstName;
+            this.email = email;
+            this.password = password;
+        }
+
+        public Member(string username, Role r, string firstName, string lastName, string email, string password):base(username,r)
+        {
+           
+            this.lastName = lastName;
+            this.firstName = firstName;
+            this.email = email;
+            this.password = password;
+        }
+
         public string getFirstName()
         {
             return firstName;
@@ -69,6 +90,14 @@ namespace BusinessLogic.Entities
             }
             else
                 return false;
+        }
+        public override bool Equals(Object obj)
+        {
+            Feature memberObj = obj as Feature;
+            if (memberObj == null)
+                return false;
+            else
+                return email.Equals(memberObj.getName());
         }
     }
 }

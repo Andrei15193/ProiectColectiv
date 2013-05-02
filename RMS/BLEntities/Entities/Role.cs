@@ -57,5 +57,14 @@ namespace BusinessLogic.Entities
         {
             return features;
         }
+        public override bool Equals(Object obj)
+        {
+            Feature RoleObj = obj as Feature;
+            if (RoleObj == null)
+                return false;
+            else
+                return name.Equals(RoleObj.getName());
+        }
     }
+
 }

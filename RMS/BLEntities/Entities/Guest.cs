@@ -7,6 +7,12 @@ namespace BusinessLogic.Entities
 {
     class Guest : User
     {
+        
         private Role dedicatedRole;
+        public Guest(Role r)
+        {
+            this.dedicatedRole = r;
+        }
+       
     }
 }

@@ -9,6 +9,7 @@ namespace BusinessLogic.Entities
     {
         private string name;
         private string description;
+      
         public Feature(string name, string description)
         {
             this.name = name;

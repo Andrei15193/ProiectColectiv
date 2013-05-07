@@ -5,12 +5,31 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    class Equipment : LogisticalResource
+    public class Equipment : LogisticalResource
     {
-        private string brand;
-        private uint timesUsed;
-        private bool isBroken;
-        private ClassRoom classroom;
+        public string brand
+        {
+            get { return brand; }
+            set { brand = value; }
+        }
+
+        public uint timesUsed
+        {
+            get { return timesUsed; }
+            set { timesUsed = value; }
+        }
+
+        public bool isBroken
+        {
+            get { return isBroken; }
+            set { isBroken = value; }
+        }
+
+        public ClassRoom classroom
+        {
+            get { return classroom; }
+            set { classroom = value; }
+        }
 
         public Equipment(string name, Task task, string brand)
             : base(name, task)
@@ -41,60 +60,20 @@ namespace BusinessLogic.Entities
             this.classroom = classroom;
         }
 
-        public string getBrand()
-        {
-            return this.brand;
-        }
-
-        public uint getTimesUsed()
-        {
-            return this.timesUsed;
-        }
-
-        public bool getIsBroken()
-        {
-            return this.isBroken;
-        }
-
-        public ClassRoom getClassRoom()
-        {
-            return this.classroom;
-        }
-
-        public void setBrand(string brand)
-        {
-            this.brand = brand;
-        }
-
-        public void setTimesUsed(uint timesUsed)
-        {
-            this.timesUsed = timesUsed;
-        }
-
-        public void setIsBroken(bool isBroken)
-        {
-            this.isBroken = isBroken;
-        }
-
-        public void setClassRoom(ClassRoom classroom)
-        {
-            this.classroom = classroom;
-        }
-
         public override bool Equals(Object obj)
         {
-            Equipment equipmentObj = obj as Equipment;
+            DidacticTask equipmentObj = obj as DidacticTask;
             if (equipmentObj == null)
                 return false;
             else
-                return name.Equals(equipmentObj.getName());
+                return name.Equals(equipmentObj.name);
         }
 
         public override string ToString()
         {
-            return "Name: "+this.name+"; Description: "+this.description+"; Task: "+task.toString()+
+            return "Name: "+this.name+"; Description: "+this.description+"; Task: "+task.getDescription()+
                 "Brand: " + this.brand + "; Times Used: " + this.timesUsed + "; Is Broken: " + isBroken +
-                "ClassRoom: "+this.classroom.toString();
+                "ClassRoom: "+this.classroom.ToString();
         }
     }
 }

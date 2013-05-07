@@ -5,14 +5,34 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    class ClassRoom : LogisticalResource
+    public class ClassRoom : LogisticalResource
     {
-        private string building;
-        private uint floor;
-        private uint number;
-        private EquipmentSet equipments;
+        public string building
+        {
+            get { return building; }
+            set { building = value; }
+        }
 
-        public ClassRoom(Task task) :base(task)
+        public uint floor
+        {
+            get { return floor; }
+            set { floor = value; }
+        }
+
+        public uint number
+        {
+            get { return number; }
+            set { number = value; }
+        }
+
+        public EquipmentSet equipments
+        {
+            get { return equipments; }
+            set { equipments = value; }
+        }
+
+        public ClassRoom(Task task)
+            : base(task)
         {
             this.building = "";
             this.floor = 0;
@@ -30,10 +50,8 @@ namespace BusinessLogic.Entities
         }
 
         public ClassRoom(string name, string description, Task task, string building)
+            : base(name, description, task)
         {
-            this.name = name;
-            this.description = description;
-            this.task = task;
             this.building = building;
             this.floor = 0;
             this.number = 0;
@@ -41,10 +59,8 @@ namespace BusinessLogic.Entities
         }
 
         public ClassRoom(string name, Task task, string building, uint floor, uint number)
+            : base(name, task)
         {
-            this.name = name;
-            this.description = "";
-            this.task = task;
             this.building = building;
             this.floor = floor;
             this.number = number;
@@ -53,54 +69,28 @@ namespace BusinessLogic.Entities
 
         public ClassRoom(string name, string description, Task task, string building, uint floor, uint number,
             EquipmentSet equipments)
+            : base(name, description, task)
         {
-            this.name = name;
-            this.description = description;
-            this.task = task;
             this.building = building;
             this.floor = floor;
             this.number = number;
             this.equipments = equipments;
         }
 
-        public string getBuilding()
+        public override bool Equals(Object obj)
         {
-            return this.building;
+            ClassRoom classroomObj = obj as ClassRoom;
+            if (classroomObj == null)
+                return false;
+            else
+                return building.Equals(classroomObj.building) && floor.Equals(classroomObj.floor)
+                    && number.Equals(classroomObj.number);
         }
 
-        public uint getFloor()
+        public override string ToString()
         {
-            return this.floor;
-        }
-
-        public uint getNumber()
-        {
-            return this.number;
-        }
-
-        public EquipmentSet getEquipments()
-        {
-            return this.equipments;
-        }
-
-        public void setBuilding(string building)
-        {
-            this.building = building;
-        }
-
-        public void setFloor(uint floor)
-        {
-            this.floor = floor;
-        }
-
-        public void setNumber(uint number)
-        {
-            this.number = number;
-        }
-
-        public void setEquipments(EquipmentSet equipments)
-        {
-            this.equipments = equipments;
+            return "Name: " + this.name + "; Description: " + this.description + "; Task: " + task.getDescription() +
+                "Building: " + this.building + "; Floor: " + this.floor + "; Number: " + this.number;
         }
     }
 }

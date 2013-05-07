@@ -5,11 +5,25 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    class FinancialResource
+    public class FinancialResource
     {
-        private uint value;
-        private Currency currency;
-        private Task task;
+        public uint value
+        {
+            get { return this.value; }
+            set { this.value = value; }
+        }
+
+        public Currency currency
+        {
+            get { return this.currency; }
+            set { this.currency = value; }
+        }
+
+        public Task task
+        {
+            get { return this.task; }
+            set { this.task = value; }
+        }
 
         public FinancialResource(Task task)
         {
@@ -22,31 +36,6 @@ namespace BusinessLogic.Entities
         {
             this.value = value;
             this.currency = Currency.RON;
-            this.task = task;
-        }
-
-        public uint getValue()
-        {
-            return this.value;
-        }
-
-        public Currency getCurrency()
-        {
-            return this.currency;
-        }
-
-        public Task getTask()
-        {
-            return this.task;
-        }
-
-        public void setValue(uint value)
-        {
-            this.value = value;
-        }
-
-        public void setTask(Task task)
-        {
             this.task = task;
         }
     }

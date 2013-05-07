@@ -6,84 +6,86 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Entities
 {
-    public class EquipmentSet : ISet<Equipment>
+    class CourseSetUnempty: ISet<Course>
     {
-        private List<Equipment> items;
+        private List<Course> items;
         private bool isReadOnly;
 
-        public EquipmentSet()
+        public CourseSetUnempty(Course course)
         {
-            items = new List<Equipment>();
-            isReadOnly = false;
+            this.items = new List<Course>();
+            this.items.Add(course);
+            this.isReadOnly = false;
         }
 
-        public EquipmentSet(bool isReadOnly)
+        public CourseSetUnempty(Course course, bool isReadOnly)
         {
-            items = new List<Equipment>();
+            this.items = new List<Course>();
+            this.items.Add(course);
             this.isReadOnly = isReadOnly;
         }
 
-        public EquipmentSet(List<Equipment> equipments)
+        public CourseSetUnempty(List<Course> courses)
         {
-            items = equipments;
-            isReadOnly = false;
+            this.items = courses;
+            this.isReadOnly = false;
         }
 
-        public EquipmentSet(List<Equipment> equipments, bool isReadOnly)
+        public CourseSetUnempty(List<Course> courses, bool isReadOnly)
         {
-            this.items = equipments;
+            this.items = courses;
             this.isReadOnly = isReadOnly;
         }
 
-        public bool Add(Equipment item)
+        public bool Add(Course item)
         {
             if (!this.Contains(item))
             {
-                items.Add(item);
+                this.items.Add(item);
                 return true;
             }
             else
                 return false;
         }
 
-        public void ExceptWith(IEnumerable<Equipment> other)
+        public void ExceptWith(IEnumerable<Course> other)
         {
-            foreach (Equipment e in other)
+            foreach (Course ls in other)
             {
-                if (this.Contains(e))
+                if (this.Contains(ls))
                 {
-                    items.Remove(e);
+                    items.Remove(ls);
                 }
             }
         }
 
-        public void IntersectWith(IEnumerable<Equipment> other)
+        public void IntersectWith(IEnumerable<Course> other)
         {
-            foreach (Equipment e in items)
+            foreach (Course ls in items)
             {
-                if (!other.Contains(e))
+                if (!other.Contains(ls))
                 {
-                    items.Remove(e);
+                    items.Remove(ls);
                 }
             }
         }
 
-        public bool IsProperSubsetOf(IEnumerable<Equipment> other)
+        public bool IsProperSubsetOf(IEnumerable<Course> other)
         {
             return ((this.Count() < other.Count()) && (this.IsProperSubsetOf(other)));
         }
 
-        public bool IsProperSupersetOf(IEnumerable<Equipment> other)
+        public bool IsProperSupersetOf(IEnumerable<Course> other)
         {
             return ((this.Count() > other.Count()) && (this.IsProperSupersetOf(other)));
         }
 
-        public bool IsSubsetOf(IEnumerable<Equipment> other)
+        public bool IsSubsetOf(IEnumerable<Course> other)
         {
             bool isSubset = true;
-            foreach (Equipment e in items)
+            foreach (Course ls in items)
             {
-                if (!other.Contains(e))
+                if (!other.Contains(ls))
                 {
                     isSubset = false;
                     break;
@@ -92,12 +94,12 @@ namespace BusinessLogic.Entities
             return isSubset;
         }
 
-        public bool IsSupersetOf(IEnumerable<Equipment> other)
+        public bool IsSupersetOf(IEnumerable<Course> other)
         {
             bool isSubset = true;
-            foreach (Equipment e in other)
+            foreach (Course ls in other)
             {
-                if (!this.Contains(e))
+                if (!this.Contains(ls))
                 {
                     isSubset = false;
                     break;
@@ -106,12 +108,12 @@ namespace BusinessLogic.Entities
             return isSubset;
         }
 
-        public bool Overlaps(IEnumerable<Equipment> other)
+        public bool Overlaps(IEnumerable<Course> other)
         {
             bool found = false;
-            foreach (Equipment e in other)
+            foreach (Course ls in other)
             {
-                if (this.Contains(e))
+                if (this.Contains(ls))
                 {
                     found = true;
                     break;
@@ -121,15 +123,15 @@ namespace BusinessLogic.Entities
 
         }
 
-        public bool SetEquals(IEnumerable<Equipment> other)
+        public bool SetEquals(IEnumerable<Course> other)
         {
             if (other.Count() != this.Count)
                 return false;
             else
             {
-                foreach (Equipment e in other)
+                foreach (Course ls in other)
                 {
-                    if (!items.Contains(e))
+                    if (!items.Contains(ls))
                         return false;
                 }
                 return true;
@@ -137,30 +139,30 @@ namespace BusinessLogic.Entities
 
         }
 
-        public void SymmetricExceptWith(IEnumerable<Equipment> other)
+        public void SymmetricExceptWith(IEnumerable<Course> other)
         {
 
-            foreach (Equipment e in other)
+            foreach (Course ls in other)
             {
-                if (this.Contains(e))
-                    this.Remove(e);
+                if (this.Contains(ls))
+                    this.Remove(ls);
                 else
-                    this.Add(e);
+                    this.Add(ls);
             }
         }
 
-        public void UnionWith(IEnumerable<Equipment> other)
+        public void UnionWith(IEnumerable<Course> other)
         {
-            foreach (Equipment e in other)
+            foreach (Course ls in other)
             {
-                if (!this.Contains(e))
+                if (!this.Contains(ls))
                 {
-                    items.Add(e);
+                    items.Add(ls);
                 }
             }
         }
 
-        void ICollection<Equipment>.Add(Equipment item)
+        void ICollection<Course>.Add(Course item)
         {
             if (!this.Contains(item))
                 items.Add(item);
@@ -170,10 +172,12 @@ namespace BusinessLogic.Entities
 
         public void Clear()
         {
-            items = new List<Equipment>();
+            Course item = items[0];
+            items = new List<Course>();
+            items.Add(item);
         }
 
-        public bool Contains(Equipment item)
+        public bool Contains(Course item)
         {
 
             bool found = false;
@@ -185,12 +189,12 @@ namespace BusinessLogic.Entities
             return found;
         }
 
-        public void CopyTo(Equipment[] array, int arrayIndex)
+        public void CopyTo(Course[] array, int arrayIndex)
         {
             int i = arrayIndex;
-            foreach (Equipment e in items)
+            foreach (Course ls in items)
             {
-                array[i] = e;
+                array[i] = ls;
                 i++;
             }
         }
@@ -206,12 +210,15 @@ namespace BusinessLogic.Entities
             get { return this.isReadOnly; }
         }
 
-        public bool Remove(Equipment item)
+        public bool Remove(Course item)
         {
-            return items.Remove(item);
+            if (items.Count != 1)
+                return items.Remove(item);
+            else
+                return false;
         }
 
-        public IEnumerator<Equipment> GetEnumerator()
+        public IEnumerator<Course> GetEnumerator()
         {
             return items.GetEnumerator();
         }

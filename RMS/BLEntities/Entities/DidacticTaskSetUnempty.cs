@@ -6,38 +6,38 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Entities
 {
-    public class LogisticalResourceSetUnempty : ISet<LogisticalResource>
+    public class DidacticTaskSetUnempty: ISet<DidacticTask>
     {
-        private List<LogisticalResource> items;
+        private List<DidacticTask> items;
         private bool isReadOnly;
 
-        public LogisticalResourceSetUnempty(LogisticalResource logisticalResource)
+        public DidacticTaskSetUnempty(DidacticTask task)
         {
-            this.items = new List<LogisticalResource>();
-            this.items.Add(logisticalResource);
+            this.items = new List<DidacticTask>();
+            this.items.Add(task);
             this.isReadOnly = false;
         }
 
-        public LogisticalResourceSetUnempty(LogisticalResource logisticalResource, bool isReadOnly)
+        public DidacticTaskSetUnempty(DidacticTask task, bool isReadOnly)
         {
-            this.items = new List<LogisticalResource>();
-            this.items.Add(logisticalResource);
+            this.items = new List<DidacticTask>();
+            this.items.Add(task);
             this.isReadOnly = isReadOnly;
         }
 
-        public LogisticalResourceSetUnempty(List<LogisticalResource> logisticalResourceList)
+        public DidacticTaskSetUnempty(List<DidacticTask> tasks)
         {
-            this.items = logisticalResourceList;
+            this.items = tasks;
             this.isReadOnly = false;
         }
 
-        public LogisticalResourceSetUnempty(List<LogisticalResource> logisticalResourceList, bool isReadOnly)
+        public DidacticTaskSetUnempty(List<DidacticTask> tasks, bool isReadOnly)
         {
-            this.items = logisticalResourceList;
+            this.items = tasks;
             this.isReadOnly = isReadOnly;
         }
-        
-        public bool Add(LogisticalResource item)
+
+        public bool Add(DidacticTask item)
         {
             if (!this.Contains(item))
             {
@@ -48,9 +48,9 @@ namespace BusinessLogic.Entities
                 return false;
         }
 
-        public void ExceptWith(IEnumerable<LogisticalResource> other)
+        public void ExceptWith(IEnumerable<DidacticTask> other)
         {
-            foreach (LogisticalResource ls in other)
+            foreach (DidacticTask ls in other)
             {
                 if (this.Contains(ls))
                 {
@@ -59,9 +59,9 @@ namespace BusinessLogic.Entities
             }
         }
 
-        public void IntersectWith(IEnumerable<LogisticalResource> other)
+        public void IntersectWith(IEnumerable<DidacticTask> other)
         {
-            foreach (LogisticalResource ls in items)
+            foreach (DidacticTask ls in items)
             {
                 if (!other.Contains(ls))
                 {
@@ -70,20 +70,20 @@ namespace BusinessLogic.Entities
             }
         }
 
-        public bool IsProperSubsetOf(IEnumerable<LogisticalResource> other)
+        public bool IsProperSubsetOf(IEnumerable<DidacticTask> other)
         {
             return ((this.Count() < other.Count()) && (this.IsProperSubsetOf(other)));
         }
 
-        public bool IsProperSupersetOf(IEnumerable<LogisticalResource> other)
+        public bool IsProperSupersetOf(IEnumerable<DidacticTask> other)
         {
             return ((this.Count() > other.Count()) && (this.IsProperSupersetOf(other)));
         }
 
-        public bool IsSubsetOf(IEnumerable<LogisticalResource> other)
+        public bool IsSubsetOf(IEnumerable<DidacticTask> other)
         {
             bool isSubset = true;
-            foreach (LogisticalResource ls in items)
+            foreach (DidacticTask ls in items)
             {
                 if (!other.Contains(ls))
                 {
@@ -94,10 +94,10 @@ namespace BusinessLogic.Entities
             return isSubset;
         }
 
-        public bool IsSupersetOf(IEnumerable<LogisticalResource> other)
+        public bool IsSupersetOf(IEnumerable<DidacticTask> other)
         {
             bool isSubset = true;
-            foreach (LogisticalResource ls in other)
+            foreach (DidacticTask ls in other)
             {
                 if (!this.Contains(ls))
                 {
@@ -108,10 +108,10 @@ namespace BusinessLogic.Entities
             return isSubset;
         }
 
-        public bool Overlaps(IEnumerable<LogisticalResource> other)
+        public bool Overlaps(IEnumerable<DidacticTask> other)
         {
             bool found = false;
-            foreach (LogisticalResource ls in other)
+            foreach (DidacticTask ls in other)
             {
                 if (this.Contains(ls))
                 {
@@ -123,13 +123,13 @@ namespace BusinessLogic.Entities
 
         }
 
-        public bool SetEquals(IEnumerable<LogisticalResource> other)
+        public bool SetEquals(IEnumerable<DidacticTask> other)
         {
             if (other.Count() != this.Count)
                 return false;
             else
             {
-                foreach (LogisticalResource ls in other)
+                foreach (DidacticTask ls in other)
                 {
                     if (!items.Contains(ls))
                         return false;
@@ -139,10 +139,10 @@ namespace BusinessLogic.Entities
 
         }
 
-        public void SymmetricExceptWith(IEnumerable<LogisticalResource> other)
+        public void SymmetricExceptWith(IEnumerable<DidacticTask> other)
         {
 
-            foreach (LogisticalResource ls in other)
+            foreach (DidacticTask ls in other)
             {
                 if (this.Contains(ls))
                     this.Remove(ls);
@@ -151,9 +151,9 @@ namespace BusinessLogic.Entities
             }
         }
 
-        public void UnionWith(IEnumerable<LogisticalResource> other)
+        public void UnionWith(IEnumerable<DidacticTask> other)
         {
-            foreach (LogisticalResource ls in other)
+            foreach (DidacticTask ls in other)
             {
                 if (!this.Contains(ls))
                 {
@@ -162,7 +162,7 @@ namespace BusinessLogic.Entities
             }
         }
 
-        void ICollection<LogisticalResource>.Add(LogisticalResource item)
+        void ICollection<DidacticTask>.Add(DidacticTask item)
         {
             if (!this.Contains(item))
                 items.Add(item);
@@ -172,12 +172,12 @@ namespace BusinessLogic.Entities
 
         public void Clear()
         {
-            LogisticalResource item = items[0];
-            items = new List<LogisticalResource>();
+            DidacticTask item = items[0];
+            items = new List<DidacticTask>();
             items.Add(item);
         }
 
-        public bool Contains(LogisticalResource item)
+        public bool Contains(DidacticTask item)
         {
 
             bool found = false;
@@ -189,10 +189,10 @@ namespace BusinessLogic.Entities
             return found;
         }
 
-        public void CopyTo(LogisticalResource[] array, int arrayIndex)
+        public void CopyTo(DidacticTask[] array, int arrayIndex)
         {
             int i = arrayIndex;
-            foreach (LogisticalResource ls in items)
+            foreach (DidacticTask ls in items)
             {
                 array[i] = ls;
                 i++;
@@ -210,7 +210,7 @@ namespace BusinessLogic.Entities
             get { return this.isReadOnly; }
         }
 
-        public bool Remove(LogisticalResource item)
+        public bool Remove(DidacticTask item)
         {
             if (items.Count != 1)
                 return items.Remove(item);
@@ -218,7 +218,7 @@ namespace BusinessLogic.Entities
                 return false;
         }
 
-        public IEnumerator<LogisticalResource> GetEnumerator()
+        public IEnumerator<DidacticTask> GetEnumerator()
         {
             return items.GetEnumerator();
         }

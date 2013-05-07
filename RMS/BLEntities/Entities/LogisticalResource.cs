@@ -5,11 +5,25 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    class LogisticalResource
+    public class LogisticalResource
     {
-        protected string name;
-        protected string description;
-        protected Task task;
+        public string name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public string description
+        {
+            get { return description; }
+            set { description = value; }
+        }
+
+        public Task task
+        {
+            get { return task; }
+            set { task = value; }
+        }
 
         public LogisticalResource(Task task)
         {
@@ -32,48 +46,18 @@ namespace BusinessLogic.Entities
             this.task = task;
         }
 
-        public string getName()
-        {
-            return this.name;
-        }
-
-        public string getDescription()
-        {
-            return this.description;
-        }
-
-        public Task getTask()
-        {
-            return this.task;
-        }
-
-        public void setName(string name)
-        {
-            this.name = name;
-        }
-
-        public void setDescription(string description)
-        {
-            this.description = description;
-        }
-
-        public void setTask(Task task)
-        {
-            this.task = task;
-        }
-
         public override bool Equals(Object obj)
         {
             LogisticalResource logisticalResourceObj = obj as LogisticalResource;
             if (logisticalResourceObj == null)
                 return false;
             else
-                return name.Equals(logisticalResourceObj.getName());
+                return name.Equals(logisticalResourceObj.name);
         }
 
         public override string ToString()
         {
-            return "Name: "+this.name+"; Description: "+this.description+"; Task: "+task.toString();
+            return "Name: "+this.name+"; Description: "+this.description+"; Task: "+task.getDescription();
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    class SuperUserRole : Role
+   public  class SuperUserRole : Role
     {
         
     }

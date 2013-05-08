@@ -160,11 +160,12 @@ namespace BusinessLogic.Entities
             }
         }
 
-        void ICollection<DidacticTask>.Add(Course item)
+        void ICollection<Course>.Add(Course item)
         {
             if (!this.Contains(item))
                 items.Add(item);
         }
+       
 
         public void Clear()
         {

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using proiectcolectiv;
+
 
 
 namespace BusinessLogic.Entities
 {
-    class Task
+    public class Task
     {
         private  MemberSetUnempty performers;
         private DateTime startDate;

@@ -27,21 +27,21 @@ namespace BusinessLogic.Entities
         }
 
         public DidacticActivity(MemberSetUnempty performers, LogisticalResourceSetUnempty logisticalResources,
-            FinancialResource estimatedBudget, DidacticTaskSetUnempty classes)
+            FinancialResource estimatedBudget, DidacticTaskSetUnempty classes,Course course)
             : base(performers, logisticalResources, estimatedBudget)
         {
             this.semester = 0;
-            this.studyProgram = new StudyProgram();
+            this.studyProgram =new StudyProgram(course);
             this.classes = classes;
         }
 
         public DidacticActivity(DateTime startDate, DateTime endDate, string description, MemberSetUnempty performers,
-            LogisticalResourceSetUnempty logisticalResources, FinancialResource estimatedBudget, 
-            DidacticTaskSetUnempty classes)
+            LogisticalResourceSetUnempty logisticalResources, FinancialResource estimatedBudget,
+            DidacticTaskSetUnempty classes, Course course)
             : base(startDate, endDate, description, performers, logisticalResources, estimatedBudget)
         {
             this.semester = 0;
-            this.studyProgram = new StudyProgram();
+            this.studyProgram = new StudyProgram(course);
             this.classes = classes;
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace BusinessLogic.Entities
 {
-    enum ClassType
+    public enum ClassType
     {
         Course,
         Seminar,

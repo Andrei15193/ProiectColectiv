@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    class MemberSetUnempty: ISet<Member>
+    public class MemberSetUnempty: ISet<Member>
     {
    
         private List<Member> items;

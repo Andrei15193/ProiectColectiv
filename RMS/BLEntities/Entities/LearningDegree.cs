@@ -1,6 +1,6 @@
 ﻿namespace BusinessLogic.Entities
 {
-    enum LearningDegree
+    public enum LearningDegree
     {
         License,
         Master

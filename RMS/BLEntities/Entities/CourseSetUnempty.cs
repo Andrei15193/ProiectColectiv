@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Entities
 {
-    class CourseSetUnempty: ISet<Course>
+    public class CourseSetUnempty: ISet<Course>
     {
         private List<Course> items;
         private bool isReadOnly;

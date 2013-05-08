@@ -60,14 +60,14 @@ namespace BusinessLogic.Entities
             this.classroom = classroom;
         }
 
-        public override bool Equals(Object obj)
+ /*       public override bool Equals(Object obj)
         {
             DidacticTask equipmentObj = obj as DidacticTask;
             if (equipmentObj == null)
                 return false;
             else
                 return name.Equals(equipmentObj.name);
-        }
+        }*/
 
         public override string ToString()
         {

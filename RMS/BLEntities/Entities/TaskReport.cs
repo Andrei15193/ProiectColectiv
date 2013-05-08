@@ -8,7 +8,7 @@ namespace BusinessLogic.Entities
 {
     public class TaskReport
     {
-        public Date date
+        public DateTime date
         {
             get { return date; }
             set { date = value; }
@@ -28,12 +28,12 @@ namespace BusinessLogic.Entities
 
         public TaskReport()
         {
-            this.date = new Date();
+            this.date = new DateTime();
             this.message = "";
             this.cost = 0;
         }
 
-        public TaskReport(Date date, string message, uint cost)
+        public TaskReport(DateTime date, string message, uint cost)
         {
             this.date = date;
             this.message = message;

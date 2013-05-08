@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    class Member : User
+    public class Member : User
     {
         private string lastName;
         private string firstName;

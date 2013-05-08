@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    class User
+    public class User
     {
         private string userName;
         private RoleSetUnempty roles;

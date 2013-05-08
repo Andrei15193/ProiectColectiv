@@ -32,7 +32,7 @@ namespace BusinessLogic.Entities
         {
             this.type = ClassType.Course;
             this.course = new Course();
-            this.activity = new DidacticActivity(performers, logisticalResources, estimatedBudget, classes);
+            this.activity = new DidacticActivity(performers, logisticalResources, estimatedBudget, classes,course);
         }
 
         public DidacticTask(DateTime startDate, DateTime endDate, string description, MemberSetUnempty performers,
@@ -42,7 +42,7 @@ namespace BusinessLogic.Entities
         {
             this.type = ClassType.Course;
             this.course = new Course();
-            this.activity = new DidacticActivity(performers, logisticalResources, estimatedBudget, classes);
+            this.activity = new DidacticActivity(performers, logisticalResources, estimatedBudget, classes,course);
         }
 
         public DidacticTask(MemberSetUnempty performers, LogisticalResourceSetUnempty logisticalResources,

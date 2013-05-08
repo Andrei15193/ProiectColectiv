@@ -1,6 +1,6 @@
 ﻿namespace BusinessLogic.Entities
 {
-    enum ClassFrequency
+    public  enum ClassFrequency
     {
         EveryWeek,
         EvenWeeksOnly,

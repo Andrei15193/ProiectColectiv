@@ -1,6 +1,6 @@
 ﻿namespace BusinessLogic.Entities
 {
-    enum Specialization
+    public enum Specialization
     {
         ComputerScience,
         InformationEngineering,

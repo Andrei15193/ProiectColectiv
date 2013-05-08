@@ -1,6 +1,6 @@
 ﻿namespace BusinessLogic.Entities
 {
-    enum TaskPeriodicity
+    public enum TaskPeriodicity
     {
         Daily,
         Weekly,

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    class Feature
+    public class Feature
     {
         private string name;
         private string description;
@@ -29,14 +29,7 @@ namespace BusinessLogic.Entities
         {
             return description;
         }
-        public override bool Equals(Object obj)
-        {
-            Feature featureObj = obj as Feature;
-            if (featureObj == null)
-                return false;
-            else
-                return name.Equals(featureObj.getName());
-        }
+       
         public override string ToString()
         {
             return this.name;

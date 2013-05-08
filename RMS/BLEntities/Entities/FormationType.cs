@@ -1,6 +1,6 @@
 ﻿namespace BusinessLogic.Entities
 {
-    enum FormationType
+    public enum FormationType
     {
         Year,
         Group,

@@ -1,6 +1,6 @@
 ﻿namespace BusinessLogic.Entities
 {
-    enum ApplicationState
+    public enum ApplicationState
     {
         Active,
         Canceled,

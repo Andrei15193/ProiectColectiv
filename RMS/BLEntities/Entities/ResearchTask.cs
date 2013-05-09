@@ -8,10 +8,10 @@ namespace BusinessLogic.Entities
 {
     public class ResearchTask : Task
     {
-        public ReportEntry report
+        public SortedSet<ReportEntry> taskReport
         {
-            get { return report; }
-            set { report = value; }
+            get { return taskReport; }
+            set { taskReport = value; }
         }
 
         public DateTime endDate
@@ -20,37 +20,41 @@ namespace BusinessLogic.Entities
             set { endDate = value; }
         }
 
-        public ResearchTask(MemberSetUnempty performers, LogisticalResourceSetUnempty logisticalResources,
+        public ResearchTask(PerformersSet performers, UnemptySet<LogisticalResource> logisticalResources,
             FinancialResource estimatedBudget)
             : base(performers, logisticalResources, estimatedBudget)
         {
-            this.report = new ReportEntry();
+            this.taskReport = new SortedSet<ReportEntry>();
             this.endDate = new DateTime();
         }
 
-        public ResearchTask(DateTime startDate, DateTime endDate, string description, MemberSetUnempty performers,
-            LogisticalResourceSetUnempty logisticalResources, FinancialResource estimatedBudget)
+        public ResearchTask(DateTime startDate, DateTime endDate, string description, PerformersSet performers,
+            UnemptySet<LogisticalResource> logisticalResources, FinancialResource estimatedBudget)
             : base(startDate, endDate, description, performers, logisticalResources, estimatedBudget)
         {
-            this.report = new ReportEntry();
+            this.taskReport = new SortedSet<ReportEntry>();
             this.endDate = new DateTime();
         }
 
-        public ResearchTask(MemberSetUnempty performers, LogisticalResourceSetUnempty logisticalResources,
-            FinancialResource estimatedBudget, ReportEntry report, DateTime endDate)
+        public ResearchTask(PerformersSet performers, UnemptySet<LogisticalResource> logisticalResources,
+            FinancialResource estimatedBudget, SortedSet<ReportEntry> taskReport, DateTime endDate)
             : base(performers, logisticalResources, estimatedBudget)
         {
-            this.report = report;
+            this.taskReport = taskReport;
             this.endDate = endDate;
         }
 
-        public ResearchTask(DateTime startDate, DateTime endDate, string description, MemberSetUnempty performers,
-            LogisticalResourceSetUnempty logisticalResources, FinancialResource estimatedBudget, ReportEntry report, 
+        public ResearchTask(DateTime startDate, DateTime endDate, string description, PerformersSet performers,
+            UnemptySet<LogisticalResource> logisticalResources, FinancialResource estimatedBudget, SortedSet<ReportEntry> taskReport, 
             DateTime endDateReport)
             : base(startDate, endDate, description, performers, logisticalResources, estimatedBudget)
         {
-            this.report = report;
+            this.taskReport = taskReport;
             this.endDate = endDateReport;
+        }
+        public SortedSet<ReportEntry> getReports()
+        {
+            return taskReport;
         }
     }
 }

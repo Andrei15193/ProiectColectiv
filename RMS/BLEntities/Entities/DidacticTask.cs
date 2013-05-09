@@ -26,8 +26,8 @@ namespace BusinessLogic.Entities
             set { activity = value; }
         }
 
-        public DidacticTask(MemberSetUnempty performers, LogisticalResourceSetUnempty logisticalResources,
-            FinancialResource estimatedBudget, DidacticTaskSetUnempty classes)
+        public DidacticTask(PerformersSet performers, UnemptySet<LogisticalResource> logisticalResources,
+            FinancialResource estimatedBudget, UnemptySortedSet<DidacticTask> classes)
             : base(performers, logisticalResources, estimatedBudget)
         {
             this.type = ClassType.Course;
@@ -35,9 +35,9 @@ namespace BusinessLogic.Entities
             this.activity = new DidacticActivity(performers, logisticalResources, estimatedBudget, classes,course);
         }
 
-        public DidacticTask(DateTime startDate, DateTime endDate, string description, MemberSetUnempty performers,
-            LogisticalResourceSetUnempty logisticalResources, FinancialResource estimatedBudget,
-            DidacticTaskSetUnempty classes)
+        public DidacticTask(DateTime startDate, DateTime endDate, string description, PerformersSet performers,
+            UnemptySet<LogisticalResource> logisticalResources, FinancialResource estimatedBudget,
+           UnemptySortedSet<DidacticTask> classes)
             : base(startDate, endDate, description, performers, logisticalResources, estimatedBudget)
         {
             this.type = ClassType.Course;
@@ -45,7 +45,7 @@ namespace BusinessLogic.Entities
             this.activity = new DidacticActivity(performers, logisticalResources, estimatedBudget, classes,course);
         }
 
-        public DidacticTask(MemberSetUnempty performers, LogisticalResourceSetUnempty logisticalResources,
+        public DidacticTask(PerformersSet performers, UnemptySet<LogisticalResource> logisticalResources,
             FinancialResource estimatedBudget, ClassType type, Course course, DidacticActivity activity)
             : base(performers, logisticalResources, estimatedBudget)
         {
@@ -54,8 +54,8 @@ namespace BusinessLogic.Entities
             this.activity = activity;
         }
 
-        public DidacticTask(DateTime startDate, DateTime endDate, string description, MemberSetUnempty performers,
-            LogisticalResourceSetUnempty logisticalResources, FinancialResource estimatedBudget, ClassType type,
+        public DidacticTask(DateTime startDate, DateTime endDate, string description, PerformersSet performers,
+            UnemptySet<LogisticalResource> logisticalResources, FinancialResource estimatedBudget, ClassType type,
             Course course, DidacticActivity activity)
             : base(startDate, endDate, description, performers, logisticalResources, estimatedBudget)
         {

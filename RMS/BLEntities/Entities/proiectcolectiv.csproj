@@ -50,12 +50,10 @@
     <Compile Include="ClassType.cs" />
     <Compile Include="Course.cs" />
     <Compile Include="CourseSet.cs" />
-    <Compile Include="CourseSetUnempty.cs" />
     <Compile Include="Currency.cs" />
     <Compile Include="DidacticActivity.cs" />
     <Compile Include="DidacticTask.cs" />
     <Compile Include="DidacticTaskSet.cs" />
-    <Compile Include="DidacticTaskSetUnempty.cs" />
     <Compile Include="Equipment.cs" />
     <Compile Include="EquipmentSet.cs" />
     <Compile Include="Feature.cs" />
@@ -69,9 +67,7 @@
     <Compile Include="Language.cs" />
     <Compile Include="LearningDegree.cs" />
     <Compile Include="LogisticalResource.cs" />
-    <Compile Include="LogisticalResourceSetUnempty.cs" />
     <Compile Include="Member.cs" />
-    <Compile Include="MemberSetUnempty.cs" />
     <Compile Include="PerformersSet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -79,7 +75,6 @@
     <Compile Include="ResearchTask.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="RoleSet.cs" />
-    <Compile Include="RoleSetUnempty.cs" />
     <Compile Include="SemiGroup.cs" />
     <Compile Include="UnemptySet.cs" />
     <Compile Include="Specialization.cs" />
@@ -90,7 +85,6 @@
     <Compile Include="Task.cs" />
     <Compile Include="TaskPeriodicity.cs" />
     <Compile Include="ReportEntry.cs" />
-    <Compile Include="TaskSetOrdered.cs" />
     <Compile Include="TaskState.cs" />
     <Compile Include="TaskType.cs" />
     <Compile Include="UnemptySortedSet.cs" />

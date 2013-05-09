@@ -14,7 +14,7 @@ namespace BusinessLogic.Entities
             set { specialization = value; }
         }
 
-        public CourseSetUnempty courses
+        public UnemptySet<Course> courses
         {
             get { return courses; }
             set { courses = value; }
@@ -23,10 +23,10 @@ namespace BusinessLogic.Entities
         public StudyProgram(Course course)
         {
             this.specialization = Specialization.ComputerScience;
-            this.courses = new CourseSetUnempty(course);
+            this.courses = new UnemptySet<Course>(course);
         }
 
-        public StudyProgram(CourseSetUnempty courses)
+        public StudyProgram(UnemptySet<Course> courses)
         {
             this.specialization = Specialization.ComputerScience;
             this.courses = courses;
@@ -35,10 +35,10 @@ namespace BusinessLogic.Entities
         public StudyProgram(Specialization specialization, Course course)
         {
             this.specialization = specialization;
-            this.courses = new CourseSetUnempty(course);
+            this.courses = new UnemptySet<Course>(course);
         }
 
-        public StudyProgram(Specialization specialization, CourseSetUnempty courses)
+        public StudyProgram(Specialization specialization, UnemptySet<Course>    courses)
         {
             this.specialization = specialization;
             this.courses = courses;

@@ -8,11 +8,11 @@ namespace BusinessLogic.Entities
     public class User
     {
         private string userName;
-        private RoleSetUnempty roles;
+        private UnemptySet<Role> roles;
 
         public User() { }
 
-        public User(RoleSetUnempty roles)
+        public User(UnemptySet<Role> roles)
         {
             this.userName = "";
             this.roles = roles;
@@ -24,16 +24,16 @@ namespace BusinessLogic.Entities
          public User(Role r)
         {
             this.userName = "";
-            this.roles = new RoleSetUnempty(r);
+            this.roles = new UnemptySet<Role>(r);
             
         }
         public User(string userName,Role r)
         {
             this.userName = userName;
-            this.roles = new RoleSetUnempty(r);
+            this.roles = new UnemptySet<Role>(r);
             
         }
-        public User(string userName, RoleSetUnempty roles)
+        public User(string userName, UnemptySet<Role> roles)
         {
             this.userName = userName;
             this.roles = roles;
@@ -42,7 +42,7 @@ namespace BusinessLogic.Entities
         {
             return userName;
         }
-        public RoleSetUnempty getRoles()
+        public UnemptySet<Role> getRoles()
         {
             return roles;
         }

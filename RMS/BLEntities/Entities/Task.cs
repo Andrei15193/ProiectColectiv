@@ -9,7 +9,7 @@ namespace BusinessLogic.Entities
 {
     public class Task
     {
-        private  MemberSetUnempty performers;
+        private  PerformersSet performers;
         private DateTime startDate;
         private DateTime endDate;
         private TaskState state;
@@ -20,7 +20,7 @@ namespace BusinessLogic.Entities
         private string summary;
         private string description;
         private FinancialResource estimatedBudget;
-        private LogisticalResourceSetUnempty logisticalResources;
+        private UnemptySet<LogisticalResource> logisticalResources;
        
 
         public DateTime getEndDate()
@@ -97,19 +97,19 @@ namespace BusinessLogic.Entities
         {
             this.description=d;
         }
-        public MemberSetUnempty  getPerformers()
+        public PerformersSet  getPerformers()
         {
             return this.performers;
         }
-        public void setPerformers(MemberSetUnempty m)
+        public void setPerformers(PerformersSet m)
         {
             this.performers = m;
         }
-        public void setLogisticalResources(LogisticalResourceSetUnempty l)
+        public void setLogisticalResources(UnemptySet<LogisticalResource> l)
         {
             this.logisticalResources = l;
         }
-        public LogisticalResourceSetUnempty getLogisticalResources()
+        public UnemptySet<LogisticalResource> getLogisticalResources()
         {
             return logisticalResources;
         }
@@ -127,14 +127,14 @@ namespace BusinessLogic.Entities
         //{
           //  return estimatedBudget.getValue();
        // }
-        public Task(MemberSetUnempty performers,LogisticalResourceSetUnempty logisticalResources,FinancialResource estimatedBudget)
+        public Task(PerformersSet performers,UnemptySet<LogisticalResource> logisticalResources,FinancialResource estimatedBudget)
         
         {
             this.performers = performers;
             this.logisticalResources = logisticalResources;
             this.estimatedBudget = estimatedBudget;
         }
-        public Task(DateTime startDate,DateTime endDate,string description,MemberSetUnempty performers, LogisticalResourceSetUnempty logisticalResources, FinancialResource estimatedBudget)
+        public Task(DateTime startDate,DateTime endDate,string description,PerformersSet performers, UnemptySet<LogisticalResource> logisticalResources, FinancialResource estimatedBudget)
         {
             this.performers = performers;
             this.logisticalResources = logisticalResources;

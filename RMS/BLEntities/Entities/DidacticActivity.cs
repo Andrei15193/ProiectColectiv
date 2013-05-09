@@ -20,14 +20,14 @@ namespace BusinessLogic.Entities
             set { studyProgram = value; }
         }
 
-        public DidacticTaskSetUnempty classes
+        public UnemptySortedSet<DidacticTask> classes
         {
             get { return classes; }
             set { classes = value; }
         }
 
-        public DidacticActivity(MemberSetUnempty performers, LogisticalResourceSetUnempty logisticalResources,
-            FinancialResource estimatedBudget, DidacticTaskSetUnempty classes,Course course)
+        public DidacticActivity(PerformersSet performers, UnemptySet<LogisticalResource> logisticalResources,
+            FinancialResource estimatedBudget, UnemptySortedSet<DidacticTask> classes, Course course)
             : base(performers, logisticalResources, estimatedBudget)
         {
             this.semester = 0;
@@ -35,9 +35,9 @@ namespace BusinessLogic.Entities
             this.classes = classes;
         }
 
-        public DidacticActivity(DateTime startDate, DateTime endDate, string description, MemberSetUnempty performers,
-            LogisticalResourceSetUnempty logisticalResources, FinancialResource estimatedBudget,
-            DidacticTaskSetUnempty classes, Course course)
+        public DidacticActivity(DateTime startDate, DateTime endDate, string description, PerformersSet performers,
+            UnemptySet<LogisticalResource> logisticalResources, FinancialResource estimatedBudget,
+           UnemptySortedSet<DidacticTask> classes, Course course)
             : base(startDate, endDate, description, performers, logisticalResources, estimatedBudget)
         {
             this.semester = 0;
@@ -45,8 +45,8 @@ namespace BusinessLogic.Entities
             this.classes = classes;
         }
 
-        public DidacticActivity(MemberSetUnempty performers, LogisticalResourceSetUnempty logisticalResources,
-            FinancialResource estimatedBudget, uint semester, StudyProgram studyProgram, DidacticTaskSetUnempty classes)
+        public DidacticActivity(PerformersSet performers, UnemptySet<LogisticalResource> logisticalResources,
+            FinancialResource estimatedBudget, uint semester, StudyProgram studyProgram, UnemptySortedSet<DidacticTask> classes)
             : base(performers, logisticalResources, estimatedBudget)
         {
             this.semester = semester;
@@ -54,9 +54,9 @@ namespace BusinessLogic.Entities
             this.classes = classes;
         }
 
-        public DidacticActivity(DateTime startDate, DateTime endDate, string description, MemberSetUnempty performers,
-            LogisticalResourceSetUnempty logisticalResources, FinancialResource estimatedBudget, uint semester, 
-            StudyProgram studyProgram, DidacticTaskSetUnempty classes)
+        public DidacticActivity(DateTime startDate, DateTime endDate, string description, PerformersSet performers,
+            UnemptySet<LogisticalResource> logisticalResources, FinancialResource estimatedBudget, uint semester,
+            StudyProgram studyProgram, UnemptySortedSet<DidacticTask> classes)
             : base(startDate, endDate, description, performers, logisticalResources, estimatedBudget)
         {
             this.semester = semester;

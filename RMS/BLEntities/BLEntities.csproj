@@ -39,16 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Activity.cs" />
     <Compile Include="Entities\ApplicationDomain.cs" />
     <Compile Include="Entities\ApplicationState.cs" />
     <Compile Include="Entities\ClassRoom.cs" />
     <Compile Include="Entities\Course.cs" />
     <Compile Include="Entities\CourseSet.cs" />
-    <Compile Include="Entities\CourseSetUnempty.cs" />
     <Compile Include="Entities\DidacticActivity.cs" />
     <Compile Include="Entities\DidacticTask.cs" />
     <Compile Include="Entities\DidacticTaskSet.cs" />
-    <Compile Include="Entities\DidacticTaskSetUnempty.cs" />
     <Compile Include="Entities\Equipment.cs" />
     <Compile Include="Entities\EquipmentSet.cs" />
     <Compile Include="Entities\FinancialResource.cs" />
@@ -65,14 +64,14 @@
     <Compile Include="Entities\GuestRole.cs" />
     <Compile Include="Entities\Language.cs" />
     <Compile Include="Entities\LearningDegree.cs" />
-    <Compile Include="Entities\LogisticalResourceSetUnempty.cs" />
     <Compile Include="Entities\Member.cs" />
-    <Compile Include="Entities\MemberSetUnempty.cs" />
+    <Compile Include="Entities\PerformersSet.cs" />
     <Compile Include="Entities\ReportEntry.cs" />
+    <Compile Include="Entities\ResearchProject.cs" />
+    <Compile Include="Entities\ResearchProjectTeam.cs" />
     <Compile Include="Entities\ResearchTask.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\RoleSet.cs" />
-    <Compile Include="Entities\RoleSetUnempty.cs" />
     <Compile Include="Entities\SemiGroup.cs" />
     <Compile Include="Entities\Specialization.cs" />
     <Compile Include="Entities\StudyProgram.cs" />
@@ -83,6 +82,8 @@
     <Compile Include="Entities\TaskPeriodicity.cs" />
     <Compile Include="Entities\TaskState.cs" />
     <Compile Include="Entities\TaskType.cs" />
+    <Compile Include="Entities\UnemptySet.cs" />
+    <Compile Include="Entities\UnemptySortedSet.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -68,5 +68,16 @@ namespace BusinessLogic.Entities
             }
             return false;
         }
+        public new bool RemoveWhere(Predicate<T> match)
+        {
+           
+            base.RemoveWhere(match);
+            if (base.Count == 0)
+            {
+                Add(firstItem);
+                return false;
+            }
+            return true;
+        }
     }
 }

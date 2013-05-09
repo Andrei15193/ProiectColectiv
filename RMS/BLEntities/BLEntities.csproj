@@ -68,6 +68,7 @@
     <Compile Include="Entities\LogisticalResourceSetUnempty.cs" />
     <Compile Include="Entities\Member.cs" />
     <Compile Include="Entities\MemberSetUnempty.cs" />
+    <Compile Include="Entities\ReportEntry.cs" />
     <Compile Include="Entities\ResearchTask.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\RoleSet.cs" />
@@ -80,7 +81,6 @@
     <Compile Include="Entities\SuperUserRole.cs" />
     <Compile Include="Entities\Task.cs" />
     <Compile Include="Entities\TaskPeriodicity.cs" />
-    <Compile Include="Entities\TaskReport.cs" />
     <Compile Include="Entities\TaskState.cs" />
     <Compile Include="Entities\TaskType.cs" />
     <Compile Include="Entities\User.cs" />

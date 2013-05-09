@@ -77,15 +77,7 @@ namespace BusinessLogic.Entities
             this.equipments = equipments;
         }
 
-        public override bool Equals(Object obj)
-        {
-            ClassRoom classroomObj = obj as ClassRoom;
-            if (classroomObj == null)
-                return false;
-            else
-                return building.Equals(classroomObj.building) && floor.Equals(classroomObj.floor)
-                    && number.Equals(classroomObj.number);
-        }
+      
 
         public override string ToString()
         {

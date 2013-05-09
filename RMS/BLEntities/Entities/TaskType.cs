@@ -2,6 +2,7 @@
 {
     public enum TaskType
     {
+        Unknown,
         Research,
         Presentation,
         Conference,

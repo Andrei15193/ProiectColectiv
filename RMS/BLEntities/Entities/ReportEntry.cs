@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Entities
 {
-    public class TaskReport
+    public class ReportEntry
     {
         public DateTime date
         {
@@ -26,14 +26,14 @@ namespace BusinessLogic.Entities
             set { cost = value; }
         }
 
-        public TaskReport()
+        public ReportEntry()
         {
             this.date = new DateTime();
             this.message = "";
             this.cost = 0;
         }
 
-        public TaskReport(DateTime date, string message, uint cost)
+        public ReportEntry(DateTime date, string message, uint cost)
         {
             this.date = date;
             this.message = message;

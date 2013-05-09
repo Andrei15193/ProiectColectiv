@@ -91,13 +91,6 @@ namespace BusinessLogic.Entities
             else
                 return false;
         }
-        public override bool Equals(Object obj)
-        {
-            Feature memberObj = obj as Feature;
-            if (memberObj == null)
-                return false;
-            else
-                return email.Equals(memberObj.getName());
-        }
+       
     }
 }

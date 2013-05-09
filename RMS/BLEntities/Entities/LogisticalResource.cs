@@ -46,14 +46,7 @@ namespace BusinessLogic.Entities
             this.task = task;
         }
 
-        public override bool Equals(Object obj)
-        {
-            LogisticalResource logisticalResourceObj = obj as LogisticalResource;
-            if (logisticalResourceObj == null)
-                return false;
-            else
-                return name.Equals(logisticalResourceObj.name);
-        }
+       
 
         public override string ToString()
         {

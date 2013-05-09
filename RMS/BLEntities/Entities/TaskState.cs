@@ -2,6 +2,7 @@
 {
     public  enum TaskState
     {
+        Unknown,
         Request,
         Rejected,
         Finished,

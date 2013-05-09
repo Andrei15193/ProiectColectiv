@@ -2,6 +2,7 @@
 {
     public enum ClassType
     {
+        Unknown,
         Course,
         Seminar,
         Laboratory

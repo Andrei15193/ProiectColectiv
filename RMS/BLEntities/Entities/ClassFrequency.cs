@@ -2,6 +2,7 @@
 {
     public  enum ClassFrequency
     {
+        Unknown,
         EveryWeek,
         EvenWeeksOnly,
         UnevenWeeksOnly

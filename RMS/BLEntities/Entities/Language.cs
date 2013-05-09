@@ -2,6 +2,7 @@
 {
     public enum Language
     {
+        Unknown,
         Romanian,
         English
     }

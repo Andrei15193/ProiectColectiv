@@ -32,6 +32,12 @@ namespace BusinessLogic.Entities
             this.state = state;
         }
 
+        public ResearchProject(String name, String summary, String description, ApplicationDomain domain, ApplicationState state, ResearchProjectTeam team)
+            : this(name, summary, description, domain, state)
+        {
+            this.team = team;
+        }
+
         public UnemptySet<Member> GetTeam() { return team; }
 
     }

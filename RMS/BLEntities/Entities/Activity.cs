@@ -10,6 +10,6 @@ namespace BusinessLogic.Entities
     {
         private UnemptySortedSet<Task> tasks;
 
-        public SortedSet<Task> GetTasks() { return tasks; }
+        public SortedSet<Task> getTasks() { return tasks; }
     }
 }

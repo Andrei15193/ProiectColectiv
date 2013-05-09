@@ -95,6 +95,9 @@ namespace BusinessLogic.Entities
             else
                 return false;
         }
+
+        public ISet<ResearchProject> getDirectedResearchProjects() { return directedResearchProjects; }
+        public ISet<ResearchProject> getAttendedResearchProjects() { return attendedResearchProjects; }
        
     }
 }

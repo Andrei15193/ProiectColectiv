@@ -5118,9 +5118,9 @@ a.thumbnail:focus {
   filter: alpha(opacity=90);
 }
 .carousel-indicators {
-  position: absolute;
+  /*position: absolute;
   top: 15px;
-  right: 15px;
+  right: 15px;*/
   z-index: 5;
   margin: 0;
   list-style: none;
@@ -5132,12 +5132,12 @@ a.thumbnail:focus {
   height: 10px;
   margin-left: 5px;
   text-indent: -999px;
-  background-color: #ccc;
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: #867c70;
+  background-color: rgba(134, 124, 112, 1);
   border-radius: 5px;
 }
 .carousel-indicators .active {
-  background-color: #fff;
+  background-color: #aa381d;
 }
 .carousel-caption {
   position: absolute;

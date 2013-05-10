@@ -5,37 +5,47 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    class User
+    public class User
     {
         private string userName;
-        private RoleSet roles;
+        private UnemptySet<Role> roles;
 
-        public User()
+        public User() { }
+
+        public User(UnemptySet<Role> roles)
         {
             this.userName = "";
-            this.roles = new RoleSet();
+            this.roles = roles;
+            
         }
 
-        public User(string userName)
+       
+
+         public User(Role r)
+        {
+            this.userName = "";
+            this.roles = new UnemptySet<Role>(r);
+            
+        }
+        public User(string userName,Role r)
         {
             this.userName = userName;
-            this.roles = new RoleSet();
+            this.roles = new UnemptySet<Role>(r);
+            
         }
-
-        public User(string userName, RoleSet roles)
+        public User(string userName, UnemptySet<Role> roles)
         {
             this.userName = userName;
             this.roles = roles;
         }
-
         public string getUserName()
         {
             return userName;
         }
-
-        public RoleSet getRoles()
+        public UnemptySet<Role> getRoles()
         {
             return roles;
         }
     }
+
 }

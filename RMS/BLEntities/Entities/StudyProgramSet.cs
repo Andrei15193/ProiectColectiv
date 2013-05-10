@@ -2,27 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLogic.Entities
 {
-    public class FeatureSet : ISet<Feature>
+    public class StudyProgramSet: ISet<StudyProgram>
     {
-        private List<Feature> items;
+        private List<StudyProgram> items;
         private bool isReadOnly;
 
-        public FeatureSet()
+        public StudyProgramSet()
         {
-            items = new List<Feature>();
+            items = new List<StudyProgram>();
             isReadOnly = false;
         }
 
-        public FeatureSet(bool isReadOnly)
+        public StudyProgramSet(bool isReadOnly)
         {
-            items = new List<Feature>();
+            items = new List<StudyProgram>();
             this.isReadOnly = isReadOnly;
         }
 
-        public bool Add(Feature item)
+        public StudyProgramSet(List<StudyProgram> programs)
+        {
+            items = programs;
+            isReadOnly = false;
+        }
+
+        public StudyProgramSet(List<StudyProgram> programs, bool isReadOnly)
+        {
+            this.items = programs;
+            this.isReadOnly = isReadOnly;
+        }
+
+        public bool Add(StudyProgram item)
         {
             if (!this.Contains(item))
             {
@@ -33,44 +46,44 @@ namespace BusinessLogic.Entities
                 return false;
         }
 
-        public void ExceptWith(IEnumerable<Feature> other)
+        public void ExceptWith(IEnumerable<StudyProgram> other)
         {
-            foreach (Feature f in other)
+            foreach (StudyProgram e in other)
             {
-                if (this.Contains(f))
+                if (this.Contains(e))
                 {
-                    items.Remove(f);
+                    items.Remove(e);
                 }
             }
         }
 
-        public void IntersectWith(IEnumerable<Feature> other)
+        public void IntersectWith(IEnumerable<StudyProgram> other)
         {
-            foreach (Feature f in items)
+            foreach (StudyProgram e in items)
             {
-                if (!other.Contains(f))
+                if (!other.Contains(e))
                 {
-                    items.Remove(f);
+                    items.Remove(e);
                 }
             }
         }
 
-        public bool IsProperSubsetOf(IEnumerable<Feature> other)
+        public bool IsProperSubsetOf(IEnumerable<StudyProgram> other)
         {
             return ((this.Count() < other.Count()) && (this.IsProperSubsetOf(other)));
         }
 
-        public bool IsProperSupersetOf(IEnumerable<Feature> other)
+        public bool IsProperSupersetOf(IEnumerable<StudyProgram> other)
         {
             return ((this.Count() > other.Count()) && (this.IsProperSupersetOf(other)));
         }
 
-        public bool IsSubsetOf(IEnumerable<Feature> other)
+        public bool IsSubsetOf(IEnumerable<StudyProgram> other)
         {
             bool isSubset = true;
-            foreach (Feature f in items)
+            foreach (StudyProgram e in items)
             {
-                if (!other.Contains(f))
+                if (!other.Contains(e))
                 {
                     isSubset = false;
                     break;
@@ -79,12 +92,12 @@ namespace BusinessLogic.Entities
             return isSubset;
         }
 
-        public bool IsSupersetOf(IEnumerable<Feature> other)
+        public bool IsSupersetOf(IEnumerable<StudyProgram> other)
         {
             bool isSubset = true;
-            foreach (Feature f in other)
+            foreach (StudyProgram e in other)
             {
-                if (!this.Contains(f))
+                if (!this.Contains(e))
                 {
                     isSubset = false;
                     break;
@@ -93,12 +106,12 @@ namespace BusinessLogic.Entities
             return isSubset;
         }
 
-        public bool Overlaps(IEnumerable<Feature> other)
+        public bool Overlaps(IEnumerable<StudyProgram> other)
         {
             bool found = false;
-            foreach (Feature f in other)
+            foreach (StudyProgram e in other)
             {
-                if (this.Contains(f))
+                if (this.Contains(e))
                 {
                     found = true;
                     break;
@@ -108,15 +121,15 @@ namespace BusinessLogic.Entities
 
         }
 
-        public bool SetEquals(IEnumerable<Feature> other)
+        public bool SetEquals(IEnumerable<StudyProgram> other)
         {
             if (other.Count() != this.Count)
                 return false;
             else
             {
-                foreach (Feature f in other)
+                foreach (StudyProgram e in other)
                 {
-                    if (!items.Contains(f))
+                    if (!items.Contains(e))
                         return false;
                 }
                 return true;
@@ -124,43 +137,41 @@ namespace BusinessLogic.Entities
 
         }
 
-        public void SymmetricExceptWith(IEnumerable<Feature> other)
+        public void SymmetricExceptWith(IEnumerable<StudyProgram> other)
         {
 
-            foreach (Feature f in other)
+            foreach (StudyProgram e in other)
             {
-                if (this.Contains(f))
-                    this.Remove(f);
+                if (this.Contains(e))
+                    this.Remove(e);
                 else
-                    this.Add(f);
+                    this.Add(e);
             }
         }
 
-        public void UnionWith(IEnumerable<Feature> other)
+        public void UnionWith(IEnumerable<StudyProgram> other)
         {
-            foreach (Feature f in other)
+            foreach (StudyProgram e in other)
             {
-                if (!this.Contains(f))
+                if (!this.Contains(e))
                 {
-                    items.Add(f);
+                    items.Add(e);
                 }
             }
         }
 
-        void ICollection<Feature>.Add(Feature item)
+        void ICollection<StudyProgram>.Add(StudyProgram item)
         {
             if (!this.Contains(item))
                 items.Add(item);
-
-
         }
 
         public void Clear()
         {
-            items = new List<Feature>();
+            items = new List<StudyProgram>();
         }
 
-        public bool Contains(Feature item)
+        public bool Contains(StudyProgram item)
         {
 
             bool found = false;
@@ -172,19 +183,19 @@ namespace BusinessLogic.Entities
             return found;
         }
 
-        public void CopyTo(Feature[] array, int arrayIndex)
+        public void CopyTo(StudyProgram[] array, int arrayIndex)
         {
             int i = arrayIndex;
-            foreach (Feature f in items)
+            foreach (StudyProgram e in items)
             {
-                array[i] = f;
+                array[i] = e;
+                i++;
             }
         }
 
         public int Count
         {
             get { return items.Count; }
-
         }
 
         public bool IsReadOnly
@@ -192,12 +203,12 @@ namespace BusinessLogic.Entities
             get { return this.isReadOnly; }
         }
 
-        public bool Remove(Feature item)
+        public bool Remove(StudyProgram item)
         {
             return items.Remove(item);
         }
 
-        public IEnumerator<Feature> GetEnumerator()
+        public IEnumerator<StudyProgram> GetEnumerator()
         {
             return items.GetEnumerator();
         }

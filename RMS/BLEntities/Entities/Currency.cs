@@ -1,7 +1,9 @@
 ﻿namespace BusinessLogic.Entities
-{
-    enum Currency
+{        
+    public enum Currency
     {
+        Unknown,
         RON
     }
+
 }

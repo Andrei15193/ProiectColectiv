@@ -2,27 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLogic.Entities
 {
-    public class FeatureSet : ISet<Feature>
+    public class CourseSet: ISet<Course>
     {
-        private List<Feature> items;
+        private List<Course> items;
         private bool isReadOnly;
 
-        public FeatureSet()
+        public CourseSet()
         {
-            items = new List<Feature>();
+            items = new List<Course>();
             isReadOnly = false;
         }
 
-        public FeatureSet(bool isReadOnly)
+        public CourseSet(bool isReadOnly)
         {
-            items = new List<Feature>();
+            items = new List<Course>();
             this.isReadOnly = isReadOnly;
         }
 
-        public bool Add(Feature item)
+        public CourseSet(List<Course> courses)
+        {
+            items = courses;
+            isReadOnly = false;
+        }
+
+        public CourseSet(List<Course> courses, bool isReadOnly)
+        {
+            this.items = courses;
+            this.isReadOnly = isReadOnly;
+        }
+
+        public bool Add(Course item)
         {
             if (!this.Contains(item))
             {
@@ -33,44 +46,44 @@ namespace BusinessLogic.Entities
                 return false;
         }
 
-        public void ExceptWith(IEnumerable<Feature> other)
+        public void ExceptWith(IEnumerable<Course> other)
         {
-            foreach (Feature f in other)
+            foreach (Course e in other)
             {
-                if (this.Contains(f))
+                if (this.Contains(e))
                 {
-                    items.Remove(f);
+                    items.Remove(e);
                 }
             }
         }
 
-        public void IntersectWith(IEnumerable<Feature> other)
+        public void IntersectWith(IEnumerable<Course> other)
         {
-            foreach (Feature f in items)
+            foreach (Course e in items)
             {
-                if (!other.Contains(f))
+                if (!other.Contains(e))
                 {
-                    items.Remove(f);
+                    items.Remove(e);
                 }
             }
         }
 
-        public bool IsProperSubsetOf(IEnumerable<Feature> other)
+        public bool IsProperSubsetOf(IEnumerable<Course> other)
         {
             return ((this.Count() < other.Count()) && (this.IsProperSubsetOf(other)));
         }
 
-        public bool IsProperSupersetOf(IEnumerable<Feature> other)
+        public bool IsProperSupersetOf(IEnumerable<Course> other)
         {
             return ((this.Count() > other.Count()) && (this.IsProperSupersetOf(other)));
         }
 
-        public bool IsSubsetOf(IEnumerable<Feature> other)
+        public bool IsSubsetOf(IEnumerable<Course> other)
         {
             bool isSubset = true;
-            foreach (Feature f in items)
+            foreach (Course e in items)
             {
-                if (!other.Contains(f))
+                if (!other.Contains(e))
                 {
                     isSubset = false;
                     break;
@@ -79,12 +92,12 @@ namespace BusinessLogic.Entities
             return isSubset;
         }
 
-        public bool IsSupersetOf(IEnumerable<Feature> other)
+        public bool IsSupersetOf(IEnumerable<Course> other)
         {
             bool isSubset = true;
-            foreach (Feature f in other)
+            foreach (Course e in other)
             {
-                if (!this.Contains(f))
+                if (!this.Contains(e))
                 {
                     isSubset = false;
                     break;
@@ -93,12 +106,12 @@ namespace BusinessLogic.Entities
             return isSubset;
         }
 
-        public bool Overlaps(IEnumerable<Feature> other)
+        public bool Overlaps(IEnumerable<Course> other)
         {
             bool found = false;
-            foreach (Feature f in other)
+            foreach (Course e in other)
             {
-                if (this.Contains(f))
+                if (this.Contains(e))
                 {
                     found = true;
                     break;
@@ -108,15 +121,15 @@ namespace BusinessLogic.Entities
 
         }
 
-        public bool SetEquals(IEnumerable<Feature> other)
+        public bool SetEquals(IEnumerable<Course> other)
         {
             if (other.Count() != this.Count)
                 return false;
             else
             {
-                foreach (Feature f in other)
+                foreach (Course e in other)
                 {
-                    if (!items.Contains(f))
+                    if (!items.Contains(e))
                         return false;
                 }
                 return true;
@@ -124,43 +137,42 @@ namespace BusinessLogic.Entities
 
         }
 
-        public void SymmetricExceptWith(IEnumerable<Feature> other)
+        public void SymmetricExceptWith(IEnumerable<Course> other)
         {
 
-            foreach (Feature f in other)
+            foreach (Course e in other)
             {
-                if (this.Contains(f))
-                    this.Remove(f);
+                if (this.Contains(e))
+                    this.Remove(e);
                 else
-                    this.Add(f);
+                    this.Add(e);
             }
         }
 
-        public void UnionWith(IEnumerable<Feature> other)
+        public void UnionWith(IEnumerable<Course> other)
         {
-            foreach (Feature f in other)
+            foreach (Course e in other)
             {
-                if (!this.Contains(f))
+                if (!this.Contains(e))
                 {
-                    items.Add(f);
+                    items.Add(e);
                 }
             }
         }
 
-        void ICollection<Feature>.Add(Feature item)
+        void ICollection<Course>.Add(Course item)
         {
             if (!this.Contains(item))
                 items.Add(item);
-
-
         }
+       
 
         public void Clear()
         {
-            items = new List<Feature>();
+            items = new List<Course>();
         }
 
-        public bool Contains(Feature item)
+        public bool Contains(Course item)
         {
 
             bool found = false;
@@ -172,12 +184,13 @@ namespace BusinessLogic.Entities
             return found;
         }
 
-        public void CopyTo(Feature[] array, int arrayIndex)
+        public void CopyTo(Course[] array, int arrayIndex)
         {
             int i = arrayIndex;
-            foreach (Feature f in items)
+            foreach (Course e in items)
             {
-                array[i] = f;
+                array[i] = e;
+                i++;
             }
         }
 
@@ -192,12 +205,12 @@ namespace BusinessLogic.Entities
             get { return this.isReadOnly; }
         }
 
-        public bool Remove(Feature item)
+        public bool Remove(Course item)
         {
             return items.Remove(item);
         }
 
-        public IEnumerator<Feature> GetEnumerator()
+        public IEnumerator<Course> GetEnumerator()
         {
             return items.GetEnumerator();
         }

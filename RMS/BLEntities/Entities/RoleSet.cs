@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    class RoleSet : ISet<Role>
+   public  class RoleSet : ISet<Role>
     {
         private List<Role> items;
         private bool isReadOnly;

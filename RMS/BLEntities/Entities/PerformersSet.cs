@@ -5,8 +5,10 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    public class GuestRole : Role
+    public class PerformersSet : UnemptySet<Member>
     {
-        
+        public PerformersSet(Member m):base(m)
+        {
+        }
     }
 }

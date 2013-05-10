@@ -128,12 +128,12 @@ namespace BusinessLogic.Entities
           //  return estimatedBudget.getValue();
        // }
         public Task(PerformersSet performers,UnemptySet<LogisticalResource> logisticalResources,FinancialResource estimatedBudget)
-        
         {
             this.performers = performers;
             this.logisticalResources = logisticalResources;
             this.estimatedBudget = estimatedBudget;
         }
+
         public Task(DateTime startDate,DateTime endDate,string description,PerformersSet performers, UnemptySet<LogisticalResource> logisticalResources, FinancialResource estimatedBudget)
         {
             this.performers = performers;

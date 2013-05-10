@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Entities
 {
     public class Activity : Task
     {
+        public Activity(PerformersSet performers, UnemptySet<LogisticalResource> logisticalResources, FinancialResource estimatedBudget) : base(performers, logisticalResources, estimatedBudget)
+        {
+
+        }
+
         private UnemptySortedSet<Task> tasks;
 
         public SortedSet<Task> getTasks() { return tasks; }

@@ -1,0 +1,7 @@
+D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\UITest\bin\Debug\UITest.dll
+D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\UITest\bin\Debug\UITest.pdb
+D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\UITest\bin\Debug\UILayer.dll
+D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\UITest\bin\Debug\UILayer.pdb
+D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\UITest\obj\Debug\UITest.csprojResolveAssemblyReference.cache
+D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\UITest\obj\Debug\UITest.dll
+D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\UITest\obj\Debug\UITest.pdb

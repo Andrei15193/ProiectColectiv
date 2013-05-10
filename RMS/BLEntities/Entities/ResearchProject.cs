@@ -8,7 +8,7 @@ namespace BusinessLogic.Entities
 {
     public class ResearchProject
     {
-        private String name { get; private set; }
+        public String name { get; private set; }
         public String summary { get; set; }
         public String description { get; set; }
         public ApplicationDomain domain { get; private set; }

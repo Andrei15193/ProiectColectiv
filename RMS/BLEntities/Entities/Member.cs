@@ -12,6 +12,10 @@ namespace BusinessLogic.Entities
         private string email;
         private string password;
 
+        private SortedSet<Task> tasks;
+        private ISet<ResearchProject> directedResearchProjects;
+        private ISet<ResearchProject> attendedResearchProjects;
+
         public Member() { }
         public Member(Role r) : base(r) { }
 
@@ -91,6 +95,9 @@ namespace BusinessLogic.Entities
             else
                 return false;
         }
+
+        public ISet<ResearchProject> getDirectedResearchProjects() { return directedResearchProjects; }
+        public ISet<ResearchProject> getAttendedResearchProjects() { return attendedResearchProjects; }
        
     }
 }

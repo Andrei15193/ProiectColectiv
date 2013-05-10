@@ -1,7 +1,8 @@
 ﻿namespace BusinessLogic.Entities
 {
-    enum TaskType
+    public enum TaskType
     {
+        Unknown,
         Research,
         Presentation,
         Conference,

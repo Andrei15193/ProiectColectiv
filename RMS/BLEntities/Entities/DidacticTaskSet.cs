@@ -2,27 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLogic.Entities
 {
-    public class FeatureSet : ISet<Feature>
+    public class DidacticTaskSet: ISet<DidacticTask>
     {
-        private List<Feature> items;
+        private List<DidacticTask> items;
         private bool isReadOnly;
 
-        public FeatureSet()
+        public DidacticTaskSet()
         {
-            items = new List<Feature>();
+            items = new List<DidacticTask>();
             isReadOnly = false;
         }
 
-        public FeatureSet(bool isReadOnly)
+        public DidacticTaskSet(bool isReadOnly)
         {
-            items = new List<Feature>();
+            items = new List<DidacticTask>();
             this.isReadOnly = isReadOnly;
         }
 
-        public bool Add(Feature item)
+        public DidacticTaskSet(List<DidacticTask> tasks)
+        {
+            items = tasks;
+            isReadOnly = false;
+        }
+
+        public DidacticTaskSet(List<DidacticTask> tasks, bool isReadOnly)
+        {
+            this.items = tasks;
+            this.isReadOnly = isReadOnly;
+        }
+
+        public bool Add(DidacticTask item)
         {
             if (!this.Contains(item))
             {
@@ -33,44 +46,44 @@ namespace BusinessLogic.Entities
                 return false;
         }
 
-        public void ExceptWith(IEnumerable<Feature> other)
+        public void ExceptWith(IEnumerable<DidacticTask> other)
         {
-            foreach (Feature f in other)
+            foreach (DidacticTask e in other)
             {
-                if (this.Contains(f))
+                if (this.Contains(e))
                 {
-                    items.Remove(f);
+                    items.Remove(e);
                 }
             }
         }
 
-        public void IntersectWith(IEnumerable<Feature> other)
+        public void IntersectWith(IEnumerable<DidacticTask> other)
         {
-            foreach (Feature f in items)
+            foreach (DidacticTask e in items)
             {
-                if (!other.Contains(f))
+                if (!other.Contains(e))
                 {
-                    items.Remove(f);
+                    items.Remove(e);
                 }
             }
         }
 
-        public bool IsProperSubsetOf(IEnumerable<Feature> other)
+        public bool IsProperSubsetOf(IEnumerable<DidacticTask> other)
         {
             return ((this.Count() < other.Count()) && (this.IsProperSubsetOf(other)));
         }
 
-        public bool IsProperSupersetOf(IEnumerable<Feature> other)
+        public bool IsProperSupersetOf(IEnumerable<DidacticTask> other)
         {
             return ((this.Count() > other.Count()) && (this.IsProperSupersetOf(other)));
         }
 
-        public bool IsSubsetOf(IEnumerable<Feature> other)
+        public bool IsSubsetOf(IEnumerable<DidacticTask> other)
         {
             bool isSubset = true;
-            foreach (Feature f in items)
+            foreach (DidacticTask e in items)
             {
-                if (!other.Contains(f))
+                if (!other.Contains(e))
                 {
                     isSubset = false;
                     break;
@@ -79,12 +92,12 @@ namespace BusinessLogic.Entities
             return isSubset;
         }
 
-        public bool IsSupersetOf(IEnumerable<Feature> other)
+        public bool IsSupersetOf(IEnumerable<DidacticTask> other)
         {
             bool isSubset = true;
-            foreach (Feature f in other)
+            foreach (DidacticTask e in other)
             {
-                if (!this.Contains(f))
+                if (!this.Contains(e))
                 {
                     isSubset = false;
                     break;
@@ -93,12 +106,12 @@ namespace BusinessLogic.Entities
             return isSubset;
         }
 
-        public bool Overlaps(IEnumerable<Feature> other)
+        public bool Overlaps(IEnumerable<DidacticTask> other)
         {
             bool found = false;
-            foreach (Feature f in other)
+            foreach (DidacticTask e in other)
             {
-                if (this.Contains(f))
+                if (this.Contains(e))
                 {
                     found = true;
                     break;
@@ -108,15 +121,15 @@ namespace BusinessLogic.Entities
 
         }
 
-        public bool SetEquals(IEnumerable<Feature> other)
+        public bool SetEquals(IEnumerable<DidacticTask> other)
         {
             if (other.Count() != this.Count)
                 return false;
             else
             {
-                foreach (Feature f in other)
+                foreach (DidacticTask e in other)
                 {
-                    if (!items.Contains(f))
+                    if (!items.Contains(e))
                         return false;
                 }
                 return true;
@@ -124,43 +137,41 @@ namespace BusinessLogic.Entities
 
         }
 
-        public void SymmetricExceptWith(IEnumerable<Feature> other)
+        public void SymmetricExceptWith(IEnumerable<DidacticTask> other)
         {
 
-            foreach (Feature f in other)
+            foreach (DidacticTask e in other)
             {
-                if (this.Contains(f))
-                    this.Remove(f);
+                if (this.Contains(e))
+                    this.Remove(e);
                 else
-                    this.Add(f);
+                    this.Add(e);
             }
         }
 
-        public void UnionWith(IEnumerable<Feature> other)
+        public void UnionWith(IEnumerable<DidacticTask> other)
         {
-            foreach (Feature f in other)
+            foreach (DidacticTask e in other)
             {
-                if (!this.Contains(f))
+                if (!this.Contains(e))
                 {
-                    items.Add(f);
+                    items.Add(e);
                 }
             }
         }
 
-        void ICollection<Feature>.Add(Feature item)
+        void ICollection<DidacticTask>.Add(DidacticTask item)
         {
             if (!this.Contains(item))
                 items.Add(item);
-
-
         }
 
         public void Clear()
         {
-            items = new List<Feature>();
+            items = new List<DidacticTask>();
         }
 
-        public bool Contains(Feature item)
+        public bool Contains(DidacticTask item)
         {
 
             bool found = false;
@@ -172,12 +183,13 @@ namespace BusinessLogic.Entities
             return found;
         }
 
-        public void CopyTo(Feature[] array, int arrayIndex)
+        public void CopyTo(DidacticTask[] array, int arrayIndex)
         {
             int i = arrayIndex;
-            foreach (Feature f in items)
+            foreach (DidacticTask e in items)
             {
-                array[i] = f;
+                array[i] = e;
+                i++;
             }
         }
 
@@ -192,12 +204,12 @@ namespace BusinessLogic.Entities
             get { return this.isReadOnly; }
         }
 
-        public bool Remove(Feature item)
+        public bool Remove(DidacticTask item)
         {
             return items.Remove(item);
         }
 
-        public IEnumerator<Feature> GetEnumerator()
+        public IEnumerator<DidacticTask> GetEnumerator()
         {
             return items.GetEnumerator();
         }

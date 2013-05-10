@@ -1,7 +1,8 @@
 ﻿namespace BusinessLogic.Entities
 {
-    enum TaskState
+    public  enum TaskState
     {
+        Unknown,
         Request,
         Rejected,
         Finished,

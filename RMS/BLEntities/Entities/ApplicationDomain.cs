@@ -1,6 +1,6 @@
 ﻿namespace BusinessLogic.Entities
 {
-    enum ApplicationDomain
+    public enum ApplicationDomain
     {
         Mathematics,
         ComputerScience

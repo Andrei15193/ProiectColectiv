@@ -1,7 +1,8 @@
 ﻿namespace BusinessLogic.Entities
 {
-    enum ClassType
+    public enum ClassType
     {
+        Unknown,
         Course,
         Seminar,
         Laboratory

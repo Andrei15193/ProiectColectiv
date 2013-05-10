@@ -1,7 +1,8 @@
 ﻿namespace BusinessLogic.Entities
 {
-    enum Language
+    public enum Language
     {
+        Unknown,
         Romanian,
         English
     }

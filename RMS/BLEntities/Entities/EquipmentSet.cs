@@ -2,27 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLogic.Entities
 {
-    public class FeatureSet : ISet<Feature>
+    public class EquipmentSet : ISet<Equipment>
     {
-        private List<Feature> items;
+        private List<Equipment> items;
         private bool isReadOnly;
 
-        public FeatureSet()
+        public EquipmentSet()
         {
-            items = new List<Feature>();
+            items = new List<Equipment>();
             isReadOnly = false;
         }
 
-        public FeatureSet(bool isReadOnly)
+        public EquipmentSet(bool isReadOnly)
         {
-            items = new List<Feature>();
+            items = new List<Equipment>();
             this.isReadOnly = isReadOnly;
         }
 
-        public bool Add(Feature item)
+        public EquipmentSet(List<Equipment> equipments)
+        {
+            items = equipments;
+            isReadOnly = false;
+        }
+
+        public EquipmentSet(List<Equipment> equipments, bool isReadOnly)
+        {
+            this.items = equipments;
+            this.isReadOnly = isReadOnly;
+        }
+
+        public bool Add(Equipment item)
         {
             if (!this.Contains(item))
             {
@@ -33,44 +46,44 @@ namespace BusinessLogic.Entities
                 return false;
         }
 
-        public void ExceptWith(IEnumerable<Feature> other)
+        public void ExceptWith(IEnumerable<Equipment> other)
         {
-            foreach (Feature f in other)
+            foreach (Equipment e in other)
             {
-                if (this.Contains(f))
+                if (this.Contains(e))
                 {
-                    items.Remove(f);
+                    items.Remove(e);
                 }
             }
         }
 
-        public void IntersectWith(IEnumerable<Feature> other)
+        public void IntersectWith(IEnumerable<Equipment> other)
         {
-            foreach (Feature f in items)
+            foreach (Equipment e in items)
             {
-                if (!other.Contains(f))
+                if (!other.Contains(e))
                 {
-                    items.Remove(f);
+                    items.Remove(e);
                 }
             }
         }
 
-        public bool IsProperSubsetOf(IEnumerable<Feature> other)
+        public bool IsProperSubsetOf(IEnumerable<Equipment> other)
         {
             return ((this.Count() < other.Count()) && (this.IsProperSubsetOf(other)));
         }
 
-        public bool IsProperSupersetOf(IEnumerable<Feature> other)
+        public bool IsProperSupersetOf(IEnumerable<Equipment> other)
         {
             return ((this.Count() > other.Count()) && (this.IsProperSupersetOf(other)));
         }
 
-        public bool IsSubsetOf(IEnumerable<Feature> other)
+        public bool IsSubsetOf(IEnumerable<Equipment> other)
         {
             bool isSubset = true;
-            foreach (Feature f in items)
+            foreach (Equipment e in items)
             {
-                if (!other.Contains(f))
+                if (!other.Contains(e))
                 {
                     isSubset = false;
                     break;
@@ -79,12 +92,12 @@ namespace BusinessLogic.Entities
             return isSubset;
         }
 
-        public bool IsSupersetOf(IEnumerable<Feature> other)
+        public bool IsSupersetOf(IEnumerable<Equipment> other)
         {
             bool isSubset = true;
-            foreach (Feature f in other)
+            foreach (Equipment e in other)
             {
-                if (!this.Contains(f))
+                if (!this.Contains(e))
                 {
                     isSubset = false;
                     break;
@@ -93,12 +106,12 @@ namespace BusinessLogic.Entities
             return isSubset;
         }
 
-        public bool Overlaps(IEnumerable<Feature> other)
+        public bool Overlaps(IEnumerable<Equipment> other)
         {
             bool found = false;
-            foreach (Feature f in other)
+            foreach (Equipment e in other)
             {
-                if (this.Contains(f))
+                if (this.Contains(e))
                 {
                     found = true;
                     break;
@@ -108,15 +121,15 @@ namespace BusinessLogic.Entities
 
         }
 
-        public bool SetEquals(IEnumerable<Feature> other)
+        public bool SetEquals(IEnumerable<Equipment> other)
         {
             if (other.Count() != this.Count)
                 return false;
             else
             {
-                foreach (Feature f in other)
+                foreach (Equipment e in other)
                 {
-                    if (!items.Contains(f))
+                    if (!items.Contains(e))
                         return false;
                 }
                 return true;
@@ -124,30 +137,30 @@ namespace BusinessLogic.Entities
 
         }
 
-        public void SymmetricExceptWith(IEnumerable<Feature> other)
+        public void SymmetricExceptWith(IEnumerable<Equipment> other)
         {
 
-            foreach (Feature f in other)
+            foreach (Equipment e in other)
             {
-                if (this.Contains(f))
-                    this.Remove(f);
+                if (this.Contains(e))
+                    this.Remove(e);
                 else
-                    this.Add(f);
+                    this.Add(e);
             }
         }
 
-        public void UnionWith(IEnumerable<Feature> other)
+        public void UnionWith(IEnumerable<Equipment> other)
         {
-            foreach (Feature f in other)
+            foreach (Equipment e in other)
             {
-                if (!this.Contains(f))
+                if (!this.Contains(e))
                 {
-                    items.Add(f);
+                    items.Add(e);
                 }
             }
         }
 
-        void ICollection<Feature>.Add(Feature item)
+        void ICollection<Equipment>.Add(Equipment item)
         {
             if (!this.Contains(item))
                 items.Add(item);
@@ -157,10 +170,10 @@ namespace BusinessLogic.Entities
 
         public void Clear()
         {
-            items = new List<Feature>();
+            items = new List<Equipment>();
         }
 
-        public bool Contains(Feature item)
+        public bool Contains(Equipment item)
         {
 
             bool found = false;
@@ -172,12 +185,13 @@ namespace BusinessLogic.Entities
             return found;
         }
 
-        public void CopyTo(Feature[] array, int arrayIndex)
+        public void CopyTo(Equipment[] array, int arrayIndex)
         {
             int i = arrayIndex;
-            foreach (Feature f in items)
+            foreach (Equipment e in items)
             {
-                array[i] = f;
+                array[i] = e;
+                i++;
             }
         }
 
@@ -192,12 +206,12 @@ namespace BusinessLogic.Entities
             get { return this.isReadOnly; }
         }
 
-        public bool Remove(Feature item)
+        public bool Remove(Equipment item)
         {
             return items.Remove(item);
         }
 
-        public IEnumerator<Feature> GetEnumerator()
+        public IEnumerator<Equipment> GetEnumerator()
         {
             return items.GetEnumerator();
         }

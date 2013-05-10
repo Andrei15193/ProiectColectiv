@@ -1,7 +1,8 @@
 ﻿namespace BusinessLogic.Entities
 {
-    enum ApplicationState
+    public enum ApplicationState
     {
+        Unknown,
         Active,
         Canceled,
         Finished,

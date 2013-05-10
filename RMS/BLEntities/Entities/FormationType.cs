@@ -1,7 +1,8 @@
 ﻿namespace BusinessLogic.Entities
 {
-    enum FormationType
+    public enum FormationType
     {
+        Unknown,
         Year,
         Group,
         Semigroup

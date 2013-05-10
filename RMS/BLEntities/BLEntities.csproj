@@ -66,6 +66,7 @@
     <Compile Include="Entities\LearningDegree.cs" />
     <Compile Include="Entities\Member.cs" />
     <Compile Include="Entities\PerformersSet.cs" />
+    <Compile Include="Entities\Program.cs" />
     <Compile Include="Entities\ReportEntry.cs" />
     <Compile Include="Entities\ResearchProject.cs" />
     <Compile Include="Entities\ResearchProjectTeam.cs" />

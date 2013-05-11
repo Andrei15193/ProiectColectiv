@@ -5,12 +5,37 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    class Member : User
+    public class Member : User
     {
         private string lastName;
         private string firstName;
         private string email;
         private string password;
+
+        private SortedSet<Task> tasks;
+        private ISet<ResearchProject> directedResearchProjects;
+        private ISet<ResearchProject> attendedResearchProjects;
+
+        public Member() { }
+        public Member(Role r) : base(r) { }
+
+        public Member(Role r,string firstName, string lastName, string email, string password): base(r)
+        {
+
+            this.lastName = lastName;
+            this.firstName = firstName;
+            this.email = email;
+            this.password = password;
+        }
+
+        public Member(string username, Role r, string firstName, string lastName, string email, string password):base(username,r)
+        {
+           
+            this.lastName = lastName;
+            this.firstName = firstName;
+            this.email = email;
+            this.password = password;
+        }
 
         public string getFirstName()
         {
@@ -70,5 +95,9 @@ namespace BusinessLogic.Entities
             else
                 return false;
         }
+
+        public ISet<ResearchProject> getDirectedResearchProjects() { return directedResearchProjects; }
+        public ISet<ResearchProject> getAttendedResearchProjects() { return attendedResearchProjects; }
+       
     }
 }

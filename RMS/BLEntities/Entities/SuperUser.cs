@@ -5,8 +5,13 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    class SuperUser : Member
+   public  class SuperUser : Member
     {
         private SuperUserRole dedicatedRole;
+        public SuperUser(SuperUserRole r)
+        {
+            this.dedicatedRole = r;
+        }
+        
     }
 }

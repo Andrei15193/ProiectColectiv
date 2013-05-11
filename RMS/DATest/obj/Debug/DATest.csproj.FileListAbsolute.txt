@@ -1,0 +1,7 @@
+D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\DATest\bin\Debug\DATest.dll
+D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\DATest\bin\Debug\DATest.pdb
+D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\DATest\bin\Debug\DALayer.dll
+D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\DATest\bin\Debug\DALayer.pdb
+D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\DATest\obj\Debug\DATest.csprojResolveAssemblyReference.cache
+D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\DATest\obj\Debug\DATest.dll
+D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\DATest\obj\Debug\DATest.pdb

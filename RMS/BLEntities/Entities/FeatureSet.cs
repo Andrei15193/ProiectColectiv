@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    class FeatureSet : ISet<Feature>
+    public class FeatureSet : ISet<Feature>
     {
         private List<Feature> items;
         private bool isReadOnly;

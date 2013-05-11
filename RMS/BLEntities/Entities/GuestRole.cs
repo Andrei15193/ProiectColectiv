@@ -5,7 +5,8 @@ using System.Text;
 
 namespace BusinessLogic.Entities
 {
-    class GuestRole : Role
+    public class GuestRole : Role
     {
+        
     }
 }

@@ -1,42 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace BusinessLogic.Entities
+namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class FinancialResource
     {
-        public uint value
-        {
-            get { return this.value; }
-            set { this.value = value; }
-        }
+        public uint Value { get; private set; }
 
-        public Currency currency
-        {
-            get { return this.currency; }
-            set { this.currency = value; }
-        }
+        public Currency Currency { get; private set; }
 
-        public Task task
+        public FinancialResource(uint value, Currency currency)
         {
-            get { return this.task; }
-            set { this.task = value; }
-        }
-
-        public FinancialResource(Task task)
-        {
-            this.value = 0;
-            this.currency = Currency.RON;
-            this.task = task;
-        }
-
-        public FinancialResource(uint value, Task task)
-        {
-            this.value = value;
-            this.currency = Currency.RON;
-            this.task = task;
+            if (value > 0)
+            {
+                Value = value;
+                Currency = currency;
+            }
+            else
+                throw new ArgumentException("The provided value for financial resource cannot be 0 (zero)!");
         }
     }
 }

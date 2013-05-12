@@ -57,14 +57,42 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\bootstrap.css" />
+    <Content Include="css\style.css" />
+    <Content Include="Global.asax" />
+    <Content Include="img\favico.ico" />
+    <Content Include="img\glyphicons-halflings-white.png" />
+    <Content Include="img\glyphicons-halflings.png" />
+    <Content Include="img\ico-help.png" />
+    <Content Include="img\ico-home.png" />
+    <Content Include="img\ico-media.png" />
+    <Content Include="img\ico-more.png" />
+    <Content Include="img\ico-notification.png" />
+    <Content Include="img\ico-order.png" />
+    <Content Include="img\ico-report.png" />
+    <Content Include="img\ico-sch.png" />
+    <Content Include="img\ico-setting.png" />
+    <Content Include="img\ico-user.png" />
+    <Content Include="img\logo.png" />
+    <Content Include="img\user.png" />
+    <Content Include="js\bootstrap.js" />
+    <Content Include="js\jquery.min.js" />
+    <Content Include="js\script.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Code\UserInterface\ViewModels\MemberViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="index.cshtml" />
+    <Content Include="Views\Layouts\_MainLayout.cshtml" />
+    <Content Include="Views\testAdd.cshtml" />
+    <Content Include="Views\testForm.cshtml" />
+    <Content Include="Views\_Authentification.cshtml" />
+    <Content Include="Views\_SideCalendar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

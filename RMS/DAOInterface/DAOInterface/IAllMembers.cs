@@ -1,4 +1,4 @@
-﻿namespace DataAccess.DAOInterface
+﻿namespace ResourceManagementSystem.DataAccess.DAOInterface
 {
     public interface IAllMembers
     {

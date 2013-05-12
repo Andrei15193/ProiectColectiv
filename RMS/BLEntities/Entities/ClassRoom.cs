@@ -1,88 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace BusinessLogic.Entities
+namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class ClassRoom : LogisticalResource
     {
-        public string building
+        public ClassRoom(string building, uint floor, uint number, string description, ITask task)
+            : base(BuildClassRoomName(building, floor, number), description, task)
         {
-            get { return building; }
-            set { building = value; }
+            Building = building;
+            Floor = floor;
+            Number = number;
+            Task = task;
+            Equipments = new Collections.ClassRoomEquipmentSet(this);
         }
 
-        public uint floor
+        public ClassRoom(string building, uint floor, uint number)
+            : this(building, floor, number, string.Empty, null)
         {
-            get { return floor; }
-            set { floor = value; }
         }
 
-        public uint number
+        public ClassRoom(string building, uint floor, uint number, ITask task)
+            : this(building, floor, number, string.Empty, task)
         {
-            get { return number; }
-            set { number = value; }
         }
 
-        public EquipmentSet equipments
+        public ClassRoom(string building, uint floor, uint number, string description)
+            : this(building, floor, number, description, null)
         {
-            get { return equipments; }
-            set { equipments = value; }
         }
 
-        public ClassRoom(Task task)
-            : base(task)
+        public string Building { get; private set; }
+
+        public uint Floor { get; private set; }
+
+        public uint Number { get; private set; }
+
+        public ICollection<Equipment> Equipments { get; private set; }
+
+        public override ITask Task
         {
-            this.building = "";
-            this.floor = 0;
-            this.number = 0;
-            this.equipments = new EquipmentSet();
+            get
+            {
+                return base.Task;
+            }
+            set
+            {
+                if (value != null && base.Task != value)
+                    value.Location = this;
+                base.Task = value;
+            }
         }
 
-        public ClassRoom(string name, Task task)
-            : base(name, task)
+        private static string BuildClassRoomName(string building, uint floor, uint number)
         {
-            this.building = "";
-            this.floor = 0;
-            this.number = 0;
-            this.equipments = new EquipmentSet();
-        }
-
-        public ClassRoom(string name, string description, Task task, string building)
-            : base(name, description, task)
-        {
-            this.building = building;
-            this.floor = 0;
-            this.number = 0;
-            this.equipments = new EquipmentSet();
-        }
-
-        public ClassRoom(string name, Task task, string building, uint floor, uint number)
-            : base(name, task)
-        {
-            this.building = building;
-            this.floor = floor;
-            this.number = number;
-            this.equipments = new EquipmentSet();
-        }
-
-        public ClassRoom(string name, string description, Task task, string building, uint floor, uint number,
-            EquipmentSet equipments)
-            : base(name, description, task)
-        {
-            this.building = building;
-            this.floor = floor;
-            this.number = number;
-            this.equipments = equipments;
-        }
-
-      
-
-        public override string ToString()
-        {
-            return "Name: " + this.name + "; Description: " + this.description + "; Task: " + task.getDescription() +
-                "Building: " + this.building + "; Floor: " + this.floor + "; Number: " + this.number;
+            if (building != null)
+                if (building.Length > 4)
+                {
+                    StringBuilder nameBuilder = new StringBuilder(building);
+                    nameBuilder.Append(' ');
+                    nameBuilder.Append(floor);
+                    nameBuilder.Append(number);
+                    return nameBuilder.ToString();
+                }
+                else
+                    throw new ArgumentException("The provided building name must have at least 5 characters!");
+            else
+                throw new ArgumentNullException("The provided value for building name cannot be null!");
         }
     }
 }

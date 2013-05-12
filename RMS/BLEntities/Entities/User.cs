@@ -1,51 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 
-namespace BusinessLogic.Entities
+namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-    public class User
+    public abstract class User
     {
+        public string UserName
+        {
+            get
+            {
+                return userName;
+            }
+            set
+            {
+                if (value != null)
+                    if (Regex.IsMatch(value, @"[\p{Lu}\p{Ll}0-9\p{P}]+"))
+                        userName = value.Trim();
+                    else
+                        throw new ArgumentException("The provided value is not a valid username!");
+                else
+                    throw new ArgumentNullException("The provided value for username cannot be null!");
+            }
+        }
+
+        public ICollection<Role> Roles { get; private set; }
+
+        protected User(string userName, Role role)
+        {
+            if (role != null)
+            {
+                UserName = userName;
+                Roles = new Collections.UnemptySet<Role>(role);
+            }
+            else
+                throw new ArgumentNullException("The provided role cannot be null!");
+        }
+
+        protected User(string userName, IEnumerable<Role> roles)
+        {
+            if (roles != null)
+                if (roles.Count() > 0)
+                {
+                    UserName = userName;
+                    Roles = new Collections.UnemptySet<Role>(roles);
+                }
+                else
+                    throw new ArgumentException("The provided role collection cannot be empty! The must be at least one role!");
+            else
+                throw new ArgumentNullException("The provided value for roles cannot be null!");
+        }
+
         private string userName;
-        private UnemptySet<Role> roles;
-
-        public User() { }
-
-        public User(UnemptySet<Role> roles)
-        {
-            this.userName = "";
-            this.roles = roles;
-            
-        }
-
-       
-
-         public User(Role r)
-        {
-            this.userName = "";
-            this.roles = new UnemptySet<Role>(r);
-            
-        }
-        public User(string userName,Role r)
-        {
-            this.userName = userName;
-            this.roles = new UnemptySet<Role>(r);
-            
-        }
-        public User(string userName, UnemptySet<Role> roles)
-        {
-            this.userName = userName;
-            this.roles = roles;
-        }
-        public string getUserName()
-        {
-            return userName;
-        }
-        public UnemptySet<Role> getRoles()
-        {
-            return roles;
-        }
     }
-
 }

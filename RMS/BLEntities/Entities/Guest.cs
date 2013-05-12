@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace BusinessLogic.Entities
+﻿namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class Guest : User
     {
-        
-        private Role dedicatedRole;
-        public Guest(Role r)
+        public Guest(string guestName) : base(guestName, new GuestRole())
         {
-            this.dedicatedRole = r;
         }
-       
     }
 }

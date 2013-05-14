@@ -13,6 +13,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         DateTime EndDate { get; }
 
+        ICollection<ITask> Tasks { get; }
+
         IEnumerable<Member> Participants { get; }
 
         IEnumerable<ClassRoom> Locations { get; }

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
 {
-    class UnemptySet<T> : ICollection<T>
+    class UnemptySet<T> : IObservableCollection<T>, ICollection<T>
     {
 
         public UnemptySet(IEnumerable<T> items)

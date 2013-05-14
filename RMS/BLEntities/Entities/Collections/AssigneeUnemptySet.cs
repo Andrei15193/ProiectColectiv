@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
 {
-    class AssigneeUnemptySet : UnemptySet<Member>
+    class AssigneeUnemptySet : UnemptySet<Member>, IObservableCollection<Member>
     {
         public AssigneeUnemptySet(ITask task, IEnumerable<Member> assignees)
             : base(assignees)
@@ -39,6 +39,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
                 {
                     base.Add(assignee);
                     assignee.Tasks.Add(Task);
+                    if (CollectionChanged != null)
+                        CollectionChanged(this, new CollectionChangedEventArgs<Member>(assignee, CollectionChange.Add));
                 }
             }
             else
@@ -52,6 +54,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
                 if (base.Remove(assignee))
                 {
                     assignee.Tasks.Remove(Task);
+                    if (CollectionChanged != null)
+                        CollectionChanged(this, new CollectionChangedEventArgs<Member>(assignee, CollectionChange.Remove));
                     return true;
                 }
                 else
@@ -61,6 +65,13 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
                 throw new ArgumentNullException("The provided value for assignee cannot be null!");
         }
 
+        public new System.Collections.IEnumerator GetEnumerator()
+        {
+            return base.GetEnumerator();
+        }
+
         public ITask Task { get; private set; }
+
+        event EventHandler<CollectionChangedEventArgs<Member>> CollectionChanged;
     }
 }

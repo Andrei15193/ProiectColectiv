@@ -37,7 +37,6 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
             {
                 if (!Contains(assignee))
                 {
-                    ProtectedOnCollectionChanging(this, new CollectionChangedEventArgs<Member>(assignee, CollectionChange.Add));
                     base.Add(assignee);
                     assignee.Tasks.Add(Task);
                 }
@@ -52,7 +51,6 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
             {
                 if (base.Remove(assignee))
                 {
-                    ProtectedOnCollectionChanging(this, new CollectionChangedEventArgs<Member>(assignee, CollectionChange.Add));
                     assignee.Tasks.Remove(Task);
                     return true;
                 }

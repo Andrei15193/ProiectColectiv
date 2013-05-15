@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
 {
-    class PhaseTasks : ICollection<ITask>
+    class PhaseTasks : ICollection<ITask>, IObservableCollection<ITask>
     {
         public PhaseTasks(Phase phase, IEnumerable<ITask> tasks, IEnumerable<string> allowedTaskTypes)
         {
@@ -106,6 +106,14 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
         public Phase Phase { get; private set; }
 
         public IEnumerable<TaskType> AllowedTaskTypes { get; private set; }
+
+        public event EventHandler<CollectionChangedEventArgs<ITask>> CollectionChanging;
+
+        protected void ProtectedOnCollectionChanging(object sender, CollectionChangedEventArgs<ITask> e)
+        {
+            if (CollectionChanging != null)
+                CollectionChanging(sender, e);
+        }
 
         protected virtual IEnumerator<ITask> ProtectedGetEnumerator()
         {

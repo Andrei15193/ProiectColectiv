@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities
 {
@@ -41,6 +39,23 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                     throw new ArgumentNullException("The provided value for description cannot be null!");
             else
                 throw new ArgumentNullException("The provided value for title cannot be null!");
+        }
+
+        public ResearchProject(string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> participants, FinancialResource estimatedBudget, params string[] allowedTaskTypes)
+            : this(title, description, startDate, endDate, participants, estimatedBudget, allowedTaskTypes as IEnumerable<string>)
+        {
+        }
+
+        public bool TryGetStartDate(out DateTime startDate)
+        {
+            startDate = StartDate;
+            return true;
+        }
+
+        public bool TryGetEndDate(out DateTime endDate)
+        {
+            endDate = EndDate;
+            return true;
         }
 
         public string Title { get; private set; }
@@ -112,7 +127,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
         }
 
-public IEnumerable<TaskType> AllowedTaskTypes
+        public IEnumerable<TaskType> AllowedTaskTypes
         {
             get
             {

@@ -37,11 +37,42 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         {
         }
 
+        public override bool TryGetStartDate(out DateTime startDate)
+        {
+            if (Tasks.Count > 0)
+            {
+                startDate = StartDate;
+                return true;
+            }
+            else
+            {
+                startDate = DateTime.Now;
+                return false;
+            }
+        }
+
+        public override bool TryGetEndDate(out DateTime endDate)
+        {
+            if (Tasks.Count > 0)
+            {
+                endDate = EndDate;
+                return true;
+            }
+            else
+            {
+                endDate = DateTime.Now;
+                return false;
+            }
+        }
+
         public override DateTime StartDate
         {
             get
             {
-                return Tasks.Min((task) => task.StartDate);
+                if (Tasks.Count > 0)
+                    return Tasks.Min((task) => task.StartDate);
+                else
+                    throw new InvalidOperationException("There are no tasks in the current activity, could not calculate start date!");
             }
         }
 
@@ -49,7 +80,10 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         {
             get
             {
-                return Tasks.Max((task) => task.EndDate);
+                if (Tasks.Count > 0)
+                    return Tasks.Max((task) => task.EndDate);
+                else
+                    throw new InvalidOperationException("There are no tasks in the current activity, could not calculate end date!");
             }
         }
 

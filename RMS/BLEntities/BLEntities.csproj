@@ -59,7 +59,7 @@
     <Compile Include="Entities\Collections\AssigneeUnemptySet.cs" />
     <Compile Include="Entities\Collections\TaskEquipmentSet.cs" />
     <Compile Include="Entities\Collections\Comparer.cs" />
-    <Compile Include="Entities\left\Course.cs" />
+    <Compile Include="Entities\Course.cs" />
     <Compile Include="Entities\left\CourseSet.cs" />
     <Compile Include="Entities\left\DidacticActivity.cs" />
     <Compile Include="Entities\left\DidacticTask.cs" />
@@ -89,7 +89,7 @@
     <Compile Include="Entities\left\RoleSet.cs" />
     <Compile Include="Entities\left\SemiGroup.cs" />
     <Compile Include="Entities\Enums\Specialization.cs" />
-    <Compile Include="Entities\left\StudyProgram.cs" />
+    <Compile Include="Entities\StudyProgram.cs" />
     <Compile Include="Entities\left\StudyProgramSet.cs" />
     <Compile Include="Entities\SuperUser.cs" />
     <Compile Include="Entities\SuperUserRole.cs" />

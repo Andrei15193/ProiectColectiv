@@ -6,6 +6,10 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public abstract class AbstractActivity : IActivity
     {
+        public abstract bool TryGetStartDate(out DateTime startDate);
+
+        public abstract bool TryGetEndDate(out DateTime endDate);
+
         public string Title { get; private set; }
 
         public string Description { get; private set; }

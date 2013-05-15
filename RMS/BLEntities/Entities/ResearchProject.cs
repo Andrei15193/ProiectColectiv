@@ -22,7 +22,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                                         Description = description;
                                         StartDate = startDate;
                                         EndDate = endDate;
-                                        Tasks = new Collections.ResearchProjectTasks(this, allowedTaskTypes);
+                                        tasks = new Collections.ResearchProjectTasks(this, allowedTaskTypes);
                                         Participants = new HashSet<Member>(participants);
                                         Phases = new Collections.ResearchProjectPhaseCollection(this);
                                         EstimatedBudget = estimatedBudget;
@@ -53,7 +53,13 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         public ApplicationState State { get; set; }
 
-        public ICollection<ITask> Tasks { get; protected set; }
+        public ICollection<ITask> Tasks
+        {
+            get
+            {
+                return tasks;
+            }
+        }
 
         public IEnumerable<Member> Participants { get; private set; }
 
@@ -105,5 +111,15 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                 return State == ApplicationState.Active;
             }
         }
+
+public IEnumerable<TaskType> AllowedTaskTypes
+        {
+            get
+            {
+                return tasks.AllowedTaskTypes;
+            }
+        }
+
+        private Collections.ResearchProjectTasks tasks;
     }
 }

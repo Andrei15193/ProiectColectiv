@@ -4,9 +4,8 @@ using System.Linq;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
 {
-    class UnemptySet<T> : IObservableCollection<T>, ICollection<T>
+    class UnemptySet<T> : ICollection<T>, IObservableCollection<T>
     {
-
         public UnemptySet(IEnumerable<T> items)
         {
             if (items != null)
@@ -84,9 +83,17 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
             }
         }
 
+        public event EventHandler<CollectionChangedEventArgs<T>> CollectionChanging;
+
         protected virtual IEnumerator<T> ProtectedGetEnumerator()
         {
             return items.GetEnumerator();
+        }
+
+        protected void ProtectedOnCollectionChanging(object sender, CollectionChangedEventArgs<T> e)
+        {
+            if (CollectionChanging != null)
+                CollectionChanging(sender, e);
         }
 
         private ISet<T> items;

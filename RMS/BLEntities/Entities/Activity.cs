@@ -37,7 +37,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         {
         }
 
-        public DateTime StartDate
+        public override DateTime StartDate
         {
             get
             {
@@ -45,7 +45,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
         }
 
-        public DateTime EndDate
+        public override DateTime EndDate
         {
             get
             {
@@ -53,9 +53,9 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
         }
 
-        public ICollection<ITask> Tasks { get; protected set; }
+        public override ICollection<ITask> Tasks { get; protected set; }
 
-        public FinancialResource EstimatedBudget
+        public override FinancialResource EstimatedBudget
         {
             get
             {

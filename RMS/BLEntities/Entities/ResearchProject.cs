@@ -53,7 +53,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         public ApplicationState State { get; set; }
 
-        public ICollection<ITask> Tasks { get; private set; }
+        public ICollection<ITask> Tasks { get; protected set; }
 
         public IEnumerable<Member> Participants { get; private set; }
 

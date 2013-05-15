@@ -1,6 +1,6 @@
 ﻿namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
 {
-    enum CollectionChange
+    public enum CollectionChange
     {
         Add,
         Remove

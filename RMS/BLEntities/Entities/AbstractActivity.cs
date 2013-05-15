@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-    public class AbstractActivity : IActivity
+    public abstract class AbstractActivity : IActivity
     {
         public string Title { get; private set; }
 
@@ -54,13 +54,13 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
         }
 
-        public abstract DateTime StartDate;
+        public abstract DateTime StartDate { get; }
 
-        public abstract DateTime EndDate;
+        public abstract DateTime EndDate { get; }
 
-        public abstract ICollection<ITask> Tasks;
+        public abstract ICollection<ITask> Tasks { get; protected set; }
 
-        public abstract FinancialResource EstimatedBudget;
+        public abstract FinancialResource EstimatedBudget { get; }
 
         protected AbstractActivity(string title, string description)
         {

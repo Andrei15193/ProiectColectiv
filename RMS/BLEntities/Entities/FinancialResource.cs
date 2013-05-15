@@ -55,7 +55,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         public static FinancialResource operator -(uint right, FinancialResource left)
         {
-            if (right != null)
+            if (left != null)
                 return new FinancialResource(right - left.Value, left.Currency);
             else
                 throw new ArgumentNullException("The provided value for right operand cannot be null!");

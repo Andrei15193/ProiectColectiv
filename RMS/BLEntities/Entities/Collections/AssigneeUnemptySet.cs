@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
 {
-    class AssigneeUnemptySet : UnemptySet<Member>, IObservableCollection<Member>
+    class AssigneeUnemptySet : UnemptySet<Member>
     {
         public AssigneeUnemptySet(ITask task, IEnumerable<Member> assignees)
             : base(assignees)
@@ -37,10 +37,9 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
             {
                 if (!Contains(assignee))
                 {
+                    ProtectedOnCollectionChanging(this, new CollectionChangedEventArgs<Member>(assignee, CollectionChange.Add));
                     base.Add(assignee);
                     assignee.Tasks.Add(Task);
-                    if (CollectionChanged != null)
-                        CollectionChanged(this, new CollectionChangedEventArgs<Member>(assignee, CollectionChange.Add));
                 }
             }
             else
@@ -53,9 +52,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
             {
                 if (base.Remove(assignee))
                 {
+                    ProtectedOnCollectionChanging(this, new CollectionChangedEventArgs<Member>(assignee, CollectionChange.Add));
                     assignee.Tasks.Remove(Task);
-                    if (CollectionChanged != null)
-                        CollectionChanged(this, new CollectionChangedEventArgs<Member>(assignee, CollectionChange.Remove));
                     return true;
                 }
                 else
@@ -71,7 +69,5 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
         }
 
         public ITask Task { get; private set; }
-
-        event EventHandler<CollectionChangedEventArgs<Member>> CollectionChanged;
     }
 }

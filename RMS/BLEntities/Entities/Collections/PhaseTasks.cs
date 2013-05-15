@@ -33,7 +33,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
                     if (task.Assignees.Except(Phase.ResearchProject.Participants).Count() == 0)
                     {
                         if (tasks.Add(task))
-                            task.Assignees.CollectionChanged += ValidateNewAssignee;
+                            task.Assignees.CollectionChanging += ValidateNewAssignee;
                     }
                     else
                         throw new ArgumentException("The given task has assignees that are not in the research projects team!");
@@ -46,7 +46,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
         public void Clear()
         {
             foreach (ITask task in tasks)
-                task.Assignees.CollectionChanged -= ValidateNewAssignee;
+                task.Assignees.CollectionChanging -= ValidateNewAssignee;
             tasks.Clear();
         }
 
@@ -68,7 +68,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
             if (task != null)
                 if (tasks.Remove(task))
                 {
-                    task.Assignees.CollectionChanged -= ValidateNewAssignee;
+                    task.Assignees.CollectionChanging -= ValidateNewAssignee;
                     return true;
                 }
                 else

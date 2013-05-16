@@ -62,12 +62,12 @@
     <Compile Include="Entities\Course.cs" />
     <Compile Include="Entities\left\CourseSet.cs" />
     <Compile Include="Entities\left\DidacticActivity.cs" />
-    <Compile Include="Entities\left\DidacticTask.cs" />
+    <Compile Include="Entities\DidacticTask.cs" />
     <Compile Include="Entities\left\DidacticTaskSet.cs" />
     <Compile Include="Entities\Equipment.cs" />
     <Compile Include="Entities\FinancialResource.cs" />
-    <Compile Include="Entities\left\Formation.cs" />
-    <Compile Include="Entities\left\Group.cs" />
+    <Compile Include="Entities\Formation.cs" />
+    <Compile Include="Entities\GroupFormation.cs" />
     <Compile Include="Entities\LogisticalResource.cs" />
     <Compile Include="Entities\Enums\ClassFrequency.cs" />
     <Compile Include="Entities\Enums\ClassType.cs" />
@@ -80,14 +80,14 @@
     <Compile Include="Entities\Enums\LearningDegree.cs" />
     <Compile Include="Entities\Member.cs" />
     <Compile Include="Entities\left\PerformersSet.cs" />
-    <Compile Include="Entities\left\ReportEntry.cs" />
+    <Compile Include="Entities\ReportEntry.cs" />
     <Compile Include="Entities\Phase.cs" />
     <Compile Include="Entities\ResearchProject.cs" />
     <Compile Include="Entities\left\ResearchProjectTeam.cs" />
     <Compile Include="Entities\left\ResearchTask.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\left\RoleSet.cs" />
-    <Compile Include="Entities\left\SemiGroup.cs" />
+    <Compile Include="Entities\SemiGroupFormation.cs" />
     <Compile Include="Entities\Enums\Specialization.cs" />
     <Compile Include="Entities\StudyProgram.cs" />
     <Compile Include="Entities\left\StudyProgramSet.cs" />
@@ -99,6 +99,7 @@
     <Compile Include="Entities\Collections\UnemptySortedSet.cs" />
     <Compile Include="Entities\TaskType.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\YearFormation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

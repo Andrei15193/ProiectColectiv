@@ -4,32 +4,22 @@ using System.Linq;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-    public class Activity : IActivity
+    public class Activity : AbstractActivity
     {
         public Activity(string title, string description, IEnumerable<ITask> tasks)
+            : base(title, description)
         {
-            if (title != null)
-                if (description != null)
-                    if (tasks != null)
-                        if (title.Length > 4)
-                        {
-                            Title = title;
-                            Description = description;
-                            this.tasks = new SortedSet<ITask>(new Collections.Comparer<ITask>((x, y) => x.StartDate.CompareTo(y.StartDate)));
-                            foreach (ITask task in tasks)
-                                if (task != null)
-                                    this.tasks.Add(task);
-                                else
-                                    throw new ArgumentException("The provided task collection cannot contain null values!");
-                        }
-                        else
-                            throw new ArgumentException("The provided title must have at least 5 characters.");
+            if (tasks != null)
+            {
+                Tasks = new SortedSet<ITask>(new Collections.Comparer<ITask>((x, y) => x.StartDate.CompareTo(y.StartDate)));
+                foreach (ITask task in Tasks)
+                    if (task != null)
+                        Tasks.Add(task);
                     else
-                        throw new ArgumentNullException("The provided tasks collection cannot be null!");
-                else
-                    throw new ArgumentNullException("The provided value for description cannot be null!");
+                        throw new ArgumentException("The provided task collection cannot contain null values!");
+            }
             else
-                throw new ArgumentNullException("The provided value for title cannot be null!");
+                throw new ArgumentNullException("The provided task collection cannot be null!");
         }
 
         public Activity(string title, string description, params ITask[] tasks)
@@ -47,101 +37,69 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         {
         }
 
-        public string Title { get; private set; }
-
-        public string Description { get; private set; }
-
-        public DateTime StartDate
+        public override bool TryGetStartDate(out DateTime startDate)
         {
-            get
+            if (Tasks.Count > 0)
             {
-                return tasks.Min((task) => task.StartDate);
+                startDate = StartDate;
+                return true;
             }
-            private set
+            else
             {
+                startDate = DateTime.Now;
+                return false;
             }
         }
 
-        public DateTime EndDate
+        public override bool TryGetEndDate(out DateTime endDate)
         {
-            get
+            if (Tasks.Count > 0)
             {
-                return tasks.Max((task) => task.EndDate);
+                endDate = EndDate;
+                return true;
             }
-            private set
+            else
             {
+                endDate = DateTime.Now;
+                return false;
             }
         }
 
-        public IEnumerable<Member> Participants
+        public override DateTime StartDate
         {
             get
             {
-                return tasks.SelectMany((task) => task.Assignees);
-            }
-            private set
-            {
-            }
-        }
-
-        public IEnumerable<ClassRoom> Locations
-        {
-            get
-            {
-                return tasks.Select((task) => task.Location);
-            }
-            private set
-            {
-            }
-        }
-
-        public IEnumerable<Equipment> Equipments
-        {
-            get
-            {
-                return tasks.SelectMany((task) => task.Equipments);
-            }
-            private set
-            {
-            }
-        }
-
-        public FinancialResource EstimatedBudget
-        {
-            get
-            {
-                return new FinancialResource((uint)tasks.Sum((task) => task.EstimatedBudget.Value), tasks.First().EstimatedBudget.Currency);
-            }
-            private set
-            {
-            }
-        }
-
-        public FinancialResource RealizedBudget
-        {
-            get
-            {
-                if (IsActive)
-                    return null;
+                if (Tasks.Count > 0)
+                    return Tasks.Min((task) => task.StartDate);
                 else
-                    return new FinancialResource((uint)tasks.Sum((task) => task.RealizedBudget.Value), tasks.First().EstimatedBudget.Currency);
-            }
-            private set
-            {
+                    throw new InvalidOperationException("There are no tasks in the current activity, could not calculate start date!");
             }
         }
 
-        public bool IsActive
+        public override DateTime EndDate
         {
             get
             {
-                return EndDate.CompareTo(DateTime.Now) <= 0 && tasks.Count((task) => task.State == TaskState.Approved || task.State == TaskState.Undergoing) > 0;
-            }
-            private set
-            {
+                if (Tasks.Count > 0)
+                    return Tasks.Max((task) => task.EndDate);
+                else
+                    throw new InvalidOperationException("There are no tasks in the current activity, could not calculate end date!");
             }
         }
 
-        private ICollection<ITask> tasks;
+        public override ICollection<ITask> Tasks { get; protected set; }
+
+        public override FinancialResource EstimatedBudget
+        {
+            get
+            {
+                return Tasks.Select((task) => task.EstimatedBudget).Aggregate((x, y) => x + y);
+            }
+        }
+
+        protected Activity(string title, string description)
+            : base(title, description)
+        {
+        }
     }
 }

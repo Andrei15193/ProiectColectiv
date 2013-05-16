@@ -11,11 +11,13 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         TaskState State { get; }
 
+        TaskType Type { get; }
+
         DateTime StartDate { get; }
 
         DateTime EndDate { get; }
 
-        ICollection<Member> Assignees { get; }
+        Collections.IObservableCollection<Member> Assignees { get; }
 
         ClassRoom Location { get; set; }
 

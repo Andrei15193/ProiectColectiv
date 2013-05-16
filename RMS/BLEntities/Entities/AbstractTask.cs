@@ -16,7 +16,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         public DateTime EndDate { get; private set; }
 
-        public ICollection<Member> Assignees { get; private set; }
+        public Collections.IObservableCollection<Member> Assignees { get; private set; }
 
         public ClassRoom Location
         {

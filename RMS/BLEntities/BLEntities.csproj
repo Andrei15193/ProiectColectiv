@@ -39,10 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\AbstractActivity.cs" />
     <Compile Include="Entities\AbstractTask.cs" />
     <Compile Include="Entities\Activity.cs" />
     <Compile Include="Entities\Collections\ClassRoomEquipmentSet.cs" />
+    <Compile Include="Entities\Collections\CollectionChange.cs" />
     <Compile Include="Entities\Collections\EqualityComparer.cs" />
+    <Compile Include="Entities\Collections\ICollection.cs" />
+    <Compile Include="Entities\Collections\PhaseTasks.cs" />
+    <Compile Include="Entities\Collections\MemberCollectionChangedEventArgs.cs" />
+    <Compile Include="Entities\Collections\ResearchProjectPhaseCollection.cs" />
+    <Compile Include="Entities\Collections\ResearchProjectTasks.cs" />
     <Compile Include="Entities\IActivity.cs" />
     <Compile Include="Entities\ITask.cs" />
     <Compile Include="Entities\Enums\ApplicationDomain.cs" />
@@ -52,7 +59,7 @@
     <Compile Include="Entities\Collections\AssigneeUnemptySet.cs" />
     <Compile Include="Entities\Collections\TaskEquipmentSet.cs" />
     <Compile Include="Entities\Collections\Comparer.cs" />
-    <Compile Include="Entities\left\Course.cs" />
+    <Compile Include="Entities\Course.cs" />
     <Compile Include="Entities\left\CourseSet.cs" />
     <Compile Include="Entities\left\DidacticActivity.cs" />
     <Compile Include="Entities\left\DidacticTask.cs" />
@@ -74,14 +81,15 @@
     <Compile Include="Entities\Member.cs" />
     <Compile Include="Entities\left\PerformersSet.cs" />
     <Compile Include="Entities\left\ReportEntry.cs" />
-    <Compile Include="Entities\left\ResearchProject.cs" />
+    <Compile Include="Entities\Phase.cs" />
+    <Compile Include="Entities\ResearchProject.cs" />
     <Compile Include="Entities\left\ResearchProjectTeam.cs" />
     <Compile Include="Entities\left\ResearchTask.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\left\RoleSet.cs" />
     <Compile Include="Entities\left\SemiGroup.cs" />
     <Compile Include="Entities\Enums\Specialization.cs" />
-    <Compile Include="Entities\left\StudyProgram.cs" />
+    <Compile Include="Entities\StudyProgram.cs" />
     <Compile Include="Entities\left\StudyProgramSet.cs" />
     <Compile Include="Entities\SuperUser.cs" />
     <Compile Include="Entities\SuperUserRole.cs" />

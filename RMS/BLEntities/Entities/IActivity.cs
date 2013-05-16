@@ -5,6 +5,10 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public interface IActivity
     {
+        bool TryGetStartDate(out DateTime startDate);
+
+        bool TryGetEndDate(out DateTime endDate);
+
         string Title { get; }
 
         string Description { get; }
@@ -12,6 +16,10 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         DateTime StartDate { get; }
 
         DateTime EndDate { get; }
+
+        IEnumerable<TaskType> AllowedTaskTypes { get; }
+
+        ICollection<ITask> Tasks { get; }
 
         IEnumerable<Member> Participants { get; }
 

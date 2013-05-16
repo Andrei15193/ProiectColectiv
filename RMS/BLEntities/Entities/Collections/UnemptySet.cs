@@ -4,9 +4,8 @@ using System.Linq;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
 {
-    class UnemptySet<T> : ICollection<T>
+    class UnemptySet<T> : ICollection<T>, IObservableCollection<T>
     {
-
         public UnemptySet(IEnumerable<T> items)
         {
             if (items != null)
@@ -54,6 +53,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
 
         public virtual void Add(T item)
         {
+            ProtectedOnCollectionChanging(this, new CollectionChangedEventArgs<T>(item, CollectionChange.Add));
             items.Add(item);
         }
 
@@ -61,6 +61,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
         {
             if (items.Count > 1)
             {
+                ProtectedOnCollectionChanging(this, new CollectionChangedEventArgs<T>(item, CollectionChange.Add));
                 items.Remove(item);
                 return true;
             }
@@ -84,9 +85,17 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
             }
         }
 
+        public event EventHandler<CollectionChangedEventArgs<T>> CollectionChanging;
+
         protected virtual IEnumerator<T> ProtectedGetEnumerator()
         {
             return items.GetEnumerator();
+        }
+
+        protected void ProtectedOnCollectionChanging(object sender, CollectionChangedEventArgs<T> e)
+        {
+            if (CollectionChanging != null)
+                CollectionChanging(sender, e);
         }
 
         private ISet<T> items;

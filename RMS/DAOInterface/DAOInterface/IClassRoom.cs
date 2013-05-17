@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAOInterface.DAOInterface
+namespace ResourceManagementSystem.DataAccess.DAOInterface
 {
     public interface IClassRoom
     {

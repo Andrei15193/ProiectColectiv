@@ -61,6 +61,11 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
                 throw new ArgumentNullException("The provided value for assignee cannot be null!");
         }
 
+        public new System.Collections.IEnumerator GetEnumerator()
+        {
+            return base.GetEnumerator();
+        }
+
         public ITask Task { get; private set; }
     }
 }

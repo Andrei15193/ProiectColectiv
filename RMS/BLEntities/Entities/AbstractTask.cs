@@ -16,7 +16,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         public DateTime EndDate { get; private set; }
 
-        public ICollection<Member> Assignees { get; private set; }
+        public Collections.IObservableCollection<Member> Assignees { get; private set; }
 
         public ClassRoom Location
         {
@@ -64,7 +64,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             if (TaskType.TryWithName(typeName, out type))
                 Type = type;
             else
-                throw new ArgumentException("The provided task type name is not currently registered in the TaskType collection!");
+                throw new ArgumentException(string.Format("There is no \"{0}\" currently registered! Add the \"{0}\" task type in the TaskType collection first!", typeName));
             Title = trimmedTitle;
             Description = trimmedDescription;
             StartDate = startDate;

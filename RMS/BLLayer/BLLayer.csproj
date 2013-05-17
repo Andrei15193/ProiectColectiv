@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessWorkflow\FinancialResourceViewModel.cs" />
+    <Compile Include="BusinessWorkflow\HumanResourcesViewModel.cs" />
     <Compile Include="BusinessWorkflow\LogisticalResourceViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

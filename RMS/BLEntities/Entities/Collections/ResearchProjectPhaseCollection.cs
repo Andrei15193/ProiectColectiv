@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
 {
@@ -10,6 +8,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
         public ResearchProjectPhaseCollection(ResearchProject researchProject)
         {
             ResearchProject = researchProject;
+            phases = new UnemptySet<Phase>();
         }
 
         public void Add(Phase phase)

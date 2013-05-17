@@ -75,23 +75,15 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             return Add(name, string.Empty);
         }
 
-        public static TaskType WithName(string name)
-        {
-            if (name != null)
-            {
-                IEnumerable<TaskType> selectedTaskTypes = taskTypes.Where((taskType) => taskType == name);
-                if (selectedTaskTypes.Count() == 1)
-                    return selectedTaskTypes.First();
-                else
-                    throw new IndexOutOfRangeException("There is no task type with the name " + name + "!");
-            }
-            else
-                throw new ArgumentNullException("The provided name cannot be null!");
-        }
-
         public static void Clear()
         {
             taskTypes.Clear();
+        }
+
+        public static bool Exists(string name)
+        {
+            TaskType type;
+            return TryWithName(name, out type);
         }
 
         public static bool Remove(string name)
@@ -146,6 +138,20 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                 type = new TaskType();
                 return false;
             }
+        }
+
+        public static TaskType WithName(string name)
+        {
+            if (name != null)
+            {
+                IEnumerable<TaskType> selectedTaskTypes = taskTypes.Where((taskType) => taskType == name);
+                if (selectedTaskTypes.Count() == 1)
+                    return selectedTaskTypes.First();
+                else
+                    throw new IndexOutOfRangeException("There is no task type with the name " + name + "!");
+            }
+            else
+                throw new ArgumentNullException("The provided name cannot be null!");
         }
 
         public static IEnumerable<TaskType> WithNames(IEnumerable<string> names)

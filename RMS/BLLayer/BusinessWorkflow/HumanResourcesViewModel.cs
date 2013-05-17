@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAOInterface.DAOInterface;
 using ResourceManagementSystem.BusinessLogic.Entities;
+using ResourceManagementSystem.DataAccess.DAOInterface;
 
-namespace BLLayer.BusinessWorkflow
+namespace ResourceManagementSystem.BusinessLogic.BusinessWorkflow
 {
     class HumanResourcesViewModel
     {

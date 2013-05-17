@@ -1,4 +1,4 @@
-﻿namespace DAOInterface.DAOInterface
+﻿namespace ResourceManagementSystem.DataAccess.DAOInterface
 {
     public interface IFinancialResources
     {

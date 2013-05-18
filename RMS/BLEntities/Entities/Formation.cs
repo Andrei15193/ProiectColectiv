@@ -1,51 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace BusinessLogic.Entities
+namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-    public class Formation
+    public abstract class Formation
     {
-        public FormationType type
-        {
-            get { return type; }
-            set { type = value; }
-        }
+        public FormationType Type { get; private set; }
 
-        public Specialization specialization
-        {
-            get { return specialization; }
-            set { specialization = value; }
-        }
+        public Specialization Specialization { get; private set; }
 
-        public uint year
-        {
-            get { return year; }
-            set { year = value; }
-        }
+        public uint Year { get; private set; }
 
-        public CourseSet courses
-        {
-            get { return courses; }
-            set { courses = value; }
-        }
+        public abstract override string ToString();
 
-        public Formation()
+        protected Formation(FormationType type, Specialization specialization, uint year)
         {
-            this.type = FormationType.Group;
-            this.specialization = Specialization.ComputerScience;
-            this.year = 0;
-            this.courses = new CourseSet();
-        }
-
-        public Formation(FormationType type, Specialization specialization, uint year, CourseSet courses)
-        {
-            this.type = type;
-            this.specialization = specialization;
-            this.year = year;
-            this.courses = courses;
+            if (year > 0)
+            {
+                Type = type;
+                Specialization = Specialization.ComputerScience;
+                Year = year;
+            }
+            else
+                throw new ArgumentException("The proveded value for year cannot be 0 (zero)!");
         }
     }
 }

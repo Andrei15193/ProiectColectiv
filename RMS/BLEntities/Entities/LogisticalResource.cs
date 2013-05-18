@@ -1,56 +1,48 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace BusinessLogic.Entities
+namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-    public class LogisticalResource
+    public abstract class LogisticalResource
     {
-        public string name
-        {
-            get { return name; }
-            set { name = value; }
-        }
+        public string Name { get; private set; }
 
-        public string description
-        {
-            get { return description; }
-            set { description = value; }
-        }
+        public string Description { get; private set; }
 
-        public Task task
-        {
-            get { return task; }
-            set { task = value; }
-        }
-
-        public LogisticalResource(Task task)
-        {
-            this.name = "";
-            this.description = "";
-            this.task = task;
-        }
-
-        public LogisticalResource(string name, Task task)
-        {
-            this.name = name;
-            this.description = "";
-            this.task = task;
-        }
-
-        public LogisticalResource(string name, string description, Task task)
-        {
-            this.name = name;
-            this.description = description;
-            this.task = task;
-        }
-
-       
+        public virtual ITask Task { get; set; }
 
         public override string ToString()
         {
-            return "Name: "+this.name+"; Description: "+this.description+"; Task: "+task.getDescription();
+            return Name;
+        }
+
+        protected LogisticalResource(string name, string description, ITask task)
+        {
+            if (name != null)
+                if (description != null)
+                {
+                    this.Name = name;
+                    this.Description = description;
+                    this.Task = task;
+                }
+                else
+                    throw new ArgumentNullException("The provided value for description cannot be null!");
+            else
+                throw new ArgumentNullException("The provided value for name cannot be null!");
+        }
+
+        protected LogisticalResource(string name)
+            : this(name, string.Empty, null)
+        {
+        }
+
+        protected LogisticalResource(string name, string description)
+            : this(name, description, null)
+        {
+        }
+
+        protected LogisticalResource(string name, ITask task)
+            : this(name, string.Empty, task)
+        {
         }
     }
 }

@@ -1,47 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BusinessLogic.Entities
+namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class StudyProgram
     {
-        public Specialization specialization
-        {
-            get { return specialization; }
-            set { specialization = value; }
-        }
+        public Specialization Specialization { get; private set; }
 
-        public UnemptySet<Course> courses
-        {
-            get { return courses; }
-            set { courses = value; }
-        }
+        public ICollection<Course> Courses { get; private set; }
 
-        public StudyProgram(Course course)
+        public StudyProgram(Specialization specialization, IEnumerable<Course> courses)
         {
-            this.specialization = Specialization.ComputerScience;
-            this.courses = new UnemptySet<Course>(course);
-        }
-
-        public StudyProgram(UnemptySet<Course> courses)
-        {
-            this.specialization = Specialization.ComputerScience;
-            this.courses = courses;
+            if (courses != null)
+            {
+                Specialization = specialization;
+                Courses = new Collections.UnemptySortedSet<Course>(new Collections.Comparer<Course>((x, y) => x.Credits.CompareTo(y.Credits)), courses);
+            }
+            else
+                throw new ArgumentNullException("The provided value for the courses collection cannot be null!");
         }
 
         public StudyProgram(Specialization specialization, Course course)
+            : this(specialization, new Course[] { course } as IEnumerable<Course>)
         {
-            this.specialization = specialization;
-            this.courses = new UnemptySet<Course>(course);
+            if (course == null)
+                throw new ArgumentNullException("The provided value for course cannot be null!");
         }
 
-        public StudyProgram(Specialization specialization, UnemptySet<Course>    courses)
+        public StudyProgram(Specialization specialization, params Course[] courses)
+            : this(specialization, courses as IEnumerable<Course>)
         {
-            this.specialization = specialization;
-            this.courses = courses;
+            if (courses.Count((innerCourse) => innerCourse == null) != 0)
+                throw new ArgumentNullException("None of the provided courses can be null!");
         }
     }
 }

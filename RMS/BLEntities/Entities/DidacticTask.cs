@@ -1,67 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BusinessLogic.Entities
+namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-    public class DidacticTask : Task
+    public class DidacticTask : AbstractTask
     {
-        public ClassType type
+        public DidacticTask(Course course, string description, DateTime startDate, uint duration, ClassType type, ClassRoom classRoom, FinancialResource estimatedBudget, Member teacher, Formation formation)
+            : base(GetCourseName(course), description, startDate, startDate.AddHours(duration), "didactic", classRoom, estimatedBudget, teacher)
         {
-            get { return type; }
-            set { type = value; }
+            if (formation != null)
+                if (duration > 0)
+                {
+                    ClassType = type;
+                    Course = course;
+                    Formation = formation;
+                }
+                else
+                    throw new ArgumentException("The duration of the course cannot be 0 (zero)!");
+            else
+                throw new ArgumentNullException("The provided value for formation cannot be null!");
         }
 
-        public Course course
+        public Formation Formation { get; private set; }
+
+        public Course Course { get; private set; }
+
+        public ClassType ClassType { get; private set; }
+
+        private static string GetCourseName(Course course)
         {
-            get { return course; }
-            set { course = value; }
+            if (course != null)
+                return course.Name;
+            else
+                throw new ArgumentNullException("The provided value for course cannot be null!");
         }
 
-        public DidacticActivity activity
+        private static string GetDidacticTaskType()
         {
-            get { return activity; }
-            set { activity = value; }
-        }
-
-        public DidacticTask(PerformersSet performers, UnemptySet<LogisticalResource> logisticalResources,
-            FinancialResource estimatedBudget, UnemptySortedSet<DidacticTask> classes)
-            : base(performers, logisticalResources, estimatedBudget)
-        {
-            this.type = ClassType.Course;
-            this.course = new Course();
-            this.activity = new DidacticActivity(performers, logisticalResources, estimatedBudget, classes,course);
-        }
-
-        public DidacticTask(DateTime startDate, DateTime endDate, string description, PerformersSet performers,
-            UnemptySet<LogisticalResource> logisticalResources, FinancialResource estimatedBudget,
-           UnemptySortedSet<DidacticTask> classes)
-            : base(startDate, endDate, description, performers, logisticalResources, estimatedBudget)
-        {
-            this.type = ClassType.Course;
-            this.course = new Course();
-            this.activity = new DidacticActivity(performers, logisticalResources, estimatedBudget, classes,course);
-        }
-
-        public DidacticTask(PerformersSet performers, UnemptySet<LogisticalResource> logisticalResources,
-            FinancialResource estimatedBudget, ClassType type, Course course, DidacticActivity activity)
-            : base(performers, logisticalResources, estimatedBudget)
-        {
-            this.type = type;
-            this.course = course;
-            this.activity = activity;
-        }
-
-        public DidacticTask(DateTime startDate, DateTime endDate, string description, PerformersSet performers,
-            UnemptySet<LogisticalResource> logisticalResources, FinancialResource estimatedBudget, ClassType type,
-            Course course, DidacticActivity activity)
-            : base(startDate, endDate, description, performers, logisticalResources, estimatedBudget)
-        {
-            this.type = type;
-            this.course = course;
-            this.activity = activity;
+            if (TaskType.Exists("didactic"))
+                return "didactic";
+            else
+                throw new ArgumentException("There is no \"didactic\" task type registered! Please register this type before creating didactic tasks.");
         }
     }
 }

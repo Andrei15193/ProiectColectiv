@@ -1,42 +1,79 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace BusinessLogic.Entities
+namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class FinancialResource
     {
-        public uint value
+        public static FinancialResource operator +(FinancialResource right, FinancialResource left)
         {
-            get { return this.value; }
-            set { this.value = value; }
+            if (right != null)
+                if (left != null)
+                    if (right.Currency == left.Currency)
+                        return new FinancialResource(right.Value + left.Value, right.Currency);
+                    else
+                        throw new ArgumentException("The provided financial resource operands must have the same currency!");
+                else
+                    throw new ArgumentNullException("The provided value for left operand cannot be null!");
+            else
+                throw new ArgumentNullException("The provided value for right operand cannot be null!");
         }
 
-        public Currency currency
+        public static FinancialResource operator +(FinancialResource right, uint left)
         {
-            get { return this.currency; }
-            set { this.currency = value; }
+            if (right != null)
+                return new FinancialResource(right.Value + left, right.Currency);
+            else
+                throw new ArgumentNullException("The provided value for right operand cannot be null!");
         }
 
-        public Task task
+        public static FinancialResource operator +(uint right, FinancialResource left)
         {
-            get { return this.task; }
-            set { this.task = value; }
+            return left + right;
         }
 
-        public FinancialResource(Task task)
+        public static FinancialResource operator -(FinancialResource right, FinancialResource left)
         {
-            this.value = 0;
-            this.currency = Currency.RON;
-            this.task = task;
+            if (right != null)
+                if (left != null)
+                    if (right.Currency == left.Currency)
+                        return new FinancialResource(right.Value - left.Value, right.Currency);
+                    else
+                        throw new ArgumentException("The provided financial resource operands must have the same currency!");
+                else
+                    throw new ArgumentNullException("The provided value for left operand cannot be null!");
+            else
+                throw new ArgumentNullException("The provided value for right operand cannot be null!");
         }
 
-        public FinancialResource(uint value, Task task)
+        public static FinancialResource operator -(FinancialResource right, uint left)
         {
-            this.value = value;
-            this.currency = Currency.RON;
-            this.task = task;
+            if (right != null)
+                return new FinancialResource(right.Value - left, right.Currency);
+            else
+                throw new ArgumentNullException("The provided value for right operand cannot be null!");
+        }
+
+        public static FinancialResource operator -(uint right, FinancialResource left)
+        {
+            if (left != null)
+                return new FinancialResource(right - left.Value, left.Currency);
+            else
+                throw new ArgumentNullException("The provided value for right operand cannot be null!");
+        }
+
+        public uint Value { get; private set; }
+
+        public Currency Currency { get; private set; }
+
+        public FinancialResource(uint value, Currency currency)
+        {
+            if (value > 0)
+            {
+                Value = value;
+                Currency = currency;
+            }
+            else
+                throw new ArgumentException("The provided value for financial resource cannot be 0 (zero)!");
         }
     }
 }

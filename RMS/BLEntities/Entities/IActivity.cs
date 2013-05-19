@@ -32,5 +32,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         FinancialResource RealizedBudget { get; }
 
         bool IsActive { get; }
+
+        bool HasTasks { get; }
     }
 }

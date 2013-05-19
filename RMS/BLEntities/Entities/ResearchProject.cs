@@ -119,6 +119,14 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
         }
 
+        public IEnumerable<TaskType> AllowedTaskTypes
+        {
+            get
+            {
+                return tasks.AllowedTaskTypes;
+            }
+        }
+
         public bool IsActive
         {
             get
@@ -127,11 +135,11 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
         }
 
-        public IEnumerable<TaskType> AllowedTaskTypes
+        public bool HasTasks
         {
             get
             {
-                return tasks.AllowedTaskTypes;
+                return (Tasks.Count > 0);
             }
         }
 

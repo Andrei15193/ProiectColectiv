@@ -68,6 +68,14 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         public abstract FinancialResource EstimatedBudget { get; }
 
+        public bool HasTasks
+        {
+            get
+            {
+                return (Tasks.Count != 0);
+            }
+        }
+
         protected AbstractActivity(string title, string description, IEnumerable<string> allowedTaskTypes)
         {
             if (title != null)

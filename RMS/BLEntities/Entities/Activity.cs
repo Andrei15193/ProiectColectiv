@@ -6,15 +6,18 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class Activity : AbstractActivity
     {
-        public Activity(string title, string description, IEnumerable<ITask> tasks)
-            : base(title, description)
+        public Activity(string title, string description, IEnumerable<string> allowedTaskTypes, IEnumerable<ITask> tasks)
+            : base(title, description, allowedTaskTypes)
         {
             if (tasks != null)
             {
                 Tasks = new SortedSet<ITask>(new Collections.Comparer<ITask>((x, y) => x.StartDate.CompareTo(y.StartDate)));
                 foreach (ITask task in Tasks)
                     if (task != null)
-                        Tasks.Add(task);
+                        if (allowedTaskTypes.Contains(task.Type.Name))
+                            Tasks.Add(task);
+                        else
+                            throw new ArgumentException("The provided task type is not allowed!");
                     else
                         throw new ArgumentException("The provided task collection cannot contain null values!");
             }
@@ -22,18 +25,18 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                 throw new ArgumentNullException("The provided task collection cannot be null!");
         }
 
-        public Activity(string title, string description, params ITask[] tasks)
-            : this(title, description, tasks as IEnumerable<ITask>)
+        public Activity(string title, string description, IEnumerable<string> allowedTaskTypes, params ITask[] tasks)
+            : this(title, description, allowedTaskTypes, tasks as IEnumerable<ITask>)
         {
         }
 
-        public Activity(string title, IEnumerable<ITask> tasks)
-            : this(title, string.Empty, tasks)
+        public Activity(string title, IEnumerable<string> allowedTaskTypes, IEnumerable<ITask> tasks)
+            : this(title, string.Empty, allowedTaskTypes, tasks)
         {
         }
 
-        public Activity(string title, params ITask[] tasks)
-            : this(title, string.Empty, tasks as IEnumerable<ITask>)
+        public Activity(string title, IEnumerable<string> allowedTaskTypes, params ITask[] tasks)
+            : this(title, string.Empty, allowedTaskTypes, tasks as IEnumerable<ITask>)
         {
         }
 

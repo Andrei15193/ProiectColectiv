@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="DBConnection.cs" />
     <Compile Include="DBImpl\AllMembers.cs" />
-    <Compile Include="DBImpl\ClassRoom.cs" />
+    <Compile Include="DBImpl\ClassRooms.cs" />
     <Compile Include="DBImpl\Equipment.cs" />
     <Compile Include="DBImpl\FinancialResources.cs" />
     <Compile Include="DBImpl\HumanResources.cs" />

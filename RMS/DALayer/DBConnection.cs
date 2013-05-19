@@ -10,17 +10,15 @@ namespace DALayer
 {
     class DBConnection
     {
-        private static SqlConnection sqlconnection = null;
-
-        public static SqlConnection GetConnection()
+        public DBConnection()
         {
-            if (sqlconnection == null)
-            {
-                //sqlconnection = new SqlConnection(ConfigurationManager.ConnectionStrings["dbConnection"].ConnectionString);
-                sqlconnection = new SqlConnection("Initial Catalog=Andrei15193_sqldb; Data Source=andrei15193.tk,779; User=Andrei15193_RMSuser; Password=d3m3nt14l123");
-            }
-            return sqlconnection;
+            this.Connection = new SqlConnection("Initial Catalog=Andrei15193_sqldb; Data Source=andrei15193.tk,779; User=Andrei15193_RMSuser; Password=d3m3nt14l123");
         }
 
+        public SqlConnection Connection
+        {
+            get;
+            protected set;
+        }
     }
 }

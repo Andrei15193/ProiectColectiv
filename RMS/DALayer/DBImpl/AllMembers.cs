@@ -13,11 +13,12 @@ namespace DALayer.DBImpl
     {
         public Member Where(string email, string password)
         {
-            DBConnection.GetConnection().Open();
+            DBConnection dbConnection = new DBConnection();
+            dbConnection.Connection.Open();
             SqlCommand cmd = new SqlCommand(@"select u.firstname, u.lastname, u.email, u.passwd, r.name, r.roleDescription
                                             from (select * from Users as us where us.email =@e and us.passwd = @p) as u 
                                     		left join UsersRoles as ur on u.email = ur.email 
-		                                    left join Roles as r on ur.roleName = r.name", DBConnection.GetConnection());
+		                                    left join Roles as r on ur.roleName = r.name", dbConnection.Connection);
             cmd.Parameters.Add(new SqlParameter()
             {
                 ParameterName = "@e",
@@ -66,7 +67,7 @@ namespace DALayer.DBImpl
             else
             {
                 dr.Close();
-                DBConnection.GetConnection().Close();
+                dbConnection.Connection.Close();
                 throw new Exception("No user found!");
             }
             dr.Close();
@@ -74,7 +75,7 @@ namespace DALayer.DBImpl
             if (role != null)
             {
                 cmd = new SqlCommand(@"select f.name as FeatureName, f.featureDescription as FeatureDescription from (select * from roles as ro where ro.name = @n)  as r inner join RoleFeatures as rf
-		                            on rf.roleName = r.name inner join features as f on f.name = rf.featureName", DBConnection.GetConnection());
+		                            on rf.roleName = r.name inner join features as f on f.name = rf.featureName", dbConnection.Connection);
                 cmd.Parameters.Clear();
                 cmd.Parameters.Add(new SqlParameter()
                 {
@@ -92,7 +93,7 @@ namespace DALayer.DBImpl
             }
             member = new Member(new Role(role, roleDescription, features), firstname, lastname, mail, passwd);
             dr.Close();
-            DBConnection.GetConnection().Close();
+            dbConnection.Connection.Close();
             return member;
         }
     }

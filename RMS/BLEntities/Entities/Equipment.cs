@@ -72,7 +72,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         {
             get
             {
-               return base.Task;
+                return base.Task;
             }
             set
             {
@@ -107,6 +107,14 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                 }
                 else
                     throw new ArgumentException("The equipment is already being used for a task!");
+            }
+        }
+
+        public bool IsAvailable
+        {
+            get
+            {
+                return ClassRoom == null && Task == null;
             }
         }
 

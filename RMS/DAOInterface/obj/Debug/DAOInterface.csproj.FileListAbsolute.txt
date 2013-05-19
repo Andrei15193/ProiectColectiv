@@ -1,7 +1,0 @@
-D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\DAOInterface\bin\Debug\DAOInterface.dll
-D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\DAOInterface\bin\Debug\DAOInterface.pdb
-D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\DAOInterface\bin\Debug\BLEntities.dll
-D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\DAOInterface\bin\Debug\BLEntities.pdb
-D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\DAOInterface\obj\Debug\DAOInterface.csprojResolveAssemblyReference.cache
-D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\DAOInterface\obj\Debug\DAOInterface.dll
-D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\DAOInterface\obj\Debug\DAOInterface.pdb

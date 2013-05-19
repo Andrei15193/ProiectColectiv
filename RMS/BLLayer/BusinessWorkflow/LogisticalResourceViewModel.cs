@@ -20,6 +20,21 @@ namespace ResourceManagementSystem.BusinessLogic.BusinessWorkflow
             this.classRoomDAO = classRoomDAO;
         }
 
+        public ClassRoom getClassRoomByPK(string building, uint floor, uint number)
+        {
+            return classRoomDAO.getByPK(building, floor, number);
+        }
+
+        public ISet<ClassRoom> getAllClassRooms()
+        {
+            return classRoomDAO.getAll();
+        }
+
+        public ISet<ClassRoom> getClassRoomsByTask(ITask task)
+        {
+            return classRoomDAO.getByTask(task);
+        }
+
         public void AddClassRoom(string building, uint floor, uint number, string description, ITask task)
         {
             ClassRoom classRoom = new ClassRoom(building, floor, number, description, task);
@@ -64,6 +79,26 @@ namespace ResourceManagementSystem.BusinessLogic.BusinessWorkflow
 
 
         // EQUIPMENT
+
+        public Equipment getEquipmentByPK(string serialNumber)
+        {
+            return equipmentDAO.getByPK(serialNumber);
+        }
+
+        public ISet<Equipment> getAllEquipemnt()
+        {
+            return equipmentDAO.getAll();
+        }
+
+        public ISet<Equipment> getEquipemntByTask(ITask task)
+        {
+            return equipmentDAO.getByTask(task);
+        }
+
+        public ISet<Equipment> getEquipemntByClassRoom(ClassRoom classRoom)
+        {
+            return equipmentDAO.getByClassRoom(classRoom);
+        }
 
         public void AddEquipment(string brand, string model, string serialNumber, bool isBroken, string description, ClassRoom classRoom)
         {

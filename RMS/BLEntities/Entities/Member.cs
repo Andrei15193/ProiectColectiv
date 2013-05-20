@@ -99,6 +99,10 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                 else
                     throw new ArgumentNullException("The provided value for password cannot be null!");
             }
+            get
+            {
+                return password;
+            }
         }
 
         //public ICollection<ResearchProject> ResearchProjects { get; private set; }

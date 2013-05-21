@@ -1,0 +1,402 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Collections.AssignedTasksSortedSet" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAABAQAAAQBAQAAAAABAgAAAAAAABQIAA=</HashCode>
+      <FileName>Entities\Collections\AssignedTasksSortedSet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Collections.AssigneeUnemptySet" Collapsed="true">
+    <Position X="0.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAABAAAAAABAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Entities\Collections\AssigneeUnemptySet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Collections.ClassRoomEquipmentSet" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACICAAAAAAAAABAQAAAABAwAAAAABAAAAAAAAABQIAA=</HashCode>
+      <FileName>Entities\Collections\ClassRoomEquipmentSet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Collections.Comparer&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAgAAAAA=</HashCode>
+      <FileName>Entities\Collections\Comparer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Collections.EqualityComparer&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAAgAAAAA=</HashCode>
+      <FileName>Entities\Collections\EqualityComparer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Collections.CollectionChangedEventArgs&lt;T&gt;" Collapsed="true">
+    <Position X="17.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Collections\MemberCollectionChangedEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Collections.PhaseTasks" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAABAYAIACBAQAAAAABAgAAAgAAABQJAA=</HashCode>
+      <FileName>Entities\Collections\PhaseTasks.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Collections.ResearchProjectPhaseCollection" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAABAQAAAABAQAAAAABAAAAgAEAABQIAA=</HashCode>
+      <FileName>Entities\Collections\ResearchProjectPhaseCollection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Collections.ResearchProjectTasks" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAABAYAAAABAQAAAAABAgAAggAAABQIAA=</HashCode>
+      <FileName>Entities\Collections\ResearchProjectTasks.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Collections.TaskEquipmentSet" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACICAAAAAAAAABAQAAAABAQAAAAABAAAAEAAAABQIAA=</HashCode>
+      <FileName>Entities\Collections\TaskEquipmentSet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Collections.UnemptySet&lt;T&gt;" Collapsed="true">
+    <Position X="0.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAABAQAIgCBAQAAAAABAAAAAAAAABQIAA=</HashCode>
+      <FileName>Entities\Collections\UnemptySet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Collections.UnemptySortedSet&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAABAQAAgABAQAAAAABAAAAAAAAABQIAA=</HashCode>
+      <FileName>Entities\Collections\UnemptySortedSet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.AbstractActivity" Collapsed="true">
+    <Position X="1.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIQAAAgAEAAEAIAAAQgAAAJAAAAACgIAEAAAgA=</HashCode>
+      <FileName>Entities\AbstractActivity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.AbstractTask" Collapsed="true">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAACgAEAAAAIQAAQiAAAAAAAEAQAABEAAAgA=</HashCode>
+      <FileName>Entities\AbstractTask.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Activity" Collapsed="true">
+    <Position X="1.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAAAQgAAAIAAAAAAAIAEAAAAA=</HashCode>
+      <FileName>Entities\Activity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.ClassRoom" Collapsed="true">
+    <Position X="7.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAgAAEAAAAAAAAAIAAAAAEAAAAAAAgA=</HashCode>
+      <FileName>Entities\ClassRoom.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Course" Collapsed="true">
+    <Position X="14.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAACAAgAAAAAAAAAAQAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Course.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.DidacticActivity" Collapsed="true">
+    <Position X="2.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAIAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\DidacticActivity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.DidacticTask" Collapsed="true">
+    <Position X="11.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAgAAAAAgAAAIAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Entities\DidacticTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Equipment" Collapsed="true">
+    <Position X="5.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAACAAAAAgAAAEAQgAAAEgAAIABAAA=</HashCode>
+      <FileName>Entities\Equipment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Feature" Collapsed="true">
+    <Position X="17.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAEAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Feature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.FinancialResource" Collapsed="true">
+    <Position X="19.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQAEAAAAACAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Entities\FinancialResource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Formation" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAEAAAAAAAAAAAAAAAAAQAAAAAAAEA=</HashCode>
+      <FileName>Entities\Formation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.GroupFormation" Collapsed="true">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAEAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\GroupFormation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Guest" Collapsed="true">
+    <Position X="7.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Guest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.GuestRole" Collapsed="true">
+    <Position X="2.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\GuestRole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.LogisticalResource" Collapsed="true">
+    <Position X="6.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAEAAAAAAQAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Entities\LogisticalResource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Member" Collapsed="true">
+    <Position X="5.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAABAAAAgAAAAAAAAACAAAAACAgAICgAAAAg=</HashCode>
+      <FileName>Entities\Member.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Phase" Collapsed="true">
+    <Position X="0.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Entities\Phase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.ReportEntry" Collapsed="true">
+    <Position X="16" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAABAAAAAAAAABAEAAIAAAAAA=</HashCode>
+      <FileName>Entities\ReportEntry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.ResearchProject" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIQAAAgAEAAEAIAAAQgAAAJAAgAACgIBEAABgA=</HashCode>
+      <FileName>Entities\ResearchProject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.ResearchTask" Collapsed="true">
+    <Position X="9.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\ResearchTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.Role" Collapsed="true">
+    <Position X="1.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAIAABAAQAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Role.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.SemiGroupFormation" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAIAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\SemiGroupFormation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.StudyProgram" Collapsed="true">
+    <Position X="16" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAEA=</HashCode>
+      <FileName>Entities\StudyProgram.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.SuperUser" Collapsed="true">
+    <Position X="5.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\SuperUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.SuperUserRole" Collapsed="true">
+    <Position X="0.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\SuperUserRole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.User" Collapsed="true">
+    <Position X="6.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAQAAAAEAAAA=</HashCode>
+      <FileName>Entities\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.YearFormation" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\YearFormation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="ResourceManagementSystem.BusinessLogic.Entities.TaskType" Collapsed="true">
+    <Position X="14.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAQAAAAEAAAAEgAAABAQAAAAEEIAAAAAIAAFAAiA=</HashCode>
+      <FileName>Entities\TaskType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="ResourceManagementSystem.BusinessLogic.Entities.Collections.IObservableCollection&lt;T&gt;" Collapsed="true">
+    <Position X="16" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Collections\ICollection.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ResourceManagementSystem.BusinessLogic.Entities.IActivity" Collapsed="true">
+    <Position X="14.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIQAAAgAEAAEAIAAAQgAAAJAAAAACgIAEAAAgA=</HashCode>
+      <FileName>Entities\IActivity.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ResourceManagementSystem.BusinessLogic.Entities.ITask" Collapsed="true">
+    <Position X="17.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAgAEAAAAIQAAQgAAAAAAAAAQAABEAAAgA=</HashCode>
+      <FileName>Entities\ITask.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="ResourceManagementSystem.BusinessLogic.Entities.Collections.CollectionChange" Collapsed="true">
+    <Position X="14.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Collections\CollectionChange.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ResourceManagementSystem.BusinessLogic.Entities.ApplicationDomain" Collapsed="true">
+    <Position X="14.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Entities\Enums\ApplicationDomain.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ResourceManagementSystem.BusinessLogic.Entities.ApplicationState" Collapsed="true">
+    <Position X="16" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAgAQAAAAAAAAAgAAhAAAAAAAAABA=</HashCode>
+      <FileName>Entities\Enums\ApplicationState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ResourceManagementSystem.BusinessLogic.Entities.ClassFrequency" Collapsed="true">
+    <Position X="17.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAEAAAAAAAAAAAAAAAAAAAAAAFA=</HashCode>
+      <FileName>Entities\Enums\ClassFrequency.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ResourceManagementSystem.BusinessLogic.Entities.ClassType" Collapsed="true">
+    <Position X="19.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAIAAAAAgAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Entities\Enums\ClassType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ResourceManagementSystem.BusinessLogic.Entities.Currency" Collapsed="true">
+    <Position X="16" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Entities\Enums\Currency.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ResourceManagementSystem.BusinessLogic.Entities.FormationType" Collapsed="true">
+    <Position X="17.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAABAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAABA=</HashCode>
+      <FileName>Entities\Enums\FormationType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ResourceManagementSystem.BusinessLogic.Entities.Language" Collapsed="true">
+    <Position X="19.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAAABAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Entities\Enums\Language.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ResourceManagementSystem.BusinessLogic.Entities.LearningDegree" Collapsed="true">
+    <Position X="14.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAACBA=</HashCode>
+      <FileName>Entities\Enums\LearningDegree.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ResourceManagementSystem.BusinessLogic.Entities.Specialization" Collapsed="true">
+    <Position X="16" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAEAAAAAAAAAAgAAAAEAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Entities\Enums\Specialization.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ResourceManagementSystem.BusinessLogic.Entities.TaskPeriodicity" Collapsed="true">
+    <Position X="17.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAQAAAAAAAAAAAgAAAAAAhA=</HashCode>
+      <FileName>Entities\Enums\TaskPeriodicity.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ResourceManagementSystem.BusinessLogic.Entities.TaskState" Collapsed="true">
+    <Position X="19.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAQAIAAAgAQAAAAAAAAAgAAAAAAAAAAAAhA=</HashCode>
+      <FileName>Entities\Enums\TaskState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

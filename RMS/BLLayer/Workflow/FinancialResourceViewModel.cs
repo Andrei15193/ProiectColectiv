@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using ResourceManagementSystem.BusinessLogic.Entities;
 using ResourceManagementSystem.DataAccess.DAOInterface;
 
-namespace ResourceManagementSystem.BusinessLogic.BusinessWorkflow
+namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
-    class FinancialResourceViewModel
+    public class FinancialResourceViewModel : Feature
     {
         IFinancialResources financialResourcesDAO;
 
         public FinancialResourceViewModel(IFinancialResources financialResourcesDAO)
+            : base("Financial Resource manager")
         {
             this.financialResourcesDAO = financialResourcesDAO;
         }
@@ -20,7 +21,7 @@ namespace ResourceManagementSystem.BusinessLogic.BusinessWorkflow
         public bool addFinancialResource(uint value, Currency currency)
         {
             FinancialResource fr = new FinancialResource(value, currency);
-            
+
             return financialResourcesDAO.addFinancialResource(fr);
         }
     }

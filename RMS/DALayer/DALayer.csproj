@@ -46,6 +46,7 @@
     <Compile Include="DBImpl\Equipment.cs" />
     <Compile Include="DBImpl\FinancialResources.cs" />
     <Compile Include="DBImpl\HumanResources.cs" />
+    <Compile Include="DBImpl\Tasks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

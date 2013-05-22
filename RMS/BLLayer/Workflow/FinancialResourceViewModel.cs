@@ -16,13 +16,26 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             : base("Financial Resource manager")
         {
             this.financialResourcesDAO = financialResourcesDAO;
+            Value = 0;
+            Currency = Entities.Currency.Unknown;
         }
 
-        public bool addFinancialResource(uint value, Currency currency)
+        public bool AddFinancialResource()
         {
-            FinancialResource fr = new FinancialResource(value, currency);
-
-            return financialResourcesDAO.addFinancialResource(fr);
+            FinancialResource fr = new FinancialResource(Value, Currency);
+            return financialResourcesDAO.AddFinancialResource(fr);
         }
+
+        public IEnumerable<FinancialResource> All
+        {
+            get
+            {
+                return financialResourcesDAO.All;
+            }
+        }
+
+        public uint Value { get; set; }
+
+        public Currency Currency { get; set; }
     }
 }

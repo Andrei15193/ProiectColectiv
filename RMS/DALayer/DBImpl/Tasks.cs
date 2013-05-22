@@ -12,7 +12,7 @@ namespace DALayer.DBImpl
     {
         public int? GetTaksIdByTask(BL.ITask task)
         {
-            if (task == null || task.Location == null || task.StartDate != null || task.Location.Building == null)
+            if (task == null || task.Location == null || task.StartDate == null || task.Location.Building == null)
             {
                 return null;
             }
@@ -61,6 +61,52 @@ namespace DALayer.DBImpl
             dbConnection.Connection.Close();
 
             return taskId;
+        }
+
+        public void AddTask(BL.ITask task)
+        {
+            /*DBConnection dbConnection = new DBConnection();
+            dbConnection.Connection.Open();
+
+            SqlCommand cmd = new SqlCommand(@"insert into tasks (startDate, endDate, taskState, periodicity, number, duration, summary, taskDescription, idActivity, idFinancialResource) values
+				(@startDate, @endDate, @taskState, @periodicity, @number, @duration, @summary, @taskDescription, @idActivity, @idFinancialResource)", dbConnection.Connection);
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@startDate",
+                Value = task.StartDate
+            });
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@endDate",
+                Value = task.EndDate
+            });
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@periodicity",
+                Value = task.EstimatedBudget
+            });
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@duration",
+                Value = Convert.ToInt32(task.du)
+            });
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@summary",
+                Value = task.
+            });
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@taskDescription",
+                Value = task.Description
+            });
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@state",
+                Value = task.State
+            });
+            cmd.ExecuteNonQuery();
+            dbConnection.Connection.Close();*/
         }
     }
 }

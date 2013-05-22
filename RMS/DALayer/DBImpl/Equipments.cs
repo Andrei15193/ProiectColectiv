@@ -105,7 +105,11 @@ namespace DALayer.DBImpl
         {
             DBConnection dbConnection = new DBConnection();
             dbConnection.Connection.Open();
-            int taskId = -1;
+            int? taskId = new Tasks().GetTaksIdByTask(task);
+            if (taskId == null)
+            {
+                taskId = -1;
+            }
             SqlCommand cmd = new SqlCommand(@"select serialNumber from TasksEquipments where taskId = @taskId", dbConnection.Connection);
             cmd.Parameters.Add(new SqlParameter()
             {
@@ -220,7 +224,11 @@ namespace DALayer.DBImpl
                 Value = equipment.ClassRoom
             });
             cmd.ExecuteNonQuery();
-            int taskId = -1;
+            int? taskId = new Tasks().GetTaksIdByTask(equipment.Task);
+            if (taskId == null)
+            {
+                taskId = -1;
+            }
             cmd = new SqlCommand(@"insert into tasksequipments Values(@serialNumber, @taskId)", dbConnection.Connection);
             cmd.Parameters.Add(new SqlParameter()
             {
@@ -238,12 +246,85 @@ namespace DALayer.DBImpl
 
         public void Update(string serialNumber, ResourceManagementSystem.BusinessLogic.Entities.Equipment newEquipment)
         {
-            throw new NotImplementedException();
+            DBConnection dbConnection = new DBConnection();
+            dbConnection.Connection.Open();
+
+            SqlCommand cmd = new SqlCommand(@"update Equipments brand = @brand, modelName = @modelName, isBroken = @isBroken, classRoomId = @classRoomId, equipmentDescription = @eqDesc where serialNumber = @serialNumber", dbConnection.Connection);
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@brand",
+                Value = newEquipment.Brand
+            });
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@modelName",
+                Value = newEquipment.Model
+            });
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@isBroken",
+                Value = newEquipment.IsBroken
+            });
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@classRoomId",
+                Value = new ClassRooms().getClassRoomIdbyClassRoom(newEquipment.ClassRoom)
+            });
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@serialNumber",
+                Value = serialNumber
+            });
+
+            cmd.ExecuteNonQuery();
+            cmd = new SqlCommand(@"delete from TasksEquipments where serialNumber = @serial", dbConnection.Connection);
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@serialNumber",
+                Value = serialNumber
+            });
+            cmd.ExecuteNonQuery();
+                int? id = new Tasks().GetTaksIdByTask(newEquipment.Task);
+                if (id == null)
+                {
+                    id = -1;
+                }
+
+                cmd = new SqlCommand(@"insert into TasksEquipments Values(@serialNumber, @taskId)", dbConnection.Connection);
+                cmd.Parameters.Add(new SqlParameter()
+                {
+                    ParameterName = "@taskId",
+                    Value = id
+                });
+                cmd.Parameters.Add(new SqlParameter()
+                {
+                    ParameterName = "@serialNumber",
+                    Value = serialNumber
+                });
+                cmd.ExecuteNonQuery();
+            dbConnection.Connection.Close();
         }
 
         public void Delete(string serialNumber)
         {
-            throw new NotImplementedException();
+            DBConnection dbConnection = new DBConnection();
+            dbConnection.Connection.Open();
+
+            SqlCommand cmd = new SqlCommand(@"delete from TasksEquipments where serialNumber = @serialNumber", dbConnection.Connection);
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@serialNumber",
+                Value = serialNumber
+            });
+            cmd.ExecuteNonQuery();
+            cmd = new SqlCommand(@"delete from equipments where serialNumber = @serialNumber", dbConnection.Connection);
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@serialNumber",
+                Value = serialNumber
+            });
+            cmd.ExecuteNonQuery();
+            dbConnection.Connection.Close();
         }
     }
 }

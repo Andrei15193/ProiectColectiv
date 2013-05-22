@@ -58,7 +58,28 @@ namespace DALayer.DBImpl
                 });
                 cmd.ExecuteNonQuery();
             }
-            //TO-DO insert tasks, need id
+            for (int i = 0; i < member.Tasks.Count; i++)
+            {
+                int? id = new Tasks().GetTaksIdByTask(member.Tasks.ElementAt(i));
+                if (id == null)
+                {
+                    new Tasks().AddTask(member.Tasks.ElementAt(i));
+                    id = new Tasks().GetTaksIdByTask(member.Tasks.ElementAt(i));
+                }
+
+                cmd = new SqlCommand(@"insert into UsersTasks Values(@email, @taskId)", dbConnection.Connection);
+                cmd.Parameters.Add(new SqlParameter()
+                {
+                    ParameterName = "@taskId",
+                    Value = id
+                });
+                cmd.Parameters.Add(new SqlParameter()
+                {
+                    ParameterName = "@email",
+                    Value = member.EMail
+                });
+                cmd.ExecuteNonQuery();
+            }
             dbConnection.Connection.Close();
             return true;
         }
@@ -118,7 +139,35 @@ namespace DALayer.DBImpl
                 });
                 cmd.ExecuteNonQuery();
             }
-            //TO-DO update tasks, need id
+            cmd = new SqlCommand(@"delete from UsersTasks where email = @email", dbConnection.Connection);
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@email",
+                Value = email
+            });
+            cmd.ExecuteNonQuery();
+            for (int i = 0; i < newMember.Tasks.Count; i++)
+            {
+                int? id = new Tasks().GetTaksIdByTask(newMember.Tasks.ElementAt(i));
+                if (id == null)
+                {
+                    new Tasks().AddTask(newMember.Tasks.ElementAt(i));
+                    id = new Tasks().GetTaksIdByTask(newMember.Tasks.ElementAt(i));
+                }
+
+                cmd = new SqlCommand(@"insert into UsersTasks Values(@email, @taskId)", dbConnection.Connection);
+                cmd.Parameters.Add(new SqlParameter()
+                {
+                    ParameterName = "@taskId",
+                    Value = id
+                });
+                cmd.Parameters.Add(new SqlParameter()
+                {
+                    ParameterName = "@email",
+                    Value = newMember.EMail
+                });
+                cmd.ExecuteNonQuery();
+            }
             dbConnection.Connection.Close();
             return true;
         }

@@ -312,5 +312,47 @@ namespace DALayer.DBImpl
 
             dbConnection.Connection.Close();
         }
+
+        public int getClassRoomIdbyClassRoom(ClassRoom classRoom)
+        {
+            int classId = 0;
+            
+            DBConnection dbConnection = new DBConnection();
+            dbConnection.Connection.Open();
+
+            SqlCommand cmd = new SqlCommand(@"select id
+                                              from ClassRooms 
+                                              where buildingName = @buldingName and classFloor = @classFloor and number = @number",
+                                            dbConnection.Connection);
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@buldingName",
+                Value = classRoom.Building
+            });
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@classFloor",
+                Value = Convert.ToInt32(classRoom.Floor)
+            });
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@number",
+                Value = Convert.ToInt32(classRoom.Number)
+            });
+
+            SqlDataReader dr = cmd.ExecuteReader();
+            if (dr.Read())
+            {
+                if (!dr.IsDBNull(0))
+                {
+                    classId = dr.GetInt32(0);
+                }
+                else
+                {
+                    classId = -1;
+                }
+            }
+            return classId;
+        }
     }
 }

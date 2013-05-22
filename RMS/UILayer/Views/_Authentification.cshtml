@@ -5,7 +5,7 @@
 
 @if (memberViewModel.IsAuthenticated)
 {   
-    <form class="logout" action="index.cshtml" method="get">
+    <form class="logout" action="/index.cshtml" method="get">
         <input name="logout" type="hidden" value="true" />
         <div class="pull-left">
             <img src="/img/user.png" />
@@ -18,7 +18,7 @@
 }
 else
 {
-    <form class="form-inline login" method="post" action="index.cshtml">
+    <form class="form-inline login" method="post" action="/index.cshtml">
         <div class="pull-left">
             <input name="email" type="text" class="input-small" placeholder="Email">
             <input name="password" type="password" class="input-small" placeholder="Password">

@@ -86,23 +86,22 @@ go
 
 if not exists (select * from sys.objects where name = 'Tasks' and type = 'U')
 	create table dbo.Tasks (id int identity(1,1),
+                            taskType varchar(30),
 							startDate datetime not null,
 							endDate datetime not null,
+                            location int not null, 
 							taskState int not null,
-							periodicity int not null,
-							number int,
-							duration int,
-							summary varchar(255) null,
+							title varchar(100) null,
 							taskDescription nvarchar(max) null,
 							idActivity int null,
-							idFinancialResource int null,
 							constraint PK_Tasks primary key (id),
+                            constraint FK_Tasks_ClassRooms foreign key (location) references dbo.ClassRooms(id),
 							constraint CK_Tasks_ValidateDuration check(convert(datetime, startDate, 105) <= convert(datetime, endDate, 105)),
 							constraint CK_Tasks_TaskState check(taskState >= 1 and taskState <= 8),
-							constraint CK_Tasks_Periodicity check(periodicity >= 1 and periodicity <= 4),
-							constraint FK_Tasks_Activity foreign key (idActivity) references dbo.Tasks (id),
-							constraint FK_Tasks_FinancialResource foreign key (idFinancialResource) references dbo.FinancialResource (id))
+							constraint FK_Tasks_Activity foreign key (idActivity) references dbo.Tasks (id))
 go
+
+
 
 if not exists (select * from sys.objects where name = 'TasksResearchProjects' and type = 'U')
 	create table dbo.TasksResearchProjects (projectName varchar(60) not null,
@@ -128,13 +127,44 @@ if not exists (select * from sys.objects where name = 'TasksEquipments' and type
 										 constraint FK_TasksEquipments_Tasks foreign key (taskId) references dbo.Tasks (id))
 go
 
-if not exists (select * from sys.objects where name = 'TasksClassRooms' and type = 'U')
-	create table dbo.TasksClassRooms	(classRoomId int not null,
-										 taskId int not null,
+if not exists (select * from sys.objects where name = 'Activities' and type = 'U')
+	create table dbo.Activities	(title varchar(100),
+                                 activityDescription varchar(max),
+                                 startDate datetime,
+                                 endDate datetime,
 										 constraint PK_TasksClassRooms primary key (classRoomId, taskId) with(fillfactor = 90),
 										 constraint FK_TasksClassRooms_ClassRooms foreign key (classRoomId) references dbo.ClassRooms (id),
 										 constraint FK_TasksClassRooms_Tasks foreign key (taskId) references dbo.Tasks (id))
 go
+
+if not exists (select * from sys.objects where name = 'AllowedTaskTypes' and type = 'U')
+	create table dbo.AllowedTaskTypess	(activityTitle varchar(100),
+                                         typeName varchar(100),
+										 constraint PK_AllowedTaskTypes primary key (activityTitle, typeName) with(fillfactor = 90),
+										 constraint FK_TasksClassRooms_ClassRooms foreign key (activityTitle) references dbo.ClassRooms (id),
+										 constraint FK_TasksClassRooms_Tasks foreign key (taskId) references dbo.Tasks (id))
+go
+
+if not exists (select * from sys.objects where name = 'TaskTypes' and type = 'U')
+	create table dbo.TaskTypes (name varchar(100),
+                                typeDescription varchar(max),
+                                constraint PK_TaskTypes primary key (name, typeDescription) with(fillfactor = 90))
+go
+
+if not exists (select * from sys.objects where name = 'TaskTypes' and type = 'U')
+	create table dbo.TaskTypes (name varchar(100),
+                                typeDescription varchar(max),
+                                constraint PK_TaskTypes primary key (name, typeDescription) with(fillfactor = 90))
+go
+
+
+--if not exists (select * from sys.objects where name = 'TasksClassRooms' and type = 'U')
+--	create table dbo.TasksClassRooms	(classRoomId int not null,
+--										 taskId int not null,
+--										 constraint PK_TasksClassRooms primary key (classRoomId, taskId) with(fillfactor = 90),
+--										 constraint FK_TasksClassRooms_ClassRooms foreign key (classRoomId) references dbo.ClassRooms (id),
+--										 constraint FK_TasksClassRooms_Tasks foreign key (taskId) references dbo.Tasks (id))
+--go
 
 if not exists (select * from sys.objects where name = 'TaskReports' and type = 'U')
 	create table dbo.TaskReports (reportDate datetime not null,
@@ -164,10 +194,10 @@ if not exists (select * from sys.objects where name = 'Courses' and type = 'U')
 go
 
 if not exists (select * from sys.objects where name = 'CoursesStudyPrograms' and type = 'U')
-	create table dbo.CoursesStudyPrograms (id int not null,
+	create table dbo.CoursesStudyPrograms (course int not null,
 										   specialization int not null,
-										   constraint PK_CoursesStudyPrograms primary key(specialization, id) with(fillfactor = 90),
-										   constraint FK_CoursesStudyPrograms_Courses foreign key (id) references dbo.Courses(id),
+										   constraint PK_CoursesStudyPrograms primary key(specialization, course) with(fillfactor = 90),
+										   constraint FK_CoursesStudyPrograms_Courses foreign key (course) references dbo.Courses(id),
 										   constraint FK_CoursesStudyPrograms_StudyPrograms foreign key (specialization) references dbo.StudyPrograms(specialization))
 										   
 go
@@ -210,10 +240,10 @@ go
 
 if not exists (select * from sys.objects where name = 'DidacticTasksCourses' and type = 'U')
 	create table dbo.DidacticTasksCourses	(courseId int not null,
-											taskId int not null,
-									 constraint PK_DidacticTasksCourses primary key(courseId, taskId) with(fillfactor = 90),
-									 constraint FK_DidacticTasksCourses_Tasks foreign key (taskId) references dbo.DidacticTasks(taskId),
-									 constraint FK_DidacticTasksCourses_Courses foreign key (courseId) references dbo.Courses(id))
+									         taskId int not null,
+									         constraint PK_DidacticTasksCourses primary key(courseId, taskId) with(fillfactor = 90),
+									         constraint FK_DidacticTasksCourses_Tasks foreign key (taskId) references dbo.DidacticTasks(taskId),
+									         constraint FK_DidacticTasksCourses_Courses foreign key (courseId) references dbo.Courses(id))
 go
 
 

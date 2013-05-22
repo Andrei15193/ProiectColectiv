@@ -9,54 +9,50 @@ namespace DATest.DATests
     [TestClass]
     public class EquipmentsTest
     {
-        [TestMethod]
+        
         public void AddTest()
         {
+            Equipment e = new Equipment("acer", "a6920", "12347890-456", false, new ClassRoom("CCCCC", 2, 1));
+            new Equipments().Add(e);
         }
 
-        [TestMethod]
         public void UpdateTest()
         {
-            ClassRooms rc = new ClassRooms();
-            ClassRoom c = new ClassRoom("Cladire Centrala", 2, 6, "Sala de curs si seminar");
-            rc.Update(c.Building, c.Floor, c.Number, c);
-            ISet<ClassRoom> cs = rc.getAll();
-            bool b = false;
-            foreach (ClassRoom room in cs)
-            {
-                if (room.Number == c.Number && room.Floor == c.Floor && room.Description == c.Description)
-                {
-                    b = true;
-                }
-            }
-            Assert.IsTrue(b);
+            Equipment e = new Equipment("acsaser", "a6sdsd920", "12347890-456", false, new ClassRoom("CCCCC", 2, 1));
+            new Equipments().Update(e.SerialNumber, e);
         }
 
-        [TestMethod]
         public void DeleteTest()
         {
-            ClassRooms rc = new ClassRooms();
-            ClassRoom c = new ClassRoom("Sediul central UBB", 1, 2, "Sala de curs si seminar");
-            rc.Delete(c.Building, c.Floor, c.Number);
-            ISet<ClassRoom> cs = rc.getAll();
-            bool b = true;
-            foreach (ClassRoom room in cs)
-            {
-                if (room.Number == c.Number && room.Floor == c.Floor && room.Description == c.Description)
-                {
-                    b = false;
-                }
-            }
-            Assert.IsTrue(b);
+            Equipment e = new Equipment("acsaser", "a6sdsd920", "12347890-456", false, new ClassRoom("CCCCC", 2, 1));
+            new Equipments().Delete(e.SerialNumber);
         }
 
-        [TestMethod]
         public void GetByPKTest()
         {
-            ClassRooms rc = new ClassRooms();
-            ClassRoom room = rc.getByPK("Sediul central UBB", 1, 2);
+            Equipment e = new Equipment("acer", "a6920", "12347890-456", false, new ClassRoom("CCCCC", 2, 1));
+            new Equipments().Add(e);
+            Equipment e1 =  new Equipments().getByPK(e.SerialNumber);
+            Assert.AreEqual(e1.Name, e.Name);
+            Assert.AreEqual(e1.Brand, e.Brand);
+            Assert.AreEqual(e1.ClassRoom.Name, e.ClassRoom.Name);
+        }
 
-            Assert.IsNotNull(room);
+        public void GetByClassRoomTest()
+        {
+            ClassRoom c = new ClassRoom("CCCCC", 2, 1);
+            Equipment e = new Equipment("acer", "a6920", "12347890-456", false, c);
+            new Equipments().Add(e);
+            ISet<Equipment> set = new Equipments().getByClassRoom(c);
+
+        }
+
+        public void GetAllTest()
+        {
+            ClassRoom c = new ClassRoom("CCCCC", 2, 1);
+            Equipment e = new Equipment("acer", "a6920", "123470-456", false, c);
+            new Equipments().Add(e);
+            ISet<Equipment> set = new Equipments().getByClassRoom(c);
         }
     }
 }

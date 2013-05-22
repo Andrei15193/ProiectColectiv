@@ -196,8 +196,8 @@ namespace DALayer.DBImpl
             DBConnection dbConnection = new DBConnection();
             dbConnection.Connection.Open();
 
-            SqlCommand cmd = new SqlCommand(@"insert into equipments('equipmentDescription', 'brand', 'serialNumber', 'isBroken', 'classRoomId') 
-                                            values(@equipmentDescription, @brand, @serialNumber, @isBroken, @classRoomId)", dbConnection.Connection);
+            SqlCommand cmd = new SqlCommand(@"insert into equipments(equipmentDescription, modelName, brand, serialNumber, isBroken, classRoomId) 
+                                            values(@equipmentDescription, @model, @brand, @serialNumber, @isBroken, @classRoomId)", dbConnection.Connection);
             cmd.Parameters.Add(new SqlParameter()
             {
                 ParameterName = "@equipmentDescription",
@@ -220,8 +220,13 @@ namespace DALayer.DBImpl
             });
             cmd.Parameters.Add(new SqlParameter()
             {
+                ParameterName = "@model",
+                Value = equipment.Model
+            });
+            cmd.Parameters.Add(new SqlParameter()
+            {
                 ParameterName = "@classRoomId",
-                Value = equipment.ClassRoom
+                Value = new ClassRooms().getClassRoomIdbyClassRoom(equipment.ClassRoom)
             });
             cmd.ExecuteNonQuery();
             int? taskId = new Tasks().GetTaksIdByTask(equipment.Task);
@@ -229,18 +234,21 @@ namespace DALayer.DBImpl
             {
                 taskId = -1;
             }
-            cmd = new SqlCommand(@"insert into tasksequipments Values(@serialNumber, @taskId)", dbConnection.Connection);
-            cmd.Parameters.Add(new SqlParameter()
+            else
             {
-                ParameterName = "@serialNumber",
-                Value = equipment.SerialNumber
-            });
-            cmd.Parameters.Add(new SqlParameter()
-            {
-                ParameterName = "@taskId",
-                Value = taskId
-            });
-            cmd.ExecuteNonQuery(); 
+                cmd = new SqlCommand(@"insert into tasksequipments Values(@serialNumber, @taskId)", dbConnection.Connection);
+                cmd.Parameters.Add(new SqlParameter()
+                {
+                    ParameterName = "@serialNumber",
+                    Value = equipment.SerialNumber
+                });
+                cmd.Parameters.Add(new SqlParameter()
+                {
+                    ParameterName = "@taskId",
+                    Value = taskId
+                });
+                cmd.ExecuteNonQuery();
+            }
             dbConnection.Connection.Close();
         }
 
@@ -249,7 +257,7 @@ namespace DALayer.DBImpl
             DBConnection dbConnection = new DBConnection();
             dbConnection.Connection.Open();
 
-            SqlCommand cmd = new SqlCommand(@"update Equipments brand = @brand, modelName = @modelName, isBroken = @isBroken, classRoomId = @classRoomId, equipmentDescription = @eqDesc where serialNumber = @serialNumber", dbConnection.Connection);
+            SqlCommand cmd = new SqlCommand(@"update Equipments set brand = @brand, modelName = @modelName, isBroken = @isBroken, classRoomId = @classRoomId, equipmentDescription = @eqDesc where serialNumber = @serialNumber", dbConnection.Connection);
             cmd.Parameters.Add(new SqlParameter()
             {
                 ParameterName = "@brand",
@@ -275,9 +283,14 @@ namespace DALayer.DBImpl
                 ParameterName = "@serialNumber",
                 Value = serialNumber
             });
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@eqDesc",
+                Value = newEquipment.Description
+            });
 
             cmd.ExecuteNonQuery();
-            cmd = new SqlCommand(@"delete from TasksEquipments where serialNumber = @serial", dbConnection.Connection);
+            cmd = new SqlCommand(@"delete from TasksEquipments where serialNumber = @serialNumber", dbConnection.Connection);
             cmd.Parameters.Add(new SqlParameter()
             {
                 ParameterName = "@serialNumber",

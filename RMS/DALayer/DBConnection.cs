@@ -12,8 +12,7 @@ namespace DALayer
     {
         public DBConnection()
         {
-            //this.Connection = new SqlConnection("Initial Catalog=Andrei15193_sqldb; Data Source=andrei15193.tk,779; User=Andrei15193_RMSuser; Password=d3m3nt14l123");
-            this.Connection = new SqlConnection("Initial Catalog=tpcc; Data Source=ANDREI-PC\\ANDREISQL;;Integrated Security= true");
+            this.Connection = new SqlConnection("Initial Catalog=Andrei15193_sqldb; Data Source=andrei15193.tk,779; User=Andrei15193_RMSuser; Password=d3m3nt14l123");
         }
 
         public SqlConnection Connection

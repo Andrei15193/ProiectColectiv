@@ -31,7 +31,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -47,6 +46,7 @@
     <Compile Include="DBImpl\FinancialResources.cs" />
     <Compile Include="DBImpl\HumanResources.cs" />
     <Compile Include="DBImpl\Tasks.cs" />
+    <Compile Include="Mocks\FinancialResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

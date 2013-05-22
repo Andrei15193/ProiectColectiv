@@ -6,32 +6,33 @@ using System.Threading.Tasks;
 using ResourceManagementSystem.BusinessLogic.Entities;
 using ResourceManagementSystem.DataAccess.DAOInterface;
 
-namespace ResourceManagementSystem.BusinessLogic.BusinessWorkflow
+namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
-    class HumanResourcesViewModel
+    public class HumanResourcesViewModel : Feature
     {
         IHumanResources humanResourcesDAO;
 
         public HumanResourcesViewModel(IHumanResources humanResourcesDAO)
+            : base("Human Resource manager")
         {
             this.humanResourcesDAO = humanResourcesDAO;
         }
 
-        public bool addMember(Role role, string firstName, string lastName, string email, string password, IEnumerable<ITask> attendingTasks)
+        public bool AddMember(Role role, string firstName, string lastName, string email, string password, IEnumerable<ITask> attendingTasks)
         {
             Member m = new Member(role, firstName, lastName, email, password, attendingTasks);
 
             return humanResourcesDAO.addMember(m);
         }
 
-        public bool updateMember(Role role, string firstName, string lastName, string email, string password, IEnumerable<ITask> attendingTasks)
+        public bool UpdateMember(Role role, string firstName, string lastName, string email, string password, IEnumerable<ITask> attendingTasks)
         {
             Member m = new Member(role, firstName, lastName, email, password, attendingTasks);
 
             return humanResourcesDAO.updateMember(email, m);
         }
 
-        public bool deleteMember(string email)
+        public bool DeleteMember(string email)
         {
             return humanResourcesDAO.deleteMember(email);
         }

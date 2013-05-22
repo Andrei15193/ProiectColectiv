@@ -13,5 +13,15 @@ namespace DALayer.DBImpl
         {
             throw new NotImplementedException();
         }
+
+        public bool AddFinancialResource(ResourceManagementSystem.BusinessLogic.Entities.FinancialResource fr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ResourceManagementSystem.BusinessLogic.Entities.FinancialResource> All
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

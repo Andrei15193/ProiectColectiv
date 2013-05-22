@@ -1,7 +1,12 @@
-﻿namespace ResourceManagementSystem.DataAccess.DAOInterface
+﻿using ResourceManagementSystem.BusinessLogic.Entities;
+using System.Collections.Generic;
+
+namespace ResourceManagementSystem.DataAccess.DAOInterface
 {
     public interface IFinancialResources
     {
-        bool addFinancialResource(ResourceManagementSystem.BusinessLogic.Entities.FinancialResource fr);
+        bool AddFinancialResource(ResourceManagementSystem.BusinessLogic.Entities.FinancialResource fr);
+
+        IEnumerable<FinancialResource> All { get; }
     }
 }

@@ -110,6 +110,10 @@
       <Project>{0e72f80e-cb0f-432b-8106-0a595d5e5213}</Project>
       <Name>DALayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DAOInterface\DAOInterface.csproj">
+      <Project>{fefd3abb-0935-4320-ae21-e0bcc01cdff7}</Project>
+      <Name>DAOInterface</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

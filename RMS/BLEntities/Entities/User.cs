@@ -29,7 +29,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         protected User(string userName, Role role)
         {
-            if (role != null)
+            if (!role.Equals(null))
             {
                 UserName = userName;
                 Roles = new Collections.UnemptySet<Role>(role);

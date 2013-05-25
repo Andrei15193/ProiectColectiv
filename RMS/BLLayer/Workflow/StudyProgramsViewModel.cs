@@ -5,61 +5,97 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ResourceManagementSystem.BusinessLogic.Entities;
+using ResourceManagementSystem.DataAccess.DAOInterface;
 
 namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
-    class StudyProgramsViewModel
+    public class StudyProgramsViewModel
     {
         public Specialization specialization;
-        private Hashtable allCourses;
-        private Hashtable studyProgramCourses;
-        //private IStudyPrograms stu
+        private ICollection<Course> allCourses;
+        private ICollection<Course> studyProgramCourses;
+        private IStudyPrograms studyPrograms;
+        private ISpecializations specializations;
+        private ICourses courses;
 
+        public StudyProgramsViewModel(ISpecializations specializations, ICourses courses, IStudyPrograms studyPrograms)
+        {
+            this.specializations = specializations;
+            this.courses = courses;
+            this.studyPrograms = studyPrograms;
+            this.studyProgramCourses = new List<Course>();
+            this.allCourses = new List<Course>();
+        }
 
+        public ICollection<string> GetAllCourses()
+        {
+            ICollection<string> courseNamesList = new List<string>();
+            ICollection<Course> courseList = courses.GetAllCourses();
+            allCourses.Clear();
 
-        //public ICollection<string> GetAllCourses()
-        //{
+            foreach (Course c in courseList)
+            {
+                allCourses.Add(c);
+                courseNamesList.Add(c.Name);
+            }
+            return courseNamesList;
+        }
 
-        //}
+        public ICollection<string> GetSpecializationList()
+        {
+            ICollection<string> specializationList = new List<string>();
+            ICollection<Specialization> spec = specializations.GetAllSpecializations();
+            foreach (Specialization s in spec)
+            {
+                specializationList.Add(s.ToString());
+            }
+            return specializationList;
+        }
 
-        //public ICollection<string> GetSpecializationList()
-        //{
+        public bool SetSpecialization(string name)
+        {
+            ICollection<Specialization> spec = specializations.GetAllSpecializations();
+            foreach (Specialization s in spec)
+            {
+                if (string.Compare(s.ToString(), name, true) == 0)
+                {
+                    specialization = s;
+                    return true;
+                }
+            }
+            return false;
+        }
 
+        public bool AddCourse(string name)
+        {
+            foreach(Course c  in allCourses)
+            {
+                if (string.Compare(c.Name, name, true)==0)
+                {
+                    studyProgramCourses.Add(c);
+                    return true;
+                }
+            }
+            return false;
+        }
 
-        //}
+        public bool RemoveCourse(string name)
+        {
+            foreach (Course c in allCourses)
+            {
+                if (string.Compare(c.Name, name, true) == 0)
+                {
+                    studyProgramCourses.Remove(c);
+                    return true;
+                }
+            }
+            return false;
+        }
 
-        //public bool setSpecialization(string name)
-        //{
-
-        //}
-
-        //public bool AddCourse(string name)
-        //{
-        //    Course course = (Course) allCourses[name];
-        //    try
-        //    {
-        //        studyProgramCourses.Add(name, course);
-        //        return true;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return false;
-        //    }
-        //}
-
-        //public bool RemoveCourse(string name)
-        //{
-        //    try
-        //    {
-        //        studyProgramCourses.Remove(name);
-        //        return true;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return false;
-        //    }
-        //}
-
-        //public
+        public bool submit()
+        {
+            StudyProgram studyProgram = new StudyProgram(specialization, studyProgramCourses);
+            return studyPrograms.AddStudyProgram(studyProgram);
+        }
     }
 }

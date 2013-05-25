@@ -9,7 +9,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         string Description { get; }
 
-        TaskState State { get; }
+        TaskState State { get; set; }
 
         TaskType Type { get; }
 

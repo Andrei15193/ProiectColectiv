@@ -10,9 +10,9 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
     public class StudentCirclesViewModel : Feature
     {
-        IStudentCircles activityDAO;
+        IActivities activityDAO;
         
-        public StudentCirclesViewModel(IStudentCircles activityDAO)
+        public StudentCirclesViewModel(IActivities activityDAO)
             : base("Defines student circles")
         {
             this.activityDAO = activityDAO;
@@ -22,13 +22,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             Activity activity = new Activity(title, description, allowedTaskTypes, tasks);
             return activityDAO.addActivity(activity);
-        }
-
-        public bool AddTask(string title, ITask task)
-        {
-            Activity activity = activityDAO.getActivity(title);
-            activity.Tasks.Add(task);
-            return activityDAO.addTask(title, task);
         }
     }
 }

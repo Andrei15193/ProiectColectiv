@@ -39,12 +39,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAOInterface\IStudentCircles.cs" />
+    <Compile Include="DAOInterface\IActivities.cs" />
     <Compile Include="DAOInterface\IClassRoom.cs" />
+    <Compile Include="DAOInterface\ICourses.cs" />
     <Compile Include="DAOInterface\IEquipment.cs" />
     <Compile Include="DAOInterface\IAllMembers.cs" />
     <Compile Include="DAOInterface\IFinancialResources.cs" />
     <Compile Include="DAOInterface\IHumanResources.cs" />
+    <Compile Include="DAOInterface\ISpecializations.cs" />
     <Compile Include="DAOInterface\IStudyPrograms.cs" />
     <Compile Include="DAOInterface\ITasks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

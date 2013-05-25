@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-    public struct Role
+    public class Role
     {
         public static bool operator ==(Role x, string name)
         {
@@ -51,7 +51,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         public static bool operator !=(Role x, object y)
         {
-            return !(x == y);
+            return !(x as object == y);
         }
 
         public static bool operator !=(object x, Role y)
@@ -129,13 +129,13 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                 }
                 else
                 {
-                    role = new Role();
+                    role = new Role(name);
                     return false;
                 }
             }
             else
             {
-                role = new Role();
+                role = new Role("");
                 return false;
             }
         }
@@ -233,7 +233,22 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
         }
 
-        private Role(string name, string description, ICollection<string> featureNames)
+        public Role(string name)
+        {
+            if (name != null)
+                if (name.Length > 4)
+                {
+                    this.name = name;
+                    this.description = string.Empty;
+                    this.featureNames = new List<string>();
+                }
+                else
+                    throw new ArgumentException("The provided name must have more than 4 characters");
+            else
+                throw new ArgumentNullException("The provided value for name cannot be null!");
+        }
+
+        public Role(string name, string description, ICollection<string> featureNames)
         {
             if (name != null)
                 if (description != null)
@@ -254,7 +269,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         private string name;
         private string description;
         private static ISet<Role> roles = new SortedSet<Role>(new Collections.Comparer<Role>((x, y) => string.Compare(x.Name, y.Name)));
-        private ICollection<string> featureNames = new Collections.UnemptySet<string>();
+        private ICollection<string> featureNames;
     }
 
 }

@@ -7,8 +7,9 @@ using ResourceManagementSystem.BusinessLogic.Entities;
 
 namespace ResourceManagementSystem.DataAccess.DAOInterface
 {
-    public interface IStudyPrograms
+    public interface ICourses
     {
-        bool AddStudyProgram(StudyProgram studyProgram);
+        bool AddCourse(Course course);
+        ICollection<Course> GetAllCourses();
     }
 }

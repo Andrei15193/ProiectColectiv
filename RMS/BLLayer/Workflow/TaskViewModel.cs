@@ -26,6 +26,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public FinancialResource estimatedBudget { get; set; }
         public Member member { get; set; }
         public Formation formation { get; set; }
+        public IEnumerable<Member> assignees;
         
         public TaskViewModel(IActivity activity, ITasks taskDAO)
         {
@@ -50,7 +51,21 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                         activity.Tasks.Add(rt);
                         taskDAO.addTask(rt);
                         break; 
-                    }  
+                    }
+                case "Administrative":
+                    {
+                        AdministrativeTask at = new AdministrativeTask(title, description, startDate, endDate, classRoom, estimatedBudget, assignees);
+                        activity.Tasks.Add(at);
+                        taskDAO.addTask(at);
+                        break;
+                    }
+                case "Meeting":
+                    {
+                        MeetingTask mt = new MeetingTask(title, description, startDate, endDate, classRoom, estimatedBudget, assignees);
+                        activity.Tasks.Add(mt);
+                        taskDAO.addTask(mt);
+                        break;
+                    }
             }
         }
 

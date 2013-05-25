@@ -1,67 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BusinessLogic.Entities
+namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-    public class DidacticActivity : Task
+    public class DidacticActivity : Activity
     {
-        public uint semester
+        public DidacticActivity(uint semester, StudyProgram studyProgram, IEnumerable<DidacticTask> didacticTasks)
+            : base(string.Format("{0}, semester {1}", studyProgram.Specialization.ToString(), semester), string.Format("Courses, seminars and laboratories for semster {0}, {1} specialization", semester, studyProgram.Specialization.ToString()), new string[] { "didactic" }, didacticTasks)
         {
-            get { return semester; }
-            set { semester = value; }
+            if (studyProgram != null)
+                if (semester > 0)
+                {
+                    Semester = semester;
+                    StudyProgram = studyProgram;
+                }
+                else
+                    throw new ArgumentException("The provided value for semester cannot be 0 (zero)!");
+            else
+                throw new ArgumentNullException("The provided value for study program cannot be null!");
         }
 
-        public StudyProgram studyProgram
+        public IEnumerable<DidacticTask> DidacticTasks
         {
-            get { return studyProgram; }
-            set { studyProgram = value; }
+            get
+            {
+                return Tasks.OfType<DidacticTask>();
+            }
         }
 
-        public UnemptySortedSet<DidacticTask> classes
-        {
-            get { return classes; }
-            set { classes = value; }
-        }
+        public uint Semester { get; private set; }
 
-        public DidacticActivity(PerformersSet performers, UnemptySet<LogisticalResource> logisticalResources,
-            FinancialResource estimatedBudget, UnemptySortedSet<DidacticTask> classes, Course course)
-            : base(performers, logisticalResources, estimatedBudget)
-        {
-            this.semester = 0;
-            this.studyProgram =new StudyProgram(course);
-            this.classes = classes;
-        }
-
-        public DidacticActivity(DateTime startDate, DateTime endDate, string description, PerformersSet performers,
-            UnemptySet<LogisticalResource> logisticalResources, FinancialResource estimatedBudget,
-           UnemptySortedSet<DidacticTask> classes, Course course)
-            : base(startDate, endDate, description, performers, logisticalResources, estimatedBudget)
-        {
-            this.semester = 0;
-            this.studyProgram = new StudyProgram(course);
-            this.classes = classes;
-        }
-
-        public DidacticActivity(PerformersSet performers, UnemptySet<LogisticalResource> logisticalResources,
-            FinancialResource estimatedBudget, uint semester, StudyProgram studyProgram, UnemptySortedSet<DidacticTask> classes)
-            : base(performers, logisticalResources, estimatedBudget)
-        {
-            this.semester = semester;
-            this.studyProgram = studyProgram;
-            this.classes = classes;
-        }
-
-        public DidacticActivity(DateTime startDate, DateTime endDate, string description, PerformersSet performers,
-            UnemptySet<LogisticalResource> logisticalResources, FinancialResource estimatedBudget, uint semester,
-            StudyProgram studyProgram, UnemptySortedSet<DidacticTask> classes)
-            : base(startDate, endDate, description, performers, logisticalResources, estimatedBudget)
-        {
-            this.semester = semester;
-            this.studyProgram = studyProgram;
-            this.classes = classes;
-        }
+        public StudyProgram StudyProgram { get; private set; }
     }
 }

@@ -1,60 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BusinessLogic.Entities
+namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-    public class ResearchTask : Task
+    public class ResearchTask : AbstractTask
     {
-        public SortedSet<ReportEntry> taskReport
+        public ResearchTask(string title, string description, DateTime startDate, DateTime endDate, ClassRoom location, FinancialResource estimatedBudget, Member assignee)
+            : base(title, description, startDate, endDate, "research", location, estimatedBudget, assignee)
         {
-            get { return taskReport; }
-            set { taskReport = value; }
         }
 
-        public DateTime endDate
+        public ResearchTask(string title, DateTime startDate, DateTime endDate, ClassRoom location, FinancialResource estimatedBudget, Member assignee)
+            : base(title, string.Empty, startDate, endDate, "research", location, estimatedBudget, assignee)
         {
-            get { return endDate; }
-            set { endDate = value; }
-        }
-
-        public ResearchTask(PerformersSet performers, UnemptySet<LogisticalResource> logisticalResources,
-            FinancialResource estimatedBudget)
-            : base(performers, logisticalResources, estimatedBudget)
-        {
-            this.taskReport = new SortedSet<ReportEntry>();
-            this.endDate = new DateTime();
-        }
-
-        public ResearchTask(DateTime startDate, DateTime endDate, string description, PerformersSet performers,
-            UnemptySet<LogisticalResource> logisticalResources, FinancialResource estimatedBudget)
-            : base(startDate, endDate, description, performers, logisticalResources, estimatedBudget)
-        {
-            this.taskReport = new SortedSet<ReportEntry>();
-            this.endDate = new DateTime();
-        }
-
-        public ResearchTask(PerformersSet performers, UnemptySet<LogisticalResource> logisticalResources,
-            FinancialResource estimatedBudget, SortedSet<ReportEntry> taskReport, DateTime endDate)
-            : base(performers, logisticalResources, estimatedBudget)
-        {
-            this.taskReport = taskReport;
-            this.endDate = endDate;
-        }
-
-        public ResearchTask(DateTime startDate, DateTime endDate, string description, PerformersSet performers,
-            UnemptySet<LogisticalResource> logisticalResources, FinancialResource estimatedBudget, SortedSet<ReportEntry> taskReport, 
-            DateTime endDateReport)
-            : base(startDate, endDate, description, performers, logisticalResources, estimatedBudget)
-        {
-            this.taskReport = taskReport;
-            this.endDate = endDateReport;
-        }
-        public SortedSet<ReportEntry> getReports()
-        {
-            return taskReport;
         }
     }
 }

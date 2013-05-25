@@ -1,0 +1,64 @@
+View example:
+[tree view, activities -(<possible intermidiate activities>)-> tasks]
+
++Activities (IActivity)
++----Student circle (ITask)
++----Administrative event (ITask)
+
++Research projects (IActivity)
++---+Team (ISet<Member>)
+    +----Andrei (Member)
+    +----Florin (Member)
++---+Phase 1 (IActivity)
+    +----Research book (ITask)
+    +----Team meeting (ITask)
++---+Phase 2 (IActivity)
+    +----Hold presentation (ITask)
+
++Didactic activity (IActivity)
++---+Courses
+    +----DOS (ITask)
+    +----OOP (ITask)
+    +----SE (ITask)
++---+Laboratories
+    +----OOP (ITask)
++---+Seminars
+    +----SE (ITask)
+--------------------------------------------------------------------------------
+NOTES:
+  > ResearchProject implementeaza IActivity {to do}
+
+  > ResearchProject detine o lista de membrii care specifica echipa. Echipa nu
+    este constituita doar din cei care rezolva taskurile din fiecare faza (vezi
+    clasa Activity unde se intampla aceasta). {to do}
+
+  > DidacticActivity implementeaza IActivity, poate deriva din Activity.
+    Reprezinta orarul pe un semestru. {to do}
+
+  > DidacticTask implementeaza ITask, poate deriva din AbstractTask.
+    Reprezinta un curs, seminar, laborator. {to do}
+
+  > Pentru un Membru, se aduc din baza de date doar taskurile si activitatile
+    active nu si cele respinse, cerere etc. Pentru acelea se face o cerere
+    speciala (de exemplu Archives pentru proiectele terminate, taskurile
+    terminate etc.). {to do}
+--------------------------------------------------------------------------------
+NOTES 2:
+  > Pentru a nu expune implementarea se folosesc interfete pentru implementarea
+    colectilor (IEnumerable<T>, ICollection<T>, ISet<T> etc.). Clasele colectie
+    sunt internal! Nu sunt publice pentru a evita oferirea detalilor de
+    implementare si o mai buna siguranta a datelor.
+
+  > Clasele colectie sunt responsabile de pastrarea consistentei relatilor
+    (uni si bidirectionale)! Atentie la probleme de recurenta.
+    {Vezi AssignedTaskSet pentru exemplu de stopare a problemei de recurenta}
+
+  > In directoriul BLEntities.Entities.left sunt clase la care inca nu am ajuns
+    sa le evaluez. Cine doreste sunt la liber de evaluat si chiar reimplementat.
+    Atentie la conventile de nume!
+
+  > Primary key for task: StartDate + Location
+    Integrity constraint for task: the same Location cannot be used between
+    the StartDate and EndDate of an approved Task.
+
+  > Primary key for activity: Title

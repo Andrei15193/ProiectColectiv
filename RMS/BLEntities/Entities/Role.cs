@@ -1,63 +1,109 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace BusinessLogic.Entities
+namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class Role
     {
-        private string description;
-        private string name;
-        private FeatureSet features;
-
-        public Role()
+        public Role(string name)
         {
-            this.name = "";
-            this.description = "";
-            this.features = new FeatureSet();
+            Name = name;
+            Description = string.Empty;
+            Features = new Collections.UnemptySet<Feature>();
         }
 
         public Role(string name, string description)
         {
-            this.name = name;
-            this.description = description;
-            this.features = new FeatureSet();
+            Name = name;
+            Description = description;
+            Features = new Collections.UnemptySet<Feature>();
         }
 
-        public Role(string name, string description, FeatureSet features)
+        public Role(string name, IEnumerable<Feature> features)
         {
-            this.name = name;
-            this.description = description;
-            this.features = features;
-        }
-
-        public string getName()
-        {
-            return name;
-        }
-
-        public string getDescription()
-        {
-            return description;
-        }
-
-        public bool setDescription(string newDescription)
-        {
-            if (newDescription != "")
+            if (features != null)
             {
-                this.description = newDescription;
-                return true;
+                Name = name;
+                Description = string.Empty;
+                Features = new Collections.UnemptySet<Feature>(features);
             }
-            else return false;
-
+            else
+                throw new ArgumentNullException("The provided features collection cannot be null!");
         }
 
-        public FeatureSet getFeatures()
+        public Role(string name, string description, IEnumerable<Feature> features)
         {
-            return features;
+            if (features != null)
+            {
+                Name = name;
+                Description = description;
+                Features = new Collections.UnemptySet<Feature>(features);
+            }
+            else
+                throw new ArgumentNullException("The provided features collection cannot be null!");
         }
-       
+
+        public Role(string name, params Feature[] features)
+        {
+            if (features != null)
+            {
+                Name = name;
+                Description = string.Empty;
+                Features = new Collections.UnemptySet<Feature>(features);
+            }
+            else
+                throw new ArgumentNullException("The provided features collection cannot be null!");
+        }
+
+        public Role(string name, string description, params Feature[] features)
+        {
+            if (features != null)
+            {
+                Name = name;
+                Description = description;
+                Features = new Collections.UnemptySet<Feature>(features);
+            }
+            else
+                throw new ArgumentNullException("The provided features collection cannot be null!");
+        }
+
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                if (value != null)
+                    if (value.Length > 3)
+                        name = value;
+                    else
+                        throw new ArgumentException("The provided value for name is to short to be a role name!");
+                else
+                    throw new ArgumentNullException("The provided value for name cannot be null!");
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return description;
+            }
+            private set
+            {
+                if (value != null)
+                    description = value;
+                else
+                    throw new ArgumentNullException("The provided value for description cannot be null!");
+            }
+        }
+
+        public ICollection<Feature> Features { get; private set; }
+
+        private string name;
+        private string description;
     }
 
 }

@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace BusinessLogic.Entities
+﻿namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-   public  class SuperUser : Member
+    public class SuperUser : Member
     {
-        private SuperUserRole dedicatedRole;
-        public SuperUser(SuperUserRole r)
+        public SuperUser(Member member)
+            : base(new SuperUserRole(), member.FirstName, member.LastName, member.EMail, Member.GetPasswordFromMember(member), member.Tasks)
         {
-            this.dedicatedRole = r;
         }
-        
     }
 }

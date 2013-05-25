@@ -1,4 +1,0 @@
-D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\BLEntities\bin\Debug\BLEntities.dll
-D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\BLEntities\bin\Debug\BLEntities.pdb
-D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\BLEntities\obj\Debug\BLEntities.dll
-D:\Facultate\An II\Semestrul 2\Proiect Colectiv\DA\proiectcolectivda\RMS\BLEntities\obj\Debug\BLEntities.pdb

@@ -1,38 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace BusinessLogic.Entities
+namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class Feature
     {
-        private string name;
-        private string description;
-      
-        public Feature(string name, string description)
+        public Feature(string name)
         {
-            this.name = name;
-            this.description = description;
-        }
-        public Feature()
-        {
-            this.name = "";
-            this.description = "";
+            if (name != null)
+            {
+                Name = name;
+                Description = string.Empty;
+            }
+            else
+                throw new ArgumentNullException("The provided value for name cannot be null!");
         }
 
-        public string getName()
+        public Feature(string name, string description)
         {
-            return name;
+            if (name != null)
+                if (description != null)
+                {
+                    Name = name;
+                    Description = description;
+                }
+                else
+                    throw new ArgumentNullException("The provided value for description cannot be null!");
+            else
+                throw new ArgumentNullException("The provided value for name cannot be null!");
         }
-        public string getDescription()
-        {
-            return description;
-        }
-       
+
         public override string ToString()
         {
-            return this.name;
+            return Name;
         }
+
+        public string Name { get; private set; }
+
+        public string Description { get; private set; }
     }
 }

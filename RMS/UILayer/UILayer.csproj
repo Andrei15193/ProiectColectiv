@@ -93,6 +93,7 @@
     <Content Include="Views\testForm.cshtml" />
     <Content Include="Views\_Authentification.cshtml" />
     <Content Include="Views\_SideCalendar.cshtml" />
+    <Content Include="add.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -101,9 +102,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BLEntities\BLEntities.csproj">
+      <Project>{1d297f64-db1b-4fbb-ae70-fb2c1fe38b26}</Project>
+      <Name>BLEntities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BLLayer\BLLayer.csproj">
       <Project>{d65c40e3-bff1-440d-b89d-2b189bf1c580}</Project>
       <Name>BLLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DALayer\DALayer.csproj">
+      <Project>{0e72f80e-cb0f-432b-8106-0a595d5e5213}</Project>
+      <Name>DALayer</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

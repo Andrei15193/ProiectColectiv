@@ -39,7 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAExceptions\DataBaseException.cs" />
+    <Compile Include="DAOInterface\IClassRoom.cs" />
+    <Compile Include="DAOInterface\IEquipment.cs" />
     <Compile Include="DAOInterface\IAllMembers.cs" />
+    <Compile Include="DAOInterface\IFinancialResources.cs" />
+    <Compile Include="DAOInterface\IHumanResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

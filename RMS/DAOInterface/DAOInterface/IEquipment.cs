@@ -18,9 +18,10 @@ namespace ResourceManagementSystem.DataAccess.DAOInterface
 
         void Add(ResourceManagementSystem.BusinessLogic.Entities.Equipment equipment);
 
-        void Update(string serialNumber, ResourceManagementSystem.BusinessLogic.Entities.Equipment newEquipment);
+        void SetClassRoom(BusinessLogic.Entities.Equipment equipment, BusinessLogic.Entities.ClassRoom classRoom);
 
-        void Delete(string serialNumber);
+        void Update(BusinessLogic.Entities.Equipment equipment, bool newIsBroken, string newDescription);
 
+        void Delete(BusinessLogic.Entities.Equipment equipment);
     }
 }

@@ -14,6 +14,19 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         IEquipment equipmentDAO;
         IClassRoom classRoomDAO;
 
+        public string building { get; set; }
+        public uint floor { get; set; }
+        public uint number { get; set; }
+        public uint newNumber { get; set; }
+        public string description { get; set; }
+        public string newDescription { get; set; }
+        public string brand { get; set; }
+        public string model { get; set; }
+        public string serialNumber { get; set; }
+        public bool isBroken { get; set; }
+        public bool newIsBroken { get; set; }
+
+
         public LogisticalResourceViewModel(IEquipment equipmentDAO, IClassRoom classRoomDAO)
             : base("Logistical Resource manager")
         {
@@ -21,94 +34,61 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             this.classRoomDAO = classRoomDAO;
         }
 
-        public void AddClassRoom(string building, uint floor, uint number, string description)
+        // CLASS ROOM
+
+        
+        public void AddClassRooom()
         {
-            ClassRoom classRoom = new ClassRoom(building, floor, number, description);
+            ClassRoom classRoom = new ClassRoom(building, floor, number);
             classRoomDAO.Add(classRoom);
         }
 
-  
 
-        public void AddClassRoom(string building, uint floor, uint number)
+        public void UpdateClassRoom()
         {
-            AddClassRoom(building, floor, number, String.Empty);
+            ClassRoom classRoom = new ClassRoom(building, floor, number);
+            classRoomDAO.Update(classRoom, newNumber, newDescription);
         }
 
-        
-
-        public void UpdateClassRoom(string building, uint floor, uint number, string newDescription)
+        public void DeleteClassRoom()
         {
-            ClassRoom classRoom = new ClassRoom(building, floor, number, newDescription);
-            classRoomDAO.Update(building, floor, number, classRoom);
+           
+            classRoomDAO.Delete(building, floor, number);
+            
         }
-
-       
-
-        public void UpdateClassRoom(string building, uint floor, uint number)
-        {
-            UpdateClassRoom(building, floor, number, String.Empty);
-        }
-
-     
 
 
         // EQUIPMENT
 
-        public void AddEquipment(string brand, string model, string serialNumber, bool isBroken, string description, ClassRoom classRoom)
-        {
-            Equipment equipment = new Equipment(brand, model, serialNumber, isBroken, description, classRoom);
-            equipmentDAO.Add(equipment);
-        }
-
-        public void AddEquipment(string brand, string model, string serialNumber, bool isBroken, string description)
+        public void AddEquipment()
         {
             Equipment equipment = new Equipment(brand, model, serialNumber, isBroken, description);
             equipmentDAO.Add(equipment);
         }
 
-        public void AddEquipment(string brand, string model, string serialNumber, bool isBroken)
+      
+      
+        public void setEquipmentClassRoom()
+
         {
-            AddEquipment(brand, model, serialNumber, isBroken, String.Empty, (ClassRoom)null);
+            Equipment equipment = new Equipment(brand, model, serialNumber, isBroken);
+            ClassRoom classRoom = new ClassRoom(building, floor, number, description);
+            equipmentDAO.SetClassRoom(equipment, classRoom);
         }
 
        
 
-        public void AddEquipment(string brand, string model, string serialNumber, bool isBroken, ClassRoom classRoom)
+        public void UpdateEquipment()
         {
-            AddEquipment(brand, model, serialNumber, isBroken, String.Empty, classRoom);
+            Equipment equipment = new Equipment(brand, model, serialNumber, isBroken);
+            equipmentDAO.Update(equipment, newIsBroken, newDescription);
         }
 
-       
 
-        public void UpdateEquipment(string brand, string model, string serialNumber, bool isBroken, string description, ClassRoom classRoom)
+        public void DeleteEquipment()
         {
-            Equipment equipment = new Equipment(brand, model, serialNumber, isBroken, description, classRoom);
-            equipmentDAO.Update(serialNumber, equipment);
-        }
-
-        public void UpdateEquipment(string brand, string model, string serialNumber, bool isBroken, string description)
-        {
-            Equipment equipment = new Equipment(brand, model, serialNumber, isBroken, description);
-            equipmentDAO.Update(serialNumber, equipment);
-        }
-
-        public void UpdateEquipment(string brand, string model, string serialNumber, bool isBroken)
-        {
-            UpdateEquipment(brand, model, serialNumber, isBroken, String.Empty, (ClassRoom)null);
-        }
-
-       
-
-        public void UpdateEquipment(string brand, string model, string serialNumber, bool isBroken, ClassRoom classRoom)
-        {
-            UpdateEquipment(brand, model, serialNumber, isBroken, String.Empty, classRoom);
-        }
-
-       
-
-        public void DeleteEquipment(string serialNumber)
-        {
-            equipmentDAO.Delete(serialNumber);
+            Equipment equipment = new Equipment(brand, model, serialNumber, isBroken);
+            equipmentDAO.Delete(equipment);
         }
     }
 }

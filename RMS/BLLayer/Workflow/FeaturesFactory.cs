@@ -20,7 +20,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             {
                 return new FinancialResourceViewModel(financialResourcesDAO);
             }
-            private set;
+            //private set;
         }
 
         public static HumanResourcesViewModel humanResourcesViewModel
@@ -29,7 +29,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             {
                 return new HumanResourcesViewModel(humanResourcesDAO);
             }
-            private set;
+            //private set;
         }
 
         public static LogisticalResourceViewModel logisticalResourceViewModel
@@ -38,7 +38,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             {
                 return new LogisticalResourceViewModel(equipmentDAO, classRoomDAO);
             }
-            private set;
+            //private set;
         }
     }
 }

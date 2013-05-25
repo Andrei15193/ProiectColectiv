@@ -16,7 +16,7 @@ namespace ResourceManagementSystem.DataAccess.DAOInterface
 
         void Add(ResourceManagementSystem.BusinessLogic.Entities.ClassRoom classRoom);
 
-        void Update(string building, uint floor, uint number, ResourceManagementSystem.BusinessLogic.Entities.ClassRoom newClassRoom);
+        void Update(ResourceManagementSystem.BusinessLogic.Entities.ClassRoom classRoom, uint newNumber, string newDescription);
 
         void Delete(string building, uint floor, uint number);
         

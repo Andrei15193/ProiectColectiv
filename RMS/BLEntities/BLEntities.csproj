@@ -77,6 +77,7 @@
     <Compile Include="Entities\GuestRole.cs" />
     <Compile Include="Entities\Enums\Language.cs" />
     <Compile Include="Entities\Enums\LearningDegree.cs" />
+    <Compile Include="Entities\MeetingTask.cs" />
     <Compile Include="Entities\Member.cs" />
     <Compile Include="Entities\ReportEntry.cs" />
     <Compile Include="Entities\Phase.cs" />

@@ -53,6 +53,7 @@
     <Compile Include="DATests\AllMembersTest.cs" />
     <Compile Include="DATests\ClassRoomTest.cs" />
     <Compile Include="DATests\EquipmentsTest.cs" />
+    <Compile Include="DATests\FinancialResourcesTest.cs" />
     <Compile Include="DATests\HumanResourcesTest.cs" />
     <Compile Include="DATests\TasksTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,0 +1,7 @@
+E:\sem4\proiectcolectivbl\RMS\UITest\obj\Debug\UITest.csprojResolveAssemblyReference.cache
+E:\sem4\proiectcolectivbl\RMS\UITest\bin\Debug\UITest.dll
+E:\sem4\proiectcolectivbl\RMS\UITest\bin\Debug\UITest.pdb
+E:\sem4\proiectcolectivbl\RMS\UITest\bin\Debug\UILayer.dll
+E:\sem4\proiectcolectivbl\RMS\UITest\bin\Debug\UILayer.pdb
+E:\sem4\proiectcolectivbl\RMS\UITest\obj\Debug\UITest.dll
+E:\sem4\proiectcolectivbl\RMS\UITest\obj\Debug\UITest.pdb

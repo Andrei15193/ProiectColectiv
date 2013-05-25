@@ -30,18 +30,10 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         }
 
         protected LogisticalResource(string name)
-            : this(name, string.Empty, null)
-        {
-        }
-
-        protected LogisticalResource(string name, string description)
-            : this(name, description, null)
-        {
-        }
-
-        protected LogisticalResource(string name)
             : this(name, string.Empty)
         {
         }
+       
+        }
     }
-}
+

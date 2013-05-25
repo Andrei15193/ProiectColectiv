@@ -21,47 +21,35 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             this.classRoomDAO = classRoomDAO;
         }
 
-        public void AddClassRoom(string building, uint floor, uint number, string description, ITask task)
+        public void AddClassRoom(string building, uint floor, uint number, string description)
         {
-            ClassRoom classRoom = new ClassRoom(building, floor, number, description, task);
+            ClassRoom classRoom = new ClassRoom(building, floor, number, description);
             classRoomDAO.Add(classRoom);
         }
 
-        public void AddClassRoom(string building, uint floor, uint number, string description)
-        {
-            AddClassRoom(building, floor, number, description, null);
-        }
-
-        public void AddClassRoom(string building, uint floor, uint number, ITask task)
-        {
-            AddClassRoom(building, floor, number, String.Empty, task);
-        }
+  
 
         public void AddClassRoom(string building, uint floor, uint number)
         {
-            AddClassRoom(building, floor, number, String.Empty, null);
+            AddClassRoom(building, floor, number, String.Empty);
         }
 
-        public void UpdateClassRoom(string building, uint floor, uint number, string newDescription, ITask newTask)
-        {
-            ClassRoom classRoom = new ClassRoom(building, floor, number, newDescription, newTask);
-            classRoomDAO.Update(building, floor, number, classRoom);
-        }
+        
 
         public void UpdateClassRoom(string building, uint floor, uint number, string newDescription)
         {
-            UpdateClassRoom(building, floor, number, newDescription, null);
+            ClassRoom classRoom = new ClassRoom(building, floor, number, newDescription);
+            classRoomDAO.Update(building, floor, number, classRoom);
         }
 
-        public void UpdateClassRoom(string building, uint floor, uint number, ITask newTask)
+       
+
+        public void UpdateClassRoom(string building, uint floor, uint number)
         {
-            UpdateClassRoom(building, floor, number, String.Empty, newTask);
+            UpdateClassRoom(building, floor, number, String.Empty);
         }
 
-        public void DeleteClassRoom(string building, uint floor, uint number)
-        {
-            classRoomDAO.Delete(building, floor, number);
-        }
+     
 
 
         // EQUIPMENT
@@ -72,9 +60,9 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             equipmentDAO.Add(equipment);
         }
 
-        public void AddEquipment(string brand, string model, string serialNumber, bool isBroken, string description, ITask task)
+        public void AddEquipment(string brand, string model, string serialNumber, bool isBroken, string description)
         {
-            Equipment equipment = new Equipment(brand, model, serialNumber, isBroken, description, task);
+            Equipment equipment = new Equipment(brand, model, serialNumber, isBroken, description);
             equipmentDAO.Add(equipment);
         }
 
@@ -83,20 +71,14 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             AddEquipment(brand, model, serialNumber, isBroken, String.Empty, (ClassRoom)null);
         }
 
-        public void AddEquipment(string brand, string model, string serialNumber, bool isBroken, string description)
-        {
-            AddEquipment(brand, model, serialNumber, isBroken, description, (ClassRoom)null);
-        }
+       
 
         public void AddEquipment(string brand, string model, string serialNumber, bool isBroken, ClassRoom classRoom)
         {
             AddEquipment(brand, model, serialNumber, isBroken, String.Empty, classRoom);
         }
 
-        public void AddEquipment(string brand, string model, string serialNumber, bool isBroken, ITask task)
-        {
-            AddEquipment(brand, model, serialNumber, isBroken, String.Empty, task);
-        }
+       
 
         public void UpdateEquipment(string brand, string model, string serialNumber, bool isBroken, string description, ClassRoom classRoom)
         {
@@ -104,9 +86,9 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             equipmentDAO.Update(serialNumber, equipment);
         }
 
-        public void UpdateEquipment(string brand, string model, string serialNumber, bool isBroken, string description, ITask task)
+        public void UpdateEquipment(string brand, string model, string serialNumber, bool isBroken, string description)
         {
-            Equipment equipment = new Equipment(brand, model, serialNumber, isBroken, description, task);
+            Equipment equipment = new Equipment(brand, model, serialNumber, isBroken, description);
             equipmentDAO.Update(serialNumber, equipment);
         }
 
@@ -115,20 +97,14 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             UpdateEquipment(brand, model, serialNumber, isBroken, String.Empty, (ClassRoom)null);
         }
 
-        public void UpdateEquipment(string brand, string model, string serialNumber, bool isBroken, string description)
-        {
-            UpdateEquipment(brand, model, serialNumber, isBroken, description, (ClassRoom)null);
-        }
+       
 
         public void UpdateEquipment(string brand, string model, string serialNumber, bool isBroken, ClassRoom classRoom)
         {
             UpdateEquipment(brand, model, serialNumber, isBroken, String.Empty, classRoom);
         }
 
-        public void UpdateEquipment(string brand, string model, string serialNumber, bool isBroken, ITask task)
-        {
-            UpdateEquipment(brand, model, serialNumber, isBroken, String.Empty, task);
-        }
+       
 
         public void DeleteEquipment(string serialNumber)
         {

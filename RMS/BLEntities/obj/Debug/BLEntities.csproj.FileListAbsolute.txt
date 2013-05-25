@@ -1,0 +1,5 @@
+E:\sem4\proiectcolectivbl\RMS\BLEntities\obj\Debug\BLEntities.csprojResolveAssemblyReference.cache
+E:\sem4\proiectcolectivbl\RMS\BLEntities\bin\Debug\BLEntities.dll
+E:\sem4\proiectcolectivbl\RMS\BLEntities\bin\Debug\BLEntities.pdb
+E:\sem4\proiectcolectivbl\RMS\BLEntities\obj\Debug\BLEntities.dll
+E:\sem4\proiectcolectivbl\RMS\BLEntities\obj\Debug\BLEntities.pdb

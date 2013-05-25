@@ -42,20 +42,14 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         {
         }
 
-        public Equipment(string brand, string model, string serialNumber, bool isBroken, string description)
-            : this(brand, model, serialNumber, isBroken, description, null as ClassRoom)
-        {
-        }
+        
 
         public Equipment(string brand, string model, string serialNumber, bool isBroken, ClassRoom classRoom)
             : this(brand, model, serialNumber, isBroken, string.Empty, classRoom)
         {
         }
 
-        public Equipment(string brand, string model, string serialNumber, bool isBroken)
-            : this(brand, model, serialNumber, isBroken, string.Empty)
-        {
-        }
+        
 
         public string Brand { get; private set; }
 

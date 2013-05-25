@@ -1,0 +1,9 @@
+E:\sem4\proiectcolectivbl\RMS\DALayer\bin\Debug\DALayer.dll
+E:\sem4\proiectcolectivbl\RMS\DALayer\bin\Debug\DALayer.pdb
+E:\sem4\proiectcolectivbl\RMS\DALayer\bin\Debug\BLEntities.dll
+E:\sem4\proiectcolectivbl\RMS\DALayer\bin\Debug\DAOInterface.dll
+E:\sem4\proiectcolectivbl\RMS\DALayer\bin\Debug\BLEntities.pdb
+E:\sem4\proiectcolectivbl\RMS\DALayer\bin\Debug\DAOInterface.pdb
+E:\sem4\proiectcolectivbl\RMS\DALayer\obj\Debug\DALayer.csprojResolveAssemblyReference.cache
+E:\sem4\proiectcolectivbl\RMS\DALayer\obj\Debug\DALayer.dll
+E:\sem4\proiectcolectivbl\RMS\DALayer\obj\Debug\DALayer.pdb

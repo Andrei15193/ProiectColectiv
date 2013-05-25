@@ -29,7 +29,6 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                 if (value != null && value != location)
                 {
                     location = value;
-                    location.Task = this;
                 }
             }
         }

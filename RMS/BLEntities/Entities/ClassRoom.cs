@@ -16,19 +16,13 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         }
 
         public ClassRoom(string building, uint floor, uint number)
-            : this(building, floor, number, string.Empty, null)
-        {
-        }
-
-        public ClassRoom(string building, uint floor, uint number)
             : this(building, floor, number, string.Empty)
         {
         }
 
-        public ClassRoom(string building, uint floor, uint number, string description)
-            : this(building, floor, number, description, null)
-        {
-        }
+      
+
+        
 
         public string Building { get; private set; }
 

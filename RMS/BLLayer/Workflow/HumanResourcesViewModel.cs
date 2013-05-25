@@ -10,6 +10,13 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
     public class HumanResourcesViewModel : Feature
     {
+        public string roleName { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string currentEmail { get; set; }
+        public string newEmail { get; set; }
+        public string password { get; set; }
+        public IEnumerable<ITask> attendingTasks { get; set; }
         IHumanResources humanResourcesDAO;
 
         public HumanResourcesViewModel(IHumanResources humanResourcesDAO)
@@ -18,23 +25,25 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             this.humanResourcesDAO = humanResourcesDAO;
         }
 
-        public bool AddMember(Role role, string firstName, string lastName, string email, string password, IEnumerable<ITask> attendingTasks)
+        public bool AddMember()
         {
-            Member m = new Member(role, firstName, lastName, email, password, attendingTasks);
-
+            Member m = new Member(Role.WithName(roleName), firstName, lastName, currentEmail, password, attendingTasks);
             return humanResourcesDAO.addMember(m);
         }
 
-        public bool UpdateMember(Role role, string firstName, string lastName, string email, string password, IEnumerable<ITask> attendingTasks)
+        public bool UpdateMember()
         {
-            Member m = new Member(role, firstName, lastName, email, password, attendingTasks);
+            Member m = new Member(Role.WithName(roleName), firstName, lastName, newEmail, password, attendingTasks);
 
-            return humanResourcesDAO.updateMember(email, m);
+            bool rez = humanResourcesDAO.updateMember(currentEmail, m);
+            currentEmail = newEmail;
+            newEmail = string.Empty;
+            return rez;
         }
 
-        public bool DeleteMember(string email)
+        public bool DeleteMember()
         {
-            return humanResourcesDAO.deleteMember(email);
+            return humanResourcesDAO.deleteMember(currentEmail);
         }
     }
 }

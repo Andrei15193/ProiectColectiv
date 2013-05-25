@@ -64,7 +64,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         public abstract DateTime EndDate { get; }
 
-        public abstract ICollection<ITask> Tasks { get; protected set; }
+        public abstract ICollection<ITask> Tasks { get; set; }
 
         public abstract FinancialResource EstimatedBudget { get; }
 

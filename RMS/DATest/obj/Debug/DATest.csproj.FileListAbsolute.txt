@@ -1,0 +1,11 @@
+E:\sem4\proiectcolectivbl\RMS\DATest\obj\Debug\DATest.csprojResolveAssemblyReference.cache
+E:\sem4\proiectcolectivbl\RMS\DATest\bin\Debug\DATest.dll
+E:\sem4\proiectcolectivbl\RMS\DATest\bin\Debug\DATest.pdb
+E:\sem4\proiectcolectivbl\RMS\DATest\bin\Debug\DALayer.dll
+E:\sem4\proiectcolectivbl\RMS\DATest\bin\Debug\DAOInterface.dll
+E:\sem4\proiectcolectivbl\RMS\DATest\bin\Debug\BLEntities.dll
+E:\sem4\proiectcolectivbl\RMS\DATest\bin\Debug\DALayer.pdb
+E:\sem4\proiectcolectivbl\RMS\DATest\bin\Debug\DAOInterface.pdb
+E:\sem4\proiectcolectivbl\RMS\DATest\bin\Debug\BLEntities.pdb
+E:\sem4\proiectcolectivbl\RMS\DATest\obj\Debug\DATest.dll
+E:\sem4\proiectcolectivbl\RMS\DATest\obj\Debug\DATest.pdb

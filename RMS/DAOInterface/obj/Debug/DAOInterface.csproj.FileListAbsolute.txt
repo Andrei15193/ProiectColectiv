@@ -1,0 +1,7 @@
+E:\sem4\proiectcolectivbl\RMS\DAOInterface\bin\Debug\DAOInterface.dll
+E:\sem4\proiectcolectivbl\RMS\DAOInterface\bin\Debug\DAOInterface.pdb
+E:\sem4\proiectcolectivbl\RMS\DAOInterface\bin\Debug\BLEntities.dll
+E:\sem4\proiectcolectivbl\RMS\DAOInterface\bin\Debug\BLEntities.pdb
+E:\sem4\proiectcolectivbl\RMS\DAOInterface\obj\Debug\DAOInterface.csprojResolveAssemblyReference.cache
+E:\sem4\proiectcolectivbl\RMS\DAOInterface\obj\Debug\DAOInterface.dll
+E:\sem4\proiectcolectivbl\RMS\DAOInterface\obj\Debug\DAOInterface.pdb

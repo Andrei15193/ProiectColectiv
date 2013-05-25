@@ -1,0 +1,11 @@
+E:\sem4\proiectcolectivbl\RMS\BLLayer\obj\Debug\BLLayer.csprojResolveAssemblyReference.cache
+E:\sem4\proiectcolectivbl\RMS\BLLayer\bin\Debug\BLLayer.dll
+E:\sem4\proiectcolectivbl\RMS\BLLayer\bin\Debug\BLLayer.pdb
+E:\sem4\proiectcolectivbl\RMS\BLLayer\bin\Debug\BLEntities.dll
+E:\sem4\proiectcolectivbl\RMS\BLLayer\bin\Debug\DALayer.dll
+E:\sem4\proiectcolectivbl\RMS\BLLayer\bin\Debug\DAOInterface.dll
+E:\sem4\proiectcolectivbl\RMS\BLLayer\bin\Debug\BLEntities.pdb
+E:\sem4\proiectcolectivbl\RMS\BLLayer\bin\Debug\DALayer.pdb
+E:\sem4\proiectcolectivbl\RMS\BLLayer\bin\Debug\DAOInterface.pdb
+E:\sem4\proiectcolectivbl\RMS\BLLayer\obj\Debug\BLLayer.dll
+E:\sem4\proiectcolectivbl\RMS\BLLayer\obj\Debug\BLLayer.pdb

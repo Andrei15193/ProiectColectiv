@@ -6,13 +6,12 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class ClassRoom : LogisticalResource
     {
-        public ClassRoom(string building, uint floor, uint number, string description, ITask task)
-            : base(BuildClassRoomName(building, floor, number), description, task)
+        public ClassRoom(string building, uint floor, uint number, string description)
+            : base(BuildClassRoomName(building, floor, number), description)
         {
             Building = building;
             Floor = floor;
             Number = number;
-            Task = task;
             Equipments = new Collections.ClassRoomEquipmentSet(this);
         }
 
@@ -21,8 +20,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         {
         }
 
-        public ClassRoom(string building, uint floor, uint number, ITask task)
-            : this(building, floor, number, string.Empty, task)
+        public ClassRoom(string building, uint floor, uint number)
+            : this(building, floor, number, string.Empty)
         {
         }
 
@@ -39,19 +38,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         public ICollection<Equipment> Equipments { get; private set; }
 
-        public override ITask Task
-        {
-            get
-            {
-                return base.Task;
-            }
-            set
-            {
-                if (value != null && base.Task != value)
-                    value.Location = this;
-                base.Task = value;
-            }
-        }
+        
 
         private static string BuildClassRoomName(string building, uint floor, uint number)
         {

@@ -8,21 +8,20 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         public string Description { get; private set; }
 
-        public virtual ITask Task { get; set; }
 
         public override string ToString()
         {
             return Name;
         }
 
-        protected LogisticalResource(string name, string description, ITask task)
+        protected LogisticalResource(string name, string description)
         {
             if (name != null)
                 if (description != null)
                 {
                     this.Name = name;
                     this.Description = description;
-                    this.Task = task;
+                   
                 }
                 else
                     throw new ArgumentNullException("The provided value for description cannot be null!");
@@ -40,8 +39,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         {
         }
 
-        protected LogisticalResource(string name, ITask task)
-            : this(name, string.Empty, task)
+        protected LogisticalResource(string name)
+            : this(name, string.Empty)
         {
         }
     }

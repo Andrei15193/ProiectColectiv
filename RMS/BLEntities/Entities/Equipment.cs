@@ -21,8 +21,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                 throw new ArgumentNullException("The provided value for serial number cannot be null!");
         }
 
-        public Equipment(string brand, string model, string serialNumber, bool isBroken, string description, ITask task)
-            : base(BuildEquipmentName(brand, model), description, task)
+        public Equipment(string brand, string model, string serialNumber, bool isBroken, string description)
+            : base(BuildEquipmentName(brand, model), description)
         {
             if (serialNumber != null)
             {
@@ -31,8 +31,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                 SerialNumber = serialNumber;
                 IsBroken = isBroken;
                 classRoom = null;
-                if (Task != null)
-                    Task.Equipments.Add(this);
+               
             }
             else
                 throw new ArgumentNullException("The provided value for serial number cannot be null!");
@@ -53,8 +52,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         {
         }
 
-        public Equipment(string brand, string model, string serialNumber, bool isBroken, ITask task)
-            : this(brand, model, serialNumber, isBroken, string.Empty, task)
+        public Equipment(string brand, string model, string serialNumber, bool isBroken)
+            : this(brand, model, serialNumber, isBroken, string.Empty)
         {
         }
 
@@ -68,26 +67,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         public bool IsBroken { get; set; }
 
-        public override ITask Task
-        {
-            get
-            {
-                return base.Task;
-            }
-            set
-            {
-                if (value == null || ClassRoom == null)
-                {
-                    base.Task = value;
-                    if (value == null && base.Task != null)
-                        TimesUsed--;
-                    else if (value != null && base.Task == null)
-                        TimesUsed++;
-                }
-                else
-                    throw new ArgumentException("The equipment is already placed in a class room!");
-            }
-        }
+       
 
         public ClassRoom ClassRoom
         {
@@ -97,16 +77,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
             set
             {
-                if (value == null || Task == null)
-                {
                     classRoom = value;
-                    if (value == null && classRoom != null)
-                        TimesUsed--;
-                    else if (value != null && classRoom == null)
-                        TimesUsed++;
-                }
-                else
-                    throw new ArgumentException("The equipment is already being used for a task!");
+                 
             }
         }
 
@@ -114,7 +86,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         {
             get
             {
-                return ClassRoom == null && Task == null;
+                return ClassRoom == null;
             }
         }
 

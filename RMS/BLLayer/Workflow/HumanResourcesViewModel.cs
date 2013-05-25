@@ -28,7 +28,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public bool AddMember()
         {
             Member m = new Member(Role.WithName(roleName), firstName, lastName, currentEmail, password, attendingTasks);
-
             return humanResourcesDAO.addMember(m);
         }
 

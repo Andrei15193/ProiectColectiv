@@ -2,7 +2,7 @@
 
 namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-    public abstract class Feature
+    public class Feature
     {
         public Feature(string name)
         {

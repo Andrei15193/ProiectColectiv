@@ -93,7 +93,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
             private set
             {
-                if (description != null)
+                if (value != null)
                     description = value;
                 else
                     throw new ArgumentNullException("The provided value for description cannot be null!");

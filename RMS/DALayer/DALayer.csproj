@@ -39,6 +39,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBConnection.cs" />
+    <Compile Include="DBImpl\AllMembers.cs" />
+    <Compile Include="DBImpl\ClassRooms.cs" />
+    <Compile Include="DBImpl\Equipments.cs" />
+    <Compile Include="DBImpl\FinancialResources.cs" />
+    <Compile Include="DBImpl\HumanResources.cs" />
+    <Compile Include="DBImpl\Tasks.cs" />
     <Compile Include="Mocks\FinancialResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

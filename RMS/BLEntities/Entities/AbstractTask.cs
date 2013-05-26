@@ -29,7 +29,6 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                 if (value != null && value != location)
                 {
                     location = value;
-                    location.Task = this;
                 }
             }
         }
@@ -94,7 +93,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         {
             if (title == null)
                 throw new ArgumentNullException("The provided value for title cannot be null!");
-            if (title.Length < 6)
+            if (title.Length > 6)
                 throw new ArgumentNullException("The provided value for title must have at least 6 characters!");
             if (description == null)
                 throw new ArgumentNullException("The provided value for description cannot be null!");

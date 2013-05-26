@@ -220,6 +220,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         private string name;
         private string desciption;
-        private static ISet<TaskType> taskTypes = new SortedSet<TaskType>(new Collections.Comparer<TaskType>((x, y) => string.Compare(x.Name, y.Name)));
+        private static ISet<TaskType> taskTypes = new SortedSet<TaskType>(new Collections.Comparer<TaskType>((x, y) => string.Compare(x.Name, y.Name))) 
+                {new TaskType("Didactic","Didactic Task"), new TaskType("Research", "Research Task"), new TaskType("Administrative", "Administrative Task"), new TaskType("Meeting", "Meeting Task")};
     }
 }

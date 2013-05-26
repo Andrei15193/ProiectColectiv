@@ -90,7 +90,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
         }
 
-        public override ICollection<ITask> Tasks { get; protected set; }
+        public override ICollection<ITask> Tasks { get; set; }
 
         public override FinancialResource EstimatedBudget
         {

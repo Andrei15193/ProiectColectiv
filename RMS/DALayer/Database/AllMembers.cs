@@ -186,5 +186,35 @@ namespace ResourceManagementSystem.DataAccess.Database
         }
 
         private SqlCommand command;
+
+
+        public Member Where(string email, string password)
+        {
+            Member member = null;
+            command.CommandType = System.Data.CommandType.Text;
+            command.CommandText = @"select type, name, email, password, teachingPosition, hasPhD, telephone, website, address, domainsOfInterest
+                                            from Members where email = @email and password = @password";
+            command.Parameters.Clear();
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@email",
+                Value = email
+            });
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@password",
+                Value = password
+            });
+            command.Connection.Open();
+            SqlDataReader reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+            IEnumerable<Member> members = ReadMembers(reader);
+            IEnumerator<Member> i = members.GetEnumerator();
+            if (i.MoveNext())
+            {
+                member = i.Current;
+            }
+            reader.Close();
+            return member;
+        }
     }
 }

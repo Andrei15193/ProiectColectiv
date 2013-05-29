@@ -1,5 +1,5 @@
 ﻿//using ResourceManagementSystem.BusinessLogic.Entities;
-//using ResourceManagementSystem.DataAccess.DAOInterface;
+//using ResourceManagementSystem.DAOInterface;
 //using System;
 //using System.Collections.Generic;
 //using System.Data.SqlClient;
@@ -10,17 +10,17 @@
 
 //namespace DALayer.DBImpl
 //{
-//    public class ClassRooms: IClassRoom
+//    public class ClassRooms : IClassRoom
 //    {
 //        public ResourceManagementSystem.BusinessLogic.Entities.ClassRoom getByPK(string building, uint floor, uint number)
 //        {
 //            ClassRoom classRoom = null;
-            
+
 //            bool validValues = false;
 
 //            int classId = 0;
 //            string buildingName = building;
-//            string classRoomDescription =string.Empty;
+//            string classRoomDescription = string.Empty;
 //            uint classFloor = floor;
 //            uint classNumber = number;
 
@@ -29,7 +29,7 @@
 
 //            SqlCommand cmd = new SqlCommand(@"select id, classRoomDescription 
 //                                              from ClassRooms 
-//                                              where buildingName = @buldingName and classFloor = @classFloor and number = @number", 
+//                                              where buildingName = @buldingName and classFloor = @classFloor and number = @number",
 //                                            dbConnection.Connection);
 //            cmd.Parameters.Add(new SqlParameter()
 //            {
@@ -59,7 +59,7 @@
 //                classRoomDescription = dr.IsDBNull(1) ? string.Empty : dr.GetString(1);
 //            }
 
-//            if(!validValues)
+//            if (!validValues)
 //            {
 //                dr.Close();
 //                dbConnection.Connection.Close();
@@ -89,7 +89,7 @@
 //            });
 
 //            dr = cmd.ExecuteReader();
-            
+
 //            while (dr.Read())
 //            {
 //                string equipementDescription = string.Empty;
@@ -292,7 +292,7 @@
 
 //            cmd = new SqlCommand(@"delete from ClassRooms  where   buildingName = @buildingName and
 //							   classFloor = @classFloor and number = @number", dbConnection.Connection);
-            
+
 //            cmd.Parameters.Add(new SqlParameter()
 //            {
 //                ParameterName = "@buildingName",
@@ -316,7 +316,7 @@
 //        public int getClassRoomIdbyClassRoom(ClassRoom classRoom)
 //        {
 //            int classId = 0;
-            
+
 //            DBConnection dbConnection = new DBConnection();
 //            dbConnection.Connection.Open();
 

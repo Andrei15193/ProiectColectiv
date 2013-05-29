@@ -51,11 +51,20 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StudyProgramsTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BLEntities\BLEntities.csproj">
+      <Project>{1d297f64-db1b-4fbb-ae70-fb2c1fe38b26}</Project>
+      <Name>BLEntities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DALayer\DALayer.csproj">
       <Project>{0e72f80e-cb0f-432b-8106-0a595d5e5213}</Project>
       <Name>DALayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAOInterface\DAOInterface.csproj">
+      <Project>{fefd3abb-0935-4320-ae21-e0bcc01cdff7}</Project>
+      <Name>DAOInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

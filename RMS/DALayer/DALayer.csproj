@@ -39,7 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBConnection.cs" />
+    <Compile Include="Database\AllMembers.cs" />
+    <Compile Include="DatabaseConstants.cs" />
     <Compile Include="DBImpl\AllMembers.cs" />
     <Compile Include="DBImpl\ClassRooms.cs" />
     <Compile Include="DBImpl\Equipments.cs" />

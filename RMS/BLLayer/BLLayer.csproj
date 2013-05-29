@@ -39,14 +39,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Workflow\FeaturesFactory.cs" />
-    <Compile Include="Workflow\FinancialResourceViewModel.cs" />
-    <Compile Include="Workflow\HumanResourcesViewModel.cs" />
-    <Compile Include="Workflow\LogisticalResourceViewModel.cs" />
+    <Compile Include="Old\Workflow\FeaturesFactory.cs" />
+    <Compile Include="Old\Workflow\FinancialResourceViewModel.cs" />
+    <Compile Include="Old\Workflow\HumanResourcesViewModel.cs" />
+    <Compile Include="Old\Workflow\LogisticalResourceViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Workflow\StudentCirclesViewModel.cs" />
-    <Compile Include="Workflow\StudyProgramsViewModel.cs" />
-    <Compile Include="Workflow\TaskViewModel.cs" />
+    <Compile Include="Old\Workflow\StudentCirclesViewModel.cs" />
+    <Compile Include="Old\Workflow\StudyProgramsViewModel.cs" />
+    <Compile Include="Old\Workflow\TaskViewModel.cs" />
+    <Compile Include="Workflow\ViewModelFactory.cs" />
+    <Compile Include="Workflow\HumanResourcesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BLEntities\BLEntities.csproj">

@@ -4,97 +4,43 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class Equipment : LogisticalResource
     {
-        public Equipment(string brand, string model, string serialNumber, bool isBroken, string description, ClassRoom classRoom)
-            : base(BuildEquipmentName(brand, model), description)
+        public Equipment(string brand, string model, string serialNumber, string description)
+            : base(description)
         {
-            if (serialNumber != null)
-            {
-                Brand = brand;
-                Model = model;
-                SerialNumber = serialNumber;
-                IsBroken = isBroken;
-                this.classRoom = classRoom;
-                if (classRoom != null)
-                    classRoom.Equipments.Add(this);
-            }
+            if (brand != null)
+                if (model != null)
+                    if (serialNumber != null)
+                        if (brand.Length > 2)
+                            if (model.Length > 2)
+                                if (serialNumber.Length > 2)
+                                {
+                                    Brand = brand;
+                                    Model = model;
+                                    SerialNumber = serialNumber;
+                                }
+                                else
+                                    throw new ArgumentException("The provided serial number must be at least 3 characters long!");
+                            else
+                                throw new ArgumentException("The provided model name must be at least 3 characters long!");
+                        else
+                            throw new ArgumentException("The provided brand name must be at least 3 characters long!");
+                    else
+                        throw new ArgumentNullException("The provided value for serial number cannot be null!");
+                else
+                    throw new ArgumentNullException("The provided value for model name cannot be null!");
             else
-                throw new ArgumentNullException("The provided value for serial number cannot be null!");
+                throw new ArgumentNullException("The provided value for brand name cannot be null!");
         }
 
-        public Equipment(string brand, string model, string serialNumber, bool isBroken, string description)
-            : base(BuildEquipmentName(brand, model), description)
-        {
-            if (serialNumber != null)
-            {
-                Brand = brand;
-                Model = model;
-                SerialNumber = serialNumber;
-                IsBroken = isBroken;
-                classRoom = null;
-               
-            }
-            else
-                throw new ArgumentNullException("The provided value for serial number cannot be null!");
-        }
-
-        public Equipment(string brand, string model, string serialNumber, bool isBroken)
-            : this(brand, model, serialNumber, isBroken, string.Empty, null as ClassRoom)
+        public Equipment(string brand, string model, string serialNumber)
+            : this(brand, model, serialNumber, string.Empty)
         {
         }
-
-        
-
-        public Equipment(string brand, string model, string serialNumber, bool isBroken, ClassRoom classRoom)
-            : this(brand, model, serialNumber, isBroken, string.Empty, classRoom)
-        {
-        }
-
-        
 
         public string Brand { get; private set; }
 
         public string Model { get; private set; }
 
         public string SerialNumber { get; private set; }
-
-        public uint TimesUsed { get; private set; }
-
-        public bool IsBroken { get; set; }
-
-       
-
-        public ClassRoom ClassRoom
-        {
-            get
-            {
-                return classRoom;
-            }
-            set
-            {
-                    classRoom = value;
-                 
-            }
-        }
-
-        public bool IsAvailable
-        {
-            get
-            {
-                return ClassRoom == null;
-            }
-        }
-
-        private static string BuildEquipmentName(string brand, string model)
-        {
-            if (brand != null)
-                if (model != null)
-                    return string.Join(" ", brand, model);
-                else
-                    throw new ArgumentNullException("The provided value for model cannot be null!");
-            else
-                throw new ArgumentNullException("The provided value for brand cannot be null!");
-        }
-
-        private ClassRoom classRoom;
     }
 }

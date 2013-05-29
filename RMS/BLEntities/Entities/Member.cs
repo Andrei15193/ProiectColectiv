@@ -1,69 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-    public class Member : User
+    public abstract class Member
     {
-        public Member(Role role, string firstName, string lastName, string email, string password, IEnumerable<ITask> attendingTasks)
-            : base(string.Join(" ", firstName, lastName), role)
-        {
-            if (attendingTasks != null)
-            {
-                LastName = lastName;
-                FirstName = firstName;
-                EMail = email;
-                Password = password;
-                Tasks = new Collections.AssignedTasksSortedSet(this, attendingTasks);
-            }
-            else
-                throw new ArgumentNullException("The provided value for attending tasks cannot be null!");
-        }
-
-        public Member(Role role, string firstName, string lastName, string email, string password)
-            : this(role, firstName, lastName, email, password, new ITask[0] as IEnumerable<ITask>)
-        {
-        }
-
-        public Member(Role role, string firstName, string lastName, string email, string password, params ITask[] tasks)
-            : this(role, firstName, lastName, email, password, tasks as IEnumerable<ITask>)
-        {
-        }
-
-        public string FirstName
+        public string Name
         {
             get
             {
-                return firstName;
+                return name;
             }
             set
             {
                 if (value != null)
-                    if (Regex.IsMatch(value, @"\p{Lu}\p{Ll}+((\s|-)\p{Lu}\p{Ll}+)*"))
-                        firstName = value;
+                    if (Regex.IsMatch(value, Constants.NameCheckRegex))
+                        name = value;
                     else
-                        throw new ArgumentException("The provied value is not a valid first name!");
+                        throw new ArgumentException("The provied value is not a valid name! Names begin with a capital letter then continue with lowercase letters. Names may be separated by either one space or one dash.");
                 else
                     throw new ArgumentNullException("The provided value for first name cannot be null!");
-            }
-        }
-
-        public string LastName
-        {
-            get
-            {
-                return lastName;
-            }
-            set
-            {
-                if (value != null)
-                    if (Regex.IsMatch(value, @"\p{Lu}\p{Ll}+"))
-                        lastName = value;
-                    else
-                        throw new ArgumentException("The provided value is not a valid last name!");
-                else
-                    throw new ArgumentNullException("The provided value for last name cannot be null!");
             }
         }
 
@@ -77,7 +33,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             {
                 if (value != null)
                     if (Regex.IsMatch(value,
-                                      @"^(?("")(""[^""]+?""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9]{2,17}))$",
+                                      Constants.EmailCheckRegex,
                                       RegexOptions.IgnoreCase))
                         email = value;
                     else
@@ -87,36 +43,24 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
         }
 
-        public string Password
+        public string Password { get; set; }
+
+        public MemberType Type { get; private set; }
+
+        protected Member(MemberType type, string name, string email, string password)
         {
-            set
+            if (password != null)
             {
-                if (value != null)
-                    if (Regex.IsMatch(value, @"^.{6,}$"))
-                        password = value;
-                    else
-                        throw new ArgumentException("The provided value is not a valid password! It must have at least 6 characters!");
-                else
-                    throw new ArgumentNullException("The provided value for password cannot be null!");
+                Type = type;
+                Name = name;
+                EMail = email;
+                Password = password;
             }
-            get
-            {
-                return password;
-            }
+            else
+                throw new ArgumentException("The provided value for password cannot be null!");
         }
 
-        //public ICollection<ResearchProject> ResearchProjects { get; private set; }
-
-        public ICollection<ITask> Tasks { get; private set; }
-
-        protected static string GetPasswordFromMember(Member member)
-        {
-            return member.password;
-        }
-
-        private string firstName;
-        private string lastName;
+        private string name;
         private string email;
-        private string password;
     }
 }

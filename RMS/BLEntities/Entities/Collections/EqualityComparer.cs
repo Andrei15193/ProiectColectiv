@@ -5,30 +5,23 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
 {
     class EqualityComparer<T> : IEqualityComparer<T>
     {
-        public EqualityComparer(Func<T, T, bool> compareFunction)
+        public EqualityComparer(Func<T, T, bool> equalityFunction, Func<T, int> hashCodeFunction)
         {
-            this.compareFunction = compareFunction;
+            this.equalityFunction = equalityFunction;
+            this.hashCodeFunction = hashCodeFunction;
         }
 
-        public bool Equals(T right, T left)
+        public bool Equals(T x, T y)
         {
-            if (right != null)
-                if (left != null)
-                    return compareFunction(right, left);
-                else
-                    throw new ArgumentNullException("The provided left value cannot be null!");
-            else
-                throw new ArgumentNullException("The provided right value cannot be null!");
+            return equalityFunction(x, y);
         }
 
         public int GetHashCode(T obj)
         {
-            if (obj != null)
-                return obj.GetHashCode();
-            else
-                throw new ArgumentNullException("The provided value cannot be null!");
+            return hashCodeFunction(obj);
         }
 
-        private Func<T, T, bool> compareFunction;
+        private Func<T, T, bool> equalityFunction;
+        private Func<T, int> hashCodeFunction;
     }
 }

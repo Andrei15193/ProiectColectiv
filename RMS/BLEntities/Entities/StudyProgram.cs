@@ -1,35 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace ResourceManagementSystem.BusinessLogic.Entities
+﻿namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class StudyProgram
     {
-        public StudyProgram(Specialization specialization, IEnumerable<Course> courses)
+        public string EducationalProgramme { get; set; }
+
+        public StudyDegree DegreeOfStudy { get; set; }
+
+        public string Domain { get; set; }
+
+        public int YearLength { get; set; }
+
+        public int TotalEctsCredits { get; set; }
+
+        public WorkTime StudyTime { get; set; }
+
+        public string HigherEducationInstitution { get; set; }
+
+        public string Faculty { get; set; }
+
+        public string ContactPerson { get; set; }
+
+        public string Phone { get; set; }
+
+        public string Fax { get; set; }
+
+        public string EMail { get; set; }
+
+        public string ProfileOfTheDegreeProgramme { get; set; }
+
+        public string TargetGroups { get; set; }
+
+        public string EntranceConditions { get; set; }
+
+        public string FurtherEducationPossibilities { get; set; }
+
+        public string DescriptionOfStudy { get; set; }
+
+        public string PurposesOfTheProgramme { get; set; }
+
+        public string AreaOfExpertise { get; set; }
+
+        public string ExtraPeculiarities { get; set; }
+
+        public string PracticalTraining { get; set; }
+
+        public string FinalExaminations { get; set; }
+
+        public string GainedAbilitiesAndSkills { get; set; }
+
+        public string PotentialFieldOfProfessionalActivity { get; set; }
+
+        public override string ToString()
         {
-            if (courses != null)
-                if (courses.Count() > 0)
-                    if (courses.Count((innerCourse) => innerCourse == null) == 0)
-                    {
-                        Specialization = specialization;
-                        Courses = new Collections.UnemptySortedSet<Course>(new Collections.Comparer<Course>((x, y) => x.Credits.CompareTo(y.Credits)), courses);
-                    }
-                    else
-                        throw new ArgumentException("None of the provided courses can be null!");
-                else
-                    throw new ArgumentException("There must be at least one course in the study program.");
-            else
-                throw new ArgumentNullException("The provided value for the courses collection cannot be null!");
+            // E.g.: Databases (Master in Computer Science) - 2 years Full-Time
+            return string.Format("{0} ({1} in {2}) - {3} years {4}", EducationalProgramme, DegreeOfStudy, Domain, YearLength, StudyTime.ToString().Replace('_', '-'));
         }
-
-        public StudyProgram(Specialization specialization, params Course[] courses)
-            : this(specialization, courses as IEnumerable<Course>)
-        {
-        }
-
-        public Specialization Specialization { get; private set; }
-
-        public ICollection<Course> Courses { get; private set; }
     }
 }

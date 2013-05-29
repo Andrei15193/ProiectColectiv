@@ -1,36 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-    public class DidacticActivity : Activity
+    public abstract class AbstractActivity : IDateTimeBound
     {
-        public DidacticActivity(uint semester, StudyProgram studyProgram, IEnumerable<DidacticTask> didacticTasks)
-            : base(string.Format("{0}, semester {1}", studyProgram.Specialization.ToString(), semester), string.Format("Courses, seminars and laboratories for semster {0}, {1} specialization", semester, studyProgram.Specialization.ToString()), new string[] { "didactic" }, didacticTasks)
+        public ActivityType Type { get; private set; }
+
+        public State State { get; set; }
+
+        public string Title { get; private set; }
+
+        public string Description { get; set; }
+
+        public DateTime StartDate { get; private set; }
+
+        public DateTime EndDate { get; private set; }
+
+        protected AbstractActivity(ActivityType type, string title, string description, DateTime startDate, DateTime endDate)
         {
-            if (studyProgram != null)
-                if (semester > 0)
-                {
-                    Semester = semester;
-                    StudyProgram = studyProgram;
-                }
+            if (title != null)
+                if (description != null)
+                    if (title.Length > 0)
+                        if (startDate < endDate)
+                        {
+                            State = State.Proposed;
+                            Type = type;
+                            Title = title;
+                            Description = description;
+                            StartDate = startDate;
+                            EndDate = endDate;
+                        }
+                        else
+                            throw new ArgumentException("The end date cannot be before the start date!");
+                    else
+                        throw new ArgumentException("The title must be at least one character long!");
                 else
-                    throw new ArgumentException("The provided value for semester cannot be 0 (zero)!");
+                    throw new ArgumentNullException("The provided value for description cannot be null!");
             else
-                throw new ArgumentNullException("The provided value for study program cannot be null!");
+                throw new ArgumentNullException("The provided value for title cannot be null!");
         }
-
-        public IEnumerable<DidacticTask> DidacticTasks
-        {
-            get
-            {
-                return Tasks.OfType<DidacticTask>();
-            }
-        }
-
-        public uint Semester { get; private set; }
-
-        public StudyProgram StudyProgram { get; private set; }
     }
 }

@@ -2,8 +2,8 @@
 {
     public enum Currency
     {
-        Unknown,
-        RON
+        RON,
+        EUR,
+        USD
     }
-
 }

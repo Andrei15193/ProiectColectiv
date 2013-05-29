@@ -1,49 +1,102 @@
-﻿using System;
+﻿using ResourceManagementSystem.BusinessLogic.Entities;
+using ResourceManagementSystem.DAOInterface;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ResourceManagementSystem.BusinessLogic.Entities;
-using ResourceManagementSystem.DataAccess.DAOInterface;
+using System.Threading;
 
 namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
-    public class HumanResourcesViewModel : Feature
+    public class HumanResourcesViewModel
     {
-        public string roleName { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public string currentEmail { get; set; }
-        public string newEmail { get; set; }
-        public string password { get; set; }
-        public IEnumerable<ITask> attendingTasks { get; set; }
-        IHumanResources humanResourcesDAO;
-
-        public HumanResourcesViewModel(IHumanResources humanResourcesDAO)
-            : base("Human Resource manager")
+        public HumanResourcesViewModel(IAllMembers allMembers)
         {
-            this.humanResourcesDAO = humanResourcesDAO;
+            if (allMembers != null)
+            {
+                textInfo = Thread.CurrentThread.CurrentCulture.TextInfo;
+                this.allMembers = allMembers;
+                MemberTypeSelectedIndex = 0;
+                TeachingPositionSelectedIndex = 0;
+            }
+            else
+                throw new ArgumentNullException("The provided value for allMembers cannot be null!");
         }
 
-        public bool AddMember()
+        public string Name { get; set; }
+
+        public string EMail { get; set; }
+
+        public string Password { get; set; }
+
+        public string[] MemberTypes { get { return memberTypes; } }
+
+        public int MemberTypeSelectedIndex { get; set; }
+
+
+        public string Address { get; set; }
+
+        public string DomainsOfInterest { get; set; }
+
+        public string Telephone { get; set; }
+
+        public string Website { get; set; }
+
+        public bool HasPhD { get; set; }
+
+        public string[] TeachingPositions { get { return teachingPositions; } }
+
+        public int TeachingPositionSelectedIndex { get; set; }
+
+        public bool TryAddMember(out string errorMessage)
         {
-            Member m = new Member(Role.WithName(roleName), firstName, lastName, currentEmail, password, attendingTasks);
-            return humanResourcesDAO.addMember(m);
+            errorMessage = string.Empty;
+            try
+            {
+                Name = textInfo.ToTitleCase(Name.ToLower());
+                switch ((MemberType)MemberTypeSelectedIndex)
+                {
+                    case MemberType.Director:
+                        allMembers.Add(new Director(Name, EMail, Password));
+                        return true;
+                    case MemberType.Administrator:
+                        allMembers.Add(new Administrator(Name, EMail, Password));
+                        return true;
+                    case MemberType.Teacher:
+                        allMembers.Add(new Teacher((TeachingPosition)TeachingPositionSelectedIndex, Name, EMail, Password, HasPhD, Address, Telephone, Website, DomainsOfInterest));
+                        return true;
+                    case MemberType.PhD_Student:
+                        allMembers.Add(new PhDStudent(Name, EMail, Password, Address, Telephone, Website, DomainsOfInterest));
+                        return true;
+                    default:
+                        errorMessage = "Unknown Type is not allowed!";
+                        return false;
+                }
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.ToString();
+                return false;
+            }
         }
 
-        public bool UpdateMember()
+        public IEnumerable<Member> TryGetAll(out string errorMessage)
         {
-            Member m = new Member(Role.WithName(roleName), firstName, lastName, newEmail, password, attendingTasks);
-
-            bool rez = humanResourcesDAO.updateMember(currentEmail, m);
-            currentEmail = newEmail;
-            newEmail = string.Empty;
-            return rez;
+            try
+            {
+                errorMessage = null;
+                return allMembers.AsEnumerable;
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.ToString();
+                return null;
+            }
         }
 
-        public bool DeleteMember()
-        {
-            return humanResourcesDAO.deleteMember(currentEmail);
-        }
+        TextInfo textInfo;
+        private IAllMembers allMembers;
+        private static readonly string[] memberTypes = Enum.GetNames(typeof(MemberType)).Select((memberType) => memberType.Replace('_', ' ')).ToArray();
+        private static readonly string[] teachingPositions = Enum.GetNames(typeof(TeachingPosition)).Select((typeName) => typeName.Replace('_', ' ')).ToArray();
     }
 }

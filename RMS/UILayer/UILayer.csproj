@@ -93,7 +93,8 @@
     <Content Include="Views\testForm.cshtml" />
     <Content Include="Views\_Authentification.cshtml" />
     <Content Include="Views\_SideCalendar.cshtml" />
-    <Content Include="add.cshtml" />
+    <Content Include="addHumanResource.cshtml" />
+    <Content Include="test1.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

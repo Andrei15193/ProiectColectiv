@@ -4,36 +4,31 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public abstract class LogisticalResource
     {
-        public string Name { get; private set; }
-
-        public string Description { get; private set; }
-
-
-        public override string ToString()
+        public string Description
         {
-            return Name;
-        }
-
-        protected LogisticalResource(string name, string description)
-        {
-            if (name != null)
-                if (description != null)
-                {
-                    this.Name = name;
-                    this.Description = description;
-                   
-                }
+            get
+            {
+                return description;
+            }
+            set
+            {
+                if (value != null)
+                    description = value;
                 else
                     throw new ArgumentNullException("The provided value for description cannot be null!");
-            else
-                throw new ArgumentNullException("The provided value for name cannot be null!");
+            }
         }
 
-        protected LogisticalResource(string name)
-            : this(name, string.Empty)
+        protected LogisticalResource(string desciption)
+        {
+            Description = desciption;
+        }
+
+        protected LogisticalResource()
+            : this(string.Empty)
         {
         }
-       
-        }
-    }
 
+        private string description;
+    }
+}

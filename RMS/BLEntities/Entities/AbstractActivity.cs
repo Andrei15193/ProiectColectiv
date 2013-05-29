@@ -1,115 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-    public abstract class AbstractActivity : IActivity
+    public class DidacticActivity : AbstractAssignableActivity, ILogisticalResourceConsumer
     {
-        public abstract bool TryGetStartDate(out DateTime startDate);
-
-        public abstract bool TryGetEndDate(out DateTime endDate);
-
-        public string Title { get; private set; }
-
-        public string Description { get; private set; }
-
-        public IEnumerable<Member> Participants
+        public DidacticActivity(CourseType courseType, string courseName, string description, string formation, DateTime startDate, DateTime endDate, Member assignee)
+            : base(ActivityType.Didactic, string.Format("{0} {1}", courseName, courseType.ToString().ToLower()), description, startDate, endDate, new Member[] { assignee })
         {
-            get
-            {
-                return Tasks.SelectMany((task) => task.Assignees);
-            }
-        }
-
-        public IEnumerable<ClassRoom> Locations
-        {
-            get
-            {
-                return Tasks.Select((task) => task.Location);
-            }
-        }
-
-        public IEnumerable<Equipment> Equipments
-        {
-            get
-            {
-                return Tasks.SelectMany((task) => task.Equipments);
-            }
-        }
-
-        public FinancialResource RealizedBudget
-        {
-            get
-            {
-                if (Tasks.Count > 0)
-                    return new FinancialResource((uint)Tasks.Sum((task) => task.RealizedBudget.Value), Tasks.First().EstimatedBudget.Currency);
+            if (courseName != null)
+                if (formation != null)
+                {
+                    CourseName = courseName;
+                    Formation = formation;
+                    ClassRooms = new SortedSet<ClassRoom>(new Collections.Comparer<ClassRoom>((x, y) => x.Name.CompareTo(y.Name)));
+                    Equipments = new SortedSet<Equipment>(new Collections.Comparer<Equipment>((x, y) => x.Model.CompareTo(y.Model)));
+                }
                 else
-                    return null;
-            }
-        }
-
-        public bool IsActive
-        {
-            get
-            {
-                DateTime now = DateTime.Now;
-                return (StartDate <= now && now <= EndDate);
-            }
-        }
-
-        public IEnumerable<TaskType> AllowedTaskTypes { get; set; }
-
-        public abstract DateTime StartDate { get; }
-
-        public abstract DateTime EndDate { get; }
-
-        public abstract ICollection<ITask> Tasks { get; set; }
-
-        public abstract FinancialResource EstimatedBudget { get; }
-
-        public bool HasTasks
-        {
-            get
-            {
-                return (Tasks.Count != 0);
-            }
-        }
-
-        protected AbstractActivity(string title, string description, IEnumerable<string> allowedTaskTypes)
-        {
-            if (title != null)
-                if (description != null)
-                    if (allowedTaskTypes != null)
-                        if (title.Length > 4)
-                        {
-                            Title = title;
-                            Description = description;
-                            AllowedTaskTypes = new HashSet<TaskType>(TaskType.WithNames(allowedTaskTypes));
-                        }
-                        else
-                            throw new ArgumentException("The provided title must have at least 5 characters.");
-                    else
-                        throw new ArgumentNullException("The provided value for allowed task type collection cannot be null!");
-                else
-                    throw new ArgumentNullException("The provided value for description cannot be null!");
+                    throw new ArgumentNullException("The provided value for formation cannot be null!");
             else
-                throw new ArgumentNullException("The provided value for title cannot be null!");
+                throw new ArgumentNullException("The provided value for course name cannot be null!");
         }
 
-        protected AbstractActivity(string title, IEnumerable<string> allowedTaskTypes)
-            : this(title, string.Empty, allowedTaskTypes)
-        {
-        }
+        public CourseType CourseType { get; private set; }
 
-        protected AbstractActivity(string title, params string[] allowedTaskTypes)
-            : this(title, string.Empty, allowedTaskTypes as IEnumerable<string>)
-        {
-        }
+        public string CourseName { get; private set; }
 
-        protected AbstractActivity(string title, string description, params string[] allowedTaskTypes)
-            : this(title, description, allowedTaskTypes as IEnumerable<string>)
-        {
-        }
+        public string Formation { get; private set; }
+
+        public ICollection<ClassRoom> ClassRooms { get; private set; }
+
+        public ICollection<Equipment> Equipments { get; private set; }
     }
 }

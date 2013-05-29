@@ -24,7 +24,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{65265E9B-0129-4E51-AFD8-266AE4604994}"
 	ProjectSection(SolutionItems) = preProject
-		Solution items\Scripts\BD_ProiectColectiv.sql = Solution items\Scripts\BD_ProiectColectiv.sql
+		Solution items\Scripts\DatabaseCreates.sql = Solution items\Scripts\DatabaseCreates.sql
+		Solution items\Scripts\DatabaseDrops.sql = Solution items\Scripts\DatabaseDrops.sql
+		Solution items\Scripts\DatabaseInsers.sql = Solution items\Scripts\DatabaseInsers.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Diagrams", "Diagrams", "{B65CB8BE-F50C-4EEB-B359-F75B72960AE5}"
+	ProjectSection(SolutionItems) = preProject
+		Solution items\Diagrams\DatabaseDiagram.png = Solution items\Diagrams\DatabaseDiagram.png
+		Solution items\Diagrams\EnititesClassDiagram.png = Solution items\Diagrams\EnititesClassDiagram.png
 	EndProjectSection
 EndProject
 Global
@@ -71,5 +79,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{65265E9B-0129-4E51-AFD8-266AE4604994} = {A5E4D830-9D17-4C71-BCC2-819330DCB57A}
+		{B65CB8BE-F50C-4EEB-B359-F75B72960AE5} = {A5E4D830-9D17-4C71-BCC2-819330DCB57A}
 	EndGlobalSection
 EndGlobal

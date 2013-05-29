@@ -4,145 +4,66 @@ using System.Linq;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-    public class ResearchProject : IActivity
+    public class ResearchProject : AbstractActivity, IEnumerable<ResearchPhase>
     {
-        public ResearchProject(string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> participants, FinancialResource estimatedBudget, IEnumerable<string> allowedTaskTypes)
+        public ResearchProject(string title, string description, DateTime startDate, DateTime endDate, Collections.Team team)
+            : base(ActivityType.Research_Project, title, description, startDate, endDate)
         {
-            if (title != null)
-                if (description != null)
-                    if (participants != null)
-                        if (estimatedBudget != null)
-                            if (allowedTaskTypes != null)
-                                if (title.Length > 4)
-                                    if (startDate <= endDate)
-                                    {
-                                        Title = title;
-                                        Description = description;
-                                        StartDate = startDate;
-                                        EndDate = endDate;
-                                        tasks = new Collections.ResearchProjectTasks(this, allowedTaskTypes);
-                                        Participants = new HashSet<Member>(participants);
-                                        Phases = new Collections.ResearchProjectPhaseCollection(this);
-                                        EstimatedBudget = estimatedBudget;
-                                    }
-                                    else
-                                        throw new ArgumentException("The provided start date cannot be after the specified end date!");
-                                else
-                                    throw new ArgumentException("The provided title must be at least 5 characters long.");
-                            else
-                                throw new ArgumentNullException("The provided value for allowed task type collection cannot be null!");
-                        else
-                            throw new ArgumentNullException("The provided value for estimated budget cannot be null!");
-                    else
-                        throw new ArgumentNullException("The provided value for team collection cannot be null!");
-                else
-                    throw new ArgumentNullException("The provided value for description cannot be null!");
+            if (team != null)
+            {
+                Team = team;
+                phases = new SortedSet<ResearchPhase>(new Collections.Comparer<ResearchPhase>((x, y) => x.StartDate.CompareTo(y.StartDate)));
+            }
             else
-                throw new ArgumentNullException("The provided value for title cannot be null!");
+                throw new ArgumentNullException("The provided value for team collection cannot be null!");
         }
 
-        public ResearchProject(string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> participants, FinancialResource estimatedBudget, params string[] allowedTaskTypes)
-            : this(title, description, startDate, endDate, participants, estimatedBudget, allowedTaskTypes as IEnumerable<string>)
+        public ResearchPhase Add(string title, string description, DateTime startDate, DateTime endDate)
         {
+            ResearchPhase newPhase = new ResearchPhase(this, title, description, startDate, endDate);
+            if (phases.Add(newPhase))
+                return newPhase;
+            else
+                return null;
         }
 
-        public bool TryGetStartDate(out DateTime startDate)
+        public bool Contains(string phaseTitle)
         {
-            startDate = StartDate;
-            return true;
+            return (phases.Count((phase) => phase.Title == phaseTitle) == 1);
         }
 
-        public bool TryGetEndDate(out DateTime endDate)
+        public ResearchPhase Remove(string phaseTitle)
         {
-            endDate = EndDate;
-            return true;
+            ResearchPhase removedPhase = null;
+            IEnumerable<ResearchPhase> phasesToRemove = phases.Where((phase) => phase.Title == phaseTitle);
+            if (phasesToRemove.Count() == 1)
+            {
+                removedPhase = phasesToRemove.First();
+                phases.Remove(removedPhase);
+            }
+            return removedPhase;
         }
 
-        public string Title { get; private set; }
+        public IEnumerator<ResearchPhase> GetEnumerator()
+        {
+            return phases.GetEnumerator();
+        }
 
-        public string Description { get; private set; }
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return phases.GetEnumerator();
+        }
 
-        public DateTime StartDate { get; private set; }
-
-        public DateTime EndDate { get; private set; }
-
-        public ApplicationState State { get; set; }
-
-        public ICollection<ITask> Tasks
+        public int Count
         {
             get
             {
-                return tasks;
+                return phases.Count;
             }
         }
 
-        public IEnumerable<Member> Participants { get; private set; }
+        public Collections.Team Team { get; private set; }
 
-        public ICollection<Phase> Phases { get; private set; }
-
-        public FinancialResource EstimatedBudget { get; private set; }
-
-        public IEnumerable<ClassRoom> Locations
-        {
-            get
-            {
-                return Phases.SelectMany((phase) => phase.Tasks.Select((task) => task.Location)).Union(Tasks.Select((task) => task.Location));
-            }
-        }
-
-        public IEnumerable<Equipment> Equipments
-        {
-            get
-            {
-                return Phases.SelectMany((phase) => phase.Tasks.SelectMany((task) => task.Equipments)).Union(Tasks.SelectMany((task) => task.Equipments));
-            }
-        }
-
-        public FinancialResource RealizedBudget
-        {
-            get
-            {
-                FinancialResource realizedTasksBudget = null;
-                FinancialResource realizedPhasesBudget = null;
-                if (Phases.Count > 0)
-                    realizedPhasesBudget = Phases.SelectMany((phase) => phase.Tasks.Select((task) => task.RealizedBudget)).Aggregate((x, y) => x + y);
-                if (Tasks.Count > 0)
-                    realizedTasksBudget = Tasks.Select((task) => task.RealizedBudget).Aggregate((x, y) => x + y);
-                if (realizedTasksBudget != null && EstimatedBudget != null)
-                    return realizedTasksBudget + realizedPhasesBudget;
-                else if (realizedTasksBudget != null)
-                    return realizedTasksBudget;
-                else if (realizedPhasesBudget != null)
-                    return realizedPhasesBudget;
-                else
-                    return null;
-            }
-        }
-
-        public IEnumerable<TaskType> AllowedTaskTypes
-        {
-            get
-            {
-                return tasks.AllowedTaskTypes;
-            }
-        }
-
-        public bool IsActive
-        {
-            get
-            {
-                return State == ApplicationState.Active;
-            }
-        }
-
-        public bool HasTasks
-        {
-            get
-            {
-                return (Tasks.Count > 0);
-            }
-        }
-
-        private Collections.ResearchProjectTasks tasks;
+        private ISet<ResearchPhase> phases;
     }
 }

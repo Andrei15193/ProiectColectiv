@@ -49,6 +49,8 @@
     <Compile Include="DAOInterface\ISpecializations.cs" />
     <Compile Include="DAOInterface\IStudyPrograms.cs" />
     <Compile Include="DAOInterface\ITasks.cs" />
+    <Compile Include="DataAccessException.cs" />
+    <Compile Include="IAllMembers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

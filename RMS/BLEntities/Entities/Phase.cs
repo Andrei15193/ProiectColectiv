@@ -7,8 +7,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class ResearchPhase : AbstractActivity, IEnumerable<ResearchActivity>
     {
-        public ResearchPhase(ResearchProject reserachProject, string title, string description, DateTime startDate, DateTime endDate)
-            :base(ActivityType.Research_Phase, title, description, startDate, endDate)
+        public ResearchPhase(ResearchProject reserachProject, string title, string description, DateTime startDate, DateTime endDate, int id)
+            : base(ActivityType.Research_Phase, title, description, startDate, endDate, id)
         {
             if (reserachProject != null)
                 if (reserachProject.StartDate <= startDate && endDate <= reserachProject.EndDate)
@@ -22,13 +22,16 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                 throw new ArgumentNullException("The provided value for research project cannot be null!");
         }
 
-        public ResearchActivity Add(string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> assignees, FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost)
+        public ResearchPhase(ResearchProject reserachProject, string title, string description, DateTime startDate, DateTime endDate)
+            : this(reserachProject, title, description, startDate, endDate, 0)
         {
-            ResearchActivity addedResearchActivity = new ResearchActivity(this, title, description, startDate, endDate, assignees, mobilityCost, laborCost, logisticalCost);
+        }
+
+        public ResearchActivity Add(string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> assignees, FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost, bool isConfidential)
+        {
+            ResearchActivity addedResearchActivity = new ResearchActivity(this, title, description, startDate, endDate, assignees, mobilityCost, laborCost, logisticalCost, isConfidential);
             if (researchActivities.Add(addedResearchActivity))
-            {
                 return addedResearchActivity;
-            }
             else
                 return null;
         }

@@ -1,0 +1,78 @@
+﻿@using ResourceManagementSystem.BusinessLogic.Entities.Collections;
+@using ResourceManagementSystem.BusinessLogic.Entities;
+@using ResourceManagementSystem.BusinessLogic.Workflow;
+@using System.Linq;
+
+@{   
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "Add Team";
+    string errorMessage = string.Empty;
+
+    IEnumerable<Member> members = null;
+    TeamViewModel teamsViewModel = Session["teamViewModel"] as TeamViewModel;
+    if (teamsViewModel != null)
+    {
+        members = teamsViewModel.TryGetAllMembers(out errorMessage);
+    }
+}
+
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a>Create team</a></li>
+
+    </ul>
+
+    <div class="well">
+        @if (teamsViewModel != null)
+        {
+            if (!IsPost)
+            {
+                if (members != null)
+                {
+            <form action="~/addTeam.cshtml" method="post">
+                <h1>Human resources: </h1>
+                <ul>
+                    @foreach (var member in members)
+                    {
+                        <li>
+                            <input type="checkbox" @(teamsViewModel.Team.Contains(member) ? "checked=\"checked\"" : "") name="@member.EMail" />
+                            @(member.ToString())
+                        </li>
+                    }
+                </ul>
+                <input type="submit" value="Finish" />
+            </form>
+         
+                }
+                else
+                {
+            <h1>Error!</h1>
+            <p>@errorMessage</p>
+            <p>We are terebly sorry for the inconvenience...</p>
+                }
+            }
+            else
+            {
+                teamsViewModel.SelectedEMails = Request.Form.AllKeys;
+                teamsViewModel.AddMembersToTeam();
+            <h1>@(teamsViewModel.TeamName != null ? teamsViewModel.TeamName + " team:" : "Team:")</h1>
+            <ul>
+                @foreach (Member member in teamsViewModel.Team)
+                {
+                    <li>@member.ToString()</li>
+                }
+            </ul>
+            <a class="btn pull-right" href="@teamsViewModel.NextStepLink">Next</a>   
+            }
+        }
+        else
+        {
+            <h1>No team view model set!</h1>
+            <p>
+                There is not team vew model set in session (key: "teamViewModel"). Cannot create team!
+            </p>
+        }
+        <div style="clear: both"></div>
+    </div>
+}
+

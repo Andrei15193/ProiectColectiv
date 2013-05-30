@@ -3,7 +3,7 @@
 
 @{   
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
-    Page.Title = "Add Human Resource";
+    Page.Title = "Add Research Project";
 
     int step = 0;
     const int lastStep = 2;
@@ -13,23 +13,23 @@
     {
         step = 0;
     }
-    HumanResourcesViewModel humanResourcesViewModel = Session["humanResourceViewModel"] as HumanResourcesViewModel ?? ViewModelFactory.HumanResourcesViewModel;
-    Session["humanResourceViewModel"] = humanResourcesViewModel;
+    ResearchProjectsViewModel researchProjectsViewModel = Session["researchProjectsViewModel"] as ResearchProjectsViewModel ?? ViewModelFactory.ResearchProjectsViewModel;
+    Session["ResearchProjectsViewModel"] = researchProjectsViewModel;
     IEnumerable<Member> members = humanResourcesViewModel.TryGetAll(out errorMessage);
 
     switch (step)
     {
         case 0:
-            humanResourcesViewModel.Address = null;
-            humanResourcesViewModel.DomainsOfInterest = null;
-            humanResourcesViewModel.EMail = null;
-            humanResourcesViewModel.HasPhD = false;
-            humanResourcesViewModel.MemberTypeSelectedIndex = 0;
-            humanResourcesViewModel.Name = null;
-            humanResourcesViewModel.Password = null;
-            humanResourcesViewModel.TeachingPositionSelectedIndex = 0;
-            humanResourcesViewModel.Telephone = null;
-            humanResourcesViewModel.Website = null;
+            researchProjectsViewModel.Title = null;
+            researchProjectsViewModel.Description = null;
+            researchProjectsViewModel.startDate = null;
+            researchProjectsViewModel.endDate = null;
+           // researchProjectsViewModel.MemberTypeSelectedIndex = 0;
+            researchProjectsViewModel.ActivityTitle = null;
+            researchProjectsViewModel.ActivityDescription = null;
+            researchProjectsViewModel.ActivityStartDate = null;
+            researchProjectsViewModel.ActivityEndDate = null;
+            //am ramas aici
             break;
         case 1:
             humanResourcesViewModel.MemberTypeSelectedIndex = Request["memberType"] == null ? 0 : Convert.ToInt32(Request["memberType"]);
@@ -51,7 +51,8 @@
 @section body{
     <ul class="nav nav-tabs">
         <li class="active"><a>Add</a></li>
-
+        <li><a href="#">Update</a></li>
+        <li><a href="#">Delete</a></li>
     </ul>
 
     <div class="progress progress-info progress-striped breadcrumb"></div>
@@ -62,7 +63,7 @@
             <ul>
                 @foreach (var member in members)
                 {
-                    <li>@member.ToString()</li>
+                    <li>@(member is Teacher ? ((member as Teacher).HasPhD ? "Dr. " : "") : "") @member.Name, @(member is Teacher ? (member as Teacher).Position.ToString() : member.Type.ToString()) [Contact: @member.EMail]</li>
                 }
             </ul>
             <form action="addHumanResource.cshtml" class="form-horizontal" method="post">

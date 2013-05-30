@@ -89,12 +89,18 @@
   <ItemGroup>
     <Content Include="index.cshtml" />
     <Content Include="Views\Layouts\_MainLayout.cshtml" />
-    <Content Include="Views\testAdd.cshtml" />
-    <Content Include="Views\testForm.cshtml" />
     <Content Include="Views\_Authentification.cshtml" />
     <Content Include="Views\_SideCalendar.cshtml" />
+    <Content Include="addResearchProject.cshtml" />
+    <Content Include="addEquipment.cshtml" />
+    <Content Include="addTeam.cshtml" />
+    <Content Include="addClassRoom.cshtml" />
+    <Content Include="addTask.cshtml" />
+    <Content Include="selectClassRooms.cshtml" />
+    <Content Include="selectEquipments.cshtml" />
+    <Content Include="addFinancialResource.cshtml" />
     <Content Include="addHumanResource.cshtml" />
-    <Content Include="test1.cshtml" />
+    <Content Include="addStudyProgram.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

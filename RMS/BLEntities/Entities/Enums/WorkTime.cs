@@ -2,7 +2,7 @@
 {
     public enum WorkTime
     {
-        Part_Time,
+        Distance,
         Full_Time
     }
 }

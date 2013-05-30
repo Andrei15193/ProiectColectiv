@@ -1,32 +1,38 @@
-﻿namespace ResourceManagementSystem.DataAccess
+﻿using System;
+using System.Data.SqlClient;
+
+namespace ResourceManagementSystem.DataAccess
 {
     static class DatabaseConstants
     {
-        //public static string ConnectionString = "Initial Catalog=Andrei15193_sqldb; Data Source=andrei15193.tk,779; User=Andrei15193_RMSuser; Password=d3m3nt14l123";
-        public static string ConnectionString = "Initial Catalog=pc; Data Source=ANDREI-PC\\ANDREISQL;;Integrated Security= true";
+        public static SqlConnection SqlConnection
+        {
+            get
+            {
+                if (sqlConnection == null)
+                    sqlConnection = new SqlConnection(connectionString);
+                return sqlConnection;
+            }
+        }
 
-        //public static SqlConnection Connection
-        //{
-        //    get
-        //    {
-        //        return connection;
-        //    }
-        //}
+        [ThreadStatic]
+        private static SqlConnection sqlConnection = null;
 
-        //public static void Open()
-        //{
-        //    if (connection != null && connection.State != System.Data.ConnectionState.Closed)
-        //    {
-        //        connection.Open();
-        //    }
-        //}
+        private static readonly string connectionString = "Initial Catalog=pc; Data Source=ANDREI-PC\\ANDREISQL;;Integrated Security= true";
 
-        //public static void Close()
-        //{
-        //    if(connection != 
-        //}
+        //private static readonly string connectionString = "Server= ANDREI-DESKTOP; Database=AndreiLocal; Trusted_Connection= True;";
 
-        ////private static readonly SqlConnection connection = new SqlConnection("Server=ANDREI-DESKTOP; Database=AndreiLocal; Trusted_Connection=True;");
-        //private static readonly SqlConnection connection = new SqlConnection("Initial Catalog=Andrei15193_sqldb; Data Source=andrei15193.tk,779; User=Andrei15193_RMSuser; Password=d3m3nt14l123");
+        //private static readonly string connectionString = "Server= ANDREI-NETBOOK; Database=AndreiLocal; Trusted_Connection= True;";
+        
+        //private static readonly string connectionString = "Server= USER-PC\\SQLEXPRESS; Database= local; Trusted_Connection= true;";
+        
+        //private static readonly string connectionString = "SERVER= IoanasiPui\\SQLEXPRESS; Database= local; Trusted_Connection= True;";
+        
+        //private static readonly string connectionString = "Server= USER-PC\\SQLEXPRESS; Database= local; Trusted_Connection= true;";
+
+        //private static readonly string connectionString = "SERVER= IoanasiPui\\SQLEXPRESS; Database= local; Trusted_Connection= True;";
+
+        //private static readonly string connectionString = "Initial Catalog=Andrei15193_sqldb; Data Source=andrei15193.tk,779; User=Andrei15193_RMSuser; Password=d3m3nt14l123";
+
     }
 }

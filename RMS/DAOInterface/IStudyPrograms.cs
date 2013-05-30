@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ResourceManagementSystem.BusinessLogic.Entities;
 
-namespace ResourceManagementSystem.DataAccess.DAOInterface
+namespace ResourceManagementSystem.DAOInterface
 {
     public interface IStudyPrograms
     {

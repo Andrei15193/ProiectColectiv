@@ -48,7 +48,11 @@
     <Compile Include="DBImpl\HumanResources.cs" />
     <Compile Include="Database\Studyprograms.cs" />
     <Compile Include="DBImpl\Tasks.cs" />
-    <Compile Include="Mocks\FinancialResources.cs" />
+
+    <Compile Include="Mocks\AllEquipments.cs" />
+    <Compile Include="Mocks\AllClassRooms.cs" />
+
+    <Compile Include="Mocks\AllFinancialResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

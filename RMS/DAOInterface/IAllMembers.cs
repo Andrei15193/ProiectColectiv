@@ -13,8 +13,8 @@ namespace ResourceManagementSystem.DAOInterface
 
         void Add(PhDStudent phDStudent);
 
-        IEnumerable<Member> AsEnumerable { get; }
-
         Member Where(string email, string password);
+
+        IEnumerable<Member> AsEnumerable { get; }
     }
 }

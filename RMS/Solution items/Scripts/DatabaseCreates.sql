@@ -15,6 +15,7 @@ create table Members(
 create table FinancialResources(
     operationId int identity(1, 1) not null,
     value int not null,
+    currency int not null,
     status int not null,
     constraint pkFinancialResources primary key (operationId)
 )
@@ -136,6 +137,7 @@ create table ResearchActivities(
     laborCosts int not null,
     logisticalCosts int not null,
     mobilityCosts int not null,
+    isConfidential bit not null,
     constraint pkResearchProjectActivities primary key (activity, phase, researchProject),
     constraint fkResearchProjectActivitiesToResearchProjectPhase foreign key (phase, researchProject) references ResearchProjectPhases(activity, researchProject),
     constraint fkResearchProjectActivitiesToActivity foreign key (activity) references Activities(id),

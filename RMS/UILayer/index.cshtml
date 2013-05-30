@@ -1,19 +1,34 @@
-﻿@{
+﻿@using ResourceManagementSystem.BusinessLogic.Workflow;
+
+@{
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
     Page.Title = "Home Page";
 
-    string message = string.Empty;
-    UserInterface.ViewModels.MemberViewModel memberViewModel = Session["memberViewModel"] as UserInterface.ViewModels.MemberViewModel;
-    if (IsPost && Request["email"] != null && Request["password"] != null)
+    MemberViewModel memberViewModel = Session["memberViewModel"] as MemberViewModel;
+    if (memberViewModel == null)
     {
-        if (!memberViewModel.TryAuthenticate(Request["email"], Request["password"]))
+        memberViewModel = ViewModelFactory.MemberViewModel;
+        Session["memberViewModel"] = memberViewModel;
+    }
+
+    if (IsPost)
+    {
+        if (Request["email"] != null)
         {
-            message = "You failed!";
+            memberViewModel.EMail = Request["email"];
+        }
+        if (Request["password"] != null)
+        {
+            memberViewModel.Password = Request["password"];
         }
     }
-    if (Request["logout"] != null)
+    if (Request["log"] == "in")
     {
-        memberViewModel.LogOut();
+        memberViewModel.Authenticate();
+    }
+    else if (Request["log"] == "out")
+    {
+        memberViewModel.Logout();
     }
 }
 

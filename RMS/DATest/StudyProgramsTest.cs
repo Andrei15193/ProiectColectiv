@@ -7,7 +7,6 @@ using ResourceManagementSystem.DataAccess;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ResourceManagementSystem.BusinessLogic.Entities;
 using ResourceManagementSystem.DataAccess.Database;
-using ResourceManagementSystem.DAlayer.Database;
 using System.Diagnostics;
 
 namespace DATest

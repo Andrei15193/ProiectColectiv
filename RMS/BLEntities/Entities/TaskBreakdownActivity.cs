@@ -7,8 +7,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class TaskBreakdownActivity : AbstractActivity, IEnumerable<Task>
     {
-        public TaskBreakdownActivity(AbstractBreakdownActivity breakdownActivity, string title, string description, DateTime startDate, DateTime endDate)
-            : base(ActivityType.General_Activity, title, description, startDate, endDate)
+        public TaskBreakdownActivity(AbstractBreakdownActivity breakdownActivity, string title, string description, DateTime startDate, DateTime endDate, int id)
+            : base(ActivityType.General_Activity, title, description, startDate, endDate, id)
         {
             if (breakdownActivity != null)
                 if (breakdownActivity.StartDate <= startDate && endDate <= breakdownActivity.EndDate)
@@ -20,6 +20,10 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                     throw new ArgumentException("A general activity cannot exceed the date bounds of the breakdown activity that contains it!");
             else
                 throw new ArgumentNullException("The provided value for breakdown activity cannot be null!");
+        }
+        public TaskBreakdownActivity(AbstractBreakdownActivity breakdownActivity, string title, string description, DateTime startDate, DateTime endDate)
+            : this(breakdownActivity, title, description, startDate, endDate, 0)
+        {
         }
 
         public bool Add(Task task)

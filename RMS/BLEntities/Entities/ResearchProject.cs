@@ -6,8 +6,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class ResearchProject : AbstractActivity, IEnumerable<ResearchPhase>
     {
-        public ResearchProject(string title, string description, DateTime startDate, DateTime endDate, Collections.Team team)
-            : base(ActivityType.Research_Project, title, description, startDate, endDate)
+        public ResearchProject(string title, string description, DateTime startDate, DateTime endDate, Collections.Team team, int id)
+            : base(ActivityType.Research_Project, title, description, startDate, endDate, id)
         {
             if (team != null)
             {
@@ -16,6 +16,11 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
             else
                 throw new ArgumentNullException("The provided value for team collection cannot be null!");
+        }
+
+        public ResearchProject(string title, string description, DateTime startDate, DateTime endDate, Collections.Team team)
+            : this(title, description, startDate, endDate, team, 0)
+        {
         }
 
         public ResearchPhase Add(string title, string description, DateTime startDate, DateTime endDate)

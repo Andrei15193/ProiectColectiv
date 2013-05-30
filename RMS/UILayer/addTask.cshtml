@@ -3,47 +3,48 @@
 
 @{   
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
-    Page.Title = "Add Human Resource";
+    Page.Title = "Add Task";
 
     int step = 0;
-    const int lastStep = 2;
+    const int lastStep = 3;
     string errorMessage;
     string requestStep = IsPost ? Request["step"] : null;
     if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
     {
         step = 0;
     }
-    HumanResourcesViewModel humanResourcesViewModel = Session["humanResourceViewModel"] as HumanResourcesViewModel ?? ViewModelFactory.HumanResourcesViewModel;
-    Session["humanResourceViewModel"] = humanResourcesViewModel;
-    IEnumerable<Member> members = humanResourcesViewModel.TryGetAll(out errorMessage);
+    TasksViewModel tasksViewModel = Session["taskViewModel"] as TasksViewModel ?? ViewModelFactory.TasksViewModel;
+    Session["taskViewModel"] = tasksViewModel;
 
     switch (step)
     {
         case 0:
-            humanResourcesViewModel.Address = null;
-            humanResourcesViewModel.DomainsOfInterest = null;
-            humanResourcesViewModel.EMail = null;
-            humanResourcesViewModel.HasPhD = false;
-            humanResourcesViewModel.MemberTypeSelectedIndex = 0;
-            humanResourcesViewModel.Name = null;
-            humanResourcesViewModel.Password = null;
-            humanResourcesViewModel.TeachingPositionSelectedIndex = 0;
-            humanResourcesViewModel.Telephone = null;
-            humanResourcesViewModel.Website = null;
+
             break;
         case 1:
-            humanResourcesViewModel.MemberTypeSelectedIndex = Request["memberType"] == null ? 0 : Convert.ToInt32(Request["memberType"]);
-            humanResourcesViewModel.Name = Request["name"];
-            humanResourcesViewModel.EMail = Request["email"];
-            humanResourcesViewModel.Password = Request["password"];
+            tasksViewModel.Description = Request["description"];
+            tasksViewModel.EndDate = DateTime.Parse(Request["endDate"]);
+            tasksViewModel.LaborCost = Request["laborCost"].Length > 0 ? int.Parse(Request["laborCost"]) : 0;
+            tasksViewModel.LaborCostSelectedIndex = int.Parse(Request["laborCostCurrency"]);
+            
+            tasksViewModel.LogisticalCost = Request["logisticalCost"].Length > 0 ? int.Parse(Request["logisticalCost"]) : 0;
+            tasksViewModel.LogisticalCostSelectedIndex = int.Parse(Request["logisticalCostCurrency"]);
+            
+            tasksViewModel.MobilityCost = Request["MobilityCost"].Length > 0 ? int.Parse(Request["MobilityCost"]) : 0;
+            tasksViewModel.MobilityCostSelectedIndex = int.Parse(Request["MobilityCostCurrency"]);
+            
+            tasksViewModel.StartDate = DateTime.Parse(Request["startDate"]);
+            tasksViewModel.Title = Request["title"];
+            tasksViewModel.TaskTypeSelectedIndex = int.Parse(Request["type"]);
+
             break;
         case 2:
-            humanResourcesViewModel.Address = Request["address"];
-            humanResourcesViewModel.DomainsOfInterest = Request["domainsOfInterest"];
-            humanResourcesViewModel.Telephone = Request["telephone"];
-            humanResourcesViewModel.Website = Request["website"];
-            humanResourcesViewModel.HasPhD = (Request["hasPhD"] != null);
-            humanResourcesViewModel.TeachingPositionSelectedIndex = Request["teachingPosition"] == null ? 0 : Convert.ToInt32(Request["teachingPosition"]);
+
+            break;
+
+        case 3:
+            //Session["taskViewModel"] =
+            //tasksViewModel.TeamsVM = Request["teachingPosition"] == null ? 0 : Convert.ToInt32(Request["teachingPosition"]);
             break;
     }
 }
@@ -62,7 +63,7 @@
             <ul>
                 @foreach (var member in members)
                 {
-                    <li>@member.ToString()</li>
+                    <li>@(member is Teacher ? ((member as Teacher).HasPhD ? "Dr. " : "") : "") @member.Name, @(member is Teacher ? (member as Teacher).Position.ToString() : member.Type.ToString()) [Contact: @member.EMail]</li>
                 }
             </ul>
             <form action="addHumanResource.cshtml" class="form-horizontal" method="post">

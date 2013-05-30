@@ -1,0 +1,91 @@
+﻿@using ResourceManagementSystem.BusinessLogic.Entities;
+@using ResourceManagementSystem.BusinessLogic.Workflow;
+
+@{   
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "Add ClassRoom";
+
+
+    int step = 0;
+    const int lastStep = 1;
+    string errorMessage;
+    string requestStep = IsPost ? Request["step"] : null;
+    if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
+    {
+        step = 0;
+    }
+
+    ClassRoomViewModel classRoomViewModel = Session["classRoomViewModel"] as ClassRoomViewModel ?? ViewModelFactory.ClassRoomViewModel;
+    Session["classRoomViewModel"] = classRoomViewModel;
+    IEnumerable<ClassRoom> classRooms = classRoomViewModel.TryGetAll(out errorMessage);
+
+    switch (step)
+    {
+        case 0:
+            classRoomViewModel.Name = null;
+            classRoomViewModel.Description = null;
+            break;
+
+        case 1:
+            classRoomViewModel.Name = Request["name"];
+            classRoomViewModel.Description = Request["description"];
+            break;
+
+    }
+}
+
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a>Add</a></li>
+    </ul>
+
+    <div class="well">
+        @if (classRooms != null)
+        {
+            <ul>
+                @foreach (var cls in classRooms)
+                {
+                    <li>@cls.Name @cls.Description</li>
+                }
+            </ul>
+            <form action="addClassRoom.cshtml" class="form-horizontal" method="post">
+                @switch (step)
+                {
+                    case 0:
+                    <input type="hidden" value="@(step + 1)" name="step" id="step" />
+                   
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" id="name" />
+                
+                    <label for="description">Description:</label>
+                    <input type="text" name="description" id="description" />
+               
+                    <input type="submit" value="Next" />
+                        break;
+
+                    case 1:
+                        if (classRoomViewModel.TryAddClassRoom(out errorMessage))
+                        {
+                    <h1>Success!</h1>
+                    <p>The classroom has been added to ClassRooms!</p>
+                        }
+                        else
+                        {
+                    <h1>Error!</h1>
+                    <p>Could not add the classroom @errorMessage</p>
+                        }
+                    <input type="submit" value="Finish" />
+                        break;
+
+                }
+
+            </form>
+        }
+        else
+        {
+            <h1>Error!</h1>
+            <p>@errorMessage</p>
+            <p>We are terebly sorry for the inconvenience...</p>
+        }
+    </div>
+}

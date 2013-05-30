@@ -3,6 +3,7 @@ using ResourceManagementSystem.DAOInterface;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace ResourceManagementSystem.DataAccess.Database
 {
@@ -112,6 +113,33 @@ namespace ResourceManagementSystem.DataAccess.Database
             }
         }
 
+        public Member Where(string email)
+        {
+            command.CommandType = System.Data.CommandType.Text;
+            command.CommandText = @"select type, name, password, teachingPosition, hasPhD, telephone, website, address, domainsOfInterest
+                                            from Members
+                                            where email = @email";
+            command.Parameters.Clear();
+            command.Parameters.Add(new SqlParameter("@email", System.Data.SqlDbType.VarChar, 100) { Value = email });
+            SqlDataReader reader = null;
+            IEnumerable<Member> members = null;
+            try
+            {
+                command.Connection.Open();
+                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                members = ReadMembers(reader);
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
+            }
+            if (members.Count() > 0)
+                return members.First();
+            else
+                return null;
+        }
+
         public IEnumerable<Member> AsEnumerable
         {
             get
@@ -119,11 +147,21 @@ namespace ResourceManagementSystem.DataAccess.Database
                 command.CommandType = System.Data.CommandType.Text;
                 command.CommandText = @"select type, name, email, password, teachingPosition, hasPhD, telephone, website, address, domainsOfInterest
                                             from Members";
-                command.Connection.Open();
-                SqlDataReader reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
-                IEnumerable<Member> members = ReadMembers(reader);
-                reader.Close();
-                return members;
+                command.Parameters.Clear();
+                SqlDataReader reader = null;
+                IEnumerable<Member> members = null;
+                try
+                {
+                    command.Connection.Open();
+                    reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                    members = ReadMembers(reader);
+                }
+                finally
+                {
+                    if (reader != null)
+                        reader.Close();
+                }
+                return members ?? new Member[0];
             }
         }
 

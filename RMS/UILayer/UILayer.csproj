@@ -95,6 +95,7 @@
     <Content Include="Views\_SideCalendar.cshtml" />
     <Content Include="addHumanResource.cshtml" />
     <Content Include="test1.cshtml" />
+    <Content Include="Views\StudyPrograms\add.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

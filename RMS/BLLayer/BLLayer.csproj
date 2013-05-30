@@ -47,7 +47,7 @@
     <Compile Include="Old\Workflow\StudentCirclesViewModel.cs" />
     <Compile Include="Old\Workflow\StudyProgramsViewModel.cs" />
     <Compile Include="Old\Workflow\TaskViewModel.cs" />
-
+    <Compile Include="Workflow\ClassRoomViewModel.cs" />
     <Compile Include="Workflow\MemberViewModel.cs" />
     <Compile Include="Workflow\FinancialResourcesViewModel.cs" />
     <Compile Include="Workflow\ViewModelFactory.cs" />

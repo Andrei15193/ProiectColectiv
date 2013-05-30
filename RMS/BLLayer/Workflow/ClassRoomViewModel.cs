@@ -1,30 +1,61 @@
-﻿//using ResourceManagementSystem.BusinessLogic.Entities;
-//using ResourceManagementSystem.DAOInterface;
-//using System;
-//using System.Collections.Generic;
+﻿using ResourceManagementSystem.BusinessLogic.Entities;
+using ResourceManagementSystem.DAOInterface;
+using System;
+using System.Collections.Generic;
 
-//namespace ResourceManagementSystem.BusinessLogic.Workflow
-//{
-//    public class ClassRoomViewModel
-//    {
-//        public IEnumerable<ClassRoom> TryGetAll(out string error)
-//        {
-//            try
-//            {
-//                error = null;
-//                return allClassRooms.AsEnumerable;
-//            }
-//            catch (DataAccessException exception)
-//            {
-//                error = exception.Message;
-//                return null;
-//            }
-//        }
+namespace ResourceManagementSystem.BusinessLogic.Workflow
+{
+    public class ClassRoomViewModel
+    {
+        public ClassRoomViewModel(IAllClassRooms allClassRooms)
+        {
+            if (allClassRooms != null)
+            {
+                this.allClassRooms = allClassRooms;
+            }
+            else
+                throw new ArgumentNullException("The provided value for allClassRooms cannot be null!");
+        }
 
-//        public string Name { get; set; }
+        public String Name { get; set; }
+        
+        public String Description { get; set; }
 
-//        public string Description { get; set; }
 
-//        private IAllClassRooms allClassRooms;
-//    }
-//}
+        public bool TryAddClassRoom(out string errorMessage)
+        {
+            
+            errorMessage = string.Empty;
+            try
+            {
+                allClassRooms.Add(new ClassRoom(Name, Description));
+                return true;
+                
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.ToString();
+                return false;
+            }
+        }
+
+
+
+        public IEnumerable<ClassRoom> TryGetAll(out string error)
+        {
+            try
+            {
+                error = null;
+                return allClassRooms.AsEnumerable;
+            }
+            catch (DataAccessException exception)
+            {
+                error = exception.Message;
+                return null;
+            }
+        }
+
+       
+        private IAllClassRooms allClassRooms;
+    }
+}

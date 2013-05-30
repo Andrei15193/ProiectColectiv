@@ -7,6 +7,9 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         public ClassRoom(string name, string description)
             : base (description)
         {
+            if(name == "")
+                throw new ArgumentNullException("The provided value for name cannot be null!");
+
             if (name != null)
                 Name = name;
             else

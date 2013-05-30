@@ -96,6 +96,7 @@
     <Content Include="addHumanResource.cshtml" />
     <Content Include="test1.cshtml" />
     <Content Include="addFinancialResource.cshtml" />
+    <Content Include="addClassRoom.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

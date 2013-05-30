@@ -6,6 +6,9 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
     {
         public FinancialResource(int value, Currency currency)
         {
+            if(Convert.ToString(value) == "")
+                throw new ArgumentException("The value of the financial resource cannot be null!");
+
             if (value >= 0)
             {
                 Value = value;

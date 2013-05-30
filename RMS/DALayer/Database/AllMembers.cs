@@ -10,7 +10,7 @@ namespace ResourceManagementSystem.DataAccess.Database
     {
         public AllMembers()
         {
-            command = new SqlCommand() { Connection = new SqlConnection(DatabaseConstants.ConnectionString) };
+            command = new SqlCommand() { Connection = DatabaseConstants.SqlConnection };
         }
 
         public void Add(Director director)

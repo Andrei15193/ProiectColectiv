@@ -8,13 +8,13 @@ using ResourceManagementSystem.BusinessLogic.Entities;
 using ResourceManagementSystem.DataAccess;
 using ResourceManagementSystem.DataAccess.DAOInterface;
 
-namespace ResourceManagementSystem.DAlayer.Database
+namespace ResourceManagementSystem.DataAccess.Database
 {
     public class Studyprograms : IStudyPrograms
     {
         public bool AddStudyProgram(ResourceManagementSystem.BusinessLogic.Entities.StudyProgram studyProgram)
         {
-            SqlConnection connection = new SqlConnection(DatabaseConstants.ConnectionString);
+            SqlConnection connection = DatabaseConstants.SqlConnection;
 
             SqlCommand cmd = new SqlCommand(@"insert into StudyPRogrammes (educationalProgramme, degreeOfStudy, domain, yearLength, ectsCredits, 
                                                                            typeOfStudy, higherEducationInstitution, faculty, contactPerson, phone, 
@@ -175,7 +175,7 @@ namespace ResourceManagementSystem.DAlayer.Database
 
         public ResourceManagementSystem.BusinessLogic.Entities.StudyProgram GetByPrimaryKey(string educationalProgramme, ResourceManagementSystem.BusinessLogic.Entities.StudyDegree studyDegree, string domain, int yearLength, int totalEctsCredits, WorkTime studyType)
         {
-            SqlConnection connection = new SqlConnection(DatabaseConstants.ConnectionString);
+            SqlConnection connection = DatabaseConstants.SqlConnection;
             SqlCommand cmd = new SqlCommand(@"select educationalProgramme, degreeOfStudy, domain, yearLength, ectsCredits, typeOfStudy,
 							 higherEducationInstitution, faculty, contactPerson, phone, fax, eMail, profileOfTheDegreeProgramme,
 							 targetGroups, entranceConditions, furtherEducationPossibilities, descriptionOfStudy, purposesOfTheProgramme,
@@ -281,7 +281,7 @@ namespace ResourceManagementSystem.DAlayer.Database
 
         public List<ResourceManagementSystem.BusinessLogic.Entities.StudyProgram> GetAll()
         {
-            SqlConnection connection = new SqlConnection(DatabaseConstants.ConnectionString);
+            SqlConnection connection = DatabaseConstants.SqlConnection;
             SqlCommand cmd = new SqlCommand(@"select educationalProgramme, degreeOfStudy, domain, yearLength, ectsCredits, typeOfStudy,
 							 higherEducationInstitution, faculty, contactPerson, phone, fax, eMail, profileOfTheDegreeProgramme,
 							 targetGroups, entranceConditions, furtherEducationPossibilities, descriptionOfStudy, purposesOfTheProgramme,

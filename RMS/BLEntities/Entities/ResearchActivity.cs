@@ -5,7 +5,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class ResearchActivity : AbstractAssignableActivity, ILogisticalResourceConsumer
     {
-        public ResearchActivity(ResearchPhase researchPhase, string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> assignees, FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost)
+        public ResearchActivity(ResearchPhase researchPhase, string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> assignees, FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost, bool isConfidential)
             : base(ActivityType.Research, title, description, startDate, endDate, assignees)
         {
             if (researchPhase != null)
@@ -20,6 +20,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                                 ResearchPhase = researchPhase;
                                 ClassRooms = new SortedSet<ClassRoom>(new Collections.Comparer<ClassRoom>((x, y) => x.Name.CompareTo(y.Name)));
                                 Equipments = new SortedSet<Equipment>(new Collections.Comparer<Equipment>((x, y) => x.Model.CompareTo(y.Model)));
+                                IsConfidential = isConfidential;
                             }
                             else
                                 throw new ArgumentException("The start date and end date of a research activity cannot exceed the date bounds of the research phase that contains it!");
@@ -44,5 +45,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         public ICollection<ClassRoom> ClassRooms { get; private set; }
 
         public ICollection<Equipment> Equipments { get; private set; }
+
+        public bool IsConfidential { get; set; }
     }
 }

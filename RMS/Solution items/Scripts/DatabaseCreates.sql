@@ -136,6 +136,7 @@ create table ResearchActivities(
     laborCosts int not null,
     logisticalCosts int not null,
     mobilityCosts int not null,
+    isConfidential bit not null,
     constraint pkResearchProjectActivities primary key (activity, phase, researchProject),
     constraint fkResearchProjectActivitiesToResearchProjectPhase foreign key (phase, researchProject) references ResearchProjectPhases(activity, researchProject),
     constraint fkResearchProjectActivitiesToActivity foreign key (activity) references Activities(id),

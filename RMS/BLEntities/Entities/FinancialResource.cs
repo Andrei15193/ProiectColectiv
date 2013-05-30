@@ -10,6 +10,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             {
                 Value = value;
                 Currency = currency;
+                Status = FinancialResourceStatus.Reserved;
             }
             else
                 throw new ArgumentException("The value of the financial resource cannot be negative!");

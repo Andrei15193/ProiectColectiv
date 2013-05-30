@@ -5,6 +5,6 @@
         Assistant,
         Lecturer,
         Conferentiar,
-        Professors
+        Professor
     }
 }

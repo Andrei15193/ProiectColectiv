@@ -22,13 +22,11 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                 throw new ArgumentNullException("The provided value for research project cannot be null!");
         }
 
-        public ResearchActivity Add(string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> assignees, FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost)
+        public ResearchActivity Add(string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> assignees, FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost, bool isConfidential)
         {
-            ResearchActivity addedResearchActivity = new ResearchActivity(this, title, description, startDate, endDate, assignees, mobilityCost, laborCost, logisticalCost);
+            ResearchActivity addedResearchActivity = new ResearchActivity(this, title, description, startDate, endDate, assignees, mobilityCost, laborCost, logisticalCost, isConfidential);
             if (researchActivities.Add(addedResearchActivity))
-            {
                 return addedResearchActivity;
-            }
             else
                 return null;
         }

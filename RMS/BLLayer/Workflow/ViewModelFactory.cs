@@ -14,9 +14,18 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        public static FinancialResourcesViewModel FinancialResourcesViewModel
+        {
+            get
+            {
+                return new FinancialResourcesViewModel(Repositories.AllFinancialResources);
+            }
+        }
+
         private static class Repositories
         {
             public static readonly IAllMembers AllMembers = new AllMembers();
+            public static readonly IAllFinancialResources AllFinancialResources = new AllFinancialResources();
         }
     }
 }

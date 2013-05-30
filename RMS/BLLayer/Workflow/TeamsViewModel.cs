@@ -1,0 +1,52 @@
+﻿using ResourceManagementSystem.BusinessLogic.Entities;
+using ResourceManagementSystem.DAOInterface;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+using ResourceManagementSystem.BusinessLogic.Entities.Collections;
+
+namespace ResourceManagementSystem.BusinessLogic.Workflow
+{
+    public class TeamsViewModel
+    {
+        public TeamsViewModel(IAllMembers allMembers)
+        {
+            if (allMembers != null)
+            {
+                this.allMembers = allMembers;
+                Team = null;
+            }
+            else
+                throw new ArgumentNullException("The provided value for allMembers cannot be null!");
+        }
+
+        public Team Team { get; private set; }
+
+        public IEnumerable<string> SelectedEMails { get; set; }
+
+        public IEnumerable<Member> TryGetAll(out string errorMessage)
+        {
+            try
+            {
+                errorMessage = null;
+                localAllMembers = allMembers.AsEnumerable;
+                return localAllMembers;
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.ToString();
+                return null;
+            }
+        }
+
+        private IAllMembers allMembers;
+        private IEnumerable<Member> localAllMembers;
+        
+        public void AddMembersToTeam()
+        {
+            Team = new Team(localAllMembers.Where((localMember) => SelectedEMails.Contains(localMember.EMail)));
+        }
+    }
+}

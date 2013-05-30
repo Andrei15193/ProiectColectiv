@@ -14,6 +14,8 @@ namespace ResourceManagementSystem.DataAccess
         }
 
         [ThreadStatic]
+        private static readonly SqlConnection sqlConnection = new SqlConnection("Server= USER-PC\\SQLEXPRESS; Database= local; Trusted_Connection= true;");
+
         //private static readonly SqlConnection sqlConnection = new SqlConnection("Server= ANDREI-NETBOOK; Database=AndreiLocal; Trusted_Connection= True;");
 
         //private static readonly SqlConnection sqlConnection = new SqlConnection("SERVER= IoanasiPui\\SQLEXPRESS; Database= local; Trusted_Connection= True;");

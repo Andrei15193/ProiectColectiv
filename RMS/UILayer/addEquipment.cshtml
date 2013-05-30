@@ -1,0 +1,102 @@
+﻿@using ResourceManagementSystem.BusinessLogic.Entities;
+@using ResourceManagementSystem.BusinessLogic.Workflow;
+
+@{   
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "Add Equipment";
+
+
+    int step = 0;
+    const int lastStep = 1;
+    string errorMessage;
+    string requestStep = IsPost ? Request["step"] : null;
+    if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
+    {
+        step = 0;
+    }
+
+    EquipmentsViewModel equipmentsViewModel = Session["equipmentsViewModel"] as EquipmentsViewModel ?? ViewModelFactory.EquipmentsViewModel;
+    Session["equipmentsViewModel"] = equipmentsViewModel;
+    IEnumerable<Equipment> equipments = equipmentsViewModel.TryGetAll(out errorMessage);
+
+    switch (step)
+    {
+        case 0:
+            equipmentsViewModel.Brand = null;
+            equipmentsViewModel.Model = null;
+            equipmentsViewModel.SerialNumber = null;
+            equipmentsViewModel.Description = null;
+            break;
+
+        case 1:
+            equipmentsViewModel.Brand = Request["brand"];
+            equipmentsViewModel.Model = Request["model"]; ;
+            equipmentsViewModel.SerialNumber = Request["serialNumber"]; ;
+            equipmentsViewModel.Description = Request["description"]; ;
+            break;
+
+    }
+}
+
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a>Add</a></li>
+    </ul>
+
+    <div class="well">
+        @if (equipments != null)
+        {
+            <ul>
+                @foreach (var eq in equipments)
+                {
+                    <li>@eq.Brand @eq.Model @eq.SerialNumber @eq.Description</li>
+                }
+            </ul>
+            <form action="addEquipment.cshtml" class="form-horizontal" method="post">
+                @switch (step)
+                {
+                    case 0:
+                    <input type="hidden" value="@(step + 1)" name="step" id="step" />
+              
+                    <label for="brand">Brand:</label>
+                    <input type="text" name="brand" id="brand" />
+                
+                    <label for="model">Model:</label>
+                    <input type="text" name="model" id="model" />
+                
+                    <label for="serialNumber">Serial Number:</label>
+                    <input type="text" name="serialNumber" id="serialNumber" />
+                
+                    <label for="description">Description:</label>
+                    <input type="text" name="description" id="description" />
+                   
+                
+                    <input type="submit" value="Next" />
+                        break;
+
+                    case 1:
+                        if (equipmentsViewModel.TryAddEquipment(out errorMessage))
+                        {
+                    <h1>Success!</h1>
+                    <p>The equipment has been added to logistical resources!</p>
+                        }
+                        else
+                        {
+                    <h1>Error!</h1>
+                    <p>Could not add equipment @errorMessage</p>
+                        }
+                    <input type="submit" value="Finish" />
+                        break;
+
+                }
+
+            </form>
+        }
+        else
+        {
+            <h1>Error!</h1>
+            <p>@errorMessage</p>
+            <p>We are terebly sorry for the inconvenience...</p>
+        }
+    </div>
+}

@@ -1,0 +1,80 @@
+﻿@using ResourceManagementSystem.BusinessLogic.Entities.Collections;
+@using ResourceManagementSystem.BusinessLogic.Entities;
+@using ResourceManagementSystem.BusinessLogic.Workflow;
+@using System.Linq;
+
+@{   
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "Add Team";
+
+    int step = 0;
+    const int lastStep = 1;
+    string errorMessage;
+    string requestStep = IsPost ? Request["step"] : null;
+    if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
+    {
+        step = 0;
+    }
+    TeamsViewModel teamsViewModel = Session["teamViewModel"] as TeamsViewModel ?? ViewModelFactory.TeamsViewModel;
+    Session["teamViewModel"] = teamsViewModel;
+    IEnumerable<Member> members = teamsViewModel.TryGetAll(out errorMessage);
+
+    switch (step)
+    {
+        case 0:
+
+            break;
+        case 1:
+            //teamsViewModel.MemberTypeSelectedIndex = Request["memberType"] == null ? 0 : Convert.ToInt32(Request["memberType"]);
+
+            break;
+
+    }
+}
+
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a>Add</a></li>
+
+    </ul>
+
+    <div class="well">
+        @if (!IsPost)
+        {
+            if (members != null)
+            {
+            <form action="~/addTeam.cshtml" method="post">
+                <ul>
+                    @foreach (var member in members)
+                    {
+                        <li>
+                            <input type="checkbox" name="@member.EMail" />
+                            @(member is Teacher ? ((member as Teacher).HasPhD ? "Dr. " : "") : "") @member.Name, @(member is Teacher ? (member as Teacher).Position.ToString() : member.Type.ToString()) [Contact: @member.EMail]
+                        </li>
+                    }
+                </ul>
+                <input type="submit" value="Finish" />
+            </form>
+         
+            }
+            else
+            {
+            <h1>Error!</h1>
+            <p>@errorMessage</p>
+            <p>We are terebly sorry for the inconvenience...</p>
+            }
+        }
+        else
+        {
+            teamsViewModel.SelectedEMails = Request.Form.AllKeys;
+            teamsViewModel.AddMembersToTeam();
+            <ul>
+            @foreach (Member member in teamsViewModel.Team)
+            {
+                <li>@member.Name @member.EMail</li>
+            }
+            </ul>
+        }
+    </div>
+}
+

@@ -1,6 +1,7 @@
 ﻿using ResourceManagementSystem.BusinessLogic.Workflow;
 using ResourceManagementSystem.DAOInterface;
 using ResourceManagementSystem.DataAccess.Database;
+using ResourceManagementSystem.DataAccess.Mocks;
 
 namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
@@ -11,6 +12,14 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             get
             {
                 return new HumanResourcesViewModel(Repositories.AllMembers);
+            }
+        }
+
+        public static TeamsViewModel TeamsViewModel
+        {
+            get
+            {
+                return new TeamsViewModel(Repositories.AllMembers);
             }
         }
 
@@ -31,12 +40,21 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return new FinancialResourcesViewModel(Repositories.AllFinancialResources);
             }
         }
+        public static EquipmentsViewModel EquipmentsViewModel
+        {
+            get
+            {
+                return new EquipmentsViewModel(Repositories.AllEquipments);
+            }
+        }
 
         private static class Repositories
         {
             public static readonly IAllMembers AllMembers = new AllMembers();
 
             public static readonly IAllFinancialResources AllFinancialResources = new AllFinancialResources();
+
+            public static readonly IAllEquipments AllEquipments = new AllEquipments();
         }
     }
 }

@@ -15,6 +15,7 @@ create table Members(
 create table FinancialResources(
     operationId int identity(1, 1) not null,
     value int not null,
+    currency int not null,
     status int not null,
     constraint pkFinancialResources primary key (operationId)
 )

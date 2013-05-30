@@ -57,6 +57,7 @@
     <Compile Include="DATests\HumanResourcesTest.cs" />
     <Compile Include="DATests\TasksTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StudyProgramsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BLEntities\BLEntities.csproj">

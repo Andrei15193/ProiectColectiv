@@ -3,7 +3,7 @@
 
 @{   
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
-    Page.Title = "Add Human Resource";
+    Page.Title = "Add Human Resources";
 
     int step = 0;
     const int lastStep = 2;
@@ -50,12 +50,8 @@
 
 @section body{
     <ul class="nav nav-tabs">
-        <li class="active"><a>Add</a></li>
-        <li><a href="#">Update</a></li>
-        <li><a href="#">Delete</a></li>
+        <li class="active"><a>Add Human Resources</a></li>
     </ul>
-
-    <div class="progress progress-info progress-striped breadcrumb"></div>
 
     <div class="well">
         @if (members != null)

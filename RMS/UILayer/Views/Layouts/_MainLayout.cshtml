@@ -10,7 +10,8 @@
     <link href="/img/favico.ico" rel="shortcut icon" type="img/x-icon" />
     <!-- <meta name="viewport" content="width=device-width"> -->
     @{
-        MemberViewModel memberViewModel = Session["memberViewModel"] as MemberViewModel;
+        MemberViewModel memberViewModel = Session["memberViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
+        Session["memberViewModel"] = memberViewModel;
     }
 </head>
 
@@ -22,7 +23,7 @@
                 <span>Home</span>
             </a>
         </div>
-        @if (false)
+        @if (memberViewModel.IsAuthenticated)
         { 
             <div class="dropdown icon">
                 <div class="cpl-dropdown" data-toggle="dropdown">

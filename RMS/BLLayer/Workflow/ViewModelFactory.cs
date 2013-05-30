@@ -14,6 +14,14 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        public static MemberViewModel MemberViewModel
+        {
+            get
+            {
+                return new MemberViewModel(Repositories.AllMembers);
+            }
+        }
+
         private static class Repositories
         {
             public static readonly IAllMembers AllMembers = new AllMembers();

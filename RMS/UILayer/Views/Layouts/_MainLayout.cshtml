@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using ResourceManagementSystem.BusinessLogic.Workflow;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,7 +10,7 @@
     <link href="/img/favico.ico" rel="shortcut icon" type="img/x-icon" />
     <!-- <meta name="viewport" content="width=device-width"> -->
     @{
-        UserInterface.ViewModels.MemberViewModel memberViewModel = Session["memberViewModel"] as UserInterface.ViewModels.MemberViewModel;
+        MemberViewModel memberViewModel = Session["memberViewModel"] as MemberViewModel;
     }
 </head>
 

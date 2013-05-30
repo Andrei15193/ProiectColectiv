@@ -113,14 +113,15 @@ namespace ResourceManagementSystem.DataAccess.Database
             }
         }
 
-        public Member Where(string email)
+        public Member Where(string email, string password)
         {
             command.CommandType = System.Data.CommandType.Text;
-            command.CommandText = @"select type, name, password, teachingPosition, hasPhD, telephone, website, address, domainsOfInterest
+            command.CommandText = @"select type, name, email, password, teachingPosition, hasPhD, telephone, website, address, domainsOfInterest
                                             from Members
-                                            where email = @email";
+                                            where email = @email and password = @password";
             command.Parameters.Clear();
             command.Parameters.Add(new SqlParameter("@email", System.Data.SqlDbType.VarChar, 100) { Value = email });
+            command.Parameters.Add(new SqlParameter("@password", System.Data.SqlDbType.VarChar, 100) { Value = password });
             SqlDataReader reader = null;
             IEnumerable<Member> members = null;
             try

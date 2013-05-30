@@ -1,15 +1,21 @@
-﻿@{
-    UserInterface.ViewModels.MemberViewModel memberViewModel = Session["memberViewModel"] as UserInterface.ViewModels.MemberViewModel;
+﻿@using ResourceManagementSystem.BusinessLogic.Workflow;
+
+@{
+    MemberViewModel memberViewModel = Session["memberViewModel"] as MemberViewModel;
+    if (memberViewModel == null)
+    {
+        memberViewModel = ViewModelFactory.MemberViewModel;
+        Session["memberViewModel"] = memberViewModel;
+    }
 }
 
-
-@if (false)
+@if (memberViewModel.IsAuthenticated)
 {   
     <form class="logout" action="/index.cshtml" method="get">
-        <input name="logout" type="hidden" value="true" />
+        <input name="log" type="hidden" value="out" />
         <div class="pull-left">
             <img src="/img/user.png" />
-            <span class="user-name">@memberViewModel.Username</span>
+            <span class="user-name">@memberViewModel.Name</span>
         </div>
         <div class="pull-right">
             <input class="btn" type="submit" value="Logout" />
@@ -20,13 +26,12 @@ else
 {
     <form class="form-inline login" method="post" action="/index.cshtml">
         <div class="pull-left">
-            <input name="email" type="text" class="input-small" placeholder="Email">
-            <input name="password" type="password" class="input-small" placeholder="Password">
+            <input name="log" id="log" type="hidden" value="in" />
+            <input name="email" id="email" type="text" class="input-small" placeholder="Email">
+            <input name="password" id="password" type="password" class="input-small" placeholder="Password">
         </div>
         <div class="pull-right">
             <input type="submit" class="btn" value="Sign in" />
         </div>
     </form>
 }
-
-

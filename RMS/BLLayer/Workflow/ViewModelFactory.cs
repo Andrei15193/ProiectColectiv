@@ -15,6 +15,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+
         public static TeamsViewModel TeamsViewModel
         {
             get
@@ -22,7 +23,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return new TeamsViewModel(Repositories.AllMembers);
             }
         }
-
 
         public static MemberViewModel MemberViewModel
         {
@@ -48,6 +48,14 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        public static ClassRoomViewModel ClassRoomViewModel
+        {
+            get
+            {
+                return new ClassRoomViewModel(Repositories.AllClassRooms);
+            }
+        }
+
         private static class Repositories
         {
             public static readonly IAllMembers AllMembers = new AllMembers();
@@ -55,6 +63,9 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             public static readonly IAllFinancialResources AllFinancialResources = new AllFinancialResources();
 
             public static readonly IAllEquipments AllEquipments = new AllEquipments();
+
+
+            public static readonly IAllClassRooms AllClassRooms = new AllClassRooms();
         }
     }
 }

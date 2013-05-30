@@ -48,6 +48,8 @@
     <Compile Include="DAOInterface\IHumanResources.cs" />
     <Compile Include="DAOInterface\ISpecializations.cs" />
     <Compile Include="IAllEquipments.cs" />
+    <Compile Include="IAllClassRoom.cs" />
+
     <Compile Include="IAllFinancialResources.cs" />
     <Compile Include="IStudyPrograms.cs" />
     <Compile Include="DAOInterface\ITasks.cs" />

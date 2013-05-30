@@ -105,6 +105,8 @@
     <Content Include="addResearchProject.cshtml" />
     <Content Include="addEquipment.cshtml" />
     <Content Include="addTeam.cshtml" />
+
+    <Content Include="addClassRoom.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

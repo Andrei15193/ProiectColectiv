@@ -1,0 +1,80 @@
+﻿@using ResourceManagementSystem.BusinessLogic.Entities.Collections;
+@using ResourceManagementSystem.BusinessLogic.Entities;
+@using ResourceManagementSystem.BusinessLogic.Workflow;
+@using System.Linq;
+
+@{   
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "Select ClassRooms";
+
+    int step = 0;
+    const int lastStep = 1;
+    string errorMessage;
+    string requestStep = IsPost ? Request["step"] : null;
+    if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
+    {
+        step = 0;
+    }
+    SelectClassRoomViewModel selectClassRoomViewModel = Session["selectClassRoomViewModel"] as SelectClassRoomViewModel ?? ViewModelFactory.SelectClassRoomViewModel;
+    Session["selectClassRoomViewModel"] = selectClassRoomViewModel;
+    IEnumerable<ClassRoom> classRooms = selectClassRoomViewModel.TryGetAll(out errorMessage);
+
+    switch (step)
+    {
+        case 0:
+
+            break;
+        case 1:
+            //teamsViewModel.MemberTypeSelectedIndex = Request["memberType"] == null ? 0 : Convert.ToInt32(Request["memberType"]);
+
+            break;
+
+    }
+}
+
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a>Add</a></li>
+
+    </ul>
+
+    <div class="well">
+        @if (!IsPost)
+        {
+            if (classRooms != null)
+            {
+            <form action="~/selectClassRooms.cshtml" method="post">
+                <ul>
+                    @foreach (var cls in classRooms)
+                    {
+                        <li>
+                           <input type="checkbox" name="@cls.Name" />
+                           @cls.Name @cls.Description
+                        </li>
+                    }
+                </ul>
+                <input type="submit" value="Finish" />
+            </form>
+         
+            }
+            else
+            {
+            <h1>Error!</h1>
+            <p>@errorMessage</p>
+            <p>We are terebly sorry for the inconvenience...</p>
+            }
+        }
+        else
+        {
+            selectClassRoomViewModel.SelectedNames = Request.Form.AllKeys;
+            selectClassRoomViewModel.AddClassRooms();
+            <ul>
+            @foreach (ClassRoom cls in selectClassRoomViewModel.ClassRooms)
+            {
+                <li>@cls.Name @cls.Description</li>
+            }
+            </ul>
+        }
+    </div>
+}
+

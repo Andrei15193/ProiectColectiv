@@ -16,6 +16,8 @@ namespace ResourceManagementSystem.DataAccess.Mocks
         {
             lista = new LinkedList<ClassRoom>();
             lista.Add(new ClassRoom("A301","sala de curs"));
+            lista.Add(new ClassRoom("L308", "laborator"));
+            lista.Add(new ClassRoom("C335", "sala de curs"));
 
         }
 

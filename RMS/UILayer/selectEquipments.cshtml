@@ -1,0 +1,80 @@
+﻿@using ResourceManagementSystem.BusinessLogic.Entities.Collections;
+@using ResourceManagementSystem.BusinessLogic.Entities;
+@using ResourceManagementSystem.BusinessLogic.Workflow;
+@using System.Linq;
+
+@{   
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "Select Equipments";
+
+    int step = 0;
+    const int lastStep = 1;
+    string errorMessage;
+    string requestStep = IsPost ? Request["step"] : null;
+    if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
+    {
+        step = 0;
+    }
+    SelectEquipmentsViewModel selectEquipmentsViewModel = Session["selectEquipmentsViewModel"] as SelectEquipmentsViewModel ?? ViewModelFactory.SelectEquipmentsViewModel;
+    Session["selectEquipmentsViewModel"] = selectEquipmentsViewModel;
+    IEnumerable<Equipment> equipments = selectEquipmentsViewModel.TryGetAll(out errorMessage);
+
+    switch (step)
+    {
+        case 0:
+
+            break;
+        case 1:
+            //teamsViewModel.MemberTypeSelectedIndex = Request["memberType"] == null ? 0 : Convert.ToInt32(Request["memberType"]);
+
+            break;
+
+    }
+}
+
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a>Add</a></li>
+
+    </ul>
+
+    <div class="well">
+        @if (!IsPost)
+        {
+            if (equipments != null)
+            {
+            <form action="~/selectEquipments.cshtml" method="post">
+                <ul>
+                    @foreach (var eq in equipments)
+                    {
+                        <li>
+                           <input type="checkbox" name="@eq.SerialNumber" />
+                           @eq.Brand @eq.Model @eq.Description @eq.SerialNumber
+                        </li>
+                    }
+                </ul>
+                <input type="submit" value="Finish" />
+            </form>
+         
+            }
+            else
+            {
+            <h1>Error!</h1>
+            <p>@errorMessage</p>
+            <p>We are terebly sorry for the inconvenience...</p>
+            }
+        }
+        else
+        {
+            selectEquipmentsViewModel.SelectedSerialNumbers = Request.Form.AllKeys;
+            selectEquipmentsViewModel.AddEquipments();
+            <ul>
+            @foreach (Equipment eqs in selectEquipmentsViewModel.Equipments)
+            {
+                <li>@eqs.Brand @eqs.Description @eqs.Model @eqs.SerialNumber</li>
+            }
+            </ul>
+        }
+    </div>
+}
+

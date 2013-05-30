@@ -84,12 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Code\UserInterface\ViewModels\MemberViewModel.cs" />
-    <Compile Include="addTeam.cshtml.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="addTeam.cshtml.designer.cs">
-      <DependentUpon>addTeam.cshtml.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -105,8 +99,11 @@
     <Content Include="addResearchProject.cshtml" />
     <Content Include="addEquipment.cshtml" />
     <Content Include="addTeam.cshtml" />
-
     <Content Include="addClassRoom.cshtml" />
+    <Content Include="addTask.cshtml" />
+    <Content Include="selectClassRooms.cshtml" />
+    <Content Include="Views\selectEquipments.cshtml" />
+    <Content Include="selectEquipments.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

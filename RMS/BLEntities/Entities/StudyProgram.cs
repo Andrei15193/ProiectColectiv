@@ -12,7 +12,7 @@
 
         public int TotalEctsCredits { get; set; }
 
-        public WorkTime StudyTime { get; set; }
+        public TypeOfStudy StudyTime { get; set; }
 
         public string HigherEducationInstitution { get; set; }
 

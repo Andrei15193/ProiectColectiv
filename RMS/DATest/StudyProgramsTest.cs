@@ -39,7 +39,7 @@ namespace DATest
                 PracticalTraining = "prac training",
                 ProfileOfTheDegreeProgramme= "prof of degree programme",
                 PurposesOfTheProgramme = "purpose",
-                StudyTime= WorkTime.Full_Time,
+                StudyTime= TypeOfStudy.Full_Time,
                 TargetGroups = "target gr",
                 TotalEctsCredits = 5,
                 YearLength = 3
@@ -81,7 +81,7 @@ namespace DATest
                 PracticalTraining = "prac training",
                 ProfileOfTheDegreeProgramme = "prof of degree programme",
                 PurposesOfTheProgramme = "purpose",
-                StudyTime = WorkTime.Full_Time,
+                StudyTime = TypeOfStudy.Full_Time,
                 TargetGroups = "target gr",
                 TotalEctsCredits = 5,
                 YearLength = 3
@@ -127,7 +127,7 @@ namespace DATest
                 PracticalTraining = "prac training",
                 ProfileOfTheDegreeProgramme = "prof of degree programme",
                 PurposesOfTheProgramme = "purpose",
-                StudyTime = WorkTime.Full_Time,
+                StudyTime = TypeOfStudy.Full_Time,
                 TargetGroups = "target gr",
                 TotalEctsCredits = 5,
                 YearLength = 3

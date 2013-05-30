@@ -173,7 +173,7 @@ namespace ResourceManagementSystem.DataAccess.Database
             return true;
         }
 
-        public ResourceManagementSystem.BusinessLogic.Entities.StudyProgram GetByPrimaryKey(string educationalProgramme, ResourceManagementSystem.BusinessLogic.Entities.StudyDegree studyDegree, string domain, int yearLength, int totalEctsCredits, WorkTime studyType)
+        public ResourceManagementSystem.BusinessLogic.Entities.StudyProgram GetByPrimaryKey(string educationalProgramme, ResourceManagementSystem.BusinessLogic.Entities.StudyDegree studyDegree, string domain, int yearLength, int totalEctsCredits, TypeOfStudy studyType)
         {
             SqlConnection connection = DatabaseConstants.SqlConnection;
             SqlCommand cmd = new SqlCommand(@"select educationalProgramme, degreeOfStudy, domain, yearLength, ectsCredits, typeOfStudy,
@@ -251,7 +251,7 @@ namespace ResourceManagementSystem.DataAccess.Database
                         Domain = reader["domain"].ToString(),
                         YearLength = Convert.ToInt32(reader["yearLength"].ToString()),
                         TotalEctsCredits = Convert.ToInt32(reader["ectsCredits"].ToString()),
-                        StudyTime = (WorkTime)Convert.ToInt32(reader["typeOfStudy"].ToString()),
+                        StudyTime = (TypeOfStudy)Convert.ToInt32(reader["typeOfStudy"].ToString()),
                         HigherEducationInstitution = reader["higherEducationInstitution"].ToString(),
                         Faculty = reader["faculty"].ToString(),
                         ContactPerson  = reader["contactPerson"].ToString(),

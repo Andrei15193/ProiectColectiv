@@ -1,0 +1,151 @@
+﻿@using ResourceManagementSystem.BusinessLogic.Entities;
+@using ResourceManagementSystem.BusinessLogic.Entities.Collections;
+@using ResourceManagementSystem.BusinessLogic.Workflow;
+
+@{   
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "Aprove Activities";
+
+    <!--   int step = 0;
+    const int lastStep = 2;
+    string errorMessage;
+    string requestStep = IsPost ? Request["step"] : null;
+    if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
+    {
+        step = 0;
+    }-->
+    string errorMessage;
+    ActivitiesViewModel activitiesViewModel = Session["activitiesViewModel"] as ActivitiesViewModel ?? ViewModelFactory.ActivitiesViewModel;
+    Session["activitiesViewModel"] = activitiesViewModel;
+    IEnumerable<AbstractActivity> activities = activitiesViewModel.TryGetAll(out errorMessage);
+    AbstractActivity selectedActivity = null;
+
+    if (Request["id"] != null && activities != null)
+    {
+        int id = int.Parse(Request["id"]);
+        selectedActivity = activities.Where((activity) => activity.Id == id).First();
+    }
+    
+    <!--switch (step)
+    {
+        case 0:
+
+            break;
+        case 1:
+          
+
+            break;
+      
+    }-->
+}
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a>Aprove activities</a></li>
+
+    </ul>
+
+
+    @if (activities != null)
+    {
+        <div class="well">
+            @if (selectedActivity == null)
+            {
+                <ul>
+                    @foreach (var activity in activities)
+                    {
+                        <li><a href="aproveActivities.cshtml?id=@activity.Id">@activity.Title</a> <b>Description: </b>@activity.Description</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                switch (selectedActivity.Type)
+                {
+                    case ActivityType.Administrative:
+                        AdministrativeActivity administrativeActivity = activity as AdministrativeActivity;
+                <h3>@selectedActivity.Title</h3>
+                <p>
+                    <b>Description:</b><br />@selectedActivity.Description<br />
+                    <b>Start date:</b> @selectedActivity.StartDate<br />
+                    <b>End date:</b> @selectedActivity.EndDate
+                </p>
+                <h4>Tasks:</h4>
+                foreach (Task task in administrativeActivity.BreakdownActvities)
+                {
+                <p>
+                    <b>Title:</b>@task.Title<br />
+                    <b>Labor cost: </b>@task.LaborCost.Value @task.LaborCost.Currency<br />
+                    <b>Logistical cost: </b>@task.LogisticalCost.Value @task.LogisticalCost.Currency<br />
+                    <b>Mobility cost: </b>@task.MobilityCost.Value @task.MobilityCost.Currency
+                </p>
+                <h4>Class rooms required</h4>
+                <ul>
+                    @foreach (ClassRoom classRoom in task.ClassRooms)
+                    {
+                        <li>@classRoom.Name</li>
+                    }
+                </ul>
+                <h4>Equipment required</h4>
+                <ul>
+                    @foreach (Equipment equipment in task.Equipments)
+                    {
+                        <li>@equipment.Brand + @equipment.Model (@equipment.SerialNumber)</li>
+                    }
+                </ul>
+                }
+                <h3>Teams:</h3>
+                        foreach (NamedTeam team in administrativeActivity.Teams)
+                        {
+                <h4>@team.Name:</h4>
+                <ul>
+                    @foreach (Member member in team)
+                    {
+                        <li>@member.ToString()</li>
+                    }
+                </ul>
+                        }
+                        break;
+
+                    case ActivityType.Didactic:
+                <h4>Teachers:</h4>
+                <ul>
+                    @foreach (Member member in team)
+                    {
+                        <li>@member.ToString()</li>
+                    }
+                </ul>
+                    break;
+
+                    case ActivityType.Research:
+
+                    ResearchActivity researchActivity = activity as ResearchActivity;
+                    // Copy & paste                        
+                    break;
+
+                    case ActivityType.Research_Project:
+
+                    ResearchProject researchProject = activity as ResearchProject;
+                <p><a href="@researchProject.Title">@researchProject.Title</a></p>
+                    break;
+
+                    case ActivityType.Student_Circle:
+
+                    StudentCircle studentCircle = activity as StudentCircle;
+                <p><a href="@studentCircle.Title">@studentCircle.Title</a></p>    
+                    break;
+
+                    default:
+                    break;
+                }
+
+            }
+        </div>
+    }
+    else
+    {
+        <h1>Error!</h1>
+        <p>@errorMessage</p>
+        <p>We are terebly sorry for the inconvenience...</p>
+    }
+
+}

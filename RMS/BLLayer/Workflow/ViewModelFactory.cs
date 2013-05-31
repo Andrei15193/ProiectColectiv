@@ -22,6 +22,13 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return new TeamViewModel(Repositories.AllMembers);
             }
         }
+        public static ActivitiesViewModel ActivitiesViewModel
+        {
+            get
+            {
+                return new ActivitiesViewModel(Repositories.AllActivities);
+            }
+        }
         public static SelectClassRoomViewModel SelectClassRoomViewModel
         {
             get
@@ -106,6 +113,8 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             public static readonly IAllClassRooms AllClassRooms = new DALayer.Database.AllClassRooms();
 
             public static readonly IStudyPrograms StudyPrograms = new Studyprograms();
+
+            public static readonly IAllActivities AllActivities = new AllActivities();
         }
     }
 }

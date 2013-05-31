@@ -42,16 +42,14 @@
     <Compile Include="Database\AllMembers.cs" />
     <Compile Include="DatabaseConstants.cs" />
     <Compile Include="DBImpl\AllMembers.cs" />
-    <Compile Include="DBImpl\ClassRooms.cs" />
+    <Compile Include="Database\AllClassRooms.cs" />
     <Compile Include="DBImpl\Equipments.cs" />
     <Compile Include="DBImpl\FinancialResources.cs" />
     <Compile Include="DBImpl\HumanResources.cs" />
     <Compile Include="Database\Studyprograms.cs" />
     <Compile Include="DBImpl\Tasks.cs" />
-
     <Compile Include="Mocks\AllEquipments.cs" />
     <Compile Include="Mocks\AllClassRooms.cs" />
-
     <Compile Include="Mocks\AllFinancialResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

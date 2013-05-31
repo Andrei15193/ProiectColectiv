@@ -86,7 +86,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
             public static readonly IAllEquipments AllEquipments = new AllEquipments();
 
-            public static readonly IAllClassRooms AllClassRooms = new AllClassRooms();
+            public static readonly IAllClassRooms AllClassRooms = new DALayer.Database.AllClassRooms();
 
             public static readonly IStudyPrograms StudyPrograms = new Studyprograms();
         }

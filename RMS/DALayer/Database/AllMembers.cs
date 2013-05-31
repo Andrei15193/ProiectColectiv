@@ -160,7 +160,10 @@ namespace ResourceManagementSystem.DataAccess.Database
                 finally
                 {
                     if (reader != null)
+                    {
                         reader.Close();
+                    }
+                    command.Connection.Close();
                 }
                 return members ?? new Member[0];
             }
@@ -225,5 +228,6 @@ namespace ResourceManagementSystem.DataAccess.Database
         }
 
         private SqlCommand command;
+
     }
 }

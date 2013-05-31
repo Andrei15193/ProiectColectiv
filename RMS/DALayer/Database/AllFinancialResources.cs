@@ -7,33 +7,32 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BLEntities = ResourceManagementSystem.BusinessLogic.Entities;
 
 namespace DALayer.Database
 {
-    public class AllClassRooms : IAllClassRooms
+    public class AllFinancialResources : IAllFinancialResources
     {
         private SqlCommand command;
 
-        public AllClassRooms()
+        
+        public AllFinancialResources()
         {
             command = new SqlCommand() { Connection = DatabaseConstants.SqlConnection };
         }
 
-        public void Add(ClassRoom classRoom)
+        public void Add(FinancialResource financialResource)
         {
-
-            command.CommandText = @"insert into ClassRooms (name, description) VALUES (@name, @classRoomDescription)";
+            command.CommandText = @"insert into financialResources (value, status) VALUES (@value, @status)";
             command.Parameters.Clear();
             command.Parameters.Add(new SqlParameter()
             {
-                ParameterName = "@classRoomDescription",
-                Value = classRoom.Description
+                ParameterName = "@value",
+                Value = financialResource.Value
             });
             command.Parameters.Add(new SqlParameter()
             {
-                ParameterName = "@name",
-                Value = classRoom.Name
+                ParameterName = "@status",
+                Value = financialResource.Status
             });
             try
             {
@@ -46,23 +45,23 @@ namespace DALayer.Database
             }
         }
 
-        public IEnumerable<ClassRoom> AsEnumerable
+        public IEnumerable<FinancialResource> AsEnumerable
         {
             get { return getAll(); }
         }
 
-        private LinkedList<ClassRoom> getAll()
+        private LinkedList<FinancialResource> getAll()
         {
-            LinkedList<ClassRoom> classrooms = new LinkedList<ClassRoom>();
+            LinkedList<FinancialResource> financialResources = new LinkedList<FinancialResource>();
             command.CommandType = System.Data.CommandType.Text;
-            command.CommandText = @"select name, description from classrooms";
+            command.CommandText = @"select value, status from financialResources";
             command.Parameters.Clear();
             SqlDataReader reader = null;
             try
             {
                 command.Connection.Open();
                 reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
-                classrooms = ReadClassRooms(reader);
+                financialResources = ReadFinancialResources(reader);
             }
             finally
             {
@@ -72,20 +71,20 @@ namespace DALayer.Database
                 }
                 command.Connection.Close();
             }
-            return classrooms;
+            return financialResources;
         }
 
-        private LinkedList<ClassRoom> ReadClassRooms(SqlDataReader reader)
+        private LinkedList<FinancialResource> ReadFinancialResources(SqlDataReader reader)
         {
-            LinkedList<ClassRoom> classrooms = new LinkedList<ClassRoom>();
+            LinkedList<FinancialResource> financialResources = new LinkedList<FinancialResource>();
             if (reader != null)
             {
                 while (reader.Read())
                 {
-                    classrooms.AddLast(new ClassRoom(reader["name"].ToString(), reader["description"].ToString()));
+                    financialResources.AddLast(new FinancialResource(Convert.ToInt32(reader["value"].ToString()), Currency.RON));
                 }
             }
-            return classrooms;
+            return financialResources;
         }
     }
 }

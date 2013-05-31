@@ -82,7 +82,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             public static readonly IAllMembers AllMembers = new AllMembers();
 
-            public static readonly IAllFinancialResources AllFinancialResources = new AllFinancialResources();
+            public static readonly IAllFinancialResources AllFinancialResources = new DALayer.Database.AllFinancialResources();
 
             public static readonly IAllEquipments AllEquipments = new DALayer.Database.AllEquipments();
 

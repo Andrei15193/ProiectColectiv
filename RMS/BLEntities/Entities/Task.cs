@@ -7,7 +7,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class Task : IDateTimeBound, ILogisticalResourceConsumer, IEnumerable<Member>
     {
-        public Task(TaskType type, string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> assignees, FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost)
+        public Task(TaskType type, string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> assignees, FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost, int id)
         {
             if (title != null)
                 if (description != null)
@@ -20,6 +20,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                                             if (title.Length > 0)
                                                 if (startDate < endDate)
                                                 {
+                                                    Id = id;
                                                     State = State.Proposed;
                                                     Type = type;
                                                     Title = title;
@@ -47,12 +48,17 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                                 throw new ArgumentNullException("The provided value for laborcost cannot be null!");
                         else
                             throw new ArgumentNullException("The provided value for mobility cost cannot be null!");
-                            else
-                                throw new ArgumentNullException("The provided value for assignee collection cannot be null!");
-                        else
-                            throw new ArgumentNullException("The provided value for description cannot be null!");
                     else
-                        throw new ArgumentNullException("The provided value for title cannot be null!");
+                        throw new ArgumentNullException("The provided value for assignee collection cannot be null!");
+                else
+                    throw new ArgumentNullException("The provided value for description cannot be null!");
+            else
+                throw new ArgumentNullException("The provided value for title cannot be null!");
+        }
+
+        public Task(TaskType type, string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> assignees, FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost)
+            : this(type, title, description, startDate, endDate, assignees, mobilityCost, laborCost, logisticalCost, 0)
+        {
         }
 
         public bool Add(Member assignee)
@@ -90,6 +96,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                 return assignees.Count;
             }
         }
+
+        public int Id { get; private set; }
 
         public State State { get; set; }
 

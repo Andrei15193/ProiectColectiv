@@ -36,7 +36,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         public IEnumerable<string> SelectedEMails { get; set; }
 
-        public IEnumerable<Member> TryGetAll(out string errorMessage)
+        public IEnumerable<Member> TryGetAllMembers(out string errorMessage)
         {
             try
             {

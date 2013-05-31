@@ -26,6 +26,11 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         {
         }
 
+        public override string ToString()
+        {
+            return string.Format("{0} {1}, {2}", HasPhD ? "Dr. " : "", Name, Position.ToString());
+        }
+
         public TeachingPosition Position { get; set; }
 
         public bool HasPhD { get; set; }

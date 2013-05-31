@@ -43,8 +43,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
         }
 
-        protected AbstractAssignableActivity(ActivityType type, string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> assignees)
-            : base(type, title, description, startDate, endDate)
+        protected AbstractAssignableActivity(ActivityType type, string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> assignees, int id)
+            : base(type, title, description, startDate, endDate, id)
         {
             if (assignees != null)
                 if (assignees.Count() > 0)
@@ -56,6 +56,11 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                     throw new ArgumentException("There must be at least one assignee for this activity!");
             else
                 throw new ArgumentNullException("The provided value for assignee collection cannot be null!");
+        }
+
+        protected AbstractAssignableActivity(ActivityType type, string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> assignees)
+            : this(type, title, description, startDate, endDate, assignees, 0)
+        {
         }
 
         private ISet<Member> assignees;

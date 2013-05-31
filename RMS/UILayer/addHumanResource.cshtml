@@ -62,7 +62,7 @@
             <ul>
                 @foreach (var member in members)
                 {
-                    <li>@(member is Teacher ? ((member as Teacher).HasPhD ? "Dr. " : "") : "") @member.Name, @(member is Teacher ? (member as Teacher).Position.ToString() : member.Type.ToString()) [Contact: @member.EMail]</li>
+                    <li>@member.ToString()</li>
                 }
             </ul>
             <form action="addHumanResource.cshtml" class="form-horizontal" method="post">

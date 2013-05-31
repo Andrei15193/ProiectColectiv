@@ -5,6 +5,11 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public abstract class Member
     {
+        public override string ToString()
+        {
+            return string.Format("{0} ({1})",Name, Type.ToString().Replace('_', ' '));
+        }
+
         public string Name
         {
             get

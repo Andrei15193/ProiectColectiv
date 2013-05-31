@@ -6,67 +6,73 @@
 @{   
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
     Page.Title = "Add Team";
+    string errorMessage = string.Empty;
 
-    int step = 0;
-    const int lastStep = 1;
-    string errorMessage;
-    string requestStep = IsPost ? Request["step"] : null;
-    if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
+    IEnumerable<Member> members = null;
+    TeamViewModel teamsViewModel = Session["teamViewModel"] as TeamViewModel;
+    if (teamsViewModel != null)
     {
-        step = 0;
+        members = teamsViewModel.TryGetAllMembers(out errorMessage);
     }
-    TeamViewModel teamsViewModel = Session["teamViewModel"] as TeamViewModel ?? ViewModelFactory.TeamViewModel;
-    Session["teamViewModel"] = teamsViewModel;
-    IEnumerable<Member> members = teamsViewModel.TryGetAll(out errorMessage);
 }
 
 @section body{
     <ul class="nav nav-tabs">
-        <li class="active"><a>Add</a></li>
+        <li class="active"><a>Create team</a></li>
 
     </ul>
 
     <div class="well">
-        @if (!IsPost)
+        @if (teamsViewModel != null)
         {
-            if (members != null)
+            if (!IsPost)
             {
+                if (members != null)
+                {
             <form action="~/addTeam.cshtml" method="post">
                 <h1>Human resources: </h1>
                 <ul>
                     @foreach (var member in members)
                     {
                         <li>
-                            <input type="checkbox" name="@member.EMail" />
-                            @((member is Teacher && (member as Teacher).HasPhD) ? "Dr. " : "") @member.Name, @(member is Teacher ? (member as Teacher).Position.ToString() : member.Type.ToString()) [Contact: @member.EMail]
+                            <input type="checkbox" @(teamsViewModel.Team.Contains(member) ? "checked=\"checked\"" : "") name="@member.EMail" />
+                            @(member.ToString())
                         </li>
                     }
                 </ul>
                 <input type="submit" value="Finish" />
             </form>
          
-            }
-            else
-            {
+                }
+                else
+                {
             <h1>Error!</h1>
             <p>@errorMessage</p>
             <p>We are terebly sorry for the inconvenience...</p>
+                }
+            }
+            else
+            {
+                teamsViewModel.SelectedEMails = Request.Form.AllKeys;
+                teamsViewModel.AddMembersToTeam();
+            <h1>@(teamsViewModel.TeamName != null ? teamsViewModel.TeamName + " team:" : "Team:")</h1>
+            <ul>
+                @foreach (Member member in teamsViewModel.Team)
+                {
+                    <li>@member.ToString()</li>
+                }
+            </ul>
+            <a class="btn pull-right" href="@teamsViewModel.NextStepLink">Next</a>   
             }
         }
         else
         {
-            teamsViewModel.SelectedEMails = Request.Form.AllKeys;
-            teamsViewModel.AddMembersToTeam();
-            <h1>Team:</h1>
-            <ul>
-                @foreach (Member member in teamsViewModel.Team)
-                {
-                    <li>@member.Name @member.EMail</li>
-                }
-            </ul>
-            <a class="btn pull-right" href="@teamsViewModel.NextStepLink">Next</a>   
+            <h1>No team view model set!</h1>
+            <p>
+                There is not team vew model set in session (key: "teamViewModel"). Cannot create team!
+            </p>
         }
-        <div style="clear:both"></div>
+        <div style="clear: both"></div>
     </div>
 }
 

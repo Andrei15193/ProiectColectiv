@@ -17,7 +17,7 @@ namespace ResourceManagementSystem.DataAccess.Mocks
         {
             lista = new LinkedList<Equipment>();
             lista.Add(new Equipment("Lenovo","Yoga", "26C5432", "are bluetooth" ));
-            lista.Add(new Equipment("Asus", "Iachi", "2FFF5432", "are wireless"));
+            lista.Add(new Equipment("Asus", "Zenbook", "2FFF5432", "are wireless"));
 
         }
 

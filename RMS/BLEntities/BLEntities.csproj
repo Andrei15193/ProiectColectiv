@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="Entities\AbstractActivity.cs" />
+    <Compile Include="Entities\DidacticActivity.cs" />
     <Compile Include="Entities\AbstractAssignableActivity.cs" />
     <Compile Include="Entities\AbstractBreakdownActivity.cs" />
     <Compile Include="Entities\Enums\FinancialResourceStatus.cs" />
@@ -51,7 +51,7 @@
     <Compile Include="Entities\Collections\DateTimeBoundCollection.cs" />
     <Compile Include="Entities\Collections\EqualityComparer.cs" />
     <Compile Include="Entities\Collections\NamedTeam.cs" />
-    <Compile Include="Entities\DidacticActivity.cs" />
+    <Compile Include="Entities\AbstractActivity.cs" />
     <Compile Include="Entities\Director.cs" />
     <Compile Include="Entities\Enums\CourseType.cs" />
     <Compile Include="Entities\Enums\State.cs" />

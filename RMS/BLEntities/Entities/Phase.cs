@@ -7,8 +7,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public class ResearchPhase : AbstractActivity, IEnumerable<ResearchActivity>
     {
-        public ResearchPhase(ResearchProject reserachProject, string title, string description, DateTime startDate, DateTime endDate)
-            :base(ActivityType.Research_Phase, title, description, startDate, endDate)
+        public ResearchPhase(ResearchProject reserachProject, string title, string description, DateTime startDate, DateTime endDate, int id)
+            : base(ActivityType.Research_Phase, title, description, startDate, endDate, id)
         {
             if (reserachProject != null)
                 if (reserachProject.StartDate <= startDate && endDate <= reserachProject.EndDate)
@@ -20,6 +20,11 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                     throw new ArgumentException("A phase cannot exceed the research project start date or end date!");
             else
                 throw new ArgumentNullException("The provided value for research project cannot be null!");
+        }
+
+        public ResearchPhase(ResearchProject reserachProject, string title, string description, DateTime startDate, DateTime endDate)
+            : this(reserachProject, title, description, startDate, endDate, 0)
+        {
         }
 
         public ResearchActivity Add(string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> assignees, FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost, bool isConfidential)

@@ -23,14 +23,14 @@
     {
         case 0:
             classRoomViewModel.Name = null;
-            classRoomViewModel.Description = null;  
+            classRoomViewModel.Description = null;
             break;
-        
+
         case 1:
             classRoomViewModel.Name = Request["name"];
             classRoomViewModel.Description = Request["description"];
             break;
-      
+
     }
 }
 
@@ -66,16 +66,16 @@
                     case 1:
                         if (classRoomViewModel.TryAddClassRoom(out errorMessage))
                         {
-                            <h1>Success!</h1>
-                            <p>The classroom has been added to ClassRooms!</p>
+                    <h1>Success!</h1>
+                    <p>The classroom has been added to ClassRooms!</p>
                         }
                         else
                         {
-                            <h1>Error!</h1>
-                            <p>Could not add the classroom @errorMessage</p>
+                    <h1>Error!</h1>
+                    <p>Could not add the classroom @errorMessage</p>
                         }
-                     <input type="submit" value="Finish" />
-                     break;
+                    <input type="submit" value="Finish" />
+                        break;
 
                 }
 
@@ -89,4 +89,3 @@
         }
     </div>
 }
-

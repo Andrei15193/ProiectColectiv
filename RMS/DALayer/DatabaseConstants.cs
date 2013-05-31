@@ -10,23 +10,27 @@ namespace ResourceManagementSystem.DataAccess
             get
             {
                 if (sqlConnection == null)
-                    sqlConnection = new SqlConnection("Server=ELIZAC; Database=Local; Trusted_Connection= True;");
+                    sqlConnection = new SqlConnection(connectionString);
                 return sqlConnection;
             }
         }
 
         [ThreadStatic]
-        private static readonly SqlConnection sqlConnection = new SqlConnection("Server= USER-PC\\SQLEXPRESS; Database= local; Trusted_Connection= true;");
+        private static SqlConnection sqlConnection = null;
 
-        //private static readonly SqlConnection sqlConnection = new SqlConnection("Server= ANDREI-NETBOOK; Database=AndreiLocal; Trusted_Connection= True;");
+        private static readonly string connectionString = "Server= ANDREI-DESKTOP; Database=AndreiLocal; Trusted_Connection= True;";
 
-        //private static readonly SqlConnection sqlConnection = new SqlConnection("SERVER= IoanasiPui\\SQLEXPRESS; Database= local; Trusted_Connection= True;");
-        //private static readonly SqlConnection sqlConnection = new SqlConnection("Server= USER-PC\\SQLEXPRESS; Database= local; Trusted_Connection= true;");
-        private static SqlConnection sqlConnection;
+        //private static readonly string connectionString = "Server= ANDREI-NETBOOK; Database=AndreiLocal; Trusted_Connection= True;";
+        
+        //private static readonly string connectionString = "Server= USER-PC\\SQLEXPRESS; Database= local; Trusted_Connection= true;";
+        
+        //private static readonly string connectionString = "SERVER= IoanasiPui\\SQLEXPRESS; Database= local; Trusted_Connection= True;";
+        
+        //private static readonly string connectionString = "Server= USER-PC\\SQLEXPRESS; Database= local; Trusted_Connection= true;";
 
-        //private static readonly SqlConnection sqlConnection = new SqlConnection("SERVER= IoanasiPui\\SQLEXPRESS; Database= local; Trusted_Connection= True;");
+        //private static readonly string connectionString = "SERVER= IoanasiPui\\SQLEXPRESS; Database= local; Trusted_Connection= True;";
 
-        //private static readonly SqlConnection connection = new SqlConnection("Initial Catalog=Andrei15193_sqldb; Data Source=andrei15193.tk,779; User=Andrei15193_RMSuser; Password=d3m3nt14l123");
+        //private static readonly string connectionString = "Initial Catalog=Andrei15193_sqldb; Data Source=andrei15193.tk,779; User=Andrei15193_RMSuser; Password=d3m3nt14l123";
 
     }
 }

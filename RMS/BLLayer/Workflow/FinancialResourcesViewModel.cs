@@ -28,7 +28,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         public int CurrencyTypeSelectedIndex { get; set; }
 
-
         public bool TryAddFinancialResource(out string errorMessage)
         {
             errorMessage = string.Empty;
@@ -40,7 +39,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
             catch (Exception exception)
             {
-                errorMessage = exception.ToString();
+                errorMessage = exception.Message;
                 return false;
             }
         }
@@ -61,7 +60,5 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         private IAllFinancialResources allFinancialResources;
         private static readonly string[] currencyTypes = Enum.GetNames(typeof(Currency)).Select((currencyType) => currencyType.Replace('_', ' ')).ToArray();
-        
-
     }
 }

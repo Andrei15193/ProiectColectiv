@@ -15,21 +15,9 @@
     {
         step = 0;
     }
-    TeamsViewModel teamsViewModel = Session["teamViewModel"] as TeamsViewModel ?? ViewModelFactory.TeamsViewModel;
+    TeamViewModel teamsViewModel = Session["teamViewModel"] as TeamViewModel ?? ViewModelFactory.TeamViewModel;
     Session["teamViewModel"] = teamsViewModel;
     IEnumerable<Member> members = teamsViewModel.TryGetAll(out errorMessage);
-
-    switch (step)
-    {
-        case 0:
-
-            break;
-        case 1:
-            //teamsViewModel.MemberTypeSelectedIndex = Request["memberType"] == null ? 0 : Convert.ToInt32(Request["memberType"]);
-
-            break;
-
-    }
 }
 
 @section body{
@@ -44,12 +32,13 @@
             if (members != null)
             {
             <form action="~/addTeam.cshtml" method="post">
+                <h1>Human resources: </h1>
                 <ul>
                     @foreach (var member in members)
                     {
                         <li>
                             <input type="checkbox" name="@member.EMail" />
-                            @(member is Teacher ? ((member as Teacher).HasPhD ? "Dr. " : "") : "") @member.Name, @(member is Teacher ? (member as Teacher).Position.ToString() : member.Type.ToString()) [Contact: @member.EMail]
+                            @((member is Teacher && (member as Teacher).HasPhD) ? "Dr. " : "") @member.Name, @(member is Teacher ? (member as Teacher).Position.ToString() : member.Type.ToString()) [Contact: @member.EMail]
                         </li>
                     }
                 </ul>
@@ -68,13 +57,16 @@
         {
             teamsViewModel.SelectedEMails = Request.Form.AllKeys;
             teamsViewModel.AddMembersToTeam();
+            <h1>Team:</h1>
             <ul>
-            @foreach (Member member in teamsViewModel.Team)
-            {
-                <li>@member.Name @member.EMail</li>
-            }
+                @foreach (Member member in teamsViewModel.Team)
+                {
+                    <li>@member.Name @member.EMail</li>
+                }
             </ul>
+            <a class="btn pull-right" href="@teamsViewModel.NextStepLink">Next</a>   
         }
+        <div style="clear:both"></div>
     </div>
 }
 

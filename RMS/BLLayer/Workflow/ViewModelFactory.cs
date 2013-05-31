@@ -15,13 +15,11 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
-
-
-        public static TeamsViewModel TeamsViewModel
+        public static TeamViewModel TeamViewModel
         {
             get
             {
-                return new TeamsViewModel(Repositories.AllMembers);
+                return new TeamViewModel(Repositories.AllMembers);
             }
         }
         public static SelectClassRoomViewModel SelectClassRoomViewModel
@@ -88,8 +86,9 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
             public static readonly IAllEquipments AllEquipments = new AllEquipments();
 
-
             public static readonly IAllClassRooms AllClassRooms = new AllClassRooms();
+
+            public static readonly IStudyPrograms StudyPrograms = new Studyprograms();
         }
 
         public static TasksViewModel TasksViewModel
@@ -98,7 +97,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             {
                 return new TasksViewModel();
             }
-            public static readonly IStudyPrograms StudyPrograms = new Studyprograms();
 
         }
     }

@@ -49,10 +49,10 @@
     <Compile Include="Old\Workflow\TaskViewModel.cs" />
     <Compile Include="Workflow\SelectClassRoomViewModel.cs" />
     <Compile Include="Workflow\SelectEquipmentsViewModel.cs" />
+    <Compile Include="Workflow\TasksViewModel.cs" />
     <Compile Include="Workflow\TeamsViewModel.cs" />
     <Compile Include="Workflow\EquipmentsViewModel.cs" />
     <Compile Include="Workflow\ClassRoomViewModel.cs" />
-
     <Compile Include="Workflow\MemberViewModel.cs" />
     <Compile Include="Workflow\FinancialResourcesViewModel.cs" />
     <Compile Include="Workflow\StudyProgramsViewModel.cs" />

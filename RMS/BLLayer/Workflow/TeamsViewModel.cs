@@ -9,9 +9,9 @@ using ResourceManagementSystem.BusinessLogic.Entities.Collections;
 
 namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
-    public class TeamsViewModel
+    public class TeamViewModel
     {
-        public TeamsViewModel(IAllMembers allMembers)
+        public TeamViewModel(IAllMembers allMembers)
         {
             if (allMembers != null)
             {
@@ -21,6 +21,16 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             else
                 throw new ArgumentNullException("The provided value for allMembers cannot be null!");
         }
+
+        public void AddMembersToTeam()
+        {
+            if (SelectedEMails != null)
+                Team = new Team(localAllMembers.Where((localMember) => SelectedEMails.Contains(localMember.EMail)));
+        }
+
+        public string NextStepLink { get; set; }
+
+        public string TeamName { get; set; }
 
         public Team Team { get; private set; }
 
@@ -43,10 +53,5 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         private IAllMembers allMembers;
         private IEnumerable<Member> localAllMembers;
-        
-        public void AddMembersToTeam()
-        {
-            Team = new Team(localAllMembers.Where((localMember) => SelectedEMails.Contains(localMember.EMail)));
-        }
     }
 }

@@ -10,7 +10,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
     {
         public TasksViewModel()
         {
-            TeamViewModel = ViewModelFactory.TeamsViewModel;
+            TeamViewModel = ViewModelFactory.TeamViewModel;
             SelectClassRoomViewModel = ViewModelFactory.SelectClassRoomViewModel;
             SelectEquipmentsViewModel = ViewModelFactory.SelectEquipmentsViewModel;
             TaskTypeSelectedIndex = 0;
@@ -56,7 +56,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         public SelectEquipmentsViewModel SelectEquipmentsViewModel { get; set; }
 
-        public TeamsViewModel TeamViewModel { get; set; }
+        public TeamViewModel TeamViewModel { get; set; }
 
         public SelectClassRoomViewModel SelectClassRoomViewModel { get; private set; }
 

@@ -35,16 +35,16 @@
                     @switch (memberViewModel.MemberType)
                     {
                         case ResourceManagementSystem.BusinessLogic.Entities.MemberType.Administrator:
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/Views/HumanResources/add.cshtml">Add Human Resources</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/Views/FinancialResources/add.cshtml">Add  Financial Resources</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Add ClassRoom</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Add Equipment</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addHumanResource.cshtml">Add Human Resources</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addFinancialResource.cshtml">Add  Financial Resources</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addClassRoom.cshtml">Add ClassRoom</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addEquipment.cshtml">Add Equipment</a></li>
                             <li role="presentation" class="divider"></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Import Schedule</a></li>
                         break;
 
                         case ResourceManagementSystem.BusinessLogic.Entities.MemberType.Director:
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/Views/StudyPrograms/add.cshtml">Define Study Programs</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudyProgram.cshtml">Define Study Programs</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Research Grants</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Administrative Events</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Student Circles</a></li>

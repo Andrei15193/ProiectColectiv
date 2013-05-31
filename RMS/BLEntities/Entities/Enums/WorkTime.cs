@@ -1,6 +1,6 @@
 ﻿namespace ResourceManagementSystem.BusinessLogic.Entities
 {
-    public enum TypeOfStudy
+    public enum WorkTime
     {
         Distance,
         Full_Time

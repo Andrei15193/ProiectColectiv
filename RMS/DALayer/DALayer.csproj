@@ -48,6 +48,7 @@
     <Compile Include="DBImpl\HumanResources.cs" />
     <Compile Include="Database\Studyprograms.cs" />
     <Compile Include="DBImpl\Tasks.cs" />
+
     <Compile Include="Mocks\AllEquipments.cs" />
     <Compile Include="Mocks\AllClassRooms.cs" />
 

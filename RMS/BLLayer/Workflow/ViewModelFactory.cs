@@ -16,6 +16,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         }
 
 
+
         public static TeamsViewModel TeamsViewModel
         {
             get
@@ -37,6 +38,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return new SelectEquipmentsViewModel(Repositories.AllEquipments);
             }
         }
+
 
         public static MemberViewModel MemberViewModel
         {
@@ -70,6 +72,14 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        public static StudyProgramsViewModel StudyProgramsViewModel
+        {
+            get
+            {
+                return new StudyProgramsViewModel(Repositories.StudyPrograms);
+            }
+        }
+
         private static class Repositories
         {
             public static readonly IAllMembers AllMembers = new AllMembers();
@@ -88,6 +98,8 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             {
                 return new TasksViewModel();
             }
+            public static readonly IStudyPrograms StudyPrograms = new Studyprograms();
+
         }
     }
 }

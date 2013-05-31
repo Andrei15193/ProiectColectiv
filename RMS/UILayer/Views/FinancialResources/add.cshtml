@@ -3,7 +3,7 @@
 
 @{   
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
-    Page.Title = "Add Financial Resource";
+    Page.Title = "Add Financial Resources";
 
 
     int step = 0;
@@ -36,7 +36,7 @@
 
 @section body{
     <ul class="nav nav-tabs">
-        <li class="active"><a>Add</a></li>
+        <li class="active"><a>Add Financial Resources</a></li>
     </ul>
 
     <div class="well">
@@ -48,7 +48,7 @@
                     <li>@fr.Value @fr.Currency</li>
                 }
             </ul>
-            <form action="addFinancialResource.cshtml" class="form-horizontal" method="post">
+            <form action="~/Views/FinancialResources/add.cshtml" class="form-horizontal" method="post">
                 @switch (step)
                 {
                     case 0:

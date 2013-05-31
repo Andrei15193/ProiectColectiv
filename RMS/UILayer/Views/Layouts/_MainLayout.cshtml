@@ -10,7 +10,8 @@
     <link href="/img/favico.ico" rel="shortcut icon" type="img/x-icon" />
     <!-- <meta name="viewport" content="width=device-width"> -->
     @{
-        MemberViewModel memberViewModel = Session["memberViewModel"] as MemberViewModel;
+        MemberViewModel memberViewModel = Session["memberViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
+        Session["memberViewModel"] = memberViewModel;
     }
 </head>
 
@@ -22,7 +23,7 @@
                 <span>Home</span>
             </a>
         </div>
-        @if (false)
+        @if (memberViewModel.IsAuthenticated)
         { 
             <div class="dropdown icon">
                 <div class="cpl-dropdown" data-toggle="dropdown">
@@ -31,11 +32,33 @@
                 </div>
 
                 <ul id="menu2" class="dropdown-menu" role="menu" aria-labelledby="drop5">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="Views/testForm.cshtml">Action</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-                    <li role="presentation" class="divider"></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+                    @switch (memberViewModel.MemberType)
+                    {
+                        case ResourceManagementSystem.BusinessLogic.Entities.MemberType.Administrator:
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/Views/HumanResources/add.cshtml">Add Human Resources</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/Views/FinancialResources/add.cshtml">Add  Financial Resources</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Add ClassRoom</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Add Equipment</a></li>
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Import Schedule</a></li>
+                        break;
+
+                        case ResourceManagementSystem.BusinessLogic.Entities.MemberType.Director:
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/Views/StudyPrograms/add.cshtml">Define Study Programs</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Research Grants</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Administrative Events</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Student Circles</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Get Reports</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Approve Activities</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Approve Projects and Events Requests</a></li>
+                        break;
+
+                        default:
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Get Attending Activities</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Make Projects Requests</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Make Activities Requests</a></li>
+                        break;
+                    }
                 </ul>
             </div>
         }

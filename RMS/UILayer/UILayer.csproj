@@ -104,6 +104,11 @@
     <Content Include="selectClassRooms.cshtml" />
     <Content Include="Views\selectEquipments.cshtml" />
     <Content Include="selectEquipments.cshtml" />
+    <Content Include="test1.cshtml" />
+
+    <Content Include="Views\StudyPrograms\add.cshtml" />
+
+    <Content Include="addFinancialResource.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

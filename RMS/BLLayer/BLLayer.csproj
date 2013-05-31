@@ -52,8 +52,10 @@
     <Compile Include="Workflow\TeamsViewModel.cs" />
     <Compile Include="Workflow\EquipmentsViewModel.cs" />
     <Compile Include="Workflow\ClassRoomViewModel.cs" />
+
     <Compile Include="Workflow\MemberViewModel.cs" />
     <Compile Include="Workflow\FinancialResourcesViewModel.cs" />
+    <Compile Include="Workflow\StudyProgramsViewModel.cs" />
     <Compile Include="Workflow\ViewModelFactory.cs" />
     <Compile Include="Workflow\HumanResourcesViewModel.cs" />
   </ItemGroup>

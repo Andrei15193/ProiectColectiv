@@ -8,6 +8,10 @@
     <link href="/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
     <link href="/img/favico.ico" rel="shortcut icon" type="img/x-icon" />
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/bootstrap-datepicker.js"></script>
+
     <!-- <meta name="viewport" content="width=device-width"> -->
     @{
         MemberViewModel memberViewModel = Session["memberViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
@@ -16,6 +20,11 @@
 </head>
 
 <body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        })
+    </script>
     <div class="menu">
         <div class="icon selected">
             <a href="/">
@@ -28,36 +37,36 @@
             <div class="dropdown icon">
                 <div class="cpl-dropdown" data-toggle="dropdown">
                     <img src="/img/ico-setting.png" alt="">
-				    <span>CPanel</span>
+                    <span>CPanel</span>
                 </div>
 
                 <ul id="menu2" class="dropdown-menu" role="menu" aria-labelledby="drop5">
                     @switch (memberViewModel.MemberType)
                     {
                         case ResourceManagementSystem.BusinessLogic.Entities.MemberType.Administrator:
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addHumanResource.cshtml">Add Human Resources</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addFinancialResource.cshtml">Add  Financial Resources</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addClassRoom.cshtml">Add ClassRoom</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addEquipment.cshtml">Add Equipment</a></li>
-                            <li role="presentation" class="divider"></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Import Schedule</a></li>
-                        break;
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addHumanResource.cshtml">Add Human Resources</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addFinancialResource.cshtml">Add  Financial Resources</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addClassRoom.cshtml">Add ClassRoom</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addEquipment.cshtml">Add Equipment</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Import Schedule</a></li>
+                            break;
 
                         case ResourceManagementSystem.BusinessLogic.Entities.MemberType.Director:
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudyProgram.cshtml">Define Study Programs</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Research Grants</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Administrative Events</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Student Circles</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Get Reports</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Approve Activities</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Approve Projects and Events Requests</a></li>
-                        break;
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudyProgram.cshtml">Define Study Programs</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Research Grants</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Administrative Events</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Student Circles</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Get Reports</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Approve Activities</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Approve Projects and Events Requests</a></li>
+                            break;
 
                         default:
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Get Attending Activities</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Make Projects Requests</a></li>
-                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Make Activities Requests</a></li>
-                        break;
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Get Attending Activities</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Make Projects Requests</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Make Activities Requests</a></li>
+                            break;
                     }
                 </ul>
             </div>

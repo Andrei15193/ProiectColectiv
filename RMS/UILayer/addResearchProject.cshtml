@@ -6,187 +6,265 @@
     Page.Title = "Add Research Project";
 
     int step = 0;
-    const int lastStep = 2;
+    const int lastStep = 5;
     string errorMessage;
     string requestStep = IsPost ? Request["step"] : null;
     if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
     {
         step = 0;
     }
-    ResearchProjectsViewModel researchProjectsViewModel = Session["researchProjectsViewModel"] as ResearchProjectsViewModel ?? ViewModelFactory.ResearchProjectsViewModel;
-    Session["ResearchProjectsViewModel"] = researchProjectsViewModel;
-    IEnumerable<Member> members = humanResourcesViewModel.TryGetAll(out errorMessage);
+    ResearchProjectViewModel researchProjectsViewModel = Session["researchProjectViewModel"] as ResearchProjectViewModel ?? ViewModelFactory.ResearchProjectViewModel;
+    Session["researchProjectViewModel"] = researchProjectsViewModel;
+    IEnumerable<Member> members = null;// humanResourcesViewModel.TryGetAll(out errorMessage);
 
     switch (step)
     {
         case 0:
-            researchProjectsViewModel.Title = null;
-            researchProjectsViewModel.Description = null;
-            researchProjectsViewModel.startDate = null;
-            researchProjectsViewModel.endDate = null;
-           // researchProjectsViewModel.MemberTypeSelectedIndex = 0;
-            researchProjectsViewModel.ActivityTitle = null;
-            researchProjectsViewModel.ActivityDescription = null;
-            researchProjectsViewModel.ActivityStartDate = null;
-            researchProjectsViewModel.ActivityEndDate = null;
+            //researchProjectsViewModel.Title = null;
+            //researchProjectsViewModel.Description = null;
+            //researchProjectsViewModel.StartDate = null;
+            //researchProjectsViewModel.EndDate = null;
+            // researchProjectsViewModel.MemberTypeSelectedIndex = 0;
+            //researchProjectsViewModel.ActivityTitle = null;
+            //researchProjectsViewModel.ActivityDescription = null;
+            //researchProjectsViewModel.ActivityStartDate = null;
+            //researchProjectsViewModel.ActivityEndDate = null;
             //am ramas aici
             break;
         case 1:
-            humanResourcesViewModel.MemberTypeSelectedIndex = Request["memberType"] == null ? 0 : Convert.ToInt32(Request["memberType"]);
-            humanResourcesViewModel.Name = Request["name"];
-            humanResourcesViewModel.EMail = Request["email"];
-            humanResourcesViewModel.Password = Request["password"];
+            //humanResourcesViewModel.MemberTypeSelectedIndex = Request["memberType"] == null ? 0 : Convert.ToInt32(Request["memberType"]);
+            researchProjectsViewModel.Title = Request["title"];
+            researchProjectsViewModel.Description = Request["description"];
+            researchProjectsViewModel.StartDate = Request["startDate"];
+            researchProjectsViewModel.EndDate = Request["endDate"];
+            members = researchProjectsViewModel.TryGetAllMembers(out errorMessage);
             break;
         case 2:
-            humanResourcesViewModel.Address = Request["address"];
-            humanResourcesViewModel.DomainsOfInterest = Request["domainsOfInterest"];
-            humanResourcesViewModel.Telephone = Request["telephone"];
-            humanResourcesViewModel.Website = Request["website"];
-            humanResourcesViewModel.HasPhD = (Request["hasPhD"] != null);
-            humanResourcesViewModel.TeachingPositionSelectedIndex = Request["teachingPosition"] == null ? 0 : Convert.ToInt32(Request["teachingPosition"]);
+            researchProjectsViewModel.SelectedTeamEmails = Request.Form.AllKeys;
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
             break;
     }
 }
 
 @section body{
     <ul class="nav nav-tabs">
-        <li class="active"><a>Add</a></li>
-        <li><a href="#">Update</a></li>
-        <li><a href="#">Delete</a></li>
+        <li class="active"><a>Add research project</a></li>
     </ul>
 
     <div class="progress progress-info progress-striped breadcrumb"></div>
 
     <div class="well">
-        @if (members != null)
+        @switch (step)
         {
-            <ul>
-                @foreach (var member in members)
-                {
-                    <li>@(member is Teacher ? ((member as Teacher).HasPhD ? "Dr. " : "") : "") @member.Name, @(member is Teacher ? (member as Teacher).Position.ToString() : member.Type.ToString()) [Contact: @member.EMail]</li>
-                }
-            </ul>
-            <form action="addHumanResource.cshtml" class="form-horizontal" method="post">
-                @switch (step)
-                {
-                    case 0:
-                    <input type="hidden" value="@(step + 1)" name="step" id="step" />
-                    <label for="name">Name:</label>
-                    <input type="text" name="name" id="name" />
-                
-                    <label for="email">Email:</label>
-                    <input type="email" name="email" id="email" />
-                
-                    <label for="password">Password:</label>
-                    <input type="password" name="password" id="password" />
-                        
-                    <label for="memberType">Member type:</label>
-                    <select name="memberType" id="memberType">
-                        @for (int i = 0; i < humanResourcesViewModel.MemberTypes.Length; i++)
-                        {
-                            <option value="@i">@humanResourcesViewModel.MemberTypes[i]</option>
-                        }
-                    </select>
-                    <input type="submit" value="Next" />
-                        break;
+            case 0:
+                // RP form
+            <form action="addResearchProject.cshtml" class="form-horizontal" method="post">
+                <input type="hidden" value="1" name="step" id="step" />
+                <label for="title">Title: </label>
+                <input type="text" name="title" id="title" />
 
-                    case 1:
-                        switch (((MemberType)Convert.ToInt32(Request["memberType"])))
-                        {
-                            case MemberType.Administrator:
-                                if (humanResourcesViewModel.TryAddMember(out errorMessage))
-                                {
-                    <h1>Success!</h1>
-                    <p>The administrator @humanResourcesViewModel.Name has been added to human resources!</p>
-                                }
-                                else
-                                {
-                    <h1>Error!</h1>
-                    <p>Could not add administrator @humanResourcesViewModel.Name! @errorMessage</p>
-                                }
-                    <input type="submit" value="Finish" />
-                                break;
+                <label for="description">Description: </label>
+                <textarea name="description" id="description"></textarea>
 
-                            case MemberType.Director:
-                                if (humanResourcesViewModel.TryAddMember(out errorMessage))
-                                {
-                    <h1>Success!</h1>
-                    <p>The director @humanResourcesViewModel.Name has been added to human resources!</p>
-                                }
-                                else
-                                {
-                    <h1>Error!</h1>
-                    <p>Could not add director @humanResourcesViewModel.Name! @errorMessage</p>
-                                }
-                    <input type="submit" value="Finish" />
-                                break;
+                <label for="startDate">Start date: </label>
+                <input name="startDate" id="startDate" type="text" value="03/06/2013" data-date-format="dd/mm/yyyy" class="datepicker" />
 
-                            case MemberType.PhD_Student:
-                    <input type="hidden" value="@(step + 1)" name="step" id="step" />
-                    <label for="address">Address:</label>
-                    <input type="text" name="address" id="address" />
-                
-                    <label for="telephone">Telephone:</label>
-                    <input type="text" name="telephone" id="telephone" />
-                
-                    <label for="website">Website:</label>
-                    <input type="text" name="website" id="website" />
-                
-                    <label for="domainsOfInterest">Domains of interest:</label>
-                    <textarea name="domainsOfInterest" id="domainsOfInterest"></textarea>
-                    <input type="submit" value="Next" />
-                                break;
+                <label for="endDate">End date: </label>
+                <input name="endDate" id="endDate" type="text" value="03/06/2013" data-date-format="dd/mm/yyyy" class="datepicker" />
 
-                            case MemberType.Teacher:
-                    <input type="hidden" value="@lastStep" name="step" id="step" />
-                    <label for="address">Address:</label>
-                    <input type="text" name="address" id="address" />
-                
-                    <label for="telephone">Telephone:</label>
-                    <input type="text" name="telephone" id="telephone" />
-                
-                    <label for="website">Website:</label>
-                    <input type="text" name="website" id="website" />
-                
-                    <label for="domainsOfInterest">Domains of interest:</label>
-                    <textarea name="domainsOfInterest" id="domainsOfInterest"></textarea>
-                        
-                    <label for="teachingPosition">Teaching position:</label>
-                    <select name="teachingPosition" id="teachingPosition">
-                        @for (int i = 0; i < humanResourcesViewModel.TeachingPositions.Length; i++)
-                        {
-                            <option value="@i">@humanResourcesViewModel.TeachingPositions[i]</option>
-                        }
-                    </select>
-                
-                    <label for="hasPhD">Has PhD:</label>
-                    <input type="checkbox" checked="checked" name="hasPhD" id="hasPhD" />
-                    <input type="submit" value="Next" />
-                        break;
-                        }
-                        break;
-
-                    case 2:
-                        if (humanResourcesViewModel.TryAddMember(out errorMessage))
-                        {
-                    <h1>Success!</h1>
-                    <p>The member @humanResourcesViewModel.Name has been successfully added!</p>
-                        }
-                        else
-                        {
-                    <h1>Error!</h1>
-                    <p>The member @humanResourcesViewModel.Name could not be added! @errorMessage</p>
-                        }
-                    <input type="submit" value="Finish" />
-                        break;
-                }
+                <input type="submit" value="Next" />
             </form>
-        }
-        else
-        {
+                break;
+            case 1:
+            <form action="addResearchProject.cshtml" class="form-horizontal" method="post">
+                <input type="hidden" value="2" name="step" id="step" />
+                <h1>Human resources: </h1>
+                <ul>
+                    @foreach (var member in members)
+                    {
+                        <li>
+                            <input type="checkbox" name="@member.EMail" />
+                            @(member.ToString())
+                        </li>
+                    }
+                </ul>
+                <input type="submit" value="Next" />
+            </form>
+            
+                    // select members
+                    break;
+            case 2:
+                    // create research project
+                    if (researchProjectsViewModel.TryCreateResearchProject(out errorMessage))
+                    {
+                        foreach (Member member in researchProjectsViewModel.ResearchProject.Team)
+                        {
+            <p>@member.ToString()</p>
+                        }
+                    }
+                    else
+                    {
             <h1>Error!</h1>
             <p>@errorMessage</p>
             <p>We are terebly sorry for the inconvenience...</p>
+                    }
+
+                    // show 2 buttons [add phase (goest to step 3) and finish (goes to step 5)]
+                    break;
+            case 3:
+                    // show phase form
+                    // show activities in phase
+                    // show add button (goest to step 4)
+                    break;
+            case 4:
+                    // adds activity
+                    // show go to phase button (goest to step 3)
+                    break;
+            case 5:
+                    // Save the research project into the database
+                    break;
+
         }
+
     </div>
 }
+<!--
+
+//if (members != null)
+{
+    <ul>
+        //foreach (var member in members)
+        {
+            <li>//(member is Teacher ? ((member as Teacher).HasPhD ? "Dr. " : "") : "") //member.Name, //(member is Teacher ? (member as Teacher).Position.ToString() : member.Type.ToString()) [Contact: //member.EMail]</li>
+        }
+    </ul>
+    <form action="addHumanResource.cshtml" class="form-horizontal" method="post">
+        //switch (step)
+        {
+            case 0:
+            <input type="hidden" value="//(step + 1)" name="step" id="step" />
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" />
+                
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" />
+                
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" />
+                        
+            <label for="memberType">Member type:</label>
+            <select name="memberType" id="memberType">
+                //for (int i = 0; i < humanResourcesViewModel.MemberTypes.Length; i++)
+                {
+                    <option value="//i">//humanResourcesViewModel.MemberTypes[i]</option>
+                }
+            </select>
+            <input type="submit" value="Next" />
+                break;
+
+            case 1:
+                switch (((MemberType)Convert.ToInt32(Request["memberType"])))
+                {
+                    case MemberType.Administrator:
+                        if (humanResourcesViewModel.TryAddMember(out errorMessage))
+                        {
+            <h1>Success!</h1>
+            <p>The administrator //humanResourcesViewModel.Name has been added to human resources!</p>
+                        }
+                        else
+                        {
+            <h1>Error!</h1>
+            <p>Could not add administrator //humanResourcesViewModel.Name! //errorMessage</p>
+                        }
+            <input type="submit" value="Finish" />
+                        break;
+
+                    case MemberType.Director:
+                        if (humanResourcesViewModel.TryAddMember(out errorMessage))
+                        {
+            <h1>Success!</h1>
+            <p>The director //humanResourcesViewModel.Name has been added to human resources!</p>
+                        }
+                        else
+                        {
+            <h1>Error!</h1>
+            <p>Could not add director //humanResourcesViewModel.Name! //errorMessage</p>
+                        }
+            <input type="submit" value="Finish" />
+                        break;
+
+                    case MemberType.PhD_Student:
+            <input type="hidden" value="//(step + 1)" name="step" id="step" />
+            <label for="address">Address:</label>
+            <input type="text" name="address" id="address" />
+                
+            <label for="telephone">Telephone:</label>
+            <input type="text" name="telephone" id="telephone" />
+                
+            <label for="website">Website:</label>
+            <input type="text" name="website" id="website" />
+                
+            <label for="domainsOfInterest">Domains of interest:</label>
+            <textarea name="domainsOfInterest" id="domainsOfInterest"></textarea>
+            <input type="submit" value="Next" />
+                        break;
+
+                    case MemberType.Teacher:
+            <input type="hidden" value="//lastStep" name="step" id="step" />
+            <label for="address">Address:</label>
+            <input type="text" name="address" id="address" />
+                
+            <label for="telephone">Telephone:</label>
+            <input type="text" name="telephone" id="telephone" />
+                
+            <label for="website">Website:</label>
+            <input type="text" name="website" id="website" />
+                
+            <label for="domainsOfInterest">Domains of interest:</label>
+            <textarea name="domainsOfInterest" id="domainsOfInterest"></textarea>
+                        
+            <label for="teachingPosition">Teaching position:</label>
+            <select name="teachingPosition" id="teachingPosition">
+                //for (int i = 0; i < humanResourcesViewModel.TeachingPositions.Length; i++)
+                {
+                    <option value="//i">//humanResourcesViewModel.TeachingPositions[i]</option>
+                }
+            </select>
+                
+            <label for="hasPhD">Has PhD:</label>
+            <input type="checkbox" checked="checked" name="hasPhD" id="hasPhD" />
+            <input type="submit" value="Next" />
+                break;
+                }
+                break;
+
+            case 2:
+                if (humanResourcesViewModel.TryAddMember(out errorMessage))
+                {
+            <h1>Success!</h1>
+            <p>The member //humanResourcesViewModel.Name has been successfully added!</p>
+                }
+                else
+                {
+            <h1>Error!</h1>
+            <p>The member //humanResourcesViewModel.Name could not be added! //errorMessage</p>
+                }
+            <input type="submit" value="Finish" />
+                break;
+        }
+    </form>
+}
+else
+{
+    <h1>Error!</h1>
+    <p>//errorMessage</p>
+    <p>We are terebly sorry for the inconvenience...</p>
+}
+</div>
+}
+-->

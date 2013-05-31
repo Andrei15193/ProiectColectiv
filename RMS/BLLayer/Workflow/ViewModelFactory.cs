@@ -78,6 +78,23 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        public static TasksViewModel TasksViewModel
+        {
+            get
+            {
+                return new TasksViewModel();
+            }
+
+        }
+
+        public static ResearchProjectViewModel ResearchProjectViewModel
+        {
+            get
+            {
+                return new ResearchProjectViewModel(Repositories.AllMembers);
+            }
+        }
+
         private static class Repositories
         {
             public static readonly IAllMembers AllMembers = new AllMembers();
@@ -89,15 +106,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             public static readonly IAllClassRooms AllClassRooms = new AllClassRooms();
 
             public static readonly IStudyPrograms StudyPrograms = new Studyprograms();
-        }
-
-        public static TasksViewModel TasksViewModel
-        {
-            get
-            {
-                return new TasksViewModel();
-            }
-
         }
     }
 }

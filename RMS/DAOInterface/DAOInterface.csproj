@@ -49,8 +49,8 @@
     <Compile Include="DAOInterface\ISpecializations.cs" />
     <Compile Include="IAllEquipments.cs" />
     <Compile Include="IAllClassRoom.cs" />
-
     <Compile Include="IAllFinancialResources.cs" />
+    <Compile Include="IAllResearchProjects.cs" />
     <Compile Include="IStudyPrograms.cs" />
     <Compile Include="DAOInterface\ITasks.cs" />
     <Compile Include="DataAccessException.cs" />

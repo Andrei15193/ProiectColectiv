@@ -1,0 +1,92 @@
+﻿@using ResourceManagementSystem.BusinessLogic.Entities;
+@using ResourceManagementSystem.BusinessLogic.Workflow;
+
+@{   
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "Get Projects Info";
+    string errorMessage;
+
+    ResearchProjectViewModel researchProjectViewModel = Session["researchProjectViewModel"] as ResearchProjectViewModel ?? ViewModelFactory.ResearchProjectViewModel;
+    Session["researchProjectViewModel"] = researchProjectViewModel;
+    IEnumerable<ResearchProject> researchProjects = researchProjectViewModel.TryGetAll(out errorMessage);
+
+    ResearchProject selectedProject = null;
+    if (Request["id"] != null)
+    {
+        int id = int.Parse(Request["id"]);
+        selectedProject = researchProjects.Where((project) => project.Id == id).First();
+    }
+
+}
+
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a>Get Projects Info</a></li>
+    </ul>
+
+    @if (researchProjects != null)
+    {
+        if (selectedProject != null)
+        {
+        <div class="well">
+            <p>
+                <b>Title: </b>@selectedProject.Title<br />
+                <b>Description: </b>
+                <br />@selectedProject.Description<br />
+                <b>Start Date: </b>@selectedProject.StartDate<br />
+                <b>End Date: </b>@selectedProject.EndDate<br />
+                <br />
+                <b>Team:</b>
+            </p>
+            <ul>
+                @foreach (Member member in selectedProject.Team)
+                {
+                    <li>@member.Name, @member.EMail</li>
+                }
+            </ul>
+        </div>
+                foreach (ResearchPhase rp in selectedProject)
+                {
+        <div class="well">
+            <h3>Phase: @rp.Title</h3>
+            <p>
+                <b>Description: </b>
+                <br />
+                @rp.Description<br />
+                <b>Start Date: </b>@rp.StartDate<br />
+                <b>End Date: </b>@rp.EndDate<br />
+                <b>Activities:</b>
+            </p>
+            @foreach (ResearchActivity ra in rp)
+            {
+                if (!ra.IsConfidential)
+                {
+                <h3>@ra.Title (@ra.StartDate, @ra.EndDate)</h3>
+                <p><b>Description:</b><br />@ra.Description</p>
+                }
+            }
+        </div>
+                }
+        }
+        else
+        {    
+        <div class="well">
+            <ul>
+                @foreach (ResearchProject project in researchProjects)
+                {
+                    <li><a href =" getProjectsInfo.cshtml?id=@project.Id">@project.Title </a></li>
+
+                }
+            </ul>
+        </div>
+        }
+    }
+    else
+    {
+        <div class="well">
+            <h1>Error!</h1>
+            <p>@errorMessage</p>
+            <p>We are terebly sorry for the inconvenience...</p>
+        </div>
+    }
+}

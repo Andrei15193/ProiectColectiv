@@ -12,9 +12,10 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
     public class ResearchProjectViewModel
     {
-        public ResearchProjectViewModel(IAllMembers allMembers)
+        public ResearchProjectViewModel(IAllMembers allMembers, IAllResearchProjects allProjects)
         {
             this.allMembers = allMembers;
+            this.allProjects = allProjects;
         }
 
         public bool TryCreateResearchProject(out string errorMessage)
@@ -29,6 +30,20 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             {
                 errorMessage = exception.Message;
                 return false;
+            }
+        }
+        public IEnumerable<ResearchProject> TryGetAll(out string errorMessage)
+        {
+            try
+            {
+                errorMessage = string.Empty;
+                localAllResearchProjects = allProjects.AsEnumerable;
+                return localAllResearchProjects;
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.ToString();
+                return null;
             }
         }
 
@@ -58,9 +73,12 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return null;
             }
         }
+        private IAllResearchProjects allResearchProjects;
+        private IEnumerable<ResearchProject> localAllResearchProjects;
 
         private IAllMembers allMembers;
         private ResearchProject researchProject;
         private IEnumerable<Member> localAllMembers;
+        private IAllResearchProjects allProjects;
     }
 }

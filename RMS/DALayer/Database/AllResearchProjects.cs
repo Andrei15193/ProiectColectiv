@@ -34,7 +34,7 @@ namespace DALayer.Database
             try
             {
                 command.Connection.Open();
-                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                reader = command.ExecuteReader();
                 researchProjects = ReadResearchProjects(reader);
             }
             finally
@@ -135,7 +135,7 @@ namespace DALayer.Database
             try
             {
                 command.Connection.Open();
-                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                reader = command.ExecuteReader();
                 researchProjects = ReadResearchProjects(reader);
             }
             finally
@@ -156,7 +156,7 @@ namespace DALayer.Database
             {
                 while (reader.Read())
                 {
-                    researchProjects.AddLast((ResearchProject)new AllActivities().getbyPK(Convert.ToInt32(reader["activity"])));
+                    researchProjects.AddLast((ResearchProject)new AllActivities().getbyPK(reader.GetInt32(0)));
                 }
             }
             return researchProjects;

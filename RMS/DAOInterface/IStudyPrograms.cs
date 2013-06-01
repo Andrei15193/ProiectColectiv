@@ -14,5 +14,8 @@ namespace ResourceManagementSystem.DAOInterface
         StudyProgram GetByPrimaryKey(string educationalProgramme, StudyDegree studyDegree, string domain, int yearLength, int totalEctsCredits, WorkTime studyType);
 
         List<StudyProgram> GetAll();
+
+        StudyProgram GetByPrimaryKey(int id);
+
     }
 }

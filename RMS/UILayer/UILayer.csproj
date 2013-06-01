@@ -106,7 +106,7 @@
     <Content Include="getClassRoomsInfo.cshtml" />
     <Content Include="getEquipmentsInfo.cshtml" />
     <Content Include="aproveActivities.cshtml" />
-    <Content Include="viewCalendar.cshtml" />
+    <Content Include="addStudentCircle.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

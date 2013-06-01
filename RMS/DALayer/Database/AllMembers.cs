@@ -128,13 +128,14 @@ namespace ResourceManagementSystem.DataAccess.Database
             try
             {
                 command.Connection.Open();
-                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                reader = command.ExecuteReader();
                 members = ReadMembers(reader);
             }
             finally
             {
                 if (reader != null)
                     reader.Close();
+                command.Connection.Close();
             }
             if (members.Count() > 0)
                 return members.First();
@@ -155,7 +156,7 @@ namespace ResourceManagementSystem.DataAccess.Database
                 try
                 {
                     command.Connection.Open();
-                    reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                    reader = command.ExecuteReader();
                     members = ReadMembers(reader);
                 }
                 finally
@@ -244,13 +245,14 @@ namespace ResourceManagementSystem.DataAccess.Database
             try
             {
                 command.Connection.Open();
-                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                reader = command.ExecuteReader();
                 members = ReadMembers(reader);
             }
             finally
             {
                 if (reader != null)
                     reader.Close();
+                command.Connection.Close();
             }
             if (members.Count() > 0)
                 return members.First();
@@ -272,7 +274,7 @@ namespace ResourceManagementSystem.DataAccess.Database
             try
             {
                 command.Connection.Open();
-                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     members.AddLast(new AllMembers().Where(reader["member"].ToString()));

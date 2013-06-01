@@ -133,7 +133,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return null;
             }
         }
-
+       
         TextInfo textInfo;
         private IStudyPrograms allPrograms;
         private static readonly string[] studyDegrees = Enum.GetNames(typeof(StudyDegree)).Select((studyDegrees) => studyDegrees.Replace('_', ' ')).ToArray();

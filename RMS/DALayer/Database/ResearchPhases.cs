@@ -21,7 +21,7 @@ namespace DALayer.Database
         {
             int activity = -1;
             command.CommandType = System.Data.CommandType.Text;
-            command.CommandText = @"select activity from researchProjectPhases where phase = @phase";
+            command.CommandText = @"select activity from researchProjectPhases where researchProject = @phase";
             command.Parameters.Clear();
             command.Parameters.Add(new SqlParameter()
             {
@@ -32,7 +32,7 @@ namespace DALayer.Database
             try
             {
                 command.Connection.Open();
-                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                reader = command.ExecuteReader();
                 if (reader.Read())
                 {
                     activity = Convert.ToInt32(reader["activity"]);

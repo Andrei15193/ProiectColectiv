@@ -65,7 +65,7 @@ namespace DALayer.Database
             try
             {
                 command.Connection.Open();
-                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                reader = command.ExecuteReader();
                 financialResources = ReadFinancialResources(reader);
             }
             finally
@@ -107,7 +107,7 @@ namespace DALayer.Database
             try
             {
                 command.Connection.Open();
-                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                reader = command.ExecuteReader();
                 financialResources = ReadFinancialResources(reader);
             }
             finally

@@ -35,7 +35,7 @@ namespace DALayer.Database
             try
             {
                 command.Connection.Open();
-                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                reader = command.ExecuteReader();
                 activities = ReadActivities(reader);
             }
             finally
@@ -74,15 +74,15 @@ namespace DALayer.Database
                             cmd.Parameters.Clear();
 
                             SqlDataReader dr = null;
-                            command.Parameters.Add(new SqlParameter()
+                            cmd.Parameters.Add(new SqlParameter()
                             {
                                 ParameterName = "@id",
                                 Value = Convert.ToInt32(reader["id"])
                             });
                             try
                             {
-                                command.Connection.Open();
-                                dr = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                                cmd.Connection.Open();
+                                dr = cmd.ExecuteReader();
                                 if (dr.Read())
                                 {
                                     courseType = (CourseType)Convert.ToInt32(dr["coursetype"].ToString());
@@ -98,7 +98,7 @@ namespace DALayer.Database
                                 }
                                 cmd.Connection.Close();
                             }
-                            activities.AddLast(new DidacticActivity(courseType,  reader["title"].ToString(), reader["description"].ToString(), formation, reader.GetDateTime(5), reader.GetDateTime(6), m));
+                            activities.AddLast(new DidacticActivity(courseType,  reader["title"].ToString(), reader["description"].ToString(), formation, reader.GetDateTime(4), reader.GetDateTime(5), m));
                             break;
                         }
                         #endregion
@@ -122,15 +122,15 @@ namespace DALayer.Database
                             cmd.Parameters.Clear();
 
                             SqlDataReader dr = null;
-                            command.Parameters.Add(new SqlParameter()
+                            cmd.Parameters.Add(new SqlParameter()
                             {
                                 ParameterName = "@id",
                                 Value = Convert.ToInt32(reader["id"])
                             });
                             try
                             {
-                                command.Connection.Open();
-                                dr = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                                cmd.Connection.Open();
+                                dr = cmd.ExecuteReader();
                                 if (dr.Read())
                                 {
                                     members = new AllMembers().getTeam(Convert.ToInt32(dr["team"].ToString()));
@@ -138,7 +138,7 @@ namespace DALayer.Database
                                     laborCost = new AllFinancialResources().getbyPK(Convert.ToInt32(dr["laborCosts"].ToString()));
                                     logisticalCost = new AllFinancialResources().getbyPK(Convert.ToInt32(dr["logisticalCosts"].ToString())); 
                                     isConfidential = Convert.ToBoolean(dr["isConfidential"]);
-                                    rp = new AllResearchPhases().getByPK(Convert.ToInt32(reader["phase"].ToString()));
+                                    rp = new AllResearchPhases().getByPK(Convert.ToInt32(dr["phase"].ToString()));
                                 }
                             }
                             finally
@@ -149,28 +149,55 @@ namespace DALayer.Database
                                 }
                                 cmd.Connection.Close();
                             }
-                            activities.AddLast(new ResearchActivity(rp, reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(5), reader.GetDateTime(6), members, mobilittyCost, laborCost, logisticalCost, isConfidential));
+                            activities.AddLast(new ResearchActivity(rp, reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5), members, mobilittyCost, laborCost, logisticalCost, isConfidential));
                             break;
                         }
                         #endregion
                         #region 4
                         case ActivityType.Research_Phase:
                             {
-                                activities.AddLast(new ResearchPhase(new AllResearchProjects().getByPhase(Convert.ToInt32(reader["id"])), reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(5), reader.GetDateTime(6)));
+                                activities.AddLast(new ResearchPhase(new AllResearchProjects().getByPhase(Convert.ToInt32(reader["id"])), reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5)));
                                 break;
                             }
                         #endregion
                         #region 5
                         case ActivityType.Research_Project:
                             {
-                                activities.AddLast(new ResearchProject(reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(5), reader.GetDateTime(6), new AllMembers().getTeam(Convert.ToInt32(reader["team"].ToString()))));
+                                int teamid = -1;
+                                SqlCommand cmd = new SqlCommand(@"select team from researchprojects where activity = @id", DatabaseConstants.SqlConnection);
+                                cmd.Parameters.Clear();
+
+                                SqlDataReader dr = null;
+                                cmd.Parameters.Add(new SqlParameter()
+                                {
+                                    ParameterName = "@id",
+                                    Value = Convert.ToInt32(reader["id"])
+                                });
+                                try
+                                {
+                                    cmd.Connection.Open();
+                                    dr = cmd.ExecuteReader();
+                                    if (dr.Read())
+                                    {
+                                        teamid = dr.GetInt32(0);
+                                    }
+                                }
+                                finally
+                                {
+                                    if (dr != null)
+                                    {
+                                        dr.Close();
+                                    }
+                                    cmd.Connection.Close();
+                                }
+                                activities.AddLast(new ResearchProject(reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5), new AllMembers().getTeam(teamid)));
                                 break;
                             }
                         #endregion
                         #region 6
                         case ActivityType.Student_Circle:
                             {
-                                activities.AddLast(new StudentCircle(reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(5), reader.GetDateTime(6), new Studyprograms().getByStudentCircle(Convert.ToInt32(reader["id"].ToString()))));
+                                activities.AddLast(new StudentCircle(reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5), new Studyprograms().getByStudentCircle(Convert.ToInt32(reader["id"].ToString()))));
                                 break;
                             }
                         #endregion
@@ -195,7 +222,7 @@ namespace DALayer.Database
             try
             {
                 command.Connection.Open();
-                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                reader = command.ExecuteReader();
                 activities = ReadActivities(reader);
             }
             finally

@@ -6,9 +6,24 @@
     Page.Title = "Define Administrative Events";
 
     string errorMessage;
-    //StudyProgramsViewModel studyProgramsViewModel = Session["studyProgramsViewModel"] as StudyProgramsViewModel ?? ViewModelFactory.StudyProgramsViewModel;
-    //Session["studyProgramsViewModel"] = studyProgramsViewModel;
-    //IEnumerable<StudyProgram> programs = studyProgramsViewModel.TryGetAll(out errorMessage);
+    AdministrativeEventViewModel administrativeEventViewModel = Session["administrativeEventViewModel"] as AdministrativeEventViewModel ?? ViewModelFactory.AdministrativeEventViewModel;
+    Session["administrativeEventViewModel"] = administrativeEventViewModel;
+
+    int step = 0;
+    const int lastStep = 6;
+    string requestStep = IsPost ? Request["step"] : null;
+    if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
+    {
+        step = 0;
+    }
+    IEnumerable<Member> members = null;
+    
+    switch (step)
+    {
+        case 1:
+            //administrativeEventViewModel.
+            break;
+    }
 }
 
 

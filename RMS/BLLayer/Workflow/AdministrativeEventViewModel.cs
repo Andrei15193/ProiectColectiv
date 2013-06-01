@@ -17,8 +17,9 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         private ICollection<AdministrativeActivity> activities;
         private IAllAdministrativeEvents allEvents;
+        private IAllMembers allMembers;
 
-        public AdministrativeEventViewModel(IAllAdministrativeEvents allEvents)
+        public AdministrativeEventViewModel(IAllMembers allMembers, IAllAdministrativeEvents allEvents)
         {
             this.allEvents = allEvents;
             activities = new List<AdministrativeActivity>();
@@ -30,6 +31,21 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             {
                 errorMessage = string.Empty;
                 return allEvents.AsEnumerable;
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.Message;
+                return null;
+            }
+
+        }
+
+        public IEnumerable<Member> TryGetAllMembers(out string errorMessage)
+        {
+            try
+            {
+                errorMessage = string.Empty;
+                return allMembers.AsEnumerable;
             }
             catch (Exception exception)
             {

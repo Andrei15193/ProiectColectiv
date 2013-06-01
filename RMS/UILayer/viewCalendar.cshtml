@@ -13,7 +13,7 @@
 
     ActivitiesViewModel activitiesViewModel = Session["activitiesViewModel"] as ActivitiesViewModel ?? ViewModelFactory.ActivitiesViewModel;
     Session["activitiesViewModel"] = activitiesViewModel;
-    IEnumerable<AbstractActivity> activities = activitiesViewModel.GetMemberActivity(membersViewModel.member, errorMessage);
+    IEnumerable<AbstractActivity> activities = activitiesViewModel.GetMemberActivity(membersViewModel.member, out errorMessage);
     
     }
 

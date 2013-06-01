@@ -33,7 +33,7 @@
             researchProjectsViewModel.Description = Request["description"];
             researchProjectsViewModel.StartDate = Request["startDate"];
             researchProjectsViewModel.EndDate = Request["endDate"];
-            members = researchProjectsViewModel.TryGetAllHumanResources(out errorMessage);
+            researchProjectsViewModel.TryGetAllHumanResources(out errorMessage, out members);
             break;
         case 2:
             researchProjectsViewModel.SelectedTeamEmails = Request.Form.AllKeys;
@@ -253,7 +253,8 @@
             break;
 
         case 5:
-        <form class="form-horizontal" action="/addResearchProject.cshtml" method="post">
+     
+           <form class="form-horizontal" action="/addResearchProject.cshtml" method="post">
             <input type="hidden" name="step" id="step" value="4" />
 
             <label for="title">Title: </label>

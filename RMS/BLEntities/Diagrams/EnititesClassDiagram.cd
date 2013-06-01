@@ -126,7 +126,7 @@
     </ShowAsCollectionAssociation>
     <Lollipop Orientation="Left" Position="0.401" />
   </Class>
-  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.ResearchActivity">
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.ResearchActivity" Collapsed="true">
     <Position X="11" Y="17.25" Width="2.5" />
     <InheritanceLine Type="ResourceManagementSystem.BusinessLogic.Entities.AbstractAssignableActivity" FixedToPoint="true">
       <Path>
@@ -183,7 +183,7 @@
     </TypeIdentifier>
     <Lollipop Orientation="Left" Position="0.362" />
   </Class>
-  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.DidacticActivity">
+  <Class Name="ResourceManagementSystem.BusinessLogic.Entities.DidacticActivity" Collapsed="true">
     <Position X="6.5" Y="17.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AACAAAAAAAgAAAAAAEAAAAAAAAAAAAAAIAAAAAAAAgA=</HashCode>

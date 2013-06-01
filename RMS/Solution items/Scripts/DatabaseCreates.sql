@@ -90,7 +90,7 @@ create table Activities(
     id int identity(1, 1) not null,
     type int not null,
     title nvarchar(100) not null,
-    description nvarchar(max) not null,
+    description nvarchar(max) null,
     startDate datetime not null,
     endDate datetime not null,
     state int not null,
@@ -138,6 +138,7 @@ create table ResearchActivities(
     logisticalCosts int not null,
     mobilityCosts int not null,
     isConfidential bit not null,
+	team int foreign key references teams(id),
     constraint pkResearchProjectActivities primary key (activity, phase, researchProject),
     constraint fkResearchProjectActivitiesToResearchProjectPhase foreign key (phase, researchProject) references ResearchProjectPhases(activity, researchProject),
     constraint fkResearchProjectActivitiesToActivity foreign key (activity) references Activities(id),
@@ -147,11 +148,12 @@ create table ResearchActivities(
 )
 
 create table DidacticActivities(
+	formation nvarchar(30),
+	assignee nvarchar(100) foreign key references members(email),
+	coursetype int,
     activity int not null,
-    team int,
-    constraint pkDidacticActivities primary key (activity, team),
+    constraint pkDidacticActivities primary key (activity, assignee),
     constraint fkDidacticActivityToActivity foreign key (activity) references Activities(id),
-    constraint fkDidacticActivityToTeam foreign key (team) references Teams(id)
 )
 
 create table StudentCircles(

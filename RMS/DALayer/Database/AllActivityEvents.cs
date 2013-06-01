@@ -1,26 +1,23 @@
-﻿using ResourceManagementSystem.BusinessLogic.Entities;
-using ResourceManagementSystem.DAOInterface;
-using ResourceManagementSystem.DataAccess;
+﻿using ResourceManagementSystem.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BLEntities = ResourceManagementSystem.BusinessLogic.Entities;
 
 namespace DALayer.Database
 {
-    public class AllClassRooms : IAllClassRooms
+    class AllActivityEvents
     {
         private SqlCommand command;
 
-        public AllClassRooms()
+        public AllActivityEvents()
         {
             command = new SqlCommand() { Connection = DatabaseConstants.SqlConnection };
         }
 
-        public void Add(ClassRoom classRoom)
+        public void Add()
         {
 
             command.CommandText = @"insert into ClassRooms (name, description) VALUES (@name, @classRoomDescription)";
@@ -61,7 +58,7 @@ namespace DALayer.Database
             try
             {
                 command.Connection.Open();
-                reader = command.ExecuteReader();
+                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
                 classrooms = ReadClassRooms(reader);
             }
             finally

@@ -8,6 +8,8 @@
     StudyProgramsViewModel studyProgramsViewModel = Session["studyProgramsViewModel"] as StudyProgramsViewModel ?? ViewModelFactory.StudyProgramsViewModel;
     Session["studyProgramsViewModel"] = studyProgramsViewModel;
     IEnumerable<StudyProgram> programs = studyProgramsViewModel.TryGetAll(out errorMessage);
+    
+    
 }
 
 @section body{

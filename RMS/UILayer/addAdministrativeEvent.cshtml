@@ -9,6 +9,7 @@
     AdministrativeEventViewModel administrativeEventViewModel = Session["administrativeEventViewModel"] as AdministrativeEventViewModel ?? ViewModelFactory.AdministrativeEventViewModel;
     Session["administrativeEventViewModel"] = administrativeEventViewModel;
 
+    bool hasError = false;
     int step = 0;
     const int lastStep = 6;
     string requestStep = IsPost ? Request["step"] : null;
@@ -21,7 +22,10 @@
     switch (step)
     {
         case 1:
-            //administrativeEventViewModel.
+            administrativeEventViewModel.title = Request["title"];
+            administrativeEventViewModel.startDate = Request["startDate"];
+            administrativeEventViewModel.endDate = Request["endDate"];
+            members = administrativeEventViewModel.TryGetAllAdministrativeEvents(out errorMessage);
             break;
     }
 }

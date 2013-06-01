@@ -17,6 +17,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public string endDate { get; set; }
 
         public IEnumerable<string> SelectedTeamEmails { get; set; }
+        private AdministrativeEvent administrativeEvent;
 
         private ICollection<AdministrativeActivity> activities;
         private IAllAdministrativeEvents allEvents;
@@ -65,7 +66,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             try
             {
-                AdministrativeEvent adminEvent = new AdministrativeEvent(
+                administrativeEvent = new AdministrativeEvent(
                     title,
                     description,
                     Convert.ToDateTime(startDate),
@@ -78,6 +79,21 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             catch (Exception exception)
             {
                 errorMessage = exception.Message;
+                return false;
+            }
+        }
+
+        public bool TrySaveResearchProject(out string errorMessage)
+        {
+            try
+            {
+                allEvents.Add(administrativeEvent);
+                errorMessage = null;
+                return true;
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.ToString();
                 return false;
             }
         }

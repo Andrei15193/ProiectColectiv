@@ -11,5 +11,7 @@ namespace ResourceManagementSystem.DAOInterface
     public interface IAllAdministrativeEvents
     {
         IEnumerable<AdministrativeEvent> AsEnumerable { get; }
+
+        void Add(AdministrativeEvent administrativeEvent);
     }
 }

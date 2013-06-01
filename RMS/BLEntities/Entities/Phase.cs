@@ -71,6 +71,14 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
         }
 
+        public bool HasActivities
+        {
+            get
+            {
+                return researchActivities.Count > 0;
+            }
+        }
+
         public ResearchProject ResearchProject { get; private set; }
 
         private ISet<ResearchActivity> researchActivities;

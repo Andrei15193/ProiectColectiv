@@ -23,10 +23,13 @@
     {
         case 1:
             administrativeEventViewModel.title = Request["administrativeEvent"];
-            //administrativeEventViewModel.des
+            administrativeEventViewModel.description = Request["description"];
             administrativeEventViewModel.startDate = Request["startDate"];
             administrativeEventViewModel.endDate = Request["endDate"];
             members = administrativeEventViewModel.TryGetAllMembers(out errorMessage);
+            break;
+        case 2:
+            administrativeEventViewModel.SelectedTeamEmails = Request.Form.AllKeys;
             break;
     }
 }
@@ -64,6 +67,12 @@
                             </td>
                         </tr>
                         <tr>
+                            <th>Descritpion</th>
+                            <td style="width: 100%;">
+                                <input type="text" class="description" name="description" />
+                            </td>
+                        </tr>
+                        <tr>
                             <th>Start date</th>
                             <td style="width: 100%;">
                                 <input type="text" name="startDate" class="datepicker" data-date-format="dd/mm/yyyy" />
@@ -81,8 +90,18 @@
                 break;
             case 1:
                 <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
-                    <input type="hidden" value="1" name="step" id="step" />
-
+                 
+                    <input type="hidden" value="2" name="step" id="step" />
+                    <ul>
+                        @foreach (var member in members)
+                        {
+                            <li>
+                                <input type="checkbox" name="@member.EMail" />
+                                @(member.ToString())
+                            </li>
+                        }
+                    </ul>
+                    <input type="submit" value="Next" />
 
                 </form>
                 break;

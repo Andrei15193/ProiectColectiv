@@ -14,11 +14,14 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public string title { get; set; }
         public string description { get; set; }
         public string startDate { get; set; }
-        public string endDate { get; set; }  
+        public string endDate { get; set; }
+
+        public IEnumerable<string> SelectedTeamEmails { get; set; }
 
         private ICollection<AdministrativeActivity> activities;
         private IAllAdministrativeEvents allEvents;
         private IAllMembers allMembers;
+
 
         public AdministrativeEventViewModel(IAllMembers allMembers, IAllAdministrativeEvents allEvents)
         {

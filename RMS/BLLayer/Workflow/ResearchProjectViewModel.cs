@@ -17,7 +17,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             CurrentPhase = null;
             this.allMembers = allMembers;
             this.allProjects = allProjects;
-            this.allProjects = allProjects;
             ResearchProject = null;
             Title = string.Empty;
             Description = string.Empty;

@@ -22,12 +22,17 @@ namespace DALayer.Database
 
         public void Add(FinancialResource financialResource)
         {
-            command.CommandText = @"insert into financialResources (value, status) VALUES (@value, @status)";
+            command.CommandText = @"insert into financialResources (value, status, currency) VALUES (@value, @status, @currency)";
             command.Parameters.Clear();
             command.Parameters.Add(new SqlParameter()
             {
                 ParameterName = "@value",
                 Value = financialResource.Value
+            });
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@currency",
+                Value = financialResource.Currency
             });
             command.Parameters.Add(new SqlParameter()
             {
@@ -54,7 +59,7 @@ namespace DALayer.Database
         {
             LinkedList<FinancialResource> financialResources = new LinkedList<FinancialResource>();
             command.CommandType = System.Data.CommandType.Text;
-            command.CommandText = @"select value, status from financialResources";
+            command.CommandText = @"select value, status, currency from financialResources";
             command.Parameters.Clear();
             SqlDataReader reader = null;
             try
@@ -81,7 +86,8 @@ namespace DALayer.Database
             {
                 while (reader.Read())
                 {
-                    financialResources.AddLast(new FinancialResource(Convert.ToInt32(reader["value"].ToString()), Currency.RON));
+                    financialResources.AddLast(new FinancialResource(Convert.ToInt32(reader["value"].ToString()),  (Currency)Convert.ToInt32(reader["currency"].ToString())));
+                    //financialResources.ElementAt(financialResources.Count - 1).Status = (State)Convert.ToInt32(reader["status"].ToString());
                 }
             }
             return financialResources;

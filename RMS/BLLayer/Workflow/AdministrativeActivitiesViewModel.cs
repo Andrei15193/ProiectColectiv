@@ -27,7 +27,9 @@ namespace BLLayer.Workflow
 
         public void addTeam(int id)
         {
-            //this.teams.Add
+            foreach (Team team in allTeams.AsEnumerable)
+                if (team.idTeam == id)
+                    this.teams.Add(team);
         }
     }
 }

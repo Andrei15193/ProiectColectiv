@@ -3,6 +3,7 @@ using ResourceManagementSystem.BusinessLogic.Entities.Collections;
 using ResourceManagementSystem.DAOInterface;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -69,8 +70,16 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 administrativeEvent = new AdministrativeEvent(
                     title,
                     description,
-                    Convert.ToDateTime(startDate),
-                    Convert.ToDateTime(endDate),
+                    DateTime.ParseExact(
+                        startDate,
+                        "dd/MM/yyyy",
+                        CultureInfo.InvariantCulture
+                    ).AddDays(1).AddMilliseconds(-1),
+                    DateTime.ParseExact(
+                        endDate,
+                        "dd/MM/yyyy",
+                        CultureInfo.InvariantCulture
+                    ).AddDays(1).AddMilliseconds(-1),
                     activities
                 );
                 errorMessage = string.Empty;
@@ -98,12 +107,13 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
-        public void AddAdministrativeActivity(string title, string description, DateTime startDate, DateTime endDate,
-            ICollection<NamedTeam> teams)
+        public void AddAdministrativeActivity(string title, string description, DateTime startDate, DateTime endDate)
         {
             AdministrativeActivity activity = new AdministrativeActivity
                 (title, description, startDate, endDate);
-            activity.Teams = teams;
+            activity.team = new Team(allMembers.AsEnumerable.Where(
+                        (localMember) => SelectedTeamEmails.Contains(allMembers.AsEnumerable.EMail)
+                    ));
             activities.Add(activity);
         }
     }

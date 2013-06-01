@@ -74,5 +74,14 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return false;
             }
         }
+
+        public void AddAdministrativeActivity(string title, string description, DateTime startDate, DateTime endDate,
+            ICollection<NamedTeam> teams)
+        {
+            AdministrativeActivity activity = new AdministrativeActivity
+                (title, description, startDate, endDate);
+            activity.Teams = teams;
+            activities.Add(activity);
+        }
     }
 }

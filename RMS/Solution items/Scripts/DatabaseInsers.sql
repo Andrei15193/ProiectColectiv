@@ -5,9 +5,9 @@ insert into Members(type, name, email, password, teachingPosition, hasPhd, telep
     values (2, 'Czibula Gabriela', 'gabis@cs.ubbcluj.ro', '123456', 3, 1, '5815', 'http://www.cs.ubbcluj.ro/~gabis', 'Campus 440', 'Inteligenta artificiala, Limbaje de programare')
     
 insert into Members(type, name, email, password, teachingPosition, hasPhd, telephone, website, address, domainsOfInterest)
-    values (0, 'Director', 'director@director.ro', '123456', NULL, 0, NULL, NULL, NULL, NULL)
+    values (0, 'Pasca Gavril', 'pasca@cs.ubbcluj.ro', '123456', NULL, 0, '5815', NULL, 'Campus 331', NULL)
 
 insert into Members(type, name, email, password, teachingPosition, hasPhd, telephone, website, address, domainsOfInterest)
-    values (1, 'Admin', 'admin@admin.ro', '123456', NULL, 0, NULL, NULL, NULL, NULL)
+    values (1, 'Szasz Paul', 'paul@cs.ubbcluj.ro', '123456', NULL, 0, '5815', NULL, 'Campus 331', NULL)
 
 select * from Members

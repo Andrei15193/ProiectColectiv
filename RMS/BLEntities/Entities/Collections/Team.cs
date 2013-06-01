@@ -73,5 +73,6 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
         }
 
         private ICollection<Member> members;
+        private int idTeam;
     }
 }

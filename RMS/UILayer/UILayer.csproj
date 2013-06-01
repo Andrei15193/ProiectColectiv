@@ -102,11 +102,11 @@
     <Content Include="addHumanResource.cshtml" />
     <Content Include="addStudyProgram.cshtml" />
     <Content Include="getProjectsInfo.cshtml" />
-
     <Content Include="getMembersInfo.cshtml" />
     <Content Include="getClassRoomsInfo.cshtml" />
     <Content Include="getEquipmentsInfo.cshtml" />
     <Content Include="aproveActivities.cshtml" />
+    <Content Include="addStudentCircle.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

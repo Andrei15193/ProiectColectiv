@@ -293,5 +293,11 @@ namespace ResourceManagementSystem.DataAccess.Database
 
             return studyPrograms;
         }
+
+
+        public StudyProgram GetByPrimaryKey(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -55,6 +55,7 @@
     <Compile Include="Mocks\AllClassRooms.cs" />
     <Compile Include="Mocks\AllFinancialResources.cs" />
     <Compile Include="Mocks\AllResearchProjects.cs" />
+    <Compile Include="Mocks\StudentCircleMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

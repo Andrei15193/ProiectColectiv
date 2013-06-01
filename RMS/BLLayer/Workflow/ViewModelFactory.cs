@@ -102,6 +102,13 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return new ResearchProjectViewModel(Repositories.AllMembers,Repositories.AllResearchProjects);
             }
         }
+        public static StudentCirclesViewModel StudentCirclesViewModel
+        {
+            get
+            {
+                return new StudentCirclesViewModel(Repositories.StudentCircles);
+            }
+        }
 
         private static class Repositories
         {
@@ -114,6 +121,8 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             public static readonly IAllClassRooms AllClassRooms = new DALayer.Database.AllClassRooms();
 
             public static readonly IStudyPrograms StudyPrograms = new Studyprograms();
+
+            public static readonly IAllStudentCircles StudentCircles = new StudentCircleMock();
 
             public static readonly IAllResearchProjects AllResearchProjects = new AllResearchProjects();
             public static readonly IAllActivities AllActivities = new AllActivities();

@@ -5,7 +5,7 @@
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
     Page.Title = "Define Administrative Events";
 
-    string errorMessage;
+    string errorMessage = string.Empty;
     AdministrativeEventViewModel administrativeEventViewModel = Session["administrativeEventViewModel"] as AdministrativeEventViewModel ?? ViewModelFactory.AdministrativeEventViewModel;
     Session["administrativeEventViewModel"] = administrativeEventViewModel;
 
@@ -36,12 +36,55 @@
         <li class="active"><a>Define Study Programs</a></li>
     </ul>
 
+
+    <p>Step: @step</p>
+    @if (hasError)
+    {
+        <h1>Error!</h1>
+        <p>@errorMessage</p>
+        <p>We are terebly sorry for the inconvenience...</p>
+        <form action="addResearchProject.cshtml" class="form-horizontal" method="post">
+            <input type="hidden" name="step" id="step" value="@step" />
+            <input type="submit" value="Back" />
+        </form>
+    }
+    else
+    {
+        switch (step)
+        {
+            case 0:
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
+                    <table style="width: 100%;">
+                        <tr>
+                            <th>Administrative Event Title</th>
+                            <td style="width: 100%;">
+                                <input type="text" class="administrativeEvent" name="administrativeEvent" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Start date</th>
+                            <td style="width: 100%;">
+                                <input type="text" name="startDate" class="datepicker" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>End date</th>
+                            <td style="width: 100%;">
+                                <input type="text" name="endDate" class="datepicker" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                break;
+        }
+    }
+
     @if (!IsPost)
         {
             <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
                 <table style="width: 100%;">
                     <tr>
-                        <th>Administrative Event</th>
+                        <th>Administrative Event Title</th>
                         <td style="width: 100%;">
                             <input type="text" class="administrativeEvent" name="administrativeEvent" />
                         </td>

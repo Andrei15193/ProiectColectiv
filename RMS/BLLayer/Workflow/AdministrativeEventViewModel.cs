@@ -12,6 +12,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
     public class AdministrativeEventViewModel
     {
         public string title { get; set; }
+        public string description { get; set; }
         public string startDate { get; set; }
         public string endDate { get; set; }  
 
@@ -62,6 +63,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             {
                 AdministrativeEvent adminEvent = new AdministrativeEvent(
                     title,
+                    description,
                     Convert.ToDateTime(startDate),
                     Convert.ToDateTime(endDate),
                     activities

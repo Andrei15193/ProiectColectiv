@@ -73,16 +73,5 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
         }
 
         private ICollection<Member> members;
-        public int idTeam
-        {
-            get
-            {
-                return idTeam;
-            }
-            set
-            {
-                idTeam = value;
-            }
-        }
     }
 }

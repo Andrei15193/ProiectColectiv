@@ -11,8 +11,9 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
     public class AdministrativeEventViewModel
     {
-        private DateTime startDate;  
-        private DateTime endDate;
+        public string title { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }  
 
         private ICollection<AdministrativeActivity> activities;
         private IAllAdministrativeEvents allEvents;
@@ -45,13 +46,12 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             //tasks.Add(task);
         }
 
-        public IEnumerable<Member> TryGetAllTeams(out string errorMessage)
+        public IEnumerable<AdministrativeEvent> TryGetAllAdministrativeEvents(out string errorMessage)
         {
             try
             {
                 errorMessage = string.Empty;
-                localAllMembers = allMembers.AsEnumerable;
-                return localAllMembers;
+                return allEvents.AsEnumerable;
             }
             catch (Exception exception)
             {
@@ -61,34 +61,34 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         }
 
-        //public bool TryCreateAd(out string errorMessage)
-        //{
-        //    try
-        //    {
-        //        ResearchProject = new ResearchProject(
-        //            Title,
-        //            Description,
-        //            DateTime.ParseExact(
-        //                StartDate,
-        //                "dd/MM/yyyy",
-        //                CultureInfo.InvariantCulture),
-        //            DateTime.ParseExact(
-        //                EndDate,
-        //                "dd/MM/yyyy",
-        //                CultureInfo.InvariantCulture),
-        //            new Team(
-        //                localAllMembers.Where(
-        //                    (localMember) => SelectedTeamEmails.Contains(localMember.EMail))
-        //            )
-        //        );
-        //        errorMessage = string.Empty;
-        //        return true;
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        errorMessage = exception.Message;
-        //        return false;
-        //    }
-        //}
+        public bool TryCreateAdministrativeEvent(out string errorMessage)
+        {
+            try
+            {
+                AdministrativeEvent adminEvent = new AdministrativeEvent(
+                    Title,
+                    Description,
+                    DateTime.ParseExact(
+                        StartDate,
+                        "dd/MM/yyyy",
+                        CultureInfo.InvariantCulture),
+                    DateTime.ParseExact(
+                        EndDate,
+                        "dd/MM/yyyy",
+                        CultureInfo.InvariantCulture),
+                    new Team(
+                        localAllMembers.Where(
+                            (localMember) => SelectedTeamEmails.Contains(localMember.EMail))
+                    )
+                );
+                errorMessage = string.Empty;
+                return true;
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.Message;
+                return false;
+            }
+        }
     }
 }

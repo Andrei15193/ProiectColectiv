@@ -107,6 +107,7 @@
     <Content Include="getEquipmentsInfo.cshtml" />
     <Content Include="aproveActivities.cshtml" />
     <Content Include="addAdministrativeEvent.cshtml" />
+    <Content Include="viewCalendar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

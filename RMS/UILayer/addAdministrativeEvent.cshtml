@@ -23,6 +23,7 @@
     {
         case 1:
             administrativeEventViewModel.title = Request["administrativeEvent"];
+            //administrativeEventViewModel.des
             administrativeEventViewModel.startDate = Request["startDate"];
             administrativeEventViewModel.endDate = Request["endDate"];
             members = administrativeEventViewModel.TryGetAllMembers(out errorMessage);

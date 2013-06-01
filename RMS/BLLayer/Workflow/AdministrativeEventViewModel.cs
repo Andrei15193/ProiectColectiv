@@ -23,6 +23,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             this.allEvents = allEvents;
             activities = new List<AdministrativeActivity>();
+            this.allMembers = allMembers;
         }
 
         public IEnumerable<AdministrativeEvent> TryGetAllAdministrativeEvents(out string errorMessage)

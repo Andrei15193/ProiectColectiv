@@ -89,6 +89,20 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return member != null;
             }
         }
+        //31.05.2013
+        public IEnumerable<Member> TryGetAll(out string errorMessage)
+        {
+            try
+            {
+                errorMessage = null;
+                return allMembers.AsEnumerable;
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.ToString();
+                return null;
+            }
+        }
 
         private IAllMembers allMembers;
         private Member member;

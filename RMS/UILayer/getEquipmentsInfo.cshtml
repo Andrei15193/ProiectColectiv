@@ -1,0 +1,46 @@
+﻿@using ResourceManagementSystem.BusinessLogic.Entities;
+@using ResourceManagementSystem.BusinessLogic.Workflow;
+
+@{   
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "Get Equipments Info";
+
+  
+    string errorMessage;
+
+    EquipmentsViewModel equipmentViewModel = Session["equipmentViewModel"] as EquipmentsViewModel ?? ViewModelFactory.EquipmentsViewModel;
+    Session["equipmentViewModel"] = equipmentViewModel;
+    IEnumerable<Equipment> equipments = equipmentViewModel.TryGetAll(out errorMessage);
+
+ 
+    }
+
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a>View equipments</a></li>
+
+    </ul>
+
+    
+        @if (equipments != null)
+        {
+
+            foreach (var equipment in equipments)
+                {
+                    <div class="well">
+                        <h3>@equipment.Brand, @equipment.Model (@equipment.SerialNumber)</h3>
+                        <p><b>Description: </b><br />@equipment.Description</p>
+                        
+                    </div>
+                }
+           
+          
+        }
+        else
+        {
+            <h1>Error!</h1>
+            <p>@errorMessage</p>
+            <p>We are terebly sorry for the inconvenience...</p>
+        }
+   
+}

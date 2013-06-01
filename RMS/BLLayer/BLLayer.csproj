@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Workflow\ActivitiesViewModel.cs" />
     <Compile Include="Old\Workflow\FeaturesFactory.cs" />
     <Compile Include="Old\Workflow\FinancialResourceViewModel.cs" />
     <Compile Include="Old\Workflow\HumanResourcesViewModel.cs" />

@@ -239,7 +239,12 @@ body, .menu, .sidebar, .header-form
         width: 100%;
     }
 
-.researchActivity
+.activityContainment
 {
-    border:1px dashed gray;
+    margin: 5px 0 0 3px;
+    padding: 0 0 0 20px;
+    border:2px solid black;
+    border-width: 0 0 0 2px;
+
+    border-radius: 4px;
 }

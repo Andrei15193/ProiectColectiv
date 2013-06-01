@@ -48,6 +48,7 @@
     <Compile Include="Old\Workflow\StudentCirclesViewModel.cs" />
     <Compile Include="Old\Workflow\StudyProgramsViewModel.cs" />
     <Compile Include="Old\Workflow\TaskViewModel.cs" />
+    <Compile Include="Workflow\AdministrativeActivitiesViewModel.cs" />
     <Compile Include="Workflow\ResearchProjectViewModel.cs" />
     <Compile Include="Workflow\SelectClassRoomViewModel.cs" />
     <Compile Include="Workflow\SelectEquipmentsViewModel.cs" />

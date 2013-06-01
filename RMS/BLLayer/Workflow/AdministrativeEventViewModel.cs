@@ -18,7 +18,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public string endDate { get; set; }
 
         public IEnumerable<string> SelectedTeamEmails { get; set; }
-        private AdministrativeEvent administrativeEvent;
+        public AdministrativeActivity administrativeActivity { get; private set; }
 
         private ICollection<AdministrativeActivity> activities;
         private IAllAdministrativeEvents allEvents;
@@ -63,11 +63,11 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         }
 
-        public bool TryCreateAdministrativeEvent(out string errorMessage)
+        public bool TryCreateAdministrativeActivity(out string errorMessage)
         {
             try
             {
-                administrativeEvent = new AdministrativeEvent(
+                administrativeActivity = new AdministrativeActivity(
                     title,
                     description,
                     DateTime.ParseExact(
@@ -79,8 +79,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                         endDate,
                         "dd/MM/yyyy",
                         CultureInfo.InvariantCulture
-                    ).AddDays(1).AddMilliseconds(-1),
-                    activities
+                    ).AddDays(1).AddMilliseconds(-1)
                 );
                 errorMessage = string.Empty;
                 return true;
@@ -92,11 +91,11 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
-        public bool TrySaveResearchProject(out string errorMessage)
+        public bool TrySaveAdministrativeActivity(out string errorMessage)
         {
             try
             {
-                allEvents.Add(administrativeEvent);
+                //allEvents.Add(administrativeActivity);
                 errorMessage = null;
                 return true;
             }
@@ -109,12 +108,12 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         public void AddAdministrativeActivity(string title, string description, DateTime startDate, DateTime endDate)
         {
-            AdministrativeActivity activity = new AdministrativeActivity
-                (title, description, startDate, endDate);
-            activity.team = new Team(allMembers.AsEnumerable.Where(
-                        (localMember) => SelectedTeamEmails.Contains(allMembers.AsEnumerable.EMail)
-                    ));
-            activities.Add(activity);
+            //AdministrativeActivity activity = new AdministrativeActivity
+            //    (title, description, startDate, endDate);
+            //activity.team = new Team(allMembers.AsEnumerable.Where(
+            //            (localMember) => SelectedTeamEmails.Contains(allMembers.AsEnumerable.EMail)
+            //        ));
+            //activities.Add(activity);
         }
     }
 }

@@ -26,10 +26,22 @@
             administrativeEventViewModel.description = Request["description"];
             administrativeEventViewModel.startDate = Request["startDate"];
             administrativeEventViewModel.endDate = Request["endDate"];
-            members = administrativeEventViewModel.TryGetAllMembers(out errorMessage);
+            
+            administrativeEventViewModel.SelectedTeamEmails = Request.Form.AllKeys;
+            hasError = !administrativeEventViewModel.TryCreateAdministrativeActivity(out errorMessage);
+
+            if (hasError)
+            {
+                step = 0;
+            }
             break;
         case 2:
-            administrativeEventViewModel.SelectedTeamEmails = Request.Form.AllKeys;
+            members = administrativeEventViewModel.TryGetAllMembers(out errorMessage);
+            break;
+        case 6:
+            
+            //administrativeEventViewModel.administrativeActivity.
+            
             break;
     }
 }
@@ -88,10 +100,36 @@
                     <input type="submit" value="Next" />
                 </form>
                 break;
+            
             case 1:
+                <h1>@administrativeEventViewModel.administrativeActivity.Title</h1>
+                <p>
+                    <b>Start date:</b> @administrativeEventViewModel.administrativeActivity.StartDate.ToString("d MMM yyyy")<br />
+                    <b>End date:</b> @administrativeEventViewModel.administrativeActivity.EndDate.ToString("d MMM yyyy")
+                </p>
+                <p>
+                    @administrativeEventViewModel.administrativeActivity.Description
+                </p>
+    
                 <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
                  
                     <input type="hidden" value="2" name="step" id="step" />
+                    <input type="submit" value="Add new team" />
+
+                </form>
+    
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
+                 
+                    <input type="hidden" value="3" name="step" id="step" />
+                    <input type="submit" value="Add new activity" />
+
+                </form>
+                break;  
+                
+            case 2:
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
+                 
+                    <input type="hidden" value="6" name="step" id="step" />
                     <ul>
                         @foreach (var member in members)
                         {
@@ -104,7 +142,7 @@
                     <input type="submit" value="Next" />
 
                 </form>
-                break;
+                break;  
         }
     }
 

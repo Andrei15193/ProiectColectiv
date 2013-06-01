@@ -22,10 +22,10 @@
     switch (step)
     {
         case 1:
-            administrativeEventViewModel.title = Request["title"];
+            administrativeEventViewModel.title = Request["administrativeEvent"];
             administrativeEventViewModel.startDate = Request["startDate"];
             administrativeEventViewModel.endDate = Request["endDate"];
-            //members = administrativeEventViewModel.TryGetAllAdministrativeEvents(out errorMessage);
+            members = administrativeEventViewModel.TryGetAllMembers(out errorMessage);
             break;
     }
 }
@@ -54,6 +54,7 @@
         {
             case 0:
                 <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
+                    <input type="hidden" value="1" name="step" id="step" />
                     <table style="width: 100%;">
                         <tr>
                             <th>Administrative Event Title</th>
@@ -64,16 +65,23 @@
                         <tr>
                             <th>Start date</th>
                             <td style="width: 100%;">
-                                <input type="text" name="startDate" class="datepicker" />
+                                <input type="text" name="startDate" class="datepicker" data-date-format="dd/mm/yyyy" />
                             </td>
                         </tr>
                         <tr>
                             <th>End date</th>
                             <td style="width: 100%;">
-                                <input type="text" name="endDate" class="datepicker" />
+                                <input type="text" name="endDate" class="datepicker" data-date-format="dd/mm/yyyy" />
                             </td>
                         </tr>
                     </table>
+                    <input type="submit" value="Next" />
+                </form>
+                break;
+            case 1:
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
+                    <input type="hidden" value="1" name="step" id="step" />
+
                 </form>
                 break;
         }

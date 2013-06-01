@@ -5,7 +5,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public abstract class AbstractBreakdownActivity : AbstractActivity
     {
-        public ICollection<TaskBreakdownActivity> BreakdownActvities { get; private set; }
+        public ICollection<TaskBreakdownActivity> BreakdownActvities { get; set; }
 
         protected AbstractBreakdownActivity(ActivityType type, string title, string description, DateTime startDate, DateTime endDate, int id)
             : base(type, title, description, startDate, endDate, id)

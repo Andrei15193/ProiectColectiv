@@ -12,6 +12,6 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         }
 
 
-        public ICollection<Collections.NamedTeam> Teams { get; private set; }
+        public ICollection<Collections.NamedTeam> Teams { get; set; }
     }
 }

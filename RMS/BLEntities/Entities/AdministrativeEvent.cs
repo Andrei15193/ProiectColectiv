@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ResourceManagementSystem.BusinessLogic.Entities.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,48 +30,13 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             this.activities = activities;
         }
 
-        public AdministrativeActivity Add(string title, string description, DateTime startDate, DateTime endDate, )
+        public void AddAdministrativeActivity(string title, string description, DateTime startDate, DateTime endDate, 
+            ICollection<NamedTeam> teams)
         {
-            ResearchPhase newPhase = new ResearchPhase(this, title, description, startDate, endDate);
-            if (phases.Add(newPhase))
-                return newPhase;
-            else
-                return null;
-        }
-
-        public bool Contains(string phaseTitle)
-        {
-            return (phases.Count((phase) => phase.Title == phaseTitle) == 1);
-        }
-
-        public ResearchPhase Remove(string phaseTitle)
-        {
-            ResearchPhase removedPhase = null;
-            IEnumerable<ResearchPhase> phasesToRemove = phases.Where((phase) => phase.Title == phaseTitle);
-            if (phasesToRemove.Count() == 1)
-            {
-                removedPhase = phasesToRemove.First();
-                phases.Remove(removedPhase);
-            }
-            return removedPhase;
-        }
-
-        public IEnumerator<ResearchPhase> GetEnumerator()
-        {
-            return phases.GetEnumerator();
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return phases.GetEnumerator();
-        }
-
-        public int Count
-        {
-            get
-            {
-                return phases.Count;
-            }
+            AdministrativeActivity activity = new AdministrativeActivity
+                (title, description, startDate, endDate);
+            activity.Teams = teams;
+            activities.Add(activity);
         }
     }
 }

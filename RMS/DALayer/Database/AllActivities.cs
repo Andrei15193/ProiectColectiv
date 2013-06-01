@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DALayer.Database
 {
-    class AllActivities : IAllActivities
+    public class AllActivities : IAllActivities
     {
         private SqlCommand command;
 

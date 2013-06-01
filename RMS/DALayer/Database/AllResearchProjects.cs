@@ -10,7 +10,7 @@ using System.Text;
 
 namespace DALayer.Database
 {
-    class AllResearchProjects : IAllResearchProjects
+    public class AllResearchProjects : IAllResearchProjects
     {
         private SqlCommand command;
 
@@ -19,7 +19,7 @@ namespace DALayer.Database
             command = new SqlCommand() { Connection = DatabaseConstants.SqlConnection };
         }
 
-        internal ResourceManagementSystem.BusinessLogic.Entities.ResearchProject getByPhase(int p)
+        public ResourceManagementSystem.BusinessLogic.Entities.ResearchProject getByPhase(int p)
         {
             LinkedList<ResearchProject> researchProjects = new LinkedList<ResearchProject>();
             command.CommandType = System.Data.CommandType.Text;

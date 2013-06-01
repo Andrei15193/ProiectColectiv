@@ -105,7 +105,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         }
 
         private IAllMembers allMembers;
-        private Member member;
+        public Member member { get; private set; }
         private string email;
         private string password;
     }

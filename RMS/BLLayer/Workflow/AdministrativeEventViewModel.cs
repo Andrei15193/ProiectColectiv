@@ -14,15 +14,13 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         private DateTime startDate;  
         private DateTime endDate;
 
-        private IAllActivities allActivities;
         private ICollection<AdministrativeActivity> activities;
-        private IAllMembers allMembers;
-        private IEnumerable<Member> localAllMembers;
+        private IAllAdministrativeEvents allEvents;
 
-        public AdministrativeEventViewModel(IAllMembers allMembers, IAllActivities allActivities, string startDate, string endDate)
+        public AdministrativeEventViewModel(IAllAdministrativeEvents allEvents)
         {
-            this.allActivities = allActivities;
-            this.allMembers = allMembers;
+            this.allEvents = allEvents;
+            activities = new List<AdministrativeActivity>();
             this.startDate = Convert.ToDateTime(startDate);
             this.endDate = Convert.ToDateTime(endDate);
         }

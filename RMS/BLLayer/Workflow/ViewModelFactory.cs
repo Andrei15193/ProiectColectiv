@@ -103,6 +103,14 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        public static AdministrativeEventViewModel AdministrativeEventViewModel
+        {
+            get
+            {
+                return new AdministrativeEventViewModel(Repositories.AllAdministrativeEvents);
+            }
+        }
+
         private static class Repositories
         {
             public static readonly IAllMembers AllMembers = new AllMembers();
@@ -117,6 +125,8 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
             public static readonly IAllResearchProjects AllResearchProjects = new AllResearchProjects();
             public static readonly IAllActivities AllActivities = new AllActivities();
+
+            public static readonly IAllAdministrativeEvents AllAdministrativeEvents;
         }
     }
 }

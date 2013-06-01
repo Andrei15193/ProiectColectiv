@@ -30,6 +30,13 @@
             break;
         case 2:
             administrativeEventViewModel.SelectedTeamEmails = Request.Form.AllKeys;
+            hasError = !administrativeEventViewModel.TryCreateAdministrativeEvent(out errorMessage);
+
+            if (hasError)
+            {
+                step = 0;
+            }
+            
             break;
     }
 }
@@ -105,6 +112,18 @@
 
                 </form>
                 break;
+            case 2:
+                <h1>@administrativeEventViewModel.administrativeEvent.title</h1>
+                <p>
+                    <b>Start date:</b> @administrativeEventViewModel.administrativeEvent.startDate.ToString("d MMM yyyy")<br />
+                    <b>End date:</b> @administrativeEventViewModel.administrativeEvent.endDate.ToString("d MMM yyyy")
+                </p>
+                <p>
+                    @administrativeEventViewModel.administrativeEvent.description
+                </p>
+
+            <h2>Team:</h2>
+                break;    
         }
     }
 

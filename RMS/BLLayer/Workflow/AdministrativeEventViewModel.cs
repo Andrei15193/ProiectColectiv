@@ -17,7 +17,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public string endDate { get; set; }
 
         public IEnumerable<string> SelectedTeamEmails { get; set; }
-        private AdministrativeEvent administrativeEvent;
+        public AdministrativeEvent administrativeEvent { get; private set; }
 
         private ICollection<AdministrativeActivity> activities;
         private IAllAdministrativeEvents allEvents;

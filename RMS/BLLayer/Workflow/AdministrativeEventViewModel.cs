@@ -22,6 +22,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public AdministrativeEventViewModel(IAllMembers allMembers, IAllAdministrativeEvents allEvents)
         {
             this.allEvents = allEvents;
+            this.allMembers = allMembers;
             activities = new List<AdministrativeActivity>();
         }
 

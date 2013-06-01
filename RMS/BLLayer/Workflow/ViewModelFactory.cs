@@ -44,8 +44,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
-
-
         public static MemberViewModel MemberViewModel
         {
             get
@@ -100,6 +98,14 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             get
             {
                 return new ResearchProjectViewModel(Repositories.AllMembers,Repositories.AllResearchProjects);
+            }
+        }
+
+        public static ImportScheduleViewModel ImportScheduleViewModel
+        {
+            get
+            {
+                return new ImportScheduleViewModel();
             }
         }
 

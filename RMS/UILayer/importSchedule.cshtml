@@ -1,0 +1,213 @@
+﻿@using ResourceManagementSystem.BusinessLogic.Workflow
+
+@{
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "Import Schedule";
+
+    ImportScheduleViewModel viewModel = Session["importSchedule"] as ImportScheduleViewModel ?? ViewModelFactory.ImportScheduleViewModel;
+
+    if (IsPost)
+    {
+        bool validInput = true;
+
+        for (int i = 1; i <= 2; i++)
+        {
+            string dateElement = i == 1 ? "semesterStart" : "semesterEnd";
+
+            if (Request[dateElement] != null)
+            {
+                DateTime semesterDate;
+                string semesterStart = Request[dateElement].Trim();
+                List<string> dateSplit = semesterStart.Split('-').ToList();
+                if (dateSplit.Count == 3 && DateTime.TryParse(string.Format("{0}-{1}-{2}", dateSplit[1], dateSplit[0], dateSplit[2]), out semesterDate))
+                {
+                    if (i == 1)
+                    {
+                        viewModel.SemesterStart = semesterDate;
+                    }
+                    else
+                    {
+                        viewModel.SemesterEnd = semesterDate;
+                    }
+                }
+                else
+                {
+                    ModelState.AddError(dateElement, string.Format("Invalid {0} date!", i == 1 ? "start" : "end"));
+                    validInput = false;
+                }
+            }
+            else
+            {
+                ModelState.AddError(dateElement, "Please enter semester start date!");
+                validInput = false;
+            }
+        }
+
+        if(validInput && viewModel.SemesterEnd < viewModel.SemesterStart){
+            validInput = false;
+            ModelState.AddError("", "End date must be greater than start date!");
+        }
+        
+        if (validInput)
+        {
+            if (Request.Files.Count == 0)
+            {
+                ModelState.AddError("", "No files selected!");
+            }
+            else
+            {
+                List<byte[]> files = new List<byte[]>();
+
+                for (int i = 0; i < Request.Files.Count; i++)
+                {
+                    byte[] bytes = new byte[Request.Files[i].ContentLength];
+                    Request.Files[i].InputStream.Read(bytes, 0, Request.Files[i].ContentLength);
+                    files.Add(bytes);
+                }
+                
+                viewModel.Files = files;
+
+                string errorMessage;
+                if(viewModel.TrySave(out errorMessage)){
+                    Response.Redirect("~/index.cshtml");
+                }else{
+                    ModelState.AddError("", errorMessage);   
+                }
+            }
+        }
+
+        Session["importSchedule"] = viewModel;
+    }
+    
+}
+
+@section body{
+    <form action="~/importSchedule" method="post" enctype="multipart/form-data">
+        @Html.ValidationSummary(true)
+
+        <label for="startDate">Semester start: </label>
+        <input name="semesterStart" id="semesterStart" type="text" value="" data-date-format="dd-mm-yyyy" class="datepicker" />
+        @Html.ValidationMessage("semesterStart")
+
+        <label for="semesterEnd">Semester end: </label>
+        <input name="semesterEnd" id="semesterEnd" type="text" value="" data-date-format="dd-mm-yyyy" class="datepicker" />
+        @Html.ValidationMessage("semesterEnd")
+
+        <br />
+        <span>Select files that you want to import:</span>
+        <br />
+        <input type="file" name="FileUpload" multiple />
+        @Html.ValidationMessage("FileUpload")
+
+        <h3>Holiday intervals</h3>
+
+        <div class="row">
+            <div class="span3">
+                <div id="noHolidays"  @(!( viewModel.Holidays == null || viewModel.Holidays.Count == 0 ) ? "style=display:none" : "")>
+                    <span>No holidays selected!</span>
+                    <br />
+                </div>
+
+                <table id="holidaysTable" @(viewModel.Holidays == null || viewModel.Holidays.Count == 0 ? "style=display:none" : "") class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Holiday start</th>
+                            <th>Holiday end</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="span4">
+                <div id="holidayDetails">
+                    <p>Insert holidays</p>
+                    <div class="row">
+                        <div class="span2">
+                            <span>Holiday start&nbsp;&nbsp;</span>
+                        </div>
+                        <div class="span2">
+                            <input id="holidayStart" type="text" value="" data-date-format="dd-mm-yyyy" class="datepicker" />
+                            <span></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                         <div class="span2">
+                           <span>Holiday end&nbsp;&nbsp;</span>
+                        </div>
+                        <div class="span2">
+                            <input id="holidayEnd" type="text" value="" data-date-format="dd-mm-yyyy" class="datepicker" />
+                                <span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="saveButtons">
+                    <input id="saveHoliday" type="button" class="btn" value="Save holiday" />
+                    <input id="cancelHolidaySave" type="button" class="btn" value="Cancel" />
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <br />
+        <input class="btn" type="submit" value="Submit" />
+    </form>
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#startDate").datepicker();
+            $("#endDate").datepicker();
+            $("#holidayStart").datepicker();
+            $("#holidayEnd").datepicker();
+
+            $("#saveHoliday").click(function () {
+                if (validHolidayDates()) {
+                    console.log("salut");
+                }
+            });
+
+            $("#cancelHolidaySave").click(function () {
+                $("#holidayStart").val('');
+                $("#holidayStart").next().text('');
+                $("#holidayEnd").val('');
+                $("#holidayEnd").next().text('');
+            });
+        });
+
+        function validHolidayDates() {
+            var result = true;
+
+            var startDate$ = $("#holidayStart");
+
+            if (!dateMatch(startDate$.val())) {
+                startDate$.next().text("Invalid holiday start!");
+                result = false;
+            } else {
+                startDate$.next().text("");
+            }
+
+            var endDate$ = $("#holidayEnd");
+            if (!dateMatch(endDate$.val())) {
+                endDate$.next().text("Invalid holiday end!");
+                result = false;
+            } else {
+                endDate$.text("");
+            }
+
+            return true;
+        }
+
+        function dateMatch(date) {
+            var regex = new RegExp("@ResourceManagementSystem.ApplicationConstants.ValidDateRegex");
+            if (date.match(regex)) {
+                return true;
+            }
+
+            return false;
+        }
+    </script>
+}

@@ -12,8 +12,8 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
     public class AdministrativeEventViewModel
     {
         public string title { get; set; }
-        public DateTime startDate { get; set; }
-        public DateTime endDate { get; set; }  
+        public string startDate { get; set; }
+        public string endDate { get; set; }  
 
         private ICollection<AdministrativeActivity> activities;
         private IAllAdministrativeEvents allEvents;
@@ -22,28 +22,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             this.allEvents = allEvents;
             activities = new List<AdministrativeActivity>();
-            this.startDate = Convert.ToDateTime(startDate);
-            this.endDate = Convert.ToDateTime(endDate);
-        }
-
-        public void addTeam(IEnumerable<Member> members)
-        {
-            Team team = new Team(members);
-            //teams.Add(team);
-        }
-
-        public void addAdministrativeActivity(string title, string description, DateTime startDate, DateTime endDate)
-        {
-            AdministrativeActivity administrativeActivity = new AdministrativeActivity(title,
-                description, startDate, endDate);
-            activities.Add(administrativeActivity);
-        }
-
-        public void addTask(TaskType type, string title, string description, DateTime startDate, DateTime endDate, IEnumerable<Member> assignees, FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost, int id)
-        {
-            ResourceManagementSystem.BusinessLogic.Entities.Task task = new ResourceManagementSystem.BusinessLogic.Entities.Task(type, title, description, startDate, endDate, assignees, mobilityCost,
-                laborCost, logisticalCost);
-            //tasks.Add(task);
         }
 
         public IEnumerable<AdministrativeEvent> TryGetAllAdministrativeEvents(out string errorMessage)
@@ -66,20 +44,10 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             try
             {
                 AdministrativeEvent adminEvent = new AdministrativeEvent(
-                    Title,
-                    Description,
-                    DateTime.ParseExact(
-                        StartDate,
-                        "dd/MM/yyyy",
-                        CultureInfo.InvariantCulture),
-                    DateTime.ParseExact(
-                        EndDate,
-                        "dd/MM/yyyy",
-                        CultureInfo.InvariantCulture),
-                    new Team(
-                        localAllMembers.Where(
-                            (localMember) => SelectedTeamEmails.Contains(localMember.EMail))
-                    )
+                    title,
+                    Convert.ToDateTime(startDate),
+                    Convert.ToDateTime(endDate),
+                    activities
                 );
                 errorMessage = string.Empty;
                 return true;

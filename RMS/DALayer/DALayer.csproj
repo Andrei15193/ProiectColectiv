@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\AllActivities.cs" />
     <Compile Include="Database\AllEquipments.cs" />
     <Compile Include="Database\AllFinancialResources.cs" />
     <Compile Include="Database\AllMembers.cs" />

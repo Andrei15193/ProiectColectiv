@@ -293,5 +293,58 @@ namespace ResourceManagementSystem.DataAccess.Database
 
             return studyPrograms;
         }
+
+        internal StudyProgram getByStudentCircle(int p)
+        {
+
+
+            SqlConnection connection = DatabaseConstants.SqlConnection;
+            SqlCommand cmd = new SqlCommand(@"select studyProgram from studentcircles where activity = @activity",
+                            connection);
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@activity",
+                Value = p
+            });
+            int studyProgram = -1;
+            connection.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            if (dr.Read())
+            {
+                studyProgram = Convert.ToInt32(dr["studyProgram"]);
+            }
+            dr.Close();
+            cmd = new SqlCommand(@"select educationalProgramme, degreeOfStudy, domain, yearLength, ectsCredits, typeOfStudy,
+							 higherEducationInstitution, faculty, contactPerson, phone, fax, eMail, profileOfTheDegreeProgramme,
+							 targetGroups, entranceConditions, furtherEducationPossibilities, descriptionOfStudy, purposesOfTheProgramme,
+							 areaOfExpertise, extraPeculiarities, practicalTraining, finalExaminations, gainedAbilitiesAndSkills,
+							 potentialFieldOfProfessionalActivity
+		
+                            from StudyProgrammes where id = @id",
+                            connection);
+
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@id",
+                Value = studyProgram
+            });
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<StudyProgram> studyPrograms = ReadStudyPrograms(reader);
+
+            reader.Close();
+
+            connection.Close();
+
+            if (studyPrograms == null || studyPrograms.Count == 0)
+            {
+                return null;
+            }
+            else
+            {
+                return studyPrograms[0];
+            }
+        }
     }
 }

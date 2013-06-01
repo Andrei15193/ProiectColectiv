@@ -238,3 +238,8 @@ body, .menu, .sidebar, .header-form
         margin-left:13px;
         width: 100%;
     }
+
+.researchActivity
+{
+    border:1px dashed gray;
+}

@@ -6,8 +6,8 @@
     Page.Title = "Add Research Project";
 
     int step = 0;
-    const int lastStep = 5;
-    string errorMessage;
+    const int lastStep = 6;
+    string errorMessage = string.Empty;
     string requestStep = IsPost ? Request["step"] : null;
     if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
     {
@@ -15,15 +15,11 @@
     }
     ResearchProjectViewModel researchProjectsViewModel = Session["researchProjectViewModel"] as ResearchProjectViewModel ?? ViewModelFactory.ResearchProjectViewModel;
     Session["researchProjectViewModel"] = researchProjectsViewModel;
-    IEnumerable<Member> members = null;// humanResourcesViewModel.TryGetAll(out errorMessage);
+    IEnumerable<Member> members = null;
 
     switch (step)
     {
         case 0:
-            //researchProjectsViewModel.Title = null;
-            //researchProjectsViewModel.Description = null;
-            //researchProjectsViewModel.StartDate = null;
-            //researchProjectsViewModel.EndDate = null;
             // researchProjectsViewModel.MemberTypeSelectedIndex = 0;
             //researchProjectsViewModel.ActivityTitle = null;
             //researchProjectsViewModel.ActivityDescription = null;
@@ -37,14 +33,21 @@
             researchProjectsViewModel.Description = Request["description"];
             researchProjectsViewModel.StartDate = Request["startDate"];
             researchProjectsViewModel.EndDate = Request["endDate"];
-            members = researchProjectsViewModel.TryGetAllMembers(out errorMessage);
+            members = researchProjectsViewModel.TryGetAllHumanResources(out errorMessage);
             break;
         case 2:
             researchProjectsViewModel.SelectedTeamEmails = Request.Form.AllKeys;
             break;
         case 3:
+            researchProjectsViewModel.Title = string.Empty;
+            researchProjectsViewModel.Description = string.Empty;
+            researchProjectsViewModel.EndDate = researchProjectsViewModel.StartDate = DateTime.Now.ToString("dd/MM/yyyy");
             break;
         case 4:
+            researchProjectsViewModel.Title = Request["title"];
+            researchProjectsViewModel.Description = Request["description"];
+            researchProjectsViewModel.StartDate = Request["startDate"];
+            researchProjectsViewModel.EndDate = Request["endDate"];
             break;
         case 5:
             break;
@@ -53,85 +56,232 @@
 
 @section body{
     <ul class="nav nav-tabs">
-        <li class="active"><a>Add research project</a></li>
+        <li class="active"><a>Add Research Project</a></li>
     </ul>
 
-    <div class="progress progress-info progress-striped breadcrumb"></div>
-
-    <div class="well">
-        @switch (step)
-        {
-            case 0:
-                // RP form
+    @switch (step)
+    {
+        case 0:
+            // RP form
+        <div class="well">
             <form action="addResearchProject.cshtml" class="form-horizontal" method="post">
                 <input type="hidden" value="1" name="step" id="step" />
                 <label for="title">Title: </label>
-                <input type="text" name="title" id="title" />
+                <input type="text" name="title" id="title" value="@researchProjectsViewModel.Title" />
 
                 <label for="description">Description: </label>
-                <textarea name="description" id="description"></textarea>
+                <textarea name="description" id="description">@researchProjectsViewModel.Description</textarea>
 
                 <label for="startDate">Start date: </label>
-                <input name="startDate" id="startDate" type="text" value="03/06/2013" data-date-format="dd/mm/yyyy" class="datepicker" />
+                <input name="startDate" id="startDate" type="text" value="@researchProjectsViewModel.StartDate" data-date-format="dd/mm/yyyy" class="datepicker" />
 
                 <label for="endDate">End date: </label>
-                <input name="endDate" id="endDate" type="text" value="03/06/2013" data-date-format="dd/mm/yyyy" class="datepicker" />
+                <input name="endDate" id="endDate" type="text" value="@researchProjectsViewModel.EndDate" data-date-format="dd/mm/yyyy" class="datepicker" />
 
                 <input type="submit" value="Next" />
             </form>
-                break;
-            case 1:
-            <form action="addResearchProject.cshtml" class="form-horizontal" method="post">
-                <input type="hidden" value="2" name="step" id="step" />
-                <h1>Human resources: </h1>
-                <ul>
-                    @foreach (var member in members)
-                    {
-                        <li>
-                            <input type="checkbox" name="@member.EMail" />
-                            @(member.ToString())
-                        </li>
-                    }
-                </ul>
-                <input type="submit" value="Next" />
-            </form>
-            
-                    // select members
-                    break;
-            case 2:
-                    // create research project
-                    if (researchProjectsViewModel.TryCreateResearchProject(out errorMessage))
-                    {
-                        foreach (Member member in researchProjectsViewModel.ResearchProject.Team)
+        </div>
+            break;
+
+        case 1:        
+        <div class="well">
+            @if (members != null)
+            {
+                <h1>Select who is in your team:</h1>
+                <form action="addResearchProject.cshtml" class="form-horizontal" method="post">
+                    <input type="hidden" value="2" name="step" id="step" />
+                    <ul>
+                        @foreach (var member in members)
                         {
-            <p>@member.ToString()</p>
+                            <li>
+                                <input type="checkbox" name="@member.EMail" />
+                                @(member.ToString())
+                            </li>
                         }
-                    }
-                    else
+                    </ul>
+                    <input type="submit" value="Next" />
+                </form>
+            }
+            else
+            {
+                <h1>Error!</h1>
+                <p>@errorMessage</p>
+                <p>We are terebly sorry for the inconvenience...</p>
+            }
+        </div>
+            // select members
+            break;
+
+        case 2:
+            // create research project
+            if (researchProjectsViewModel.TryCreateResearchProject(out errorMessage))
+            {
+        <div class="well">
+            <h1>@researchProjectsViewModel.ResearchProject.Title</h1>
+            <p>
+                <b>Start date:</b> @researchProjectsViewModel.ResearchProject.StartDate.ToString("d MMM yyyy")<br />
+                <b>End date:</b> @researchProjectsViewModel.ResearchProject.EndDate.ToString("d MMM yyyy")
+            </p>
+            <p>@researchProjectsViewModel.ResearchProject.Description</p>
+            <h2>Team:</h2>
+            <ul style="margin: 0 0 30px;">
+                @foreach (Member member in researchProjectsViewModel.ResearchProject.Team)
+                {
+                    <li>@member.ToString()</li>
+                }
+            </ul>
+        </div>
+                if (researchProjectsViewModel.ResearchProject.Count > 0)
+                {
+        <div class="well">
+            <h2>Phases:</h2>
+            @foreach (ResearchPhase phase in researchProjectsViewModel.ResearchProject)
+            {
+                <h2>@phase.Title</h2>
+                <p>
+                    <b>Start date: </b>@phase.StartDate
+                    <br />
+                    <b>End date: </b>@phase.EndDate
+                </p>
+                <p>
+                    @phase.Description
+                </p>
+                if (phase.Count > 0)
+                {
+                <div class="researchActivity">
+                    @foreach (ResearchActivity activity in phase)
                     {
+                        <h3>@activity.Title</h3>
+                        <p>
+                            <b>Start date: </b>@activity.StartDate<br />
+                            <b>End date: </b>@activity.EndDate
+                        </p>
+                        @activity.Description
+                    }
+                </div>
+                }
+            }
+        </div>
+                }
+        <div>
+            <form action="addResearchProject.cshtml" style="display: inline;" method="post">
+                <input type="hidden" value="3" name="step" id="step" />
+                <input type="submit" value="Add phase" />
+            </form>
+            <form action="addResearchProject.cshtml" style="display: inline;" method="post">
+                <input type="hidden" value="@lastStep" name="step" id="step" />
+                <input type="submit" value="Finish" />
+            </form>
+        </div>
+            }
+            else
+            {
+        <div class="well">
             <h1>Error!</h1>
             <p>@errorMessage</p>
             <p>We are terebly sorry for the inconvenience...</p>
+            <form class="form-horizontal" action="/addResearchProject.cshtml" method="post">
+                <input type="hidden" name="step" id="step" value="0" />
+                <input type="submit" value="Go back" />
+            </form>
+        </div>
+            }
+            break;
+
+        case 3:
+            // show phase form
+            // show activities in phase
+            // show add button (goest to step 4)
+        <div class="well">
+            <form class="form-horizontal" action="/addResearchProject.cshtml" method="post">
+                <input type="hidden" name="step" id="step" value="4" />
+
+                <label for="title">Title: </label>
+                <input type="text" name="title" id="title" value="@researchProjectsViewModel.Title" />
+
+                <label for="description">Description: </label>
+                <textarea name="description" id="description">@researchProjectsViewModel.Description</textarea>
+
+                <label for="startDate">Start date: </label>
+                <input name="startDate" id="startDate" type="text" value="@researchProjectsViewModel.StartDate" data-date-format="dd/mm/yyyy" class="datepicker" />
+
+                <label for="endDate">End date: </label>
+                <input name="endDate" id="endDate" type="text" value="@researchProjectsViewModel.EndDate" data-date-format="dd/mm/yyyy" class="datepicker" />
+
+                <input type="submit" value="Add phase" />
+            </form>
+        </div>
+            break;
+
+        case 4:
+            if (researchProjectsViewModel.TryCreatePhase(out errorMessage))
+            {
+
+                if (researchProjectsViewModel.CurrentPhase.Count > 0)
+                {
+                    foreach (ResearchActivity researchActivity in researchProjectsViewModel.CurrentPhase)
+                    {
+        <div class="well">
+            <h3>@researchActivity.Title</h3>
+            <p>
+                <b>Start date: </b>@researchActivity.StartDate
+                <b>End date: </b>@researchActivity.EndDate
+                <b>Labor cost: </b>@researchActivity.LaborCost.Value @researchActivity.LaborCost.Currency.ToString()
+                <b>Logistical cost: </b>@researchActivity.LogisticalCost.Value @researchActivity.LogisticalCost.Currency.ToString()
+                <b>Mobility cost: </b>@researchActivity.MobilityCost.Value @researchActivity.MobilityCost.Currency.ToString()
+                <b>Is confidential: </b>@(researchActivity.IsConfidential ? "Yes" : "No")
+            </p>
+            <p>
+                @researchActivity.Description
+            </p>
+            <p>
+                Class rooms used: @string.Join(", ", researchActivity.ClassRooms.Select((classRoom) => classRoom.Name));
+            </p>
+            <p>
+                Equipment used: @string.Join(", ", researchActivity.Equipments.Select((equipment) => string.Format("{0} {1} ({2})", equipment.Brand, equipment.Model, equipment.SerialNumber)));
+            </p>
+        </div>
                     }
+                }
+            }
+            else
+            {
+        <h1>Error!</h1>
+        <p>@errorMessage</p>
+        <p>We are terebly sorry for the inconvenience...</p>
+            }
+            break;
 
-                    // show 2 buttons [add phase (goest to step 3) and finish (goes to step 5)]
-                    break;
-            case 3:
-                    // show phase form
-                    // show activities in phase
-                    // show add button (goest to step 4)
-                    break;
-            case 4:
-                    // adds activity
-                    // show go to phase button (goest to step 3)
-                    break;
-            case 5:
-                    // Save the research project into the database
-                    break;
+        case 5:
+        <form class="form-horizontal" action="/addResearchProject.cshtml" method="post">
+            <input type="hidden" name="step" id="step" value="4" />
 
-        }
+            <label for="title">Title: </label>
+            <input type="text" name="title" id="title" value="@researchProjectsViewModel.Title" />
 
-    </div>
+            <label for="description">Description: </label>
+            <textarea name="description" id="description">@researchProjectsViewModel.Description</textarea>
+
+            <label for="startDate">Start date: </label>
+            <input name="startDate" id="startDate" type="text" value="@researchProjectsViewModel.StartDate" data-date-format="dd/mm/yyyy" class="datepicker" />
+
+            <label for="endDate">End date: </label>
+            <input name="endDate" id="endDate" type="text" value="@researchProjectsViewModel.EndDate" data-date-format="dd/mm/yyyy" class="datepicker" />
+
+            <input type="submit" value="Add phase" />
+        </form>
+        <form>
+            <input type="submit" value="" />
+        </form>
+        
+            // adds activity
+            // show go to phase button (goest to step 3)
+            break;
+        case 6:
+            // Save the research project into the database
+            break;
+
+    }
 }
 <!--
 

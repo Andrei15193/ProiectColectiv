@@ -19,9 +19,11 @@ namespace ResourceManagementSystem.DataAccess
         private static SqlConnection sqlConnection = null;
 
         //private static readonly string connectionString = "Initial Catalog=pc; Data Source=ANDREI-PC\\ANDREISQL;;Integrated Security= true";
-        private static readonly string connectionString = "Server= ELIZAC; Database=Local; Trusted_Connection= True;";
 
-       // private static readonly string connectionString = "Initial Catalog=pc; Data Source=ANDREI-PC\\ANDREISQL;;Integrated Security= true";
+
+        //private static readonly string connectionString = "Server= ELIZAC; Database=Local; Trusted_Connection= True;";
+
+        //private static readonly string connectionString = "Initial Catalog=pc; Data Source=ANDREI-PC\\ANDREISQL;;Integrated Security= true";
 
         //private static readonly string connectionString = "Server= ANDREI-DESKTOP; Database=AndreiLocal; Trusted_Connection= True;";
 
@@ -29,7 +31,7 @@ namespace ResourceManagementSystem.DataAccess
         
         //private static readonly string connectionString = "Server= USER-PC\\SQLEXPRESS; Database= local; Trusted_Connection= true;";
         
-        private static readonly string connectionString = "SERVER= IoanasiPui\\SQLEXPRESS; Database= local; Trusted_Connection= True;";
+        //private static readonly string connectionString = "SERVER= IoanasiPui\\SQLEXPRESS; Database= local; Trusted_Connection= True;";
         
         //private static readonly string connectionString = "Server= USER-PC\\SQLEXPRESS; Database= local; Trusted_Connection= true;";
 

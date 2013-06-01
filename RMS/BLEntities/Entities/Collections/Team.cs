@@ -14,7 +14,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
                     if (members.Count() > 0)
                         this.members = new HashSet<Member>(members, new EqualityComparer<Member>((x, y) => x.EMail == y.EMail, (x) => x.EMail.GetHashCode()));
                     else
-                        throw new ArgumentException("The provided member collection cannot be empty!");
+                        throw new ArgumentException("A team cannot be empty! Please provide at least one member!");
                 else
                     throw new ArgumentException("The provided member collection cannot contain null values!");
             else

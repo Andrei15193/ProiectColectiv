@@ -15,14 +15,52 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public ResearchProjectViewModel(IAllMembers allMembers, IAllResearchProjects allProjects)
         {
             this.allMembers = allMembers;
+
             this.allProjects = allProjects;
+
+            Title = string.Empty;
+            Description = string.Empty;
+            StartDate = DateTime.Now.ToString("dd/MM/yyyy");
+            EndDate = DateTime.Now.AddDays(10).ToString("dd/MM/yyyy");
+            CurrentPhase = null;
+        }
+
+        public IEnumerable<Member> TryGetAllHumanResources(out string errorMessage)
+        {
+            try
+            {
+                errorMessage = string.Empty;
+                localAllMembers = allMembers.AsEnumerable;
+                return localAllMembers;
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.Message;
+                return null;
+            }
+
         }
 
         public bool TryCreateResearchProject(out string errorMessage)
         {
             try
             {
-                ResearchProject = new ResearchProject(Title, Description, DateTime.ParseExact(StartDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(EndDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), new Team(localAllMembers.Where((localMember)=> SelectedTeamEmails.Contains(localMember.EMail))));
+                ResearchProject = new ResearchProject(
+                    Title,
+                    Description,
+                    DateTime.ParseExact(
+                        StartDate,
+                        "dd/MM/yyyy",
+                        CultureInfo.InvariantCulture),
+                    DateTime.ParseExact(
+                        EndDate,
+                        "dd/MM/yyyy",
+                        CultureInfo.InvariantCulture),
+                    new Team(
+                        localAllMembers.Where(
+                            (localMember) => SelectedTeamEmails.Contains(localMember.EMail))
+                    )
+                );
                 errorMessage = string.Empty;
                 return true;
             }
@@ -47,7 +85,66 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        public bool TryCreatePhase(out string errorMessage)
+        {
+            try
+            {
+                CurrentPhase = ResearchProject.Add(
+                    Title,
+                    Description,
+                    DateTime.ParseExact(
+                        StartDate, "dd/MM/yyyy",
+                        CultureInfo.InvariantCulture),
+                    DateTime.ParseExact(EndDate,
+                    "dd/MM/yyyy",
+                    CultureInfo.InvariantCulture)
+                );
+                errorMessage = null;
+                return true;
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.Message;
+                return false;
+            }
+        }
+
+        public bool TryCreateActivity(out string errorMessage)
+        {
+            try
+            {
+                CurrentPhase.Add(
+                    Title,
+                    Description,
+                    DateTime.ParseExact(
+                        StartDate,
+                        "dd/MM/yyyy",
+                        CultureInfo.InvariantCulture),
+                    DateTime.ParseExact(
+                    EndDate,
+                    "dd/MM/yyyy",
+                    CultureInfo.InvariantCulture),
+                    localAllMembers.Where(
+                        (localMember) => SelectedTeamEmails.Contains(localMember.EMail)
+                    ),
+                    new FinancialResource(MobilityCost, (Currency)MobilityCostSelectedIndex),
+                    new FinancialResource(LaborCost, (Currency)LaborCostSelectedIndex),
+                    new FinancialResource(LogisticalCost, (Currency)LogisticalCostSelectedIndex),
+                    IsConfidential
+                );
+                errorMessage = null;
+                return true;
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.Message;
+                return false;
+            }
+        }
+
         public ResearchProject ResearchProject { get; private set; }
+
+        public ResearchPhase CurrentPhase { get; private set; }
 
         public string Title { get; set; }
 
@@ -59,26 +156,34 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         public IEnumerable<string> SelectedTeamEmails { get; set; }
 
-        public IEnumerable<Member> TryGetAllMembers(out string errorMessage)
+        public string[] Currency
         {
-            try
+            get
             {
-                errorMessage = string.Empty;
-                localAllMembers = allMembers.AsEnumerable;
-                return localAllMembers;
-            }
-            catch (Exception exception)
-            {
-                errorMessage = exception.Message;
-                return null;
+                return currency;
             }
         }
         private IAllResearchProjects allResearchProjects;
         private IEnumerable<ResearchProject> localAllResearchProjects;
 
+        public int MobilityCost { get; set; }
+
+        public int LogisticalCost { get; set; }
+
+        public int LaborCost { get; set; }
+
+        public int MobilityCostSelectedIndex { get; set; }
+
+        public int LaborCostSelectedIndex { get; set; }
+
+        public int LogisticalCostSelectedIndex { get; set; }
+
+        public bool IsConfidential { get; set; }
+
         private IAllMembers allMembers;
-        private ResearchProject researchProject;
         private IEnumerable<Member> localAllMembers;
+
         private IAllResearchProjects allProjects;
+        private readonly string[] currency = Enum.GetNames(typeof(Currency)).Select((currency) => currency.Replace('_', ' ')).ToArray();
     }
 }

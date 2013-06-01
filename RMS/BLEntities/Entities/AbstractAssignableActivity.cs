@@ -48,7 +48,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         {
             if (assignees != null)
                 if (assignees.Count() > 0)
-                    if (assignees.Count((assignee) => assignee == null) > 0)
+                    if (assignees.Count((assignee) => assignee == null) == 0)
                         this.assignees = new HashSet<Member>(assignees, new Collections.EqualityComparer<Member>((x, y) => x.EMail == y.EMail, (x) => x.EMail.GetHashCode()));
                     else
                         throw new ArgumentException("The provided assingnee collection cannot contain null values!");

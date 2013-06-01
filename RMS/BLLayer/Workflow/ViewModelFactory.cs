@@ -38,6 +38,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         }
 
 
+
         public static MemberViewModel MemberViewModel
         {
             get
@@ -91,7 +92,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             get
             {
-                return new ResearchProjectViewModel(Repositories.AllMembers);
+                return new ResearchProjectViewModel(Repositories.AllMembers,Repositories.AllResearchProjects);
             }
         }
 
@@ -106,6 +107,8 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             public static readonly IAllClassRooms AllClassRooms = new DALayer.Database.AllClassRooms();
 
             public static readonly IStudyPrograms StudyPrograms = new Studyprograms();
+
+            public static readonly IAllResearchProjects AllResearchProjects = new AllResearchProjects();
         }
     }
 }

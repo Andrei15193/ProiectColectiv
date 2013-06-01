@@ -25,6 +25,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                     if (title.Length > 0)
                         if (startDate < endDate)
                         {
+                            Id = id;
                             State = State.Proposed;
                             Type = type;
                             Title = title;

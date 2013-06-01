@@ -13,15 +13,17 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         public DateTime endDate { get; set; }
         public ICollection<AdministrativeActivity> activities;
 
-        public AdministrativeEvent(DateTime startDate, DateTime endDate)
+        public AdministrativeEvent(string title, DateTime startDate, DateTime endDate)
         {
+            this.title = title;
             this.startDate = startDate;
             this.endDate = endDate;
             activities = new List<AdministrativeActivity>();
         }
 
-        public AdministrativeEvent(DateTime startDate, DateTime endDate, ICollection<AdministrativeActivity> activities)
+        public AdministrativeEvent(string title, DateTime startDate, DateTime endDate, ICollection<AdministrativeActivity> activities)
         {
+            this.title = title;
             this.startDate = startDate;
             this.endDate = endDate;
             this.activities = activities;

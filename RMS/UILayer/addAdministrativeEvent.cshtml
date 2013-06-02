@@ -80,16 +80,17 @@
             //.Distinct(new ResourceManagementSystem.BusinessLogic.Entities.Collections.Comparer<Member>((x, y) => x.EMail.CompareTo(y.EMail)));
             break;
         case 9:
-            hasError = !administrativeEventViewModel.insertTaskIntoTaskBreakdownActivity(currentActivity,
-                Request["title"], Request["description"], Request["startDate"], Request["endDate"],
-                Request.Form.AllKeys.ToList().GetRange(11, Request.Form.AllKeys.Count() - 11).AsEnumerable(),
-                (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"])),
-                (Currency)int.Parse(Request["mobilityCostSelectedIndex"]),
-                (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"])),
-                (Currency)int.Parse(Request["mobilityCostSelectedIndex"]),
-                (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"])),
-                (Currency)int.Parse(Request["mobilityCostSelectedIndex"]),
-                out errorMessage);
+            //hasError = !administrativeEventViewModel.insertTaskIntoTaskBreakdownActivity(currentActivity,
+            //    Request["title"], Request["description"], Request["startDate"], Request["endDate"],
+            //    Request.Form.AllKeys.ToList().GetRange(11, Request.Form.AllKeys.Count() - 11).AsEnumerable(),
+            //    (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"])),
+            //    (Currency)int.Parse(Request["mobilityCostSelectedIndex"]),
+            //    (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"])),
+            //    (Currency)int.Parse(Request["mobilityCostSelectedIndex"]),
+            //    (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"])),
+            //    (Currency)int.Parse(Request["mobilityCostSelectedIndex"]),
+            //    out errorMessage);
+            hasError = false;
 
 
             if (!hasError)
@@ -104,7 +105,9 @@
             break;
 
         case 10:
-            hasError = !administrativeEventViewModel.TrySaveAdministrativeActivity(out errorMessage);
+            //hasError = !administrativeEventViewModel.TrySaveAdministrativeActivity(out errorMessage);
+            hasError = false;
+
             if (!hasError)
             {
                 step = 0;

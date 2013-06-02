@@ -18,7 +18,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             activity = null;
         }
 
-        
+
 
         public List<AbstractActivity> GetMemberActivity(Member member, out string error)
         {
@@ -64,6 +64,105 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return null;
         }
 
+        public List<AbstractActivity> GetActivitiesForMember(Member member, out string error)
+        {
+            IEnumerable<AbstractActivity> activities = TryGetAll(out error);
+            List<AbstractActivity> memberActivities = new List<AbstractActivity>();
+            try
+            {
+                foreach (AbstractActivity activ in activities)
+                {
+                    if (activ is AbstractAssignableActivity)
+                    {
+                        AbstractAssignableActivity activity = (AbstractAssignableActivity)activ;
+                        IEnumerator<Member> team = activity.GetEnumerator();
+                        while (team.MoveNext())
+                        {
+                            if (member.EMail.Equals(team.Current.EMail))
+                            {
+                                memberActivities.Add(activ);
+                            }
+                        }
+                    }
+                    else if (activ is AdministrativeActivity)
+                    {
+                        AdministrativeActivity activity = (AdministrativeActivity)activ;
+                        foreach (Member m in (Team)( activity.Teams ))
+                        {
+                            if (m.EMail.Equals(member.EMail))
+                                memberActivities.Add(activ);
+                        }
+                    }
+                    else if (activ is ResearchProject)
+                    {
+                        ResearchProject activity = (ResearchProject)activ;
+                        foreach (Member m in activity.Team)
+                        {
+                            if (m.EMail.Equals(member.EMail))
+                                memberActivities.Add(activ);
+                        }
+                    }
+                }
+                error = null;
+                return memberActivities;
+            }
+            catch (Exception exception)
+            {
+                error = exception.Message;
+                return null;
+            }
+        }
+
+        public List<AbstractActivity> GetActivitiesByTypeAndMember(Member member, ActivityType type, out string error)
+        {
+            List<AbstractActivity> filteredActivities = new List<AbstractActivity>();
+            List<AbstractActivity> filteredActivitiesForMember = new List<AbstractActivity>();
+            try
+            {
+                switch (type)
+                {
+                    case ActivityType.Administrative:
+                        filteredActivities = GetActivitiesByType(ActivityType.Administrative, out error);
+                        foreach (AbstractActivity activity in filteredActivities)
+                        {
+                            foreach (Member m in (Team)( (AdministrativeActivity)activity ).Teams)
+                            {
+                                if (member.EMail.Equals(m.EMail))
+                                {
+                                    filteredActivitiesForMember.Add(activity);
+                                }
+                            }
+                        }
+                        break;
+                    case ActivityType.Research_Project:
+                        filteredActivities = GetActivitiesByType(ActivityType.Research_Project, out error);
+                        foreach (AbstractActivity activity in filteredActivities)
+                        {
+                            foreach (Member m in ( (ResearchProject)activity ).Team)
+                            {
+                                if (member.EMail.Equals(m.EMail))
+                                {
+                                    filteredActivitiesForMember.Add(activity);
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                error = null;
+                return filteredActivitiesForMember;
+
+            }
+            catch (Exception exception)
+            {
+                error = exception.ToString();
+                return null;
+            }
+
+        }
+
         public void aproveActivity(AbstractActivity activity, bool aproved)
         {
             allActivities.aproveActivity(activity, aproved);
@@ -105,6 +204,45 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        public List<AbstractActivity> GetActivitiesByType(ActivityType type, out string error)
+        {
+            IEnumerable<AbstractActivity> activities = TryGetAll(out error);
+            List<AbstractActivity> filteredActivities = new List<AbstractActivity>();
+
+            if (activities == null)
+                return new List<AbstractActivity>();
+            try
+            {
+                switch (type)
+                {
+                    case ActivityType.Administrative:
+                        foreach (AbstractActivity activity in activities)
+                            if (activity is AdministrativeActivity)
+                                filteredActivities.Add(activity);
+                        break;
+                    case ActivityType.Didactic:
+                        foreach (AbstractActivity activity in activities)
+                            if (activity is DidacticActivity)
+                                filteredActivities.Add(activity);
+                        break;
+                    case ActivityType.Research_Project:
+                        foreach (AbstractActivity activity in activities)
+                            if (activity is ResearchProject)
+                                filteredActivities.Add(activity);
+                        break;
+                    default:
+                        break;
+                }
+                error = null;
+                return filteredActivities;
+            }
+            catch (Exception exception)
+            {
+                error = exception.ToString();
+                return new List<AbstractActivity>();
+            }
+        }
+
         private IAllActivities allActivities;
         private AbstractActivity activity;
         public int id { get; set; }
@@ -115,4 +253,5 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public string startDate { get; set; }
         public string endDate { get; set; }
     }
+
 }

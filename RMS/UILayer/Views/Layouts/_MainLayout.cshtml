@@ -57,7 +57,7 @@
                         case ResourceManagementSystem.BusinessLogic.Entities.MemberType.Director:
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudyProgram.cshtml">Define Study Programs</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addResearchProject.cshtml">Define Research Grants</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Administrative Events</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addAdministrativeEvent.cshtml">Define Administrative Events</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudentCircle.cshtml">Define Student Circles</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Get Reports</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="~/aproveActivities.cshtml">Approve Activities</a></li>
@@ -93,7 +93,7 @@
                 </ul>
         </div>
         <div class="icon">
-            <a href="#">
+            <a href="~/viewFilteredCalendar.cshtml">
                 <img src="/img/ico-sch.png" alt="">
                 <span>Schedule (TO DO)</span>
             </a>
@@ -107,14 +107,14 @@
         </div>
     </div>
 
-    <!--
+    
     <div class="sidebar">
         <div class="header-logo">
             <img src="/img/logo.png" alt="221/1" />
         </div>
         @RenderPage("~/Views/_SideCalendar.cshtml") 
     </div>
-    -->
+    
 
     <div class="info">
         <div class="header-form">

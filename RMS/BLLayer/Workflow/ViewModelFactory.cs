@@ -107,7 +107,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             get
             {
-                return new AdministrativeEventViewModel(Repositories.AllMembers, Repositories.AllAdministrativeActivity);
+                return new AdministrativeEventViewModel(Repositories.AllMembers, Repositories.AllAdministrativeEvents);
             }
         }
 
@@ -126,7 +126,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             public static readonly IAllResearchProjects AllResearchProjects = new AllResearchProjects();
             public static readonly IAllActivities AllActivities = new AllActivities();
 
-            public static readonly IAllAdministrativeActivity AllAdministrativeActivity;
+            public static readonly IAllAdministrativeActivities AllAdministrativeEvents;
         }
     }
 }

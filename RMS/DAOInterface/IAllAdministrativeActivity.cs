@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ResourceManagementSystem.DAOInterface
 
 {
-    public interface IAllAdministrativeActivity
+    public interface IAllAdministrativeActivities
     {
         IEnumerable<AdministrativeActivity> AsEnumerable { get; }
 

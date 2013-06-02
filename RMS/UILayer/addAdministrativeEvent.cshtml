@@ -8,10 +8,12 @@
     string errorMessage = string.Empty;
     AdministrativeEventViewModel administrativeEventViewModel = Session["administrativeEventViewModel"] as AdministrativeEventViewModel ?? ViewModelFactory.AdministrativeEventViewModel;
     Session["administrativeEventViewModel"] = administrativeEventViewModel;
+    
+    TaskBreakdownActivity currentActivity = Session["currentActivity"] as TaskBreakdownActivity ?? null;
 
     bool hasError = false;
     int step = 0;
-    const int lastStep = 6;
+    const int lastStep = 9;
     string requestStep = IsPost ? Request["step"] : null;
     if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
     {
@@ -40,7 +42,7 @@
             break;
         case 6:
 
-            hasError = !administrativeEventViewModel.addTeam(Request.Form.AllKeys.AsEnumerable(), "motherfucking team");
+            hasError = !administrativeEventViewModel.addTeam(Request.Form.AllKeys.AsEnumerable(), String.Empty, out errorMessage);
             
             if (!hasError)
             {
@@ -50,6 +52,15 @@
             {
                 step = 2;
             }
+            
+            break;
+            
+        case 7:
+            hasError = !administrativeEventViewModel.addTaskBreakdownActivity(Request["title"],
+                Request["description"], Request["startDate"], Request["endDate"], 
+                out currentActivity, out errorMessage);
+
+            Session["currentActivity"] = currentActivity;
             
             break;
     }
@@ -185,291 +196,20 @@
                     <input type="submit" value="Next" />
                 </form>
                 break;
+                
+            case 7:
+                <h1>@currentActivity.Title</h1>
+                <p>
+                    <b>Start date:</b> @currentActivity.StartDate.ToString("d MMM yyyy")<br />
+                    <b>End date:</b> @currentActivity.EndDate.ToString("d MMM yyyy")
+                </p>
+                <p>
+                    @currentActivity.Description
+                </p>
+                break;
         }
     }
-
-    @if (!IsPost)
-        {
-            <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
-                <table style="width: 100%;">
-                    <tr>
-                        <th>Administrative Event Title</th>
-                        <td style="width: 100%;">
-                            <input type="text" class="administrativeEvent" name="administrativeEvent" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Start date</th>
-                        <td style="width: 100%;">
-                            <input type="text" name="startDate" class="datepicker" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>End date</th>
-                        <td style="width: 100%;">
-                            <input type="text" name="endDate" class="datepicker" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Study&nbsp;degree&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <select class="studyDegree" name="studyDegree">
-                                <option value="0">Bachelor</option>
-                                <option value="1">Master</option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Domain&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="domain" name="domain" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Year&nbsp;length&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="number" class="yearLength" name="yearLength" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Total&nbsp;Ects&nbsp;Credits&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="number" class="totalCredits" name="totalCredits" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Study&nbsp;time&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <select class="studyTime" name="studyTime">
-                                <option value="0">Full time</option>
-                                <option value="1">Distance</option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Higher&nbsp;Education&nbsp;Institution&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="higherEducationInstitution" name="higherEducationInstitution" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Faculty&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="faculty" name="faculty" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Contact&nbsp;Person&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="contactPerson" name="contactPerson" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Phone&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="phone" name="phone" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Fax&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="fax" name="fax" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Email&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="email" name="email" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Profile&nbsp;Of&nbsp;The&nbsp;Degree&nbsp;Programme&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="profileOfTheDegreeProgramme" name="profileOfTheDegreeProgramme" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>TargetGroups&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="targetGroups" name="targetGroups" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Entrance&nbsp;Conditions&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="entranceConditions" name="entranceConditions" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Further&nbsp;Education&nbsp;Possibilities&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="furtherEducationPossibilities" name="furtherEducationPossibilities" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Description&nbsp;Of&nbsp;Study&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="descriptionOfStudy" name="descriptionOfStudy" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Purposes&nbsp;Of&nbsp;The&nbsp;Programme&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="purposesOfTheProgramme" name="purposesOfTheProgramme" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Area&nbsp;Of&nbsp;Expertise&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="areaOfExpertise" name="areaOfExpertise" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Extra&nbsp;Peculiarities&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="extraPeculiarities" name="extraPeculiarities" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Practical&nbsp;Training&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="practicalTraining" name="practicalTraining" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Final&nbsp;Examinations&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="finalExaminations" name="finalExaminations" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Gained&nbsp;Abilities&nbsp;And&nbsp;Skills&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="gainedAbilitiesAndSkills" name="gainedAbilitiesAndSkills" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Potential&nbsp;Field&nbsp;Of&nbsp;Professional&nbsp;Activity&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="potentialFieldOfProfessionalActivity" name="potentialFieldOfProfessionalActivity" />
-                        </td>
-                    </tr>
-                </table>
-
-                <div class="pull-right">
-                    <input class="btn" type="submit" value="Add" />
-                </div>
-            </form>@*
-        }
-        else
-        {
-            studyProgramsViewModel.AreaOfExpertise = Request["areaOfExpertise"];
-            studyProgramsViewModel.ContactPerson = Request["contactPerson"];
-            studyProgramsViewModel.StudyDegreeSelectedIndex = Request["studyDegree"] == null ? 0 : Convert.ToInt32(Request["studyDegree"]);
-            studyProgramsViewModel.DescriptionOfStudy = Request["descriptionOfStudy"];
-            studyProgramsViewModel.Domain = Request["domain"];
-            studyProgramsViewModel.EducationalProgramme = Request["edProgramme"];
-            studyProgramsViewModel.EMail = Request["EMail"];
-            studyProgramsViewModel.EntranceConditions = Request["entranceConditions"];
-            studyProgramsViewModel.ExtraPeculiarities = Request["ExtraPeculiarities"];
-            studyProgramsViewModel.Faculty = Request["faculty"];
-            studyProgramsViewModel.Fax = Request["fax"];
-            studyProgramsViewModel.FinalExaminations = Request["finalExaminations"];
-            studyProgramsViewModel.FurtherEducationPossibilities = Request["furtherEducationPossibilities"];
-            studyProgramsViewModel.GainedAbilitiesAndSkills = Request["gainedAbilitiesAndSkills"];
-            studyProgramsViewModel.HigherEducationInstitution = Request["higherEducationInstitution"];
-            studyProgramsViewModel.Phone = Request["Phone"];
-            studyProgramsViewModel.PotentialFieldOfProfessionalActivity = Request["potentialFieldOfProfessionalActivity"];
-            studyProgramsViewModel.PracticalTraining = Request["PracticalTraining"];
-            studyProgramsViewModel.ProfileOfTheDegreeProgramme = Request["profileOfTheDegreeProgramme"];
-            studyProgramsViewModel.PurposesOfTheProgramme = Request["purposesOfTheProgramme"];
-            studyProgramsViewModel.StudyTimeSelectedIndex = Request["studyTime"] == null ? 0 : Convert.ToInt32(Request["studyTime"]);
-            studyProgramsViewModel.TargetGroups = Request["targetGroups"];
-            studyProgramsViewModel.TotalEctsCredits = Request["totalCredits"].Length > 0 ? Convert.ToInt32(Request["totalCredits"]) : 0;
-            studyProgramsViewModel.YearLength = Request["yearLength"].Length > 0 ? Convert.ToInt32(Request["yearLength"]) : 0;
-
-            if (studyProgramsViewModel.TryAddProgramme(out errorMessage))
-            {
-            <h1>Success!</h1>
-            <p>The study program has been inserted!</p>
-            }
-            else
-            {
-            <h1>Error!</h1>
-            <p>Could not add study program! @errorMessage</p>
-            }   
-            
-            *@<a class="btn pull-right" href="/addStudyProgram.cshtml">Finish</a>    
-        }
+        
         <div style="clear: both;"></div>
     </div>
 

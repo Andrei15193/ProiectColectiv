@@ -20,11 +20,11 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public IEnumerable<string> SelectedTeamEmails { get; set; }
         public AdministrativeActivity administrativeActivity { get; private set; }
 
-        private IAllAdministrativeActivity allActivities;
+        private IAllAdministrativeActivities allActivities;
         private IAllMembers allMembers;
 
 
-        public AdministrativeEventViewModel(IAllMembers allMembers, IAllAdministrativeActivity allActivities)
+        public AdministrativeEventViewModel(IAllMembers allMembers, IAllAdministrativeActivities allActivities)
         {
             this.allActivities = allActivities;
             this.allMembers = allMembers;
@@ -103,7 +103,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
-        public Team addTeam(IEnumerable<string> SelectedTeamEmails, String teamName, out string errorMessage)
+        public bool addTeam(IEnumerable<string> SelectedTeamEmails, String teamName, out string errorMessage)
         {
             NamedTeam team = null;
             try
@@ -113,19 +113,19 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                         ));
                 administrativeActivity.Teams.Add(team);
                 errorMessage = null;
-                return team;
+                return true;
             }
             catch (Exception ex)
             {
                 errorMessage = ex.Message;
-                return team;
+                return false;
             }
         }
 
-        public TaskBreakdownActivity addTaskBreakdownActivity(string title, string description, string startDate, string endDate,
-            out string errorMessage)
+        public bool addTaskBreakdownActivity(string title, string description, string startDate, string endDate,
+            out TaskBreakdownActivity taskBreakdownActivity, out string errorMessage)
         {
-            TaskBreakdownActivity taskBreakdownActivity = null;
+            taskBreakdownActivity = null;
             try
             {
                 taskBreakdownActivity = new TaskBreakdownActivity(administrativeActivity,
@@ -143,17 +143,17 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 administrativeActivity.BreakdownActvities.Add(taskBreakdownActivity);
 
                 errorMessage = null;
-                return taskBreakdownActivity;
+                return true;
             }
             catch (Exception ex)
             {
                 errorMessage = ex.Message;
-                return taskBreakdownActivity;
+                return false;
             }
         }
 
-        public ResourceManagementSystem.BusinessLogic.Entities.Task 
-            insertTaskIntoTaskBreakdownActivity(TaskBreakdownActivity taskBreakdownActivity, TaskType type, 
+        public bool 
+            insertTaskIntoTaskBreakdownActivity(TaskBreakdownActivity taskBreakdownActivity, 
             string title, string description, string startDate, string endDate, IEnumerable<Member> assignees, 
             FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost,
             out string errorMessage)
@@ -161,7 +161,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             try
             {
                 ResourceManagementSystem.BusinessLogic.Entities.Task task
-                    = new ResourceManagementSystem.BusinessLogic.Entities.Task(type, title, description,
+                    = new ResourceManagementSystem.BusinessLogic.Entities.Task(TaskType.Administrative, title, description,
                     DateTime.ParseExact(
                         startDate,
                         "dd/MM/yyyy",
@@ -173,12 +173,12 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                         CultureInfo.InvariantCulture
                     ).AddDays(1).AddMilliseconds(-1), assignees, mobilityCost, laborCost, logisticalCost);
                 errorMessage = null;
-                return task;
+                return true;
             }
             catch (Exception ex)
             {
                 errorMessage = ex.Message;
-                return null;
+                return false;
             }
         }
     }

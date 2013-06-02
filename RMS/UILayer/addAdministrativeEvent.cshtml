@@ -11,6 +11,8 @@
     
     TaskBreakdownActivity currentActivity = Session["currentActivity"] as TaskBreakdownActivity ?? null;
 
+    System.Collections.IEnumerable query1 = null;
+    
     bool hasError = false;
     int step = 0;
     const int lastStep = 9;
@@ -42,7 +44,7 @@
             break;
         case 6:
 
-            hasError = !administrativeEventViewModel.addTeam(Request.Form.AllKeys.AsEnumerable(), String.Empty, out errorMessage);
+            hasError = !administrativeEventViewModel.addTeam(Request.Form.AllKeys.AsEnumerable(), "t", out errorMessage);
             
             if (!hasError)
             {
@@ -64,6 +66,11 @@
             
             break;
         case 8:
+            query1 = administrativeEventViewModel.administrativeActivity.Teams.SelectMany(member => member);
+            break;
+        case 9:
+            //hasError = !administrativeEventViewModel.insertTaskIntoTaskBreakdownActivity(currentActivity,
+                
             break;
     }
 }
@@ -81,7 +88,7 @@
         <h1>Error!</h1>
         <p>@errorMessage</p>
         <p>We are terebly sorry for the inconvenience...</p>
-        <form action="addResearchProject.cshtml" class="form-horizontal" method="post">
+        <form action="addAdministrativeEvent.cshtml" class="form-horizontal" method="post">
             <input type="hidden" name="step" id="step" value="@step" />
             <input type="submit" value="Back" />
         </form>
@@ -222,7 +229,7 @@
                 
             case 8:
                 <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
-                    <input type="hidden" value="8" name="step" id="step" />
+                    <input type="hidden" value="9" name="step" id="step" />
                     <table style="width: 100%;">
                         <tr>
                             <th>Task Title</th>
@@ -231,7 +238,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Descritpion</th>
+                            <th>Description</th>
                             <td style="width: 100%;">
                                 <input type="text" class="description" name="description" />
                             </td>
@@ -249,7 +256,49 @@
                             </td>
                         </tr>
                     </table>
+
+                    <label for="value">Labor cost: </label>
+                    <input type="number" name="LaborCost" id="LaborCost" />
+                    <select name="LaborCostSelectedIndex" id="LaborCostSelectedIndex">
+                        @for (int i = 0; i < administrativeEventViewModel.Currency.Length; i++)
+                        {
+                            <option value="@i">@administrativeEventViewModel.Currency[i]</option>
+                        }
+                    </select>
+
+                    <label for="value">Mobility cost: </label>
+                    <input type="number" name="MobilityCost" id="MobilityCost" />
+                    <select name="MobilityCostSelectedIndex" id="MobilityCostSelectedIndex">
+                        @for (int i = 0; i < administrativeEventViewModel.Currency.Length; i++)
+                        {
+                            <option value="@i">@administrativeEventViewModel.Currency[i]</option>
+                        }
+                    </select>
+
+                    <label for="value">Logistical cost: </label>
+                    <input type="number" name="LogisticalCost" id="LogisticalCost" />
+                    <select name="LogisticalCostSelectedIndex" id="LogisticalCostSelectedIndex">
+                        @for (int i = 0; i < administrativeEventViewModel.Currency.Length; i++)
+                        {
+                            <option value="@i">@administrativeEventViewModel.Currency[i]</option>
+                        }
+                    </select>
+
+                    <h2>Asignees</h2>
+                    <ul>                        
+                        @foreach (Member member in query1)
+                        {
+                            <li>
+                                <input type="checkbox" name="@member.EMail" />
+                                @(member.ToString())
+                            </li>
+                        }
+                    </ul>
+
+                    <br />  
+
                     <input type="submit" value="Next" />
+
                 </form>
                 break;
         }

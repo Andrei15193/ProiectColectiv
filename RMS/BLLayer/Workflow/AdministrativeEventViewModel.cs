@@ -181,5 +181,15 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return false;
             }
         }
+
+        public string[] Currency
+        {
+            get
+            {
+                return currency;
+            }
+        }
+
+        private readonly string[] currency = Enum.GetNames(typeof(Currency)).Select((currency) => currency.Replace('_', ' ')).ToArray();
     }
 }

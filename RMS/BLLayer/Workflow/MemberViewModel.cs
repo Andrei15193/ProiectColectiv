@@ -15,7 +15,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public MemberViewModel(IAllMembers allMembers)
         {
             this.allMembers = allMembers;
-            member = null;
+            Member = null;
         }
 
         public void Authenticate()
@@ -38,19 +38,19 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         public void Logout()
         {
-            member = null;
+            Member = null;
         }
 
         public string Name
         {
             get
             {
-                return member == null ? string.Empty : member.Name;
+                return Member == null ? string.Empty : Member.Name;
             }
             set
             {
-                if (member != null)
-                    member.Name = value;
+                if (Member != null)
+                    Member.Name = value;
                 else
                     throw new InvalidOperationException("There is no member authenticated! Cannot set the name of a member if he's unknown!");
             }
@@ -60,8 +60,8 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             get
             {
-                if (member != null)
-                    return member.Type;
+                if (Member != null)
+                    return Member.Type;
                 else
                     throw new InvalidOperationException("There is no member authenticated! Cannot set the type of a member if he's unknown!");
             }
@@ -71,14 +71,14 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             get
             {
-                return member == null ? string.Empty : member.EMail;
+                return Member == null ? string.Empty : Member.EMail;
             }
             set
             {
-                if (member == null)
+                if (Member == null)
                     email = value;
                 else
-                    member.EMail = value;
+                    Member.EMail = value;
             }
         }
 
@@ -86,14 +86,14 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             get
             {
-                return member == null ? string.Empty : member.Password;
+                return Member == null ? string.Empty : Member.Password;
             }
             set
             {
-                if (member == null)
+                if (Member == null)
                     password = value;
                 else
-                    member.Password = value;
+                    Member.Password = value;
             }
         }
 
@@ -101,10 +101,10 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             get
             {
-                return member != null;
+                return Member != null;
             }
         }
-        //31.05.2013
+
         public IEnumerable<Member> TryGetAll(out string errorMessage)
         {
             try
@@ -119,8 +119,9 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        public Member Member { get; private set; }
+
         private IAllMembers allMembers;
-        public Member member { get; private set; }
         private string email;
         private string password;
     }

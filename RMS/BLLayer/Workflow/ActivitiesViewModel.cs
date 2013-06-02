@@ -1,4 +1,5 @@
-﻿using ResourceManagementSystem.BusinessLogic.Entities;
+﻿
+using ResourceManagementSystem.BusinessLogic.Entities;
 using ResourceManagementSystem.DAOInterface;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ResourceManagementSystem.BusinessLogic.Entities.Collections;
+using System.Globalization;
 
 namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
@@ -17,38 +19,38 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             activity = null;
         }
 
-        
-
-        public List<AbstractActivity> GetMemberActivity(Member member, out string error)
+        public IEnumerable<AbstractActivity> GetMemberActivity(Member member, out string error)
         {
             IEnumerable<AbstractActivity> activities = TryGetAll(out error);
-            List<AbstractActivity> memberActivities = null;
-            DidacticActivity didacticActivity;
-            ResearchActivity reasearchActivity;
-
-            foreach (AbstractActivity activity in activities)
+            if (activities != null)
             {
-                if (activity is DidacticActivity)
+                ICollection<AbstractActivity> memberActivities = new LinkedList<AbstractActivity>();
+                foreach (AbstractActivity activity in activities)
                 {
-                    didacticActivity = (DidacticActivity)activity;
-                    if (didacticActivity.Contains(member))
-                        memberActivities.Add(didacticActivity);
-                            
-                }
+                    if (activity is DidacticActivity)
+                    {
+                        DidacticActivity didacticActivity = (DidacticActivity)activity;
+                        if (didacticActivity.Contains(member))
+                            memberActivities.Add(didacticActivity);
 
-                if (activity is ResearchActivity)
-                {
-                    reasearchActivity = (ResearchActivity)activity;
-                    if (reasearchActivity.Contains(member))
-                        memberActivities.Add(reasearchActivity);
+                    }
+
+                    if (activity is ResearchActivity)
+                    {
+                        ResearchActivity reasearchActivity = (ResearchActivity)activity;
+                        if (reasearchActivity.Contains(member))
+                            memberActivities.Add(reasearchActivity);
+                    }
                 }
+                return memberActivities;
             }
-
-            return memberActivities;
+            else
+                return null;
         }
-        public void aproveActivity(AbstractActivity a,bool aproved)
+
+        public void aproveActivity(AbstractActivity activity, bool aproved)
         {
-            allActivities.aproveActivity(a,aproved);
+            allActivities.aproveActivity(activity, aproved);
         }
 
         public IEnumerable<AbstractActivity> TryGetAll(out string errorMessage)
@@ -60,17 +62,18 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
             catch (Exception exception)
             {
-                errorMessage = exception.ToString();
+                errorMessage = exception.Message;
                 return null;
             }
         }
+
         public IEnumerable<AbstractActivity> getAllPending(out string errorMessage)
         {
             ICollection<AbstractActivity> toRet = new HashSet<AbstractActivity>();
             try
             {
                 errorMessage = null;
-                foreach(AbstractActivity a in allActivities.AsEnumerable)
+                foreach (AbstractActivity a in allActivities.AsEnumerable)
                 {
                     if (a.State == State.Proposed)
                     {
@@ -86,79 +89,14 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
-        Member selectedMember = null;
-        ResearchProject selectedResearchProject = null;
-
         private IAllActivities allActivities;
         private AbstractActivity activity;
-        private int id { get; set; }
-        private ActivityType type { get; set; }
-        private State state { get; set; }
-        private string title { get; set; }
-        private string description { get; set; }
-        private DateTime startDate { get; set; }
-        private DateTime endDate { get; set; }
-        public int mobilityCost { get; set; }
-        public int logisticalCost { get; set; }
-        public int laborCost { get; set; }
-        public int mobilityCostSelectedIndex { get; set; }
-        public int laborCostSelectedIndex { get; set; }
-        public int logisticalCostSelectedIndex { get; set; }
-        private readonly string[] currency = Enum.GetNames(typeof(Currency)).Select((currency) => currency.Replace('_', ' ')).ToArray();
-        public bool isConfidential { get; set; }
-
-
-        public List<AbstractActivity> GetMemberResearchProjects(Member member, out string error)
-{
-List<AbstractActivity> activities = GetMemberActivity(member, out error);
-List<AbstractActivity> researchProjects = null;
-selectedMember = member;
-foreach (AbstractActivity activity in activities)
-{
-if (activity is ResearchProject)
-{
-ResearchProject researchProject = (ResearchProject)activity;
-researchProjects.Add(researchProject);
-}
-}
-return researchProjects;
-}
-
-
-public IEnumerator<ResearchPhase> GetPhasesForResearchProject(ResearchProject researchProject)
-{
-selectedResearchProject = researchProject;
-return researchProject.GetEnumerator();
-}
-
-
-public bool TryCreateActivity(ResearchPhase researchPhase, out string error)
-{
-try
-{
-ResearchActivity researchActivity = new ResearchActivity(
-researchPhase,
-title,
-description,
-startDate,
-endDate,
-selectedResearchProject.Team,
-new FinancialResource(mobilityCost, (Currency)mobilityCostSelectedIndex),
-new FinancialResource(laborCost, (Currency)laborCostSelectedIndex),
-new FinancialResource(logisticalCost, (Currency)logisticalCostSelectedIndex),
-isConfidential
-);
-researchActivity.State = State.Proposed;
-//add the activity
-error = null;
-return true;
-}
-catch (Exception exception)
-{
-error = exception.Message;
-return false;
-}
-}
-        
+        public int id { get; set; }
+        public ActivityType type { get; set; }
+        public State state { get; set; }
+        public string title { get; set; }
+        public string description { get; set; }
+        public string startDate { get; set; }
+        public string endDate { get; set; }
     }
 }

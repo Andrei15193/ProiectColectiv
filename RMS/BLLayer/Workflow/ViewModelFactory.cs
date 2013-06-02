@@ -44,13 +44,12 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return new SelectEquipmentsViewModel(Repositories.AllEquipments);
             }
         }
-        
+
         public static MemberViewModel MemberViewModel
         {
             get
             {
                 return new MemberViewModel(Repositories.AllMembers);
-
             }
         }
 
@@ -91,14 +90,13 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             {
                 return new TasksViewModel();
             }
-
         }
 
         public static ResearchProjectViewModel ResearchProjectViewModel
         {
             get
             {
-                return new ResearchProjectViewModel(Repositories.AllMembers, Repositories.AllResearchProjects);
+                return new ResearchProjectViewModel(Repositories.AllMembers, Repositories.AllResearchProjects, Repositories.AllEquipments, Repositories.AllClassRooms);
             }
         }
         public static StudentCirclesViewModel StudentCirclesViewModel

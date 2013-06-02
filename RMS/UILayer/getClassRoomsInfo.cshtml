@@ -5,7 +5,7 @@
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
     Page.Title = "Get Classrooms Info";
 
-  
+
     string errorMessage;
 
     ClassRoomViewModel classRoomViewModel = Session["classRoomViewModel"] as ClassRoomViewModel ?? ViewModelFactory.ClassRoomViewModel;
@@ -13,33 +13,38 @@
     IEnumerable<ClassRoom> classRooms = classRoomViewModel.TryGetAll(out errorMessage);
 
  
-    }
+}
 
 @section body{
     <ul class="nav nav-tabs">
-        <li class="active"><a>View classrooms</a></li>
-
+        <li class="active"><a>View All Class Rooms</a></li>
     </ul>
 
-    
-        @if (classRooms != null)
+    @if (classRooms != null)
+    {
+        if (classRooms.Count() > 0)
         {
-            
-                foreach (var classRoom in classRooms)
-                {
-                    <div class="well">
-                        <p><b>Classroom: </b> @classRoom.Name</p>    
-                        <p><b>Description: </b>@classRoom.Description</p>
-                    </div>
-                }
-           
-          
+            foreach (var classRoom in classRooms)
+            {
+        <div class="well">
+            <p><b>Classroom: </b>@classRoom.Name</p>
+            <p><b>Description: </b>@classRoom.Description</p>
+        </div>
+            }
         }
         else
         {
-            <h1>Error!</h1>
-            <p>@errorMessage</p>
-            <p>We are terebly sorry for the inconvenience...</p>
+        <div class="well">
+            <h1>No class rooms!</h1>
+            <p>This cannot be! The departement has no class rooms!</p>
+        </div>
         }
-   
+    }
+    else
+    {
+        <h1>Error!</h1>
+        <p>@errorMessage</p>
+        <p>We are terebly sorry for the inconvenience...</p>
+    }
+
 }

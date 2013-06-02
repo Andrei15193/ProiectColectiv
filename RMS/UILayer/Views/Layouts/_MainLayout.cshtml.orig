@@ -1,0 +1,276 @@
+<<<<<<< HEAD
+﻿@using ResourceManagementSystem.BusinessLogic.Workflow;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@Page.Title</title>
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/img/favico.ico" rel="shortcut icon" type="img/x-icon" />
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/bootstrap-datepicker.js"></script>
+
+    <!-- <meta name="viewport" content="width=device-width"> -->
+    @{
+        MemberViewModel memberViewModel = Session["memberViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
+        Session["memberViewModel"] = memberViewModel;
+    }
+</head>
+
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        })
+    </script>
+    <div class="menu">
+        <div class="icon selected">
+            <a href="/">
+                <img src="/img/ico-home.png" alt="">
+                <span>Home</span>
+            </a>
+        </div>
+        @if (memberViewModel.IsAuthenticated)
+        { 
+            <div class="dropdown icon">
+                <div class="cpl-dropdown" data-toggle="dropdown">
+                    <img src="/img/ico-setting.png" alt="">
+                    <span>CPanel</span>
+                </div>
+
+                <ul id="menu2" class="dropdown-menu" role="menu" aria-labelledby="drop5">
+                    @switch (memberViewModel.MemberType)
+                    {
+                        case ResourceManagementSystem.BusinessLogic.Entities.MemberType.Administrator:
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addHumanResource.cshtml">Add Human Resources</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addFinancialResource.cshtml">Add  Financial Resources</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addClassRoom.cshtml">Add ClassRoom</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addEquipment.cshtml">Add Equipment</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/importSchedule.cshtml">Import Schedule</a></li>
+                            break;
+
+                        case ResourceManagementSystem.BusinessLogic.Entities.MemberType.Director:
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudyProgram.cshtml">Define Study Programs</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addResearchProject.cshtml">Define Research Grants</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Administrative Events</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudentCircle.cshtml">Define Student Circles</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Get Reports</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/aproveActivities.cshtml">Approve Activities</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Approve Projects and Events Requests</a></li>
+                            break;
+
+                        default:
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/viewCalendar.cshtml">Get Attending Activities</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Make Projects Requests</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Make Activities Requests</a></li>
+                            break;
+                    }
+                </ul>
+            </div>
+        }
+        <div class="dropdown icon">
+                <div class="cpl-dropdown" data-toggle="dropdown">
+                    <img src="/img/ico-setting.png" alt="">
+                    <span>Logistical Resources</span>
+                </div>
+
+                <ul id="menu2" class="dropdown-menu" role="menu" aria-labelledby="drop5">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/getClassRoomsInfo.cshtml">ClassRooms</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/getEquipmentsInfo.cshtml">Equipments</a></li>
+                </ul>
+        </div>
+        <div class="icon">
+            <a href="#">
+                <img src="/img/ico-sch.png" alt="">
+                <span>Schedule</span>
+            </a>
+        </div>
+
+        <div class="icon">
+            <a href="~/getMembersInfo.cshtml">
+                <img src="/img/ico-user.png" alt="">
+                <span>Members</span>
+            </a>
+        </div>
+
+        <div class="icon">
+            <a href="~/getProjectsInfo.cshtml">
+                <img src="/img/ico-report.png" alt="">
+                <span>Projects</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="header-logo">
+            <img src="/img/logo.png" alt="221/1" />
+        </div>
+        @RenderPage("~/Views/_SideCalendar.cshtml")
+    </div>
+
+    <div class="info">
+        <div class="header-form">
+            @RenderPage("~/Views/_Authentification.cshtml")
+        </div>
+
+        <div id="myContent" class="content well">
+            @RenderSection("body", required: false)
+        </div>
+    </div>
+
+    <script>
+        var myContent = document.getElementById("myContent");
+        var headerForm = document.getElementById("header-form");
+        onresize = function () {
+            myContent.style.height = (window.innerHeight - 130) + "px";
+        }
+        onresize();
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+=======
+﻿@using ResourceManagementSystem.BusinessLogic.Workflow;
+
+@{
+    MemberViewModel memberViewModel = Session["memberViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
+    Session["memberViewModel"] = memberViewModel;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@Page.Title</title>
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/img/favico.ico" rel="shortcut icon" type="img/x-icon" />
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/bootstrap-datepicker.js"></script>
+
+    <!-- <meta name="viewport" content="width=device-width"> -->
+
+</head>
+
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        })
+    </script>
+    <div class="menu">
+        <div class="icon selected">
+            <a href="/">
+                <img src="/img/ico-home.png" alt="">
+                <span>Home</span>
+            </a>
+        </div>
+        @if (memberViewModel.IsAuthenticated)
+        { 
+            <div class="dropdown icon">
+                <div class="cpl-dropdown" data-toggle="dropdown">
+                    <img src="/img/ico-setting.png" alt="">
+                    <span>CPanel</span>
+                </div>
+
+                <ul id="menu2" class="dropdown-menu" role="menu" aria-labelledby="drop5">
+                    @switch (memberViewModel.MemberType)
+                    {
+                        case ResourceManagementSystem.BusinessLogic.Entities.MemberType.Administrator:
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addHumanResource.cshtml">Register Human Resources</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addFinancialResource.cshtml">Register  Financial Resources</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addClassRoom.cshtml">Register ClassRoom</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addEquipment.cshtml">Register Equipment</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Import Schedule (TO DO)</a></li>
+                            break;
+
+                        case ResourceManagementSystem.BusinessLogic.Entities.MemberType.Director:
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudyProgram.cshtml">Define Study Program</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addResearchProject.cshtml">Define Research Project</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Administrative Event (TO DO)</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudentCircle.cshtml">Define Student Research Group</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Get Resource Usage Report (TO DO)</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/aproveActivities.cshtml">Approve Research Activities Requests</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Approve Research Projects and<br />Administrative Events Requests (TO DO)</a></li>
+                            break;
+
+                        default:
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/viewCalendar.cshtml">View Attending Activities</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addResearchProject.cshtml">Make a Research Project Request</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addResearchActivity.cshtml">Make Research Activity Request</a></li>
+                            break;
+                    }
+                </ul>
+            </div>
+        }
+
+        <div class="icon">
+            <a href="~/getMembersInfo.cshtml">
+                <img src="/img/ico-user.png" alt="">
+                <span>Members</span>
+            </a>
+        </div>
+
+        <div class="dropdown icon">
+                <div class="cpl-dropdown" data-toggle="dropdown">
+                    <img src="/img/ico-setting.png" alt="">
+                    <span>Logistical Resources</span>
+                </div>
+
+                <ul id="menu2" class="dropdown-menu" role="menu" aria-labelledby="drop5">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/getClassRoomsInfo.cshtml">ClassRooms</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/getEquipmentsInfo.cshtml">Equipments</a></li>
+                </ul>
+        </div>
+        <div class="icon">
+            <a href="#">
+                <img src="/img/ico-sch.png" alt="">
+                <span>Schedule (TO DO)</span>
+            </a>
+        </div>
+
+        <div class="icon">
+            <a href="~/getProjectsInfo.cshtml">
+                <img src="/img/ico-report.png" alt="">
+                <span>Projects</span>
+            </a>
+        </div>
+    </div>
+
+    <!--
+    <div class="sidebar">
+        <div class="header-logo">
+            <img src="/img/logo.png" alt="221/1" />
+        </div>
+         RenderPage("~/Views/_SideCalendar.cshtml") 
+    </div>
+    -->
+
+    <div class="info">
+        <div class="header-form">
+            @RenderPage("~/Views/_Authentification.cshtml")
+        </div>
+
+        <div id="myContent" class="content well">
+            @RenderSection("body", required: false)
+        </div>
+    </div>
+
+    <script>
+        var myContent = document.getElementById("myContent");
+        var headerForm = document.getElementById("header-form");
+        onresize = function () {
+            myContent.style.height = (window.innerHeight - 130) + "px";
+        }
+        onresize();
+    </script>
+</body>
+</html>
+>>>>>>> origin/master

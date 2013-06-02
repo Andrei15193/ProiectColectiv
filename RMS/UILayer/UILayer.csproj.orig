@@ -78,6 +78,7 @@
     <Content Include="js\bootstrap.js" />
     <Content Include="js\jquery.min.js" />
     <Content Include="js\script.js" />
+    <None Include="addResearchActivity.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -102,14 +103,16 @@
     <Content Include="getClassRoomsInfo.cshtml" />
     <Content Include="getEquipmentsInfo.cshtml" />
     <Content Include="aproveActivities.cshtml" />
-<<<<<<< HEAD
     <Content Include="importSchedule.cshtml" />
     <Content Include="addStudentCircle.cshtml" />
+<<<<<<< HEAD
     <Content Include="addAdministrativeEvent.cshtml" />
     <Content Include="viewCalendar.cshtml" />
 =======
-    <Content Include="addStudentCircle.cshtml" />
->>>>>>> origin/Marius
+    <Content Include="viewCalendar.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+>>>>>>> origin/master
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

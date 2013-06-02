@@ -53,8 +53,8 @@
 
         public override string ToString()
         {
-            // E.g.: Databases (Master in Computer Science) - 2 years Full-Time
-            return string.Format("{0} ({1} in {2}) - {3} years {4}", EducationalProgramme, DegreeOfStudy, Domain, YearLength, StudyTime.ToString().Replace('_', '-'));
+            // E.g.: Databases (Master in Computer Science) - 2 years, Full-Time
+            return string.Format("{0} ({1} in {2}) - {3} years, {4}", EducationalProgramme, DegreeOfStudy, Domain, YearLength, StudyTime.ToString().Replace('_', '-'));
         }
     }
 }

@@ -7,16 +7,20 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DALayer.Database;
 
 namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
     public class ResearchProjectViewModel
     {
-        public ResearchProjectViewModel(IAllMembers allMembers, IAllResearchProjects allProjects)
+        public ResearchProjectViewModel(IAllMembers allMembers, IAllResearchProjects allResearchProjects, IAllEquipments allEquipments, IAllClassRooms allClassRooms)
         {
-            CurrentPhase = null;
+            // TODO: Complete member initialization
             this.allMembers = allMembers;
-            this.allProjects = allProjects;
+            this.allResearchProjects = allResearchProjects;
+            this.allEquipments = allEquipments;
+            this.allClassRooms = allClassRooms;
+            CurrentPhase = null;
             ResearchProject = null;
             Title = string.Empty;
             Description = string.Empty;
@@ -62,14 +66,46 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
-        public bool TrySaveResearchProject(out string errorMessage,bool aproved)
+        public bool TryGetAllEquipments(out string errorMessage, out IEnumerable<Equipment> equipments)
+        {
+            try
+            {
+                errorMessage = string.Empty;
+                equipments = localAllEquipments = allEquipments.AsEnumerable;
+                return true;
+            }
+            catch (Exception exception)
+            {
+                equipments = null;
+                errorMessage = exception.Message;
+                return false;
+            }
+        }
+
+        public bool TryGetAllClassRooms(out string errorMessage, out IEnumerable<ClassRoom> classRooms)
+        {
+            try
+            {
+                errorMessage = string.Empty;
+                classRooms = localAllClassRooms = allClassRooms.AsEnumerable;
+                return true;
+            }
+            catch (Exception exception)
+            {
+                classRooms = null;
+                errorMessage = exception.Message;
+                return false;
+            }
+        }
+
+        public bool TrySaveResearchProject(out string errorMessage, bool aproved)
         {
             try
             {
                 if (aproved == true)
                 {
                     ResearchProject.State = State.Aproved;
-                    foreach(ResearchPhase phase in ResearchProject.AsEnumerable())
+                    foreach (ResearchPhase phase in ResearchProject.AsEnumerable())
                     {
                         phase.State = State.Aproved;
                         foreach (ResearchActivity activ in phase.AsEnumerable())
@@ -194,6 +230,71 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        public List<ResearchProject> GetMemberResearchProjects(Member member, out string error)
+        {
+            List<ResearchProject> memberResearchProjects = new List<ResearchProject>();
+            selectedMember = member;
+
+            foreach (ResearchProject rp in TryGetAll(out error))
+            {
+                IEnumerable<Member> members = rp.Team;
+                foreach (Member m in members)
+                {
+                    if (m.EMail.Equals(selectedMember.EMail))
+                    {
+                        memberResearchProjects.Add(rp);
+                    }
+                }
+            }
+            return memberResearchProjects;
+        }
+
+
+        public IEnumerator<ResearchPhase> GetPhasesForResearchProject(ResearchProject researchProject)
+        {
+            ResearchProject = researchProject;
+            return researchProject.GetEnumerator();
+        }
+
+        public bool TryCreateActivity(ResearchPhase researchPhase, out string error)
+        {
+            try
+            {
+                ResearchActivity researchActivity = new ResearchActivity(
+                    researchPhase,
+                    Title,
+                    Description,
+                    DateTime.ParseExact(
+                            StartDate,
+                            "dd/MM/yyyy",
+                            CultureInfo.InvariantCulture
+                        ).AddMilliseconds(ResearchProject.Count + researchPhase.Count),
+                        DateTime.ParseExact(
+                            EndDate,
+                            "dd/MM/yyyy",
+                            CultureInfo.InvariantCulture
+                        ).AddMilliseconds(ResearchProject.Count + researchPhase.Count + 1),
+                    ResearchProject.Team.Where((teamMember) => SelectedTeamEmails.Contains(teamMember.EMail)),
+                    new FinancialResource(MobilityCost, (Currency)MobilityCostSelectedIndex),
+                    new FinancialResource(LaborCost, (Currency)LaborCostSelectedIndex),
+                    new FinancialResource(LogisticalCost, (Currency)LogisticalCostSelectedIndex),
+                    IsConfidential
+                    );
+                researchActivity.State = State.Proposed;
+                //add the activity
+
+                error = null;
+                new AllResearchActivity().Add(ResearchProject.Id, researchPhase.Id, researchActivity);
+
+                return true;
+            }
+            catch (Exception exception)
+            {
+                error = exception.Message;
+                return false;
+            }
+        }
+
         public ResearchProject ResearchProject { get; private set; }
 
         public ResearchPhase CurrentPhase { get; private set; }
@@ -207,6 +308,10 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public string EndDate { get; set; }
 
         public IEnumerable<string> SelectedTeamEmails { get; set; }
+
+        public IEnumerable<string> SelectedClassRooms { get; set; }
+
+        public IEnumerable<string> SelectedEquipments { get; set; }
 
         public string[] Currency
         {
@@ -246,11 +351,16 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        private Member selectedMember;
         private IEnumerable<ResearchProject> localAllResearchProjects;
         private IAllMembers allMembers;
         private IEnumerable<Member> localAllMembers;
-
+        private IEnumerable<Equipment> localAllEquipments;
+        private IEnumerable<ClassRoom> localAllClassRooms;
+        private IAllEquipments allEquipments;
+        private IAllClassRooms allClassRooms;
         private IAllResearchProjects allProjects;
         private readonly string[] currency = Enum.GetNames(typeof(Currency)).Select((currency) => currency.Replace('_', ' ')).ToArray();
+        private IAllResearchProjects allResearchProjects;
     }
 }

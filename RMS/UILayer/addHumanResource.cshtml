@@ -3,7 +3,7 @@
 
 @{   
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
-    Page.Title = "Add Human Resource";
+    Page.Title = "Register Human Resource";
 
     int step = 0;
     const int lastStep = 2;
@@ -15,7 +15,6 @@
     }
     HumanResourcesViewModel humanResourcesViewModel = Session["humanResourceViewModel"] as HumanResourcesViewModel ?? ViewModelFactory.HumanResourcesViewModel;
     Session["humanResourceViewModel"] = humanResourcesViewModel;
-    IEnumerable<Member> members = humanResourcesViewModel.TryGetAll(out errorMessage);
 
     switch (step)
     {
@@ -50,139 +49,124 @@
 
 @section body{
     <ul class="nav nav-tabs">
-        <li class="active"><a>Add Human Resource</a></li>
+        <li class="active"><a>Register Human Resource</a></li>
     </ul>
-    
+
     <div class="well">
-        @if (members != null)
-        {
-            <ul>
-                @foreach (var member in members)
-                {
-                    <li>@member.ToString()</li>
-                }
-            </ul>
-            <form action="addHumanResource.cshtml" class="form-horizontal" method="post">
-                @switch (step)
-                {
-                    case 0:
-                    <input type="hidden" value="@(step + 1)" name="step" id="step" />
-                    <label for="name">Name:</label>
-                    <input type="text" name="name" id="name" />
+        <form action="addHumanResource.cshtml" class="form-horizontal" method="post">
+            @switch (step)
+            {
+                case 0:
+                <input type="hidden" value="@(step + 1)" name="step" id="step" />
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" />
                 
-                    <label for="email">Email:</label>
-                    <input type="email" name="email" id="email" />
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" />
                 
-                    <label for="password">Password:</label>
-                    <input type="password" name="password" id="password" />
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" />
                         
-                    <label for="memberType">Member type:</label>
-                    <select name="memberType" id="memberType">
-                        @for (int i = 0; i < humanResourcesViewModel.MemberTypes.Length; i++)
-                        {
-                            <option value="@i">@humanResourcesViewModel.MemberTypes[i]</option>
-                        }
-                    </select>
-                    <input type="submit" value="Next" />
-                        break;
+                <label for="memberType">Member type:</label>
+                <select name="memberType" id="memberType">
+                    @for (int i = 0; i < humanResourcesViewModel.MemberTypes.Length; i++)
+                    {
+                        <option value="@i">@humanResourcesViewModel.MemberTypes[i]</option>
+                    }
+                </select>
+                <input type="submit" value="Next" />
+                    break;
 
-                    case 1:
-                        switch (((MemberType)Convert.ToInt32(Request["memberType"])))
-                        {
-                            case MemberType.Administrator:
-                                if (humanResourcesViewModel.TryAddMember(out errorMessage))
-                                {
-                    <h1>Success!</h1>
-                    <p>The administrator @humanResourcesViewModel.Name has been added to human resources!</p>
-                                }
-                                else
-                                {
-                    <h1>Error!</h1>
-                    <p>Could not add administrator @humanResourcesViewModel.Name! @errorMessage</p>
-                                }
-                    <input type="submit" value="Finish" />
-                                break;
+                case 1:
+                    switch (((MemberType)Convert.ToInt32(Request["memberType"])))
+                    {
+                        case MemberType.Administrator:
+                            if (humanResourcesViewModel.TryAddMember(out errorMessage))
+                            {
+                <h1>Success!</h1>
+                <p>The administrator @humanResourcesViewModel.Name has been added to human resources!</p>
+                            }
+                            else
+                            {
+                <h1>Error!</h1>
+                <p>Could not add administrator @humanResourcesViewModel.Name! @errorMessage</p>
+                            }
+                <input type="submit" value="Finish" />
+                            break;
 
-                            case MemberType.Director:
-                                if (humanResourcesViewModel.TryAddMember(out errorMessage))
-                                {
-                    <h1>Success!</h1>
-                    <p>The director @humanResourcesViewModel.Name has been added to human resources!</p>
-                                }
-                                else
-                                {
-                    <h1>Error!</h1>
-                    <p>Could not add director @humanResourcesViewModel.Name! @errorMessage</p>
-                                }
-                    <input type="submit" value="Finish" />
-                                break;
+                        case MemberType.Director:
+                            if (humanResourcesViewModel.TryAddMember(out errorMessage))
+                            {
+                <h1>Success!</h1>
+                <p>The director @humanResourcesViewModel.Name has been added to human resources!</p>
+                            }
+                            else
+                            {
+                <h1>Error!</h1>
+                <p>Could not add director @humanResourcesViewModel.Name! @errorMessage</p>
+                            }
+                <input type="submit" value="Finish" />
+                            break;
 
-                            case MemberType.PhD_Student:
-                    <input type="hidden" value="@(step + 1)" name="step" id="step" />
-                    <label for="address">Address:</label>
-                    <input type="text" name="address" id="address" />
+                        case MemberType.PhD_Student:
+                <input type="hidden" value="@(step + 1)" name="step" id="step" />
+                <label for="address">Address:</label>
+                <input type="text" name="address" id="address" />
                 
-                    <label for="telephone">Telephone:</label>
-                    <input type="text" name="telephone" id="telephone" />
+                <label for="telephone">Telephone:</label>
+                <input type="text" name="telephone" id="telephone" />
                 
-                    <label for="website">Website:</label>
-                    <input type="text" name="website" id="website" />
+                <label for="website">Website:</label>
+                <input type="text" name="website" id="website" />
                 
-                    <label for="domainsOfInterest">Domains of interest:</label>
-                    <textarea name="domainsOfInterest" id="domainsOfInterest"></textarea>
-                    <input type="submit" value="Next" />
-                                break;
+                <label for="domainsOfInterest">Domains of interest:</label>
+                <textarea name="domainsOfInterest" id="domainsOfInterest"></textarea>
+                <input type="submit" value="Next" />
+                            break;
 
-                            case MemberType.Teacher:
-                    <input type="hidden" value="@lastStep" name="step" id="step" />
-                    <label for="address">Address:</label>
-                    <input type="text" name="address" id="address" />
+                        case MemberType.Teacher:
+                <input type="hidden" value="@lastStep" name="step" id="step" />
+                <label for="address">Address:</label>
+                <input type="text" name="address" id="address" />
                 
-                    <label for="telephone">Telephone:</label>
-                    <input type="text" name="telephone" id="telephone" />
+                <label for="telephone">Telephone:</label>
+                <input type="text" name="telephone" id="telephone" />
                 
-                    <label for="website">Website:</label>
-                    <input type="text" name="website" id="website" />
+                <label for="website">Website:</label>
+                <input type="text" name="website" id="website" />
                 
-                    <label for="domainsOfInterest">Domains of interest:</label>
-                    <textarea name="domainsOfInterest" id="domainsOfInterest"></textarea>
+                <label for="domainsOfInterest">Domains of interest:</label>
+                <textarea name="domainsOfInterest" id="domainsOfInterest"></textarea>
                         
-                    <label for="teachingPosition">Teaching position:</label>
-                    <select name="teachingPosition" id="teachingPosition">
-                        @for (int i = 0; i < humanResourcesViewModel.TeachingPositions.Length; i++)
-                        {
-                            <option value="@i">@humanResourcesViewModel.TeachingPositions[i]</option>
-                        }
-                    </select>
+                <label for="teachingPosition">Teaching position:</label>
+                <select name="teachingPosition" id="teachingPosition">
+                    @for (int i = 0; i < humanResourcesViewModel.TeachingPositions.Length; i++)
+                    {
+                        <option value="@i">@humanResourcesViewModel.TeachingPositions[i]</option>
+                    }
+                </select>
                 
-                    <label for="hasPhD">Has PhD:</label>
-                    <input type="checkbox" checked="checked" name="hasPhD" id="hasPhD" />
-                    <input type="submit" value="Next" />
-                        break;
-                        }
-                        break;
+                <label for="hasPhD">Has PhD:</label>
+                <input type="checkbox" checked="checked" name="hasPhD" id="hasPhD" />
+                <input type="submit" value="Next" />
+                    break;
+                    }
+                    break;
 
-                    case 2:
-                        if (humanResourcesViewModel.TryAddMember(out errorMessage))
-                        {
-                    <h1>Success!</h1>
-                    <p>The member @humanResourcesViewModel.Name has been successfully added!</p>
-                        }
-                        else
-                        {
-                    <h1>Error!</h1>
-                    <p>The member @humanResourcesViewModel.Name could not be added! @errorMessage</p>
-                        }
-                    <input type="submit" value="Finish" />
-                        break;
-                }
-            </form>
-        }
-        else
-        {
-            <h1>Error!</h1>
-            <p>@errorMessage</p>
-            <p>We are terebly sorry for the inconvenience...</p>
-        }
+                case 2:
+                    if (humanResourcesViewModel.TryAddMember(out errorMessage))
+                    {
+                <h1>Success!</h1>
+                <p>The member @humanResourcesViewModel.Name has been successfully added!</p>
+                    }
+                    else
+                    {
+                <h1>Error!</h1>
+                <p>The member @humanResourcesViewModel.Name could not be added! @errorMessage</p>
+                    }
+                <input type="submit" value="Finish" />
+                    break;
+            }
+        </form>
     </div>
 }

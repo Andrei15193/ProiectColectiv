@@ -1,0 +1,180 @@
+﻿@using ResourceManagementSystem.BusinessLogic.Entities;
+@using ResourceManagementSystem.BusinessLogic.Workflow;
+
+@{   
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "Add Student Circles";
+
+    int step = 0;
+    const int lastStep = 2;
+    bool studyAddedSuccessfully=false;
+    string errorMessage = string.Empty;
+    string requestStep = IsPost ? Request["step"] : null;
+    if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
+    {
+        step = 0;
+    }
+    StudentCirclesViewModel studentCirclesViewModel = Session["studentCirclesViewModel"] as StudentCirclesViewModel ?? ViewModelFactory.StudentCirclesViewModel;
+    Session["studentCirclesViewModel"] = studentCirclesViewModel;
+    
+    StudyProgramsViewModel studyProgramsViewModel = Session["studyProgramsViewModel"] as StudyProgramsViewModel ?? ViewModelFactory.StudyProgramsViewModel;
+    Session["studyProgramsViewModel"] = studyProgramsViewModel;
+    IEnumerable<StudyProgram> programs = studyProgramsViewModel.TryGetAll(out errorMessage);
+
+    switch (step)
+    {
+
+        case 0:
+            studentCirclesViewModel.Title = Request["title"];
+            studentCirclesViewModel.Description = Request["description"];
+            studentCirclesViewModel.StartDate = Request["startDate"];
+            studentCirclesViewModel.EndDate = Request["endDate"];
+            programs = studyProgramsViewModel.TryGetAll(out errorMessage);
+            break;
+
+        case 1:
+           
+            
+            studentCirclesViewModel.Title = Request["title"];
+            studentCirclesViewModel.Description = Request["description"];
+            studentCirclesViewModel.StartDate = Request["startDate"];
+            studentCirclesViewModel.EndDate = Request["endDate"];
+            if (string.IsNullOrEmpty(studentCirclesViewModel.Title))
+            {
+                ModelState.AddError("title", "Please type a title");
+                step = 0;
+            }
+            if (string.IsNullOrEmpty(studentCirclesViewModel.Description))
+            {
+                ModelState.AddError("description", "Please type a description");
+                step = 0;
+            }
+            if (string.IsNullOrEmpty(studentCirclesViewModel.StartDate))
+            {
+                ModelState.AddError("startDate", "Please type a start date");
+                step = 0;
+            }
+            if (string.IsNullOrEmpty(studentCirclesViewModel.EndDate))
+            {
+                ModelState.AddError("endDate", "Please type an end date");
+                step = 0;
+            }
+            
+            break;
+       
+    }
+    
+    
+    if(IsPost && step==2){
+        if(Request["StudyPrograme"]!=null){
+            int val;
+            if(int.TryParse(Request["StudyPrograme"], out val)){
+                
+                 foreach (var program in programs)
+                        {
+                    if(program.Id==val)
+                    {
+                           studentCirclesViewModel.StudyProgram = program;
+                    }          
+                 }
+                 studyAddedSuccessfully = studentCirclesViewModel.TryAddStudentCircles(out errorMessage);
+                
+            }
+        }
+    }
+}
+
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a>Add Student Circles</a></li>
+    </ul>
+
+    @switch (step)
+    {
+        case 0:
+            // RP form
+        <div class="well">
+            <form action="addStudentCircle.cshtml" class="form-horizontal" method="post">
+                <input type="hidden" value="1" name="step" id="step" />
+                <label for="title">Title: </label>
+                <input type="text" name="title" id="title" value="@studentCirclesViewModel.Title" />
+                @Html.ValidationMessage("title")
+                <label for="description">Description: </label>
+                <textarea name="description" id="description">@studentCirclesViewModel.Description</textarea>
+                @Html.ValidationMessage("description")
+                <label for="startDate">Start date: </label>
+                <input name="startDate" id="startDate" type="text" value="@studentCirclesViewModel.StartDate" data-date-format="dd-mm-yyyy" class="datepicker" />
+                @Html.ValidationMessage("startDate")
+                <label for="endDate">End date: </label>
+                <input name="endDate" id="endDate" type="text" value="@studentCirclesViewModel.EndDate" data-date-format="dd-mm-yyyy" class="datepicker" />
+                @Html.ValidationMessage("endDate")
+                <p></p>
+                <p><input type="submit" value="Next" /></p>
+            </form>
+        </div>
+            break;
+
+        case 1:        
+        <div class="well">
+            @if (programs != null)
+            {
+                <h1>Select the study program:</h1>
+                <form action="addStudentCircle.cshtml" class="form-horizontal" method="post">
+                    <input type="hidden" value="2" name="step" id="step" />
+                    <ul>
+                        @foreach (var program in programs)
+                        {
+                            <li>
+                                <input type="radio" name="StudyPrograme" value="@program.Id" />
+                                @(program.ToString())
+                            </li>
+                        }
+                    </ul>
+                    <input type="submit" value="Finish"  />
+                </form>
+            }
+            else
+            {
+                <h1>Error!</h1>
+                <p>@errorMessage</p>
+                <p>We are terebly sorry for the inconvenience...</p>
+            }
+        </div>
+            
+            break;
+
+        case 2:
+            // create research project
+            if (studyAddedSuccessfully)
+            {
+        <div class="well">
+            <h1>@studentCirclesViewModel.Title</h1>
+            <p>
+                
+                <b>Description:</b> @studentCirclesViewModel.Description<br />
+                <b>Start date:</b> @studentCirclesViewModel.StartDate<br />
+                <b>End date:</b> @studentCirclesViewModel.EndDate
+            </p>
+            
+            
+            <p>Study Program :@studentCirclesViewModel.StudyProgram.ToString()</p>
+            
+        </div>
+            }
+            else
+            {
+        <div class="well">
+            <h1>Error!</h1>
+            <p>@errorMessage</p>
+            <p>We are terebly sorry for the inconvenience...</p>
+            <form class="form-horizontal" action="/addStudentCircle.cshtml" method="post">
+                <input type="hidden" name="step" id="step" value="0" />
+                <input type="submit" value="Go back" />
+            </form>
+        </div>
+            }
+            break;
+
+    }
+}
+

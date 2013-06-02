@@ -93,11 +93,7 @@
     <Content Include="Views\_SideCalendar.cshtml" />
     <Content Include="addResearchProject.cshtml" />
     <Content Include="addEquipment.cshtml" />
-    <Content Include="addTeam.cshtml" />
     <Content Include="addClassRoom.cshtml" />
-    <Content Include="addTask.cshtml" />
-    <Content Include="selectClassRooms.cshtml" />
-    <Content Include="selectEquipments.cshtml" />
     <Content Include="addFinancialResource.cshtml" />
     <Content Include="addHumanResource.cshtml" />
     <Content Include="addStudyProgram.cshtml" />
@@ -106,8 +102,7 @@
     <Content Include="getClassRoomsInfo.cshtml" />
     <Content Include="getEquipmentsInfo.cshtml" />
     <Content Include="aproveActivities.cshtml" />
-    <Content Include="addAdministrativeEvent.cshtml" />
-    <Content Include="viewCalendar.cshtml" />
+    <Content Include="addStudentCircle.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

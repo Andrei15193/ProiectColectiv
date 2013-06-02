@@ -1,26 +1,23 @@
-﻿using ResourceManagementSystem.BusinessLogic.Entities;
-using ResourceManagementSystem.DAOInterface;
-using ResourceManagementSystem.DataAccess;
+﻿using ResourceManagementSystem.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BLEntities = ResourceManagementSystem.BusinessLogic.Entities;
 
 namespace DALayer.Database
 {
-    public class AllClassRooms : IAllClassRooms
+    class AllActivityEvents
     {
         private SqlCommand command;
 
-        public AllClassRooms()
+        public AllActivityEvents()
         {
             command = new SqlCommand() { Connection = DatabaseConstants.SqlConnection };
         }
 
-        public void Add(ClassRoom classRoom)
+        public void Add()
         {
 
             command.CommandText = @"insert into ClassRooms (name, description) VALUES (@name, @classRoomDescription)";
@@ -61,7 +58,7 @@ namespace DALayer.Database
             try
             {
                 command.Connection.Open();
-                reader = command.ExecuteReader();
+                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
                 classrooms = ReadClassRooms(reader);
             }
             finally
@@ -85,48 +82,6 @@ namespace DALayer.Database
                     classrooms.AddLast(new ClassRoom(reader["name"].ToString(), reader["description"].ToString()));
                 }
             }
-            return classrooms;
-        }
-
-        internal ICollection<ClassRoom> getByActivity(int activity)
-        {
-            LinkedList<ClassRoom> classrooms = new LinkedList<ClassRoom>();
-            SqlCommand cmd = new SqlCommand("select classRoom from activityclassrooms where activity = @activity", DatabaseConstants.SqlConnection);
-            cmd.Parameters.Add(new SqlParameter()
-            {
-                Value = activity,
-                ParameterName = "@activity"
-            });
-            cmd.Connection.Open();
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {
-                command.CommandType = System.Data.CommandType.Text;
-                command.CommandText = @"select name, description from classrooms where name = @name";
-                command.Parameters.Clear();
-                command.Parameters.Add(new SqlParameter()
-                {
-                    Value = dr["classRoom"],
-                    ParameterName = "@name"
-                });
-                SqlDataReader reader = null;
-                try
-                {
-                    command.Connection.Open();
-                    reader = command.ExecuteReader();
-                    classrooms.AddLast(ReadClassRooms(reader).First);
-                }
-                finally
-                {
-                    if (reader != null)
-                    {
-                        reader.Close();
-                    }
-                    command.Connection.Close();
-                }
-            }
-            dr.Close();
-            cmd.Connection.Close();
             return classrooms;
         }
     }

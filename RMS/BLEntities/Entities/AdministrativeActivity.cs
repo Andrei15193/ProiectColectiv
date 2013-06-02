@@ -12,8 +12,6 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             Teams = new SortedSet<Collections.NamedTeam>(new Collections.Comparer<Collections.NamedTeam>((x, y) => x.Name.CompareTo(y.Name)));
         }
 
-        
-
-        public ICollection<Collections.NamedTeam> Teams { get; set; }
+        public ICollection<Collections.NamedTeam> Teams { get; private set; }
     }
 }

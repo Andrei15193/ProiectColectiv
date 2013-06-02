@@ -9,7 +9,7 @@ namespace ResourceManagementSystem.DataAccess
         {
             get
             {
-                if (sqlConnection == null)
+                
                     sqlConnection = new SqlConnection(connectionString);
                 return sqlConnection;
             }

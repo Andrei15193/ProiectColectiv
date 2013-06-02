@@ -1,5 +1,7 @@
-﻿@using ResourceManagementSystem.BusinessLogic.Entities;
+﻿@using ResourceManagementSystem.BusinessLogic;
+@using ResourceManagementSystem.BusinessLogic.Entities;
 @using ResourceManagementSystem.BusinessLogic.Workflow;
+@using System.Text.RegularExpressions;
 
 @{   
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
@@ -21,7 +23,6 @@
     switch (step)
     {
         case 1:
-            //humanResourcesViewModel.MemberTypeSelectedIndex = Request["memberType"] == null ? 0 : Convert.ToInt32(Request["memberType"]);
             researchProjectsViewModel.Title = Request["title"];
             researchProjectsViewModel.Description = Request["description"];
             researchProjectsViewModel.StartDate = Request["startDate"];
@@ -41,14 +42,12 @@
             }
             else
             {
+                researchProjectsViewModel.Title = string.Empty;
+                researchProjectsViewModel.Description = string.Empty;
+                researchProjectsViewModel.StartDate = DateTime.Now.ToString("dd/MM/yyyy");
+                researchProjectsViewModel.EndDate = DateTime.Now.AddDays(10).ToString("dd/MM/yyyy");
                 step = 3;
             }
-            break;
-        case 4:
-            researchProjectsViewModel.Title = string.Empty;
-            researchProjectsViewModel.Description = string.Empty;
-            researchProjectsViewModel.StartDate = DateTime.Now.ToString("dd/MM/yyyy");
-            researchProjectsViewModel.EndDate = DateTime.Now.AddDays(10).ToString("dd/MM/yyyy");
             break;
         case 5:
             researchProjectsViewModel.Title = Request["title"];
@@ -58,14 +57,18 @@
             hasError = !researchProjectsViewModel.TryCreatePhase(out errorMessage);
             if (hasError)
             {
-                step = 3;
+                step = 4;
             }
             else
             {
+                researchProjectsViewModel.Title = string.Empty;
+                researchProjectsViewModel.Description = string.Empty;
+                researchProjectsViewModel.StartDate = DateTime.Now.ToString("dd/MM/yyyy");
+                researchProjectsViewModel.EndDate = DateTime.Now.AddDays(10).ToString("dd/MM/yyyy");
                 step = 6;
             }
             break;
-        case 7:
+        case 6:
             researchProjectsViewModel.Title = string.Empty;
             researchProjectsViewModel.Description = string.Empty;
             researchProjectsViewModel.StartDate = DateTime.Now.ToString("dd/MM/yyyy");
@@ -89,12 +92,31 @@
             researchProjectsViewModel.MobilityCostSelectedIndex = int.Parse(Request["mobilityCostSelectedIndex"]);
             researchProjectsViewModel.LogisticalCost = (Request["logisticalCost"] == string.Empty ? 0 : int.Parse(Request["logisticalCost"]));
             researchProjectsViewModel.LogisticalCostSelectedIndex = int.Parse(Request["logisticalCostSelectedIndex"]);
-            researchProjectsViewModel.IsConfidential = Request["isConfidential"] == null;
+            researchProjectsViewModel.IsConfidential = Request["isConfidential"] != null;
+            researchProjectsViewModel.SelectedTeamEmails = Request.Form.AllKeys.Where((key) => Regex.IsMatch(key, Constants.EmailCheckRegex));
             hasError = !researchProjectsViewModel.TryCreateActivity(out errorMessage);
-            step = 6;
+            if (hasError)
+            {
+                step = 7;
+            }
+            else
+            {
+                step = 6;
+                researchProjectsViewModel.Title = string.Empty;
+                researchProjectsViewModel.Description = string.Empty;
+                researchProjectsViewModel.StartDate = DateTime.Now.ToString("dd/MM/yyyy");
+                researchProjectsViewModel.EndDate = DateTime.Now.AddDays(10).ToString("dd/MM/yyyy");
+                researchProjectsViewModel.LaborCost = 0;
+                researchProjectsViewModel.LaborCostSelectedIndex = 0;
+                researchProjectsViewModel.MobilityCost = 0;
+                researchProjectsViewModel.MobilityCostSelectedIndex = 0;
+                researchProjectsViewModel.LogisticalCost = 0;
+                researchProjectsViewModel.LogisticalCostSelectedIndex = 0;
+                researchProjectsViewModel.IsConfidential = false;
+            }
             break;
         case 9:
-            hasError = !researchProjectsViewModel.TrySaveResearchProject(out errorMessage);
+            hasError = !researchProjectsViewModel.TrySaveResearchProject(out errorMessage,true);
             if (!hasError)
             {
                 Session.Remove("title");
@@ -113,15 +135,20 @@
                 researchProjectsViewModel.Description = string.Empty;
                 researchProjectsViewModel.StartDate = DateTime.Now.ToString("dd/MM/yyyy");
                 researchProjectsViewModel.EndDate = DateTime.Now.AddDays(10).ToString("dd/MM/yyyy");
+                step = 0;
             }
-            step = 0;
+            else
+            {
+                // TO DO: phase edit/remove activity: edit/remove before research project submit
+                step = 0;
+            }
             break;
     }
 }
 
 @section body{
     <ul class="nav nav-tabs">
-        @if (step <= 2)
+        @if (step <= 3)
         {
             <li class="active"><a>Add Research Project</a></li>
         }
@@ -134,7 +161,6 @@
             <li class="active"><a>Add Research Project :: Add Research Phase :: Add Research Activity</a></li>
         }
     </ul>
-    <p>Step: @step</p>
     @if (hasError)
     {
         <h1>Error!</h1>
@@ -217,7 +243,7 @@
                 </form>
                 <form action="addResearchProject.cshtml" style="display: inline;" method="post">
                     <input type="hidden" value="@lastStep" name="step" id="step" />
-                    <input type="submit" value="Finish" />
+                    <input type="submit" value="Submit Research Project" />
                 </form>
             </div>
         </div>
@@ -231,12 +257,12 @@
                 <div class="activityContainment">
                     <h2>@phase.Title</h2>
                     <p>
+                        @phase.Description
+                    </p>
+                    <p>
                         <b>Start date: </b>@phase.StartDate.ToString("d MMM yyyy")
                         <br />
                         <b>End date: </b>@phase.EndDate.ToString("d MMM yyyy")
-                    </p>
-                    <p>
-                        @phase.Description
                     </p>
                     @if (phase.HasActivities)
                     {
@@ -256,7 +282,8 @@
                                 <b>Labor cost: </b>@researchActivity.LaborCost.Value @researchActivity.LaborCost.Currency.ToString()<br />
                                 <b>Logistical cost: </b>@researchActivity.LogisticalCost.Value @researchActivity.LogisticalCost.Currency.ToString()<br />
                                 <b>Mobility cost: </b>@researchActivity.MobilityCost.Value @researchActivity.MobilityCost.Currency.ToString()<br />
-                                <b>Is confidential: </b>@(researchActivity.IsConfidential ? "Yes" : "No")
+                                <b>Is confidential: </b>@(researchActivity.IsConfidential ? "Yes" : "No")<br />
+                                <b>Assignee@(researchActivity.AssigneeCount > 1 ? "s" : ""):</b> @string.Join(", ", researchActivity.Select((assignee) => assignee.Name))
                             </p>
                             @if (researchActivity.ClassRooms.Count > 0)
                             {
@@ -334,15 +361,16 @@
                 <div class="activityContainment">
                     <h3>@researchActivity.Title</h3>
                     <p>
+                        @researchActivity.Description
+                    </p>
+                    <p>
                         <b>Start date: </b>@researchActivity.StartDate.ToString("d MMM yyyy")<br />
                         <b>End date: </b>@researchActivity.EndDate.ToString("d MMM yyyy")<br />
                         <b>Labor cost: </b>@researchActivity.LaborCost.Value @researchActivity.LaborCost.Currency.ToString()<br />
                         <b>Logistical cost: </b>@researchActivity.LogisticalCost.Value @researchActivity.LogisticalCost.Currency.ToString()<br />
                         <b>Mobility cost: </b>@researchActivity.MobilityCost.Value @researchActivity.MobilityCost.Currency.ToString()<br />
-                        <b>Is confidential: </b>@(researchActivity.IsConfidential ? "Yes" : "No")
-                    </p>
-                    <p>
-                        @researchActivity.Description
+                        <b>Is confidential: </b>@(researchActivity.IsConfidential ? "Yes" : "No")<br />
+                        <b>Assignee@(researchActivity.AssigneeCount > 1 ? "s" : ""):</b> @string.Join(", ", researchActivity.Select((assignee) => assignee.Name))
                     </p>
                     @if (researchActivity.ClassRooms.Count > 0)
                     {
@@ -380,7 +408,7 @@
                 <label for="endDate">End date: </label>
                 <input name="endDate" id="endDate" type="text" value="@researchProjectsViewModel.EndDate" data-date-format="dd/mm/yyyy" class="datepicker" />
 
-                <label for="value">Labor cost: </label>
+                <label for="laborCost">Labor cost: </label>
                 <input type="number" value="@researchProjectsViewModel.LaborCost" name="LaborCost" id="LaborCost" />
                 <select name="LaborCostSelectedIndex" id="LaborCostSelectedIndex">
                     @for (int i = 0; i < researchProjectsViewModel.Currency.Length; i++)
@@ -389,7 +417,7 @@
                     }
                 </select>
 
-                <label for="value">Mobility cost: </label>
+                <label for="mobilityCost">Mobility cost: </label>
                 <input type="number" value="@researchProjectsViewModel.MobilityCost" name="MobilityCost" id="MobilityCost" />
                 <select name="MobilityCostSelectedIndex" id="MobilityCostSelectedIndex">
                     @for (int i = 0; i < researchProjectsViewModel.Currency.Length; i++)
@@ -398,7 +426,7 @@
                     }
                 </select>
 
-                <label for="value">Mobility cost: </label>
+                <label for="logisticalCost">Mobility cost: </label>
                 <input type="number" value="@researchProjectsViewModel.LogisticalCost" name="LogisticalCost" id="LogisticalCost" />
                 <select name="LogisticalCostSelectedIndex" id="LogisticalCostSelectedIndex">
                     @for (int i = 0; i < researchProjectsViewModel.Currency.Length; i++)
@@ -406,12 +434,25 @@
                         <option value="@i">@researchProjectsViewModel.Currency[i]</option>
                     }
                 </select>
+
+                <p style="margin: 10px 0 0;">
+                    Is confidential:
+                <input type="checkbox" @(researchProjectsViewModel.IsConfidential ? "checked=\"checked\"" : "") name="isConfidential" id="isConfidential" />
+                </p>
+
+                <h5>Team members participating to this activity: </h5>
+                @foreach (Member teamMember in researchProjectsViewModel.ResearchProject.Team)
+                {
+                    <p>
+                        <input type="checkbox" name="@teamMember.EMail" />@teamMember.ToString()
+                    </p>
+                }
             </div>
-            <div style="margin:10px 0 0;">
+            <div style="margin: 10px 0 0;">
                 <input type="submit" value="Submit activity" />
             </div>
         </form>
-                    break;
+                break;
         }
     }
 }

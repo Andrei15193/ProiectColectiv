@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAOInterface\IActivities.cs" />
+    <Compile Include="IAllAdministrativeActivity.cs" />
+    <Compile Include="IAllStudentCircles.cs" />
     <Compile Include="DAOInterface\IClassRoom.cs" />
     <Compile Include="DAOInterface\ICourses.cs" />
     <Compile Include="DAOInterface\IEquipment.cs" />
@@ -48,7 +50,7 @@
     <Compile Include="DAOInterface\IHumanResources.cs" />
     <Compile Include="DAOInterface\ISpecializations.cs" />
     <Compile Include="IAllActivities.cs" />
-    <Compile Include="IAllAdministrativeActivity.cs" />
+    <Compile Include="IAllDidacticActivity.cs" />
     <Compile Include="IAllEquipments.cs" />
     <Compile Include="IAllClassRoom.cs" />
     <Compile Include="IAllFinancialResources.cs" />

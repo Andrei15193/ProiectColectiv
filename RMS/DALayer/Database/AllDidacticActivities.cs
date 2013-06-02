@@ -132,7 +132,7 @@ namespace DALayer.Database
         {
             LinkedList<DidacticActivity> didacticActivities = new LinkedList<DidacticActivity>();
             command.CommandType = System.Data.CommandType.Text;
-            command.CommandText = @"select activity, team from didacticactivities";
+            command.CommandText = @"select activity from didacticactivities";
             command.Parameters.Clear();
             SqlDataReader reader = null;
             try

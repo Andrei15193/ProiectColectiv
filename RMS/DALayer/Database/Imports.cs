@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using DAOInterface;
 using HtmlAgilityPack;
 using ResourceManagementSystem.BusinessLogic.Entities;
+using ResourceManagementSystem.DataAccess.Database;
 
 namespace DALayer.Database
 {
@@ -20,6 +21,8 @@ namespace DALayer.Database
         public int EndHour { get; set; }
         public int Frequency { get; set; }
         public string ClassRoomName { get; set; }
+        public MemberType MemberType { get; set; }
+        public TeachingPosition TeachingPosition { get; set; }
         /// <summary>
         /// Gets or sets the year.
         /// This is currently not used
@@ -43,7 +46,7 @@ namespace DALayer.Database
             foreach (byte[] file in files)
             {
                 try
-                {                    
+                {
                     HtmlDocument document = new HtmlDocument();
                     document.Load(new MemoryStream(file));
 
@@ -60,12 +63,14 @@ namespace DALayer.Database
                             ScheduleDetails schedule = new ScheduleDetails();
                             schedule.ProfessorName = extractProfessorName(professorNode.InnerText);
 
+                            extractType(professorNode.InnerText, schedule);
+
                             IEnumerable<HtmlNode> tableCells = tableRows.ElementAt(i).ChildNodes.Where(n => n.Name == "td");
 
                             schedule.Day = WebUtility.HtmlDecode(tableCells.ElementAt(0).InnerText).Trim();
                             string hours = WebUtility.HtmlDecode(tableCells.ElementAt(1).InnerText).Trim();
 
-                            if(hours.Split('-').Length != 2)
+                            if (hours.Split('-').Length != 2)
                                 continue;
                             int hour;
                             if (!int.TryParse(hours.Split('-')[0].Trim(), out hour))
@@ -85,11 +90,11 @@ namespace DALayer.Database
                             int freq;
                             if (!int.TryParse(frequency, out freq))
                             {
-                                continue;
+                                freq = 0;
                             }
 
                             schedule.Frequency = freq;
-                            
+
                             string room = WebUtility.HtmlDecode(tableCells.ElementAt(3).InnerText).Trim();
                             schedule.ClassRoomName = room;
 
@@ -130,15 +135,206 @@ namespace DALayer.Database
                     Debug.WriteLine(e.Message);
                 }
             }
-
-            AddDidacticActivities(schedules, semesterStart, semesterEnd, vacations);
+            try
+            {
+                AddDidacticActivities(schedules, semesterStart, semesterEnd, vacations);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
 
             return true;
         }
 
+        private void extractType(string p, ScheduleDetails schedule)
+        {
+            List<string> wordsToEliminate = new List<string>()
+            {
+                "Drd.",//doct
+                "Prof.",//teacher
+                "Lect.",//teacher
+                "Conf.",//teacher
+                "Asist."//teacher
+            };
+
+            if (p.Contains(wordsToEliminate[0]))
+            {
+                schedule.MemberType = MemberType.PhD_Student;
+            }
+            else
+            {
+                schedule.MemberType = MemberType.Teacher;
+                if (p.Contains(wordsToEliminate[1]))
+                {
+                    schedule.TeachingPosition = TeachingPosition.Professor;
+                }
+                if (p.Contains(wordsToEliminate[2]))
+                {
+                    schedule.TeachingPosition = TeachingPosition.Lecturer;
+                }
+                if (p.Contains(wordsToEliminate[3]))
+                {
+                    schedule.TeachingPosition = TeachingPosition.Conferentiar;
+                }
+                if (p.Contains(wordsToEliminate[4]))
+                {
+                    schedule.TeachingPosition = TeachingPosition.Assistant;
+                }
+            }
+        }
+
         private void AddDidacticActivities(List<ScheduleDetails> schedules, DateTime semesterStart, DateTime semesterEnd, IEnumerable<KeyValuePair<DateTime, DateTime>> vacations)
         {
-            
+            AllDidacticActivities allDidacticActivities = new AllDidacticActivities();
+
+            List<DidacticActivity> didacticActivitiesToAdd = new List<DidacticActivity>();
+
+            string errorMessage = string.Empty;
+
+            foreach (ScheduleDetails schedule in schedules)
+            {
+                int week = 1;
+                for (DateTime date = semesterStart; date < semesterEnd; date = NextWeek(date), week++)
+                {
+                    if (schedule.Frequency != 0 && ( week % 2 ) != schedule.Frequency)
+                    {
+                        continue;
+                    }
+
+                    DateTime? activityDate = date;
+                    activityDate = GetCorrectDate(date, schedule.Day);
+
+                    if (activityDate == null)
+                    {
+                        continue;
+                    }
+
+                    DateTime startDate = new DateTime(activityDate.Value.Year, activityDate.Value.Month, activityDate.Value.Day,
+                                                      schedule.StartHour, 0, 0);
+
+                    DateTime endDate = new DateTime(activityDate.Value.Year, activityDate.Value.Month, activityDate.Value.Day,
+                                                    schedule.EndHour, 0, 0);
+
+                    Member member = null;
+
+                    if (schedule.MemberType == MemberType.PhD_Student)
+                    {
+                        member = new PhDStudent(schedule.ProfessorName, string.Format("{0}@cs.ubbcluj.ro", schedule.ProfessorName.Replace(" ", "")), "123456");
+                    }
+                    else
+                    {
+                        member = new Teacher(schedule.TeachingPosition, schedule.ProfessorName, string.Format("{0}@cs.ubbcluj.ro", schedule.ProfessorName.Replace(" ", "")), "123456", "Mate-Info");
+                    }
+
+                    DidacticActivity didacticActivity = new DidacticActivity(schedule.CourseType, schedule.Lecture, string.Empty, schedule.Formation, startDate, endDate, member);
+                    didacticActivity.ClassRooms = new List<ClassRoom>()
+                    {
+                        new ClassRoom(schedule.ClassRoomName)
+                    };
+
+                    didacticActivitiesToAdd.Add(didacticActivity);
+                }
+            }
+
+            try
+            {
+                AllDidacticActivities didacticActivitiesDB = new AllDidacticActivities();
+                AllMembers allMembers = new AllMembers();
+                List<Member> members = allMembers.AsEnumerable.ToList();
+
+                foreach (DidacticActivity didacticActivity in didacticActivitiesToAdd)
+                {
+                    try
+                    {
+                        if (members.Count(m => m.EMail == didacticActivity.ToList()[0].EMail) == 0)
+                        {
+                            if (didacticActivity.ToList()[0].Type == MemberType.Teacher)
+                            {
+                                allMembers.Add(didacticActivity.ToList()[0] as Teacher);
+                            }
+                            else
+                            {
+                                allMembers.Add(didacticActivity.ToList()[0] as PhDStudent);
+                            }
+                        }
+
+                        didacticActivitiesDB.Add(didacticActivity);
+                    }
+                    catch (Exception ex)
+                    {
+                        errorMessage = ex.Message;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                errorMessage = e.Message;
+            }
+
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                throw new Exception(errorMessage);
+            }
+        }
+
+        private DateTime NextWeek(DateTime date)
+        {
+            date = date.AddDays(1);
+            while (DayOfWeek[date.DayOfWeek.ToString().ToLower()] != 0)
+            {
+                date = date.AddDays(1);
+            }
+
+            return date;
+        }
+
+        private Dictionary<string, int> dayOfWeek = null;
+
+        private Dictionary<string, int> DayOfWeek
+        {
+            get
+            {
+                if (dayOfWeek == null)
+                {
+                    dayOfWeek = new Dictionary<string, int>()
+                    {
+                        { "luni", 0 },
+                        { "marti", 1 },
+                        { "miercuri", 2},
+                        { "joi", 3 },
+                        { "vineri", 4 },
+                        { "sambata", 5 },
+                        { "duminica", 6 },
+                        { "monday", 0 },
+                        { "tuesday", 1 },
+                        { "wednesday", 2 },
+                        {  "thursday", 3 },
+                        { "friday", 4 },
+                        { "saturday", 5 },
+                        { "sunday", 6 }
+                    };
+                }
+                return dayOfWeek;
+            }
+        }
+
+        private DateTime? GetCorrectDate(DateTime date, string day)
+        {
+            string weekDay = day.ToLower().Trim();
+
+            if (DayOfWeek[date.DayOfWeek.ToString().ToLower()] > DayOfWeek[weekDay])
+            {
+                return null;
+            }
+            else
+            {
+                int difference = DayOfWeek[weekDay] - DayOfWeek[date.DayOfWeek.ToString().ToLower()];
+                DateTime correct = new DateTime(date.Year, date.Month, date.Day);
+                correct.AddDays(difference);
+
+                return correct;
+            }
         }
 
         private CourseType GetCourseType(string type)
@@ -173,18 +369,5 @@ namespace DALayer.Database
 
             return newP;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

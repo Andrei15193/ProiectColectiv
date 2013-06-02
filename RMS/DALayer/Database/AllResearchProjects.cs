@@ -116,6 +116,8 @@ namespace DALayer.Database
                     });
                     command.ExecuteNonQuery();
                 }
+
+                
                 command.CommandText = @"insert into researchProjects (activity, team) values (@activity, @team)";
                 command.Parameters.Clear();
                 command.Parameters.Add(new SqlParameter()
@@ -129,6 +131,10 @@ namespace DALayer.Database
                     Value = teamid
                 });
                 command.ExecuteNonQuery();
+                foreach (ResearchPhase rp in researchProject)
+                {
+                    new AllResearchPhases().Add(activityid, rp);
+                }
             }
             finally
             {

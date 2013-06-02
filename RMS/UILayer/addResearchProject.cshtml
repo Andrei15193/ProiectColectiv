@@ -116,7 +116,7 @@
             }
             break;
         case 9:
-            hasError = !researchProjectsViewModel.TrySaveResearchProject(out errorMessage);
+            hasError = !researchProjectsViewModel.TrySaveResearchProject(out errorMessage,true);
             if (!hasError)
             {
                 Session.Remove("title");

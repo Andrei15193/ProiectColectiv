@@ -6,6 +6,7 @@
     Page.Title = "Get Projects Info";
     string errorMessage;
 
+    
     ResearchProjectViewModel researchProjectViewModel = Session["researchProjectViewModel"] as ResearchProjectViewModel ?? ViewModelFactory.ResearchProjectViewModel;
     Session["researchProjectViewModel"] = researchProjectViewModel;
     IEnumerable<ResearchProject> researchProjects = researchProjectViewModel.TryGetAll(out errorMessage);

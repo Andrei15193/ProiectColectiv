@@ -243,5 +243,13 @@ namespace DALayer.Database
             else
                 return null;
         }
+
+
+        
+
+        public void aproveActivity(AbstractActivity activity,bool aproved)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

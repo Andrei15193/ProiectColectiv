@@ -40,7 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAOInterface\IActivities.cs" />
-    <Compile Include="IAllAdministrativeActivity.cs" />
     <Compile Include="IAllStudentCircles.cs" />
     <Compile Include="DAOInterface\IClassRoom.cs" />
     <Compile Include="DAOInterface\ICourses.cs" />

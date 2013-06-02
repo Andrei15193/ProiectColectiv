@@ -124,10 +124,10 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
-        public TaskBreakdownActivity addTaskBreakdownActivity(string title, string description, string startDate, string endDate,
-            out string errorMessage)
+        public bool addTaskBreakdownActivity(string title, string description, string startDate, string endDate,
+            out TaskBreakdownActivity taskBreakdownActivity, out string errorMessage)
         {
-            TaskBreakdownActivity taskBreakdownActivity = null;
+            taskBreakdownActivity = null;
             try
             {
                 taskBreakdownActivity = new TaskBreakdownActivity(administrativeActivity,
@@ -145,16 +145,16 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 administrativeActivity.BreakdownActvities.Add(taskBreakdownActivity);
 
                 errorMessage = null;
-                return taskBreakdownActivity;
+                return true;
             }
             catch (Exception ex)
             {
                 errorMessage = ex.Message;
-                return taskBreakdownActivity;
+                return false;
             }
         }
 
-        public ResourceManagementSystem.BusinessLogic.Entities.Task 
+        public bool 
             insertTaskIntoTaskBreakdownActivity(TaskBreakdownActivity taskBreakdownActivity, TaskType type, 
             string title, string description, string startDate, string endDate, IEnumerable<Member> assignees, 
             FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost,
@@ -175,12 +175,12 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                         CultureInfo.InvariantCulture
                     ).AddDays(1).AddMilliseconds(-1), assignees, mobilityCost, laborCost, logisticalCost);
                 errorMessage = null;
-                return task;
+                return true;
             }
             catch (Exception ex)
             {
                 errorMessage = ex.Message;
-                return null;
+                return false;
             }
         }
     }

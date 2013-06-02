@@ -57,7 +57,8 @@
             
         case 7:
             hasError = !administrativeEventViewModel.addTaskBreakdownActivity(Request["title"],
-                Request["description"], Request["startDate"], Request["endDate"], out currentActivity);
+                Request["description"], Request["startDate"], Request["endDate"], 
+                out currentActivity, out errorMessage);
 
             Session["currentActivity"] = currentActivity;
             

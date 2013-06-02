@@ -238,6 +238,26 @@
 
                         </ul>
                 }
+                if (administrativeEventViewModel.administrativeActivity.BreakdownActvities.Count > 0)
+                {
+                    <h2>Activities</h2>
+                        <ul>
+                            @foreach (ResourceManagementSystem.BusinessLogic.Entities.TaskBreakdownActivity act in administrativeEventViewModel.administrativeActivity.BreakdownActvities)
+	                        {
+                                <li>
+		                            <h3>@act.Title</h3>
+                                    <ul>
+                                        @foreach (Task t in act.tasks)
+                                        {
+                                            <li>@t.Title</li>
+                                        }
+
+                                    </ul>
+                                </li>
+	                        }
+
+                        </ul>
+                }
                 break;  
                 
             case 2:

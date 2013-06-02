@@ -63,6 +63,7 @@ namespace DALayer.Database
                             {
                                 activities.AddLast(new AdministrativeActivity(reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(5), reader.GetDateTime(6))
                                 {
+                                    BreakdownActvities = new AllTaskBreakDownActivities().GetbyAdministrativeActivity(Convert.ToInt32(reader["id"])),
                                     Id = Convert.ToInt32(reader["id"].ToString()),
                                     State = (State) Convert.ToInt32(reader["state"].ToString())
                                 });
@@ -115,7 +116,12 @@ namespace DALayer.Database
                         #region 2
                         case ActivityType.General_Activity:
                             {
-                                //
+                                activities.AddLast(new TaskBreakdownActivity(null, reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5))
+                                {
+                                    tasks = new AllTasks().getByBreakdownActivity(reader["id"]),
+                                    Id = Convert.ToInt32(reader["id"].ToString()),
+                                    State = (State)Convert.ToInt32(reader["state"].ToString())
+                                });
                                 break;
                             }
                         #endregion
@@ -211,6 +217,7 @@ namespace DALayer.Database
                                 }
                                 activities.AddLast(new ResearchProject(reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5), new AllMembers().getTeam(teamid))
                                 {
+                                    phases = new AllResearchPhases().getByResearchProject(Convert.ToInt32(reader["id"].ToString())),
                                     Id = Convert.ToInt32(reader["id"].ToString()),
                                     State = (State)Convert.ToInt32(reader["state"].ToString())
                                 });

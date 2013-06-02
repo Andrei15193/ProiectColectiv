@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DALayer.Database
 {
-    class AllResearchActivity
+    public class AllResearchActivity
     {
         private SqlCommand command;
 

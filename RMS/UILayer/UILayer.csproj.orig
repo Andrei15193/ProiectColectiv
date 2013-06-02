@@ -106,13 +106,14 @@
     <Content Include="importSchedule.cshtml" />
     <Content Include="addStudentCircle.cshtml" />
 <<<<<<< HEAD
-    <Content Include="addAdministrativeEvent.cshtml" />
-    <Content Include="viewCalendar.cshtml" />
-=======
+    <Content Include="addAdministrativeEvent.cshtml" />    
     <Content Include="viewCalendar.cshtml">
+=======
+    <Content Include="viewCalendar.cshtml"/>
+    <Content Include="addAdministrativeEvent.cshtml">
+>>>>>>> origin/master
       <SubType>Code</SubType>
     </Content>
->>>>>>> origin/master
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,4 +1,7 @@
-﻿using ResourceManagementSystem.DataAccess;
+﻿using ResourceManagementSystem.BusinessLogic.Entities;
+using ResourceManagementSystem.BusinessLogic.Entities.Collections;
+using ResourceManagementSystem.DAOInterface;
+using ResourceManagementSystem.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -9,34 +12,101 @@ using ResourceManagementSystem.BusinessLogic.Entities;
 
 namespace DALayer.Database
 {
-    class AllActivityEvents
+    class AllAdministrativeActivity : IAllAdministrativeActivities
     {
         private SqlCommand command;
 
-        public AllActivityEvents()
+        public AllAdministrativeActivity()
         {
             command = new SqlCommand() { Connection = DatabaseConstants.SqlConnection };
         }
 
-        public void Add()
+        public void Add(ResourceManagementSystem.BusinessLogic.Entities.AdministrativeActivity administrativeActivity)
         {
-
-            command.CommandText = @"insert into ClassRooms (name, description) VALUES (@name, @classRoomDescription)";
+            int activityid = -1;
+            int teamid = -1;
+            command.CommandText = @"insert into activities (type, title, description, state, startDate, endDate) values (@type, @title, @description, @state, @startdate, @enddate); select scope_identity()";
             command.Parameters.Clear();
             command.Parameters.Add(new SqlParameter()
             {
-                ParameterName = "@classRoomDescription",
-                Value = classRoom.Description
+                ParameterName = "@type",
+                Value = administrativeActivity.Type
             });
             command.Parameters.Add(new SqlParameter()
             {
-                ParameterName = "@name",
-                Value = classRoom.Name
+                ParameterName = "@title",
+                Value = administrativeActivity.Title
+            });
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@description",
+                Value = administrativeActivity.Description
+            });
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@state",
+                Value = administrativeActivity.State
+            });
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@startdate",
+                Value = administrativeActivity.StartDate
+            });
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@enddate",
+                Value = administrativeActivity.EndDate
             });
             try
             {
                 command.Connection.Open();
-                command.ExecuteNonQuery();
+                activityid = Convert.ToInt32(command.ExecuteScalar());
+                foreach (Team t in administrativeActivity.Teams)
+                {
+                    command.CommandText = @"insert into teams(name) values (@name); select scope_identity()";
+                    command.Parameters.Clear();
+                    command.Parameters.Add(new SqlParameter()
+                    {
+                        ParameterName = "@name",
+                        Value = t.GetType() == typeof(NamedTeam) ? ((NamedTeam)t).Name : ""
+                    });
+                    teamid = Convert.ToInt32(command.ExecuteScalar());
+                    foreach (Member m in t)
+                    {
+                        command.CommandText = @"insert into teammembers values (@teamId, @email)";
+                        command.Parameters.Clear();
+                        command.Parameters.Add(new SqlParameter()
+                        {
+                            ParameterName = "@teamId",
+                            Value = teamid
+                        });
+                        command.Parameters.Add(new SqlParameter()
+                        {
+                            ParameterName = "@email",
+                            Value = m.EMail
+                        });
+                        command.ExecuteNonQuery();
+                    }
+
+
+                    command.CommandText = @"insert into administrativeActivities (activity, team) values (@activity, @team)";
+                    command.Parameters.Clear();
+                    command.Parameters.Add(new SqlParameter()
+                    {
+                        ParameterName = "@activity",
+                        Value = activityid
+                    });
+                    command.Parameters.Add(new SqlParameter()
+                    {
+                        ParameterName = "@team",
+                        Value = teamid
+                    });
+                    command.ExecuteNonQuery();
+                }
+                foreach (TaskBreakdownActivity tb in administrativeActivity.BreakdownActvities)
+                {
+                    new AllTaskBreakDownActivities().Add(activityid, tb);
+                }
             }
             finally
             {
@@ -44,23 +114,23 @@ namespace DALayer.Database
             }
         }
 
-        public IEnumerable<ClassRoom> AsEnumerable
+        IEnumerable<AdministrativeActivity> IAllAdministrativeActivities.AsEnumerable
         {
             get { return getAll(); }
         }
 
-        private LinkedList<ClassRoom> getAll()
+        private LinkedList<AdministrativeActivity> getAll()
         {
-            LinkedList<ClassRoom> classrooms = new LinkedList<ClassRoom>();
+            LinkedList<AdministrativeActivity> researchProjects = new LinkedList<AdministrativeActivity>();
             command.CommandType = System.Data.CommandType.Text;
-            command.CommandText = @"select name, description from classrooms";
+            command.CommandText = @"select activity, team from administrativeActivities";
             command.Parameters.Clear();
             SqlDataReader reader = null;
             try
             {
                 command.Connection.Open();
-                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
-                classrooms = ReadClassRooms(reader);
+                reader = command.ExecuteReader();
+                researchProjects = ReadAdministrativeActivitys(reader);
             }
             finally
             {
@@ -70,20 +140,20 @@ namespace DALayer.Database
                 }
                 command.Connection.Close();
             }
-            return classrooms;
+            return researchProjects;
         }
 
-        private LinkedList<ClassRoom> ReadClassRooms(SqlDataReader reader)
+        private LinkedList<AdministrativeActivity> ReadAdministrativeActivitys(SqlDataReader reader)
         {
-            LinkedList<ClassRoom> classrooms = new LinkedList<ClassRoom>();
+            LinkedList<AdministrativeActivity> researchProjects = new LinkedList<AdministrativeActivity>();
             if (reader != null)
             {
                 while (reader.Read())
                 {
-                    classrooms.AddLast(new ClassRoom(reader["name"].ToString(), reader["description"].ToString()));
+                    researchProjects.AddLast((AdministrativeActivity)new AllActivities().getbyPK(reader.GetInt32(0)));
                 }
             }
-            return classrooms;
+            return researchProjects;
         }
     }
 }

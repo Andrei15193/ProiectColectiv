@@ -141,9 +141,9 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
             public static readonly IAllActivities AllActivities = new DALayer.Database.AllActivities();
 
-            public static readonly IAllAdministrativeActivities AllAdministrativeActivity = null;
+            public static readonly IAllAdministrativeActivities AllAdministrativeActivity;
 
-            public static readonly IImports ImportsDB = new DALayer.Database.Imports();
-        }
+	    public static readonly IImports ImportsDB = new DALayer.Database.Imports();        
+       }
     }
 }

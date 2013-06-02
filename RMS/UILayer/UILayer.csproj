@@ -105,8 +105,8 @@
     <Content Include="aproveActivities.cshtml" />
     <Content Include="importSchedule.cshtml" />
     <Content Include="addStudentCircle.cshtml" />
-    <Content Include="addAdministrativeEvent.cshtml" />    
-    <Content Include="viewCalendar.cshtml">
+    <Content Include="viewCalendar.cshtml"/>
+    <Content Include="addAdministrativeEvent.cshtml">
       <SubType>Code</SubType>
     </Content>
     <None Include="Web.Debug.config">

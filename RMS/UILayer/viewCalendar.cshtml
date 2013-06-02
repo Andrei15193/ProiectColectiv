@@ -55,52 +55,17 @@
         
         else if(activities != null && activities.Count() == 0)
         {
-            <h2>You have no activities!</h2>
-    @if (activities != null)
-    {
-        if (activities.Count() > 0)
-        {
-            foreach (var activity in activities)
-            {
-        <div class="well">
-            @if (activity is DidacticActivity)
-            {
-                DidacticActivity didacticActivity = (DidacticActivity)activity;
-                <p><b>Course type: </b>@didacticActivity.CourseType</p>
-                <p><b>Course name: </b>@didacticActivity.CourseName</p>
-                <p><b>Description: </b>@didacticActivity.Description</p>
-                <p><b>Formation: </b>@didacticActivity.Formation</p>
-                <p><b>Start date: </b>@didacticActivity.StartDate.ToShortDateString()</p>
-                <p><b>End date: </b>@didacticActivity.EndDate.ToShortDateString()</p>
-            }
-
-            @if (activity is ResearchActivity)
-            {
-                ResearchActivity researchActivity = (ResearchActivity)activity;
-                <p><b>Title: </b>@researchActivity.Title</p>
-                <p><b>Description: </b>@researchActivity.Description</p>
-                <p><b>Start date: </b>@researchActivity.StartDate.ToShortDateString()</p>
-                <p><b>End date: </b>@researchActivity.EndDate.ToShortDateString()</p>
-                <p><b>Mobility cost: </b>@researchActivity.MobilityCost.Value @researchActivity.MobilityCost.Currency</p>
-                <p><b>Labor cost: </b>@researchActivity.LaborCost.Value @researchActivity.LaborCost.Currency</p>
-                <p><b>Logistical cost: </b>@researchActivity.LogisticalCost.Value @researchActivity.LogisticalCost.Currency</p>
-            }
-        </div>
-            }
-        }
-        
-        else
-        {
+       
         <div class="well">
             <h1>So much time!</h1>
             <p>You do not have any activities in the comming days...</p>
         </div>
         }
-    }
-    else
-    {
-        <h1>Error!</h1>
-        <p>@errorMessage</p>
-        <p>We are terebly sorry for the inconvenience...</p>
-    }
+    
+        else
+        {
+            <h1>Error!</h1>
+            <p>@errorMessage</p>
+            <p>We are terebly sorry for the inconvenience...</p>
+        }
 }

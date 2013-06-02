@@ -1,4 +1,5 @@
-﻿using ResourceManagementSystem.BusinessLogic.Workflow;
+﻿using DAOInterface;
+using ResourceManagementSystem.BusinessLogic.Workflow;
 using ResourceManagementSystem.DAOInterface;
 using ResourceManagementSystem.DataAccess.Database;
 using ResourceManagementSystem.DataAccess.Mocks;
@@ -43,13 +44,12 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return new SelectEquipmentsViewModel(Repositories.AllEquipments);
             }
         }
-        
+
         public static MemberViewModel MemberViewModel
         {
             get
             {
                 return new MemberViewModel(Repositories.AllMembers);
-
             }
         }
 
@@ -90,14 +90,13 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             {
                 return new TasksViewModel();
             }
-
         }
 
         public static ResearchProjectViewModel ResearchProjectViewModel
         {
             get
             {
-                return new ResearchProjectViewModel(Repositories.AllMembers, Repositories.AllResearchProjects);
+                return new ResearchProjectViewModel(Repositories.AllMembers, Repositories.AllResearchProjects, Repositories.AllEquipments, Repositories.AllClassRooms);
             }
         }
         public static StudentCirclesViewModel StudentCirclesViewModel
@@ -112,7 +111,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             get
             {
-                return new ImportScheduleViewModel();
+                return new ImportScheduleViewModel(Repositories.ImportsDB);
             }
         }
 
@@ -120,7 +119,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             get
             {
-                return new AdministrativeEventViewModel(Repositories.AllMembers, Repositories.AllAdministrativeEvents);
+                return new AdministrativeEventViewModel(Repositories.AllMembers, Repositories.AllAdministrativeActivity);
             }
         }
 
@@ -141,12 +140,14 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             public static readonly IAllResearchProjects AllResearchProjects = new DALayer.Database.AllResearchProjects();
 
             public static readonly IAllActivities AllActivities = new DALayer.Database.AllActivities();
-<<<<<<< HEAD
-            public static readonly IAllAdministrativeActivities AllAdministrativeEvents;
-=======
 
-            public static readonly IAllAdministrativeActivity AllAdministrativeActivity = null;
->>>>>>> origin/Marius
+<<<<<<< HEAD
+            public static readonly IAllAdministrativeActivities AllAdministrativeActivity = null;
+
+            public static readonly IImports ImportsDB = new DALayer.Database.Imports();
+=======
+            public static readonly IAllAdministrativeActivities AllAdministrativeActivity;
+>>>>>>> origin/master
         }
     }
 }

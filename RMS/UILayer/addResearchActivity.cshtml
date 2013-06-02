@@ -8,7 +8,7 @@
     Page.Title = "Register Research Activity";
 
     bool hasError = false;
-    int step = 0, i;
+    int step = 0, i = 0, nrPhases = 0;
     const int lastStep = 2;
     string errorMessage = string.Empty;
     string requestStep = IsPost ? Request["step"] : null;
@@ -25,10 +25,11 @@
     
     List<ResearchProject> projects = researchProjectViewModel.GetMemberResearchProjects(membersViewModel.Member, out errorMessage);
     IEnumerator<ResearchPhase> phases = null;
+    ResearchPhase phase = null;
     
     switch(step)
     {
-        case 0:
+        case 1:
             if (Request["ResearchProject"] != null)
             {
                 int val;
@@ -39,18 +40,24 @@
             }
             break;
             
-        case 1:
+        case 2:
             if (Request["ResearchPhase"] != null)
             {
                 int val;
                 if (int.TryParse(Request["ResearchPhase"], out val))
                 {
-                    
+                    phases.Reset();
+                    while(nrPhases > 0)
+                    {
+                        phases.MoveNext();
+                        nrPhases--;
+                    }
+                    phase = phases.Current;
                 }
             }
             break;
         
-        case 2:
+        case 3:
             researchProjectViewModel.Title = Request["title"];
             researchProjectViewModel.Description = Request["description"];
             researchProjectViewModel.StartDate = Request["startDate"];
@@ -63,7 +70,8 @@
             researchProjectViewModel.LogisticalCostSelectedIndex = int.Parse(Request["logisticalCostSelectedIndex"]);
             researchProjectViewModel.IsConfidential = Request["isConfidential"] != null;
             researchProjectViewModel.SelectedTeamEmails = Request.Form.AllKeys.Where((key) => Regex.IsMatch(key, Constants.EmailCheckRegex));
-            
+
+            researchProjectViewModel.TryCreateActivity(phase, out errorMessage);
             break;
     }
 }
@@ -111,7 +119,7 @@
 
             case 1:
                 // Select Research Phase
-            i = 0;
+            nrPhases = 0;
              <div class="well">
                 <h2>Select the project phase:</h2>
                 <form action="addResearchActivity.cshtml" class="form-horizontal" method="post">
@@ -123,7 +131,7 @@
                                 <input type="radio" name="ResearchPhase" value="@i"/>
                                 @(phases.Current.Title)
                             </li>
-                            i++;
+                            nrPhases++;
                         }
                     </ul>
                     <input type="submit" value="Next" />
@@ -135,7 +143,7 @@
                 //Add Research Activity
                 <form class="form-horizontal" action="/addResearchActivity.cshtml" method="post">
             <div>
-                <input type="hidden" name="step" id="Hidden3" value="8" />
+                <input type="hidden" name="step" id="Hidden3" value="3" />
 
                 <label for="title">Title: </label>
                 <input type="text" name="title" id="title" value="@researchProjectViewModel.Title" />

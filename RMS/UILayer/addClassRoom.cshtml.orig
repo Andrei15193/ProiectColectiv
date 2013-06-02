@@ -58,11 +58,17 @@
                     <input type="text" name="name" id="name" />
                 
                     <label for="description">Description:</label>
+<<<<<<< HEAD
+                    <input type="text" name="description" id="description" />
+                    <p></p>
+                   <p> <input type="submit" value="Next" /></p>
+=======
                     <textarea name="description" id="description"></textarea>
                     <br />
                     <div class="row">
                         <input class="btn pull-right" type="submit" value="Next" />
                     </div>
+>>>>>>> origin/Edy
                         break;
 
                     case 1:

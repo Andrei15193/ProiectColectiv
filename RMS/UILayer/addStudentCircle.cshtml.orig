@@ -109,16 +109,22 @@
                 <label for="endDate">End date: </label>
                 <input name="endDate" id="endDate" type="text" value="@studentCirclesViewModel.EndDate" data-date-format="dd-mm-yyyy" class="datepicker" />
                 @Html.ValidationMessage("endDate")
+<<<<<<< HEAD
+                <p></p>
+                <p>
+                    <input type="submit" value="Next" /></p>
+=======
                 <div class="row">
                     <input class="btn pull-right" type="submit" value="Next" />
                 </div>
+>>>>>>> origin/Edy
             </form>
         </div>
             break;
 
         case 1:        
         <div class="well">
-            @if (programs != null)
+            @if (programs.Count()>0)
             {
                 <h3 class="page-header">Select the study program:</h3>
                 <form action="addStudentCircle.cshtml" class="form-horizontal" method="post">
@@ -132,9 +138,13 @@
                             </li>
                         }
                     </ul>
+<<<<<<< HEAD
+                    <input type="submit" value="Finish" />
+=======
                     <div class="row">
                         <input class="pull-right btn" type="submit" value="Finish"  />
                     </div>
+>>>>>>> origin/Edy
                 </form>
             }
             else
@@ -152,6 +162,18 @@
             if (studyAddedSuccessfully)
             {
         <div class="well">
+<<<<<<< HEAD
+            <h1>@studentCirclesViewModel.Title</h1>
+            <p>
+
+                <b>Description:</b> @studentCirclesViewModel.Description<br />
+                <b>Start date:</b> @studentCirclesViewModel.StartDate<br />
+                <b>End date:</b> @studentCirclesViewModel.EndDate
+            </p>
+
+            <p>Study Program :@studentCirclesViewModel.StudyProgram.ToString()</p>
+
+=======
             <p>The <b>@studentCirclesViewModel.Title </b> student circle was successfully added.</p>
             <br />
             <div class="row">
@@ -160,6 +182,7 @@
                 <input class="btn pull-right" type="submit" value="Go back" />
             </form>
             </div>
+>>>>>>> origin/Edy
         </div>
             }
             else

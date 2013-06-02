@@ -17,6 +17,7 @@
 
     EquipmentsViewModel equipmentsViewModel = Session["equipmentsViewModel"] as EquipmentsViewModel ?? ViewModelFactory.EquipmentsViewModel;
     Session["equipmentsViewModel"] = equipmentsViewModel;
+    IEnumerable<Equipment> equipments = equipmentsViewModel.TryGetAll(out errorMessage);
 
     switch (step)
     {
@@ -43,11 +44,19 @@
     </ul>
 
     <div class="well">
-        <form action="addEquipment.cshtml" class="form-horizontal" method="post">
-            @switch (step)
-            {
-                case 0:
-                <input type="hidden" value="@(step + 1)" name="step" id="step" />
+        @if (equipments != null)
+        {
+            <ul>
+                @foreach (var eq in equipments)
+                {
+                    <li>@eq.Brand @eq.Model @eq.SerialNumber @eq.Description</li>
+                }
+            </ul>
+            <form action="addEquipment.cshtml" class="form-horizontal" method="post">
+                @switch (step)
+                {
+                    case 0:
+                    <input type="hidden" value="@(step + 1)" name="step" id="step" />
               
                 <label for="brand">Brand:</label>
                 <input type="text" name="brand" id="brand" />
@@ -58,33 +67,46 @@
                 <label for="serialNumber">Serial Number:</label>
                 <input type="text" name="serialNumber" id="serialNumber" />
                 
+<<<<<<< HEAD
                 <label for="description">Description:</label>
                 <input type="text" name="description" id="description" />
                    
-<<<<<<< HEAD
-                
-                <input type="submit" value="Next" />
-                    break;
-=======
                 <p></p>
                     <p><input type="submit" value="Next" /></p>
+=======
+                    <label for="description">Description:</label>
+                    <textarea type="text" name="description" id="description"></textarea>
+                    <br />
+                    <div class="row">
+                        <input class="btn pull-right" type="submit" value="Next" />
+                    </div>
+>>>>>>> origin/Edy
                         break;
->>>>>>> 97aee59442b4e70daff65cbbef010495e675da1b
 
-                case 1:
-                    if (equipmentsViewModel.TryAddEquipment(out errorMessage))
-                    {
-                <h1>Success!</h1>
-                <p>The equipment has been added to logistical resources!</p>
-                    }
-                    else
-                    {
-                <h1>Error!</h1>
-                <p>Could not register equipment @errorMessage</p>
-                    }
-                <input type="submit" value="Finish" />
-                    break;
-            }
-        </form>
+                    case 1:
+                        if (equipmentsViewModel.TryAddEquipment(out errorMessage))
+                        {
+                    <p><b>Success!</b></p>
+                    <p>The equipment has been added to logistical resources!</p>
+                        }
+                        else
+                        {
+                     <p><b>Error!</b></p>
+                    <p>Could not add equipment @errorMessage</p>
+                        }
+                    <div class="row">
+                        <input class="btn pull-right" type="submit" value="Finish" />
+                    </div>
+                        break;
+
+                }
+            </form>
+        }
+        else
+        {
+            <h1>Error!</h1>
+            <p>@errorMessage</p>
+            <p>We are terebly sorry for the inconvenience...</p>
+        }
     </div>
 }

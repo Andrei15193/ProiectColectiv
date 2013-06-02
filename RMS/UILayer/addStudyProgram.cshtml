@@ -21,227 +21,89 @@
         @if (!IsPost)
         {
             <form action="~/addStudyProgram.cshtml" class="form-horizontal addStudyPrograms" method="post">
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Educational&nbsp;Programme&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="edProgramme" name="edProgramme" />
-                        </td>
-                    </tr>
-                </table>
+                <div class="row">
+                    <div class="span3 pull-left" style="margin-left:0;">
+                        <label>Educational&nbsp;Programme&nbsp;:&nbsp;</label>
+                        <input type="text" class="edProgramme" name="edProgramme" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Study&nbsp;degree&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <select class="studyDegree" name="studyDegree">
-                                <option value="0">Bachelor</option>
-                                <option value="1">Master</option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
+                        <label>Domain&nbsp;:&nbsp;</label>
+                        <input type="text" class="domain" name="domain" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Domain&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="domain" name="domain" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Total&nbsp;Ects&nbsp;Credits&nbsp;:&nbsp;</label>
+                        <input type="number" class="totalCredits" name="totalCredits" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Year&nbsp;length&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="number" class="yearLength" name="yearLength" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Higher&nbsp;Education&nbsp;Institution&nbsp;:&nbsp;</label>
+                        <input type="text" class="higherEducationInstitution" name="higherEducationInstitution" />
+                        
+                        <label>Contact&nbsp;Person&nbsp;:&nbsp;</label>
+                        <input type="text" class="contactPerson" name="contactPerson" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Total&nbsp;Ects&nbsp;Credits&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="number" class="totalCredits" name="totalCredits" />
-                        </td>
-                    </tr>
-                </table>
+                         <label>Fax&nbsp;:&nbsp;</label>
+                         <input type="text" class="fax" name="fax" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Study&nbsp;time&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <select class="studyTime" name="studyTime">
-                                <option value="0">Full time</option>
-                                <option value="1">Distance</option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
+                        <label>Profile&nbsp;Of&nbsp;The&nbsp;Degree&nbsp;Programme&nbsp;:&nbsp;</label>
+                        <input type="text" class="profileOfTheDegreeProgramme" name="profileOfTheDegreeProgramme" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Higher&nbsp;Education&nbsp;Institution&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="higherEducationInstitution" name="higherEducationInstitution" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Entrance&nbsp;Conditions&nbsp;:&nbsp;</label>
+                        <input type="text" class="entranceConditions" name="entranceConditions" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Faculty&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="faculty" name="faculty" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Description&nbsp;Of&nbsp;Study&nbsp;:&nbsp;</label>
+                        <input type="text" class="descriptionOfStudy" name="descriptionOfStudy" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Contact&nbsp;Person&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="contactPerson" name="contactPerson" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Area&nbsp;Of&nbsp;Expertise&nbsp;:&nbsp;</label>
+                        <input type="text" class="areaOfExpertise" name="areaOfExpertise" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Phone&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="phone" name="phone" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Practical&nbsp;Training&nbsp;:&nbsp;</label>
+                        <input type="text" class="practicalTraining" name="practicalTraining" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Fax&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="fax" name="fax" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Gained&nbsp;Abilities&nbsp;And&nbsp;Skills&nbsp;:&nbsp;</label>
+                        <input type="text" class="gainedAbilitiesAndSkills" name="gainedAbilitiesAndSkills" />
+                    </div>
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Email&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="email" name="email" />
-                        </td>
-                    </tr>
-                </table>
+                    <div class="span3 pull-right">
+                        <label>Study&nbsp;degree&nbsp;:&nbsp;</label>
+                        <select class="studyDegree" name="studyDegree">
+                            <option value="0">Bachelor</option>
+                            <option value="1">Master</option>
+                        </select>
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Profile&nbsp;Of&nbsp;The&nbsp;Degree&nbsp;Programme&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="profileOfTheDegreeProgramme" name="profileOfTheDegreeProgramme" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Year&nbsp;length&nbsp;:&nbsp;</label>
+                        <input type="number" class="yearLength" name="yearLength" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>TargetGroups&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="targetGroups" name="targetGroups" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Study&nbsp;time&nbsp;:&nbsp;</label>
+                        <select class="studyTime" name="studyTime">
+                            <option value="0">Full time</option>
+                            <option value="1">Distance</option>
+                        </select>
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Entrance&nbsp;Conditions&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="entranceConditions" name="entranceConditions" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Faculty&nbsp;:&nbsp;</label>
+                        <input type="text" class="faculty" name="faculty" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Further&nbsp;Education&nbsp;Possibilities&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="furtherEducationPossibilities" name="furtherEducationPossibilities" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Phone&nbsp;:&nbsp;</label>
+                        <input type="text" class="phone" name="phone" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Description&nbsp;Of&nbsp;Study&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="descriptionOfStudy" name="descriptionOfStudy" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Email&nbsp;:&nbsp;</label>
+                        <input type="text" class="email" name="email" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Purposes&nbsp;Of&nbsp;The&nbsp;Programme&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="purposesOfTheProgramme" name="purposesOfTheProgramme" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>TargetGroups&nbsp;:&nbsp;</label>
+                        <input type="text" class="targetGroups" name="targetGroups" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Area&nbsp;Of&nbsp;Expertise&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="areaOfExpertise" name="areaOfExpertise" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Further&nbsp;Education&nbsp;Possibilities&nbsp;:&nbsp;</label>
+                        <input type="text" class="furtherEducationPossibilities" name="furtherEducationPossibilities" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Extra&nbsp;Peculiarities&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="extraPeculiarities" name="extraPeculiarities" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Purposes&nbsp;Of&nbsp;The&nbsp;Programme&nbsp;:&nbsp;</label>
+                        <input type="text" class="purposesOfTheProgramme" name="purposesOfTheProgramme" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Practical&nbsp;Training&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="practicalTraining" name="practicalTraining" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Extra&nbsp;Peculiarities&nbsp;:&nbsp;</label>
+                        <input type="text" class="extraPeculiarities" name="extraPeculiarities" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Final&nbsp;Examinations&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="finalExaminations" name="finalExaminations" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Final&nbsp;Examinations&nbsp;:&nbsp;</label>
+                        <input type="text" class="finalExaminations" name="finalExaminations" />
 
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Gained&nbsp;Abilities&nbsp;And&nbsp;Skills&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="gainedAbilitiesAndSkills" name="gainedAbilitiesAndSkills" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Potential&nbsp;Field&nbsp;Of&nbsp;Professional&nbsp;Activity&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="potentialFieldOfProfessionalActivity" name="potentialFieldOfProfessionalActivity" />
-                        </td>
-                    </tr>
-                </table>
+                        <label>Potential&nbsp;Field&nbsp;Of&nbsp;Activity&nbsp;:&nbsp;</label>
+                        <input type="text" class="potentialFieldOfProfessionalActivity" name="potentialFieldOfProfessionalActivity" />
+                    </div>
+                </div>
 
                 <div class="pull-right">
                     <input class="btn" type="submit" value="Add" />

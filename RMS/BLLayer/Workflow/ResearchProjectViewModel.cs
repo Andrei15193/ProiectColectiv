@@ -56,7 +56,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             try
             {
                 errorMessage = string.Empty;
-                localAllResearchProjects = allProjects.AsEnumerable;
+                localAllResearchProjects = allResearchProjects.AsEnumerable;
                 return localAllResearchProjects;
             }
             catch (Exception exception)
@@ -127,7 +127,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                         }
                     }
                 }
-                allProjects.Add(ResearchProject);
+                allResearchProjects.Add(ResearchProject);
                 errorMessage = null;
                 return true;
             }
@@ -359,7 +359,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         private IEnumerable<ClassRoom> localAllClassRooms;
         private IAllEquipments allEquipments;
         private IAllClassRooms allClassRooms;
-        private IAllResearchProjects allProjects;
         private readonly string[] currency = Enum.GetNames(typeof(Currency)).Select((currency) => currency.Replace('_', ' ')).ToArray();
         private IAllResearchProjects allResearchProjects;
     }

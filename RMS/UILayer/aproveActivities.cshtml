@@ -81,7 +81,7 @@
                     {
                         case ActivityType.Administrative:
                             AdministrativeActivity administrativeActivity = activity as AdministrativeActivity;
-                <h3>@selectedActivity.Title</h3>
+                <h1>@selectedActivity.Title</h1>
                 <p>
                     <b>Description:</b><br />@selectedActivity.Description<br />
                     <b>Start date:</b> @selectedActivity.StartDate<br />
@@ -113,10 +113,10 @@
                     }
                 </ul>
                                 }
-                <h3>Teams:</h3>
+                <h1>Teams:</h1>
                                 foreach (NamedTeam team in administrativeActivity.Teams)
                                 {
-                <h4>@team.Name:</h4>
+                <h1>@team.Name:</h1>
                 <ul>
                     @foreach (Member member in team)
                     {
@@ -134,21 +134,21 @@
                     <b>End date:</b> @researchProject.EndDate.ToString("d MMM yyyy")
                 </p>
                 <p>@researchProject.Description</p>
-                <h2>Team:</h2>
+                <h1>Team:</h1>
                 <ul style="margin: 0 0 30px;">
                     @foreach (Member member in researchProject.Team)
                     {
                         <li>@member.ToString()</li>
                     }
                 </ul>
-        
+            
                     if (researchProject.Count > 0)
                     {
                 <div class="well">
-                    <h2>Phases:</h2>
+                    <h1>Phases:</h1>
                     @foreach (ResearchPhase phase in researchProject)
                     {
-                        <h2>@phase.Title</h2>
+                        <h1>@phase.Title</h1>
                         <p>
                             <b>Start date: </b>@phase.StartDate
                             <br />
@@ -160,21 +160,41 @@
                         if (phase.Count > 0)
                         {
                         <div class="researchActivity">
+                            <h1>Activities:</h1>
                             @foreach (ResearchActivity activityy in phase)
                             {
-                                <h3>@activityy.Title</h3>
-                                <p>
-                                    <b>Start date: </b>@activityy.StartDate<br />
-                                    <b>End date: </b>@activityy.EndDate
-                                </p>
-                                @activityy.Description
+                                <h1>@activityy.Title</h1>
+                    <p>
+                        <b>Start date: </b>@activityy.StartDate<br />
+                        <b>End date: </b>@activityy.EndDate
+                        <b>Description: </b>@activityy.Description<br />
+
+                    </p>
+                    
+                    <b>Labor cost: </b>@activityy.LaborCost<br />
+                    <b>Mobility cost: </b>@activityy.MobilityCost<br />
+                    <b>Logistical cost: </b>@activityy.LogisticalCost<br />
+
+                    <h1>Asignees:</h1>
+                    <ul style="margin: 0 0 30px;">
+                        @foreach (Member member in activityy.AsEnumerable())
+                        {
+                            <li>@member.ToString()</li>
+                        }
+                    </ul>
                             }
                         </div>
                         }
                     }
+                           
                 </div>
-            
+                    
                     }
+                     <form>  
+                          
+                 <input type="submit" value="Aprove"  id="aproReje" name="aproReje"/>
+                 <input type="submit" value="Reject" id="aproReje" name="aproReje"/>   
+                 </form>
                     break;
 
                         case ActivityType.Didactic:
@@ -182,7 +202,7 @@
                     
                 <div class="didacticActivity">
 
-                    <h3>@didacticActivity.CourseName</h3>
+                    <h1>@didacticActivity.CourseName</h1>
                     <p>
                         <b>Professor : </b>@didacticActivity.AsEnumerable().ElementAt(0).Name <br/>
                         <b>Description: </b>@didacticActivity.Description<br />
@@ -195,9 +215,11 @@
        
 
                 </div>  
-                <h4>Teachers:</h4>
-                <ul>
-                </ul>
+                 <form>  
+                          
+                 <input type="submit" value="Aprove"  id="aproReje" name="aproReje"/>
+                 <input type="submit" value="Reject" id="aproReje" name="aproReje"/>   
+                 </form>
                     break;
 
                         case ActivityType.Research:
@@ -206,7 +228,7 @@
                    
                 <div class="resActivity">
 
-                    <h3>@researchActivity.Title</h3>
+                    <h1>@researchActivity.Title</h1>
                     <p>
                         <b>Start date: </b>@researchActivity.StartDate<br />
                         <b>End date: </b>@researchActivity.EndDate
@@ -218,7 +240,7 @@
                     <b>Mobility cost: </b>@researchActivity.MobilityCost<br />
                     <b>Logistical cost: </b>@researchActivity.LogisticalCost<br />
 
-                    <h2>Asignees:</h2>
+                    <h1>Asignees:</h1>
                     <ul style="margin: 0 0 30px;">
                         @foreach (Member member in researchActivity.AsEnumerable())
                         {
@@ -226,7 +248,12 @@
                         }
                     </ul>
 
-                </div>                   
+                </div> 
+             <form>  
+                          
+                 <input type="submit" value="Aprove"  id="aproReje" name="aproReje"/>
+                 <input type="submit" value="Reject" id="aproReje" name="aproReje"/>   
+                 </form>                  
                         break;
 
 

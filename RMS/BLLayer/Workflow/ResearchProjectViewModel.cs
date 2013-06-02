@@ -62,10 +62,35 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
-        public bool TrySaveResearchProject(out string errorMessage)
+        public bool TrySaveResearchProject(out string errorMessage,bool aproved)
         {
             try
             {
+                if (aproved == true)
+                {
+                    ResearchProject.State = State.Aproved;
+                    foreach(ResearchPhase phase in ResearchProject.AsEnumerable())
+                    {
+                        phase.State = State.Aproved;
+                        foreach (ResearchActivity activ in phase.AsEnumerable())
+                        {
+                            activ.State = State.Aproved;
+                        }
+                    }
+
+                }
+                else
+                {
+                    ResearchProject.State = State.Proposed;
+                    foreach (ResearchPhase phase in ResearchProject.AsEnumerable())
+                    {
+                        phase.State = State.Proposed;
+                        foreach (ResearchActivity activ in phase.AsEnumerable())
+                        {
+                            activ.State = State.Proposed;
+                        }
+                    }
+                }
                 allProjects.Add(ResearchProject);
                 errorMessage = null;
                 return true;

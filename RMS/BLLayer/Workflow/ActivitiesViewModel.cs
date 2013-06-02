@@ -67,6 +67,10 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
             return memberActivities;
         }
+        public void aproveActivity(AbstractActivity a,bool aproved)
+        {
+            allActivities.aproveActivity(a,aproved);
+        }
 
         public IEnumerable<AbstractActivity> TryGetAll(out string errorMessage)
         {
@@ -74,6 +78,27 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             {
                 errorMessage = null;
                 return allActivities.AsEnumerable;
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.ToString();
+                return null;
+            }
+        }
+        public IEnumerable<AbstractActivity> getAllPending(out string errorMessage)
+        {
+            ICollection<AbstractActivity> toRet = new HashSet<AbstractActivity>();
+            try
+            {
+                errorMessage = null;
+                foreach(AbstractActivity a in allActivities.AsEnumerable)
+                {
+                    if (a.State == State.Proposed)
+                    {
+                        toRet.Add(a);
+                    }
+                }
+                return toRet;
             }
             catch (Exception exception)
             {

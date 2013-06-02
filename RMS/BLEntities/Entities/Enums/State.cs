@@ -3,7 +3,7 @@
     public enum State
     {
         Proposed,
-        Apporved,
+        Aproved,
         Rejected,
         Canceled
     }

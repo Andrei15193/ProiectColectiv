@@ -39,9 +39,11 @@ namespace ResourceManagementSystem.DataAccess.Mocks
             return activities;
         }
 
-        public void aproveActivity(AbstractActivity activity)
+        public void aproveActivity(AbstractActivity activity,bool aproved)
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

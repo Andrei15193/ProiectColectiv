@@ -13,9 +13,10 @@
 
     ActivitiesViewModel activitiesViewModel = Session["activitiesViewModel"] as ActivitiesViewModel ?? ViewModelFactory.ActivitiesViewModel;
     Session["activitiesViewModel"] = activitiesViewModel;
-    IEnumerable<AbstractActivity> activities = activitiesViewModel.GetMemberActivity(membersViewModel.member, out errorMessage);
+    List<AbstractActivity> activities = null;
 
     IEnumerable<Member> members = membersViewModel.TryGetAll(out errorMessage);
+    Member member = null;
     }
 
 @section body{
@@ -26,7 +27,7 @@
     <div class="well">
         @if (!IsPost)
         {
-            <form action="~/addStudyProgram.cshtml" class="form-horizontal addStudyPrograms" method="post">
+            <form action="~/viewFilteredCalendar.cshtml" class="form-horizontal addStudyPrograms" method="post">
                 <h3> Choose your filter: </h3>
                 <select id="Select1" name="selectFilter">
                     <option value="0"> All Research Activities</option>
@@ -39,36 +40,350 @@
                 </select>
      
                 <h3> Choose your Member: </h3>
-                <form>
-                    @foreach (var member in members)
-                    {
-                        <input type="radio" name ="Membru" value="@member.EMail" />
-                        @(member.ToString())
-                        <br />
-                    }
-                </form>
+                @foreach (var m in members)
+                {
+                    <input type="radio" name ="Membru" value="@m.EMail" />
+                    @(m.ToString())
+                    <br />
+                }
                 <br />
-                <input id="Button1" type="button" value="View Calendar" />
+                <input id="Button1" type="submit" value="View Calendar" />
             </form>
         }
         else
         {
-            @if (!errorMessage.Equals(""))
+            switch (Request["selectFilter"])
             {
-                <h1>Error!</h1>
-                <p>@errorMessage</p>
-                <p>We are terribly sorry for the inconvenience...</p>
-                <form action="addResearchProject.cshtml" class="form-horizontal" method="post">
-                    <input type="submit" value="Back" />
-                </form>
-            }
-            else
-            {
-                switch (Request["selectFilter"])
-                {
-                    case "0":
-                        //activitiesViewModel.
-                        break;
+                case "0":
+                        <form action="~/viewFilteredCalendar.cshtml" class="form-horizontal viewFilteredCalendar" method="post">
+                            <h3> All Research Activities</h3>
+                            @{activities = activitiesViewModel.GetActivitiesByType(ActivityType.Research_Project, out errorMessage);}
+                            @if (errorMessage != null && errorMessage != "")
+                            {
+                                <h1>Error!</h1>
+                                <p>We are terribly sorry for the inconvenience...</p>
+                                <input type="submit" value="Back" />
+                            }
+                            else
+                            {
+                                if (activities.Count == 0)
+                                {
+                                    <p> There are no projects available! </p>
+                                }
+                                else
+                                {
+                                    <table width="100%">
+                                        <tr>
+                                            <th> Title </th>
+                                            <th> Description </th>
+                                            <th> Start Date</th>
+                                            <th> End Date </th>
+                                        </tr>
+                                    @foreach (ResearchProject project in activities)
+                                    {
+                                        <tr width="100%">
+                                            <td WIDTH="30%">@project.Title</td>
+                                            <td WIDTH="40%">@project.Description</td>
+                                            <td WIDTH="15%">@project.StartDate.ToShortDateString()</td>
+                                            <td WIDTH="15%">@project.EndDate.ToShortDateString()</td>
+                                        </tr>
+                                    }
+                                        </table>
+                                }
+                            }
+                        </form>
+                            break;
+
+                case "1":
+                        <form action="~/viewFilteredCalendar.cshtml" class="form-horizontal viewFilteredCalendar" method="post">
+                            <h3> All Didactic Activities</h3>
+                            @{activities = activitiesViewModel.GetActivitiesByType(ActivityType.Didactic, out errorMessage);}
+                            @if (errorMessage != null && errorMessage != "")
+                            {
+                                <h1>Error!</h1>
+                                <p>We are terribly sorry for the inconvenience...</p>
+                                <input type="submit" value="Back" />
+                            }
+                            else
+                            {
+                                if (activities.Count == 0)
+                                {
+                                    <p> There are no didactic activities available! </p>
+                                }
+                                else
+                                {
+                                    <table width="100%">
+                                        <tr>
+                                            <th> Title </th>
+                                            <th> Description </th>
+                                            <th> Start Date</th>
+                                            <th> End Date </th>
+                                        </tr>
+                                    @foreach (DidacticActivity activity in activities)
+                                    {
+                                        <tr width="100%">
+                                            <td WIDTH="30%">@activity.Title</td>
+                                            <td WIDTH="40%">@activity.Description</td>
+                                            <td WIDTH="15%">@activity.StartDate.ToShortDateString()</td>
+                                            <td WIDTH="15%">@activity.EndDate.ToShortDateString()</td>
+                                        </tr>
+                                    }
+                                        </table>
+                                }
+                            }
+                        </form>
+                            break;
+                case "2":
+                        <form action="~/viewFilteredCalendar.cshtml" class="form-horizontal viewFilteredCalendar" method="post">
+                            <h3> All Administrative Activities</h3>
+                            @{activities = activitiesViewModel.GetActivitiesByType(ActivityType.Administrative, out errorMessage);}
+                            @if (errorMessage != null && errorMessage != "")
+                            {
+                                <h1>Error!</h1>
+                                <p>We are terribly sorry for the inconvenience...</p>
+                                <input type="submit" value="Back" />
+                            }
+                            else
+                            {
+                                if (activities.Count == 0)
+                                {
+                                    <p> There are no administrative activities available! </p>
+                                }
+                                else
+                                {
+                                    <table width="100%">
+                                        <tr>
+                                            <th> Title </th>
+                                            <th> Description </th>
+                                            <th> Start Date</th>
+                                            <th> End Date </th>
+                                        </tr>
+                                    @foreach (AdministrativeActivity activity in activities)
+                                    {
+                                        <tr width="100%">
+                                            <td WIDTH="30%">@activity.Title</td>
+                                            <td WIDTH="40%">@activity.Description</td>
+                                            <td WIDTH="15%">@activity.StartDate.ToShortDateString()</td>
+                                            <td WIDTH="15%">@activity.EndDate.ToShortDateString()</td>
+                                        </tr>
+                                    }
+                                        </table>
+                                }
+                            }
+                        </form>
+                            break;
+
+                case "3":
+                        <form action="~/viewFilteredCalendar.cshtml" class="form-horizontal viewFilteredCalendar" method="post">
+                            <h3> All Activities of a Member</h3>
+                            @{member = membersViewModel.GetMemberByEmail(Request["Membru"], out errorMessage);}
+                            @if (errorMessage != null && errorMessage != "")
+                            {
+                                <h1>Error!</h1>
+                                <p>We are terribly sorry for the inconvenience...</p>
+                                <input type="submit" value="Back" />
+                            }
+                            else
+                            {
+                                { activities = activitiesViewModel.GetActivitiesForMember(member, out errorMessage); }
+                                if (errorMessage != null && errorMessage != "")
+                                {
+                                    <h1>Error!</h1>
+                                    <p>We are terribly sorry for the inconvenience...</p>
+                                    <input type="submit" value="Back" />
+                                }
+                                else
+                                {
+                                    if (activities.Count == 0)
+                                    {
+                                        <p> This member has no assigned activities.</p>
+                                    }
+                                    else
+                                    {
+                                        <table width="100%">
+                                            <tr>
+                                                <th> Activity Type</th>
+                                                <th> Title </th>
+                                                <th> Description </th>
+                                                <th> Start Date</th>
+                                                <th> End Date </th>
+                                            </tr>
+                                        @foreach (AbstractActivity activity in activities)
+                                        {
+                                            <tr width="100%">
+                                                @if (activity is ResearchActivity)
+                                                {
+                                                    <td WIDTH="10%"> Research Activity</td> 
+                                                }
+                                                else
+                                                {
+                                                    <td WIDTH="10%"> Administrative Activity</td> 
+                                                }
+                                                <td WIDTH="25%">@activity.Title</td>
+                                                <td WIDTH="35%">@activity.Description</td>
+                                                <td WIDTH="15%">@activity.StartDate.ToShortDateString()</td>
+                                                <td WIDTH="15%">@activity.EndDate.ToShortDateString()</td>
+                                            </tr>
+                                        }
+                                            </table>
+                                    }
+                                }
+                            }
+                        </form>
+                        break;      
+                        
+                    case "4":
+                        <form action="~/viewFilteredCalendar.cshtml" class="form-horizontal viewFilteredCalendar" method="post">
+                            <h3> All Research Activities of a Member</h3>
+                            @{member = membersViewModel.GetMemberByEmail(Request["Membru"], out errorMessage);}
+                            @if (errorMessage != null && errorMessage != "")
+                            {
+                                <h1>Error!</h1>
+                                <p>We are terribly sorry for the inconvenience...</p>
+                                <input type="submit" value="Back" />
+                            }
+                            else
+                            {
+                                {activities = activitiesViewModel.GetActivitiesByTypeAndMember
+                                    (member,ActivityType.Research_Project,out errorMessage);}
+                                if (errorMessage != null && errorMessage != "")
+                                {
+                                    <h1>Error!</h1>
+                                    <p>We are terribly sorry for the inconvenience...</p>
+                                    <input type="submit" value="Back" />
+                                }
+                                else
+                                {
+                                    if (activities.Count == 0)
+                                    {
+                                        <p> This member has no assigned activities.</p>
+                                    }
+                                    else
+                                    {
+                                        <table width="100%">
+                                            <tr>
+                                                <th> Title </th>
+                                                <th> Description </th>
+                                                <th> Start Date</th>
+                                                <th> End Date </th>
+                                            </tr>
+                                        @foreach (AbstractActivity activity in activities)
+                                        {
+                                            <tr width="100%">
+                                                <td WIDTH="30%">@activity.Title</td>
+                                                <td WIDTH="40%">@activity.Description</td>
+                                                <td WIDTH="15%">@activity.StartDate.ToShortDateString()</td>
+                                                <td WIDTH="15%">@activity.EndDate.ToShortDateString()</td>
+                                            </tr>
+                                        }
+                                            </table>
+                                    }
+                                }
+                            }
+                        </form>
+                        break;           
+                        
+                    case "5":
+                        <form action="~/viewFilteredCalendar.cshtml" class="form-horizontal viewFilteredCalendar" method="post">
+                            <h3> All Didactic Activities of a Member</h3>
+                            @{member = membersViewModel.GetMemberByEmail(Request["Membru"], out errorMessage);}
+                            @if (errorMessage != null && errorMessage != "")
+                            {
+                                <h1>Error!</h1>
+                                <p>We are terribly sorry for the inconvenience...</p>
+                                <input type="submit" value="Back" />
+                            }
+                            else
+                            {
+                                {activities = activitiesViewModel.GetActivitiesByTypeAndMember
+                                    (member,ActivityType.Didactic,out errorMessage);}
+                                if (errorMessage != null && errorMessage != "")
+                                {
+                                    <h1>Error!</h1>
+                                    <p>We are terribly sorry for the inconvenience...</p>
+                                    <input type="submit" value="Back" />
+                                }
+                                else
+                                {
+                                    if (activities.Count == 0)
+                                    {
+                                        <p> This member has no assigned activities.</p>
+                                    }
+                                    else
+                                    {
+                                        <table width="100%">
+                                            <tr>
+                                                <th> Title </th>
+                                                <th> Description </th>
+                                                <th> Start Date</th>
+                                                <th> End Date </th>
+                                            </tr>
+                                        @foreach (AbstractActivity activity in activities)
+                                        {
+                                            <tr width="100%">
+                                                <td WIDTH="30%">@activity.Title</td>
+                                                <td WIDTH="40%">@activity.Description</td>
+                                                <td WIDTH="15%">@activity.StartDate.ToShortDateString()</td>
+                                                <td WIDTH="15%">@activity.EndDate.ToShortDateString()</td>
+                                            </tr>
+                                        }
+                                            </table>
+                                    }
+                                }
+                            }
+                        </form>
+                        break;           
+                        
+                    case "6":
+                        <form action="~/viewFilteredCalendar.cshtml" class="form-horizontal viewFilteredCalendar" method="post">
+                            <h3> All Administrative Activities of a Member</h3>
+                            @{member = membersViewModel.GetMemberByEmail(Request["Membru"], out errorMessage);}
+                            @if (errorMessage != null && errorMessage != "")
+                            {
+                                <h1>Error!</h1>
+                                <p>We are terribly sorry for the inconvenience...</p>
+                                <input type="submit" value="Back" />
+                            }
+                            else
+                            {
+                                {activities = activitiesViewModel.GetActivitiesByTypeAndMember
+                                    (member,ActivityType.Administrative,out errorMessage);}
+                                if (errorMessage != null && errorMessage != "")
+                                {
+                                    <h1>Error!</h1>
+                                    <p>We are terribly sorry for the inconvenience...</p>
+                                    <input type="submit" value="Back" />
+                                }
+                                else
+                                {
+                                    if (activities.Count == 0)
+                                    {
+                                        <p> This member has no assigned activities.</p>
+                                    }
+                                    else
+                                    {
+                                        <table width="100%">
+                                            <tr>
+                                                <th> Title </th>
+                                                <th> Description </th>
+                                                <th> Start Date</th>
+                                                <th> End Date </th>
+                                            </tr>
+                                        @foreach (AbstractActivity activity in activities)
+                                        {
+                                            <tr width="100%">
+                                                <td WIDTH="30%">@activity.Title</td>
+                                                <td WIDTH="40%">@activity.Description</td>
+                                                <td WIDTH="15%">@activity.StartDate.ToShortDateString()</td>
+                                                <td WIDTH="15%">@activity.EndDate.ToShortDateString()</td>
+                                            </tr>
+                                        }
+                                            </table>
+                                    }
+                                }
+                            }
+                        </form>
+                        break;             
                 }
             }
         }

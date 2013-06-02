@@ -15,6 +15,8 @@ namespace ResourceManagementSystem.DAOInterface
 
         Member Where(string email, string password);
 
+        Member Where(string email);
+
         IEnumerable<Member> AsEnumerable { get; }
     }
 }

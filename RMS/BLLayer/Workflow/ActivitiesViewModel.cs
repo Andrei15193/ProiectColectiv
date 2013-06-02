@@ -19,60 +19,117 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             activity = null;
         }
 
-        
 
-        public List<AbstractActivity> GetMemberActivity(Member member, out string error)
+
+        public List<AbstractActivity> GetActivitiesForMember(Member member, out string error)
         {
             IEnumerable<AbstractActivity> activities = TryGetAll(out error);
-            List<AbstractActivity> memberActivities = null;
-            DidacticActivity didacticActivity;
-            ResearchActivity reasearchActivity;
-
-            foreach (AbstractActivity activity in activities)
+            List<AbstractActivity> memberActivities = new List<AbstractActivity>();
+            try
             {
-                if (activity is DidacticActivity)
+                foreach (AbstractActivity activ in activities)
                 {
-                    didacticActivity = (DidacticActivity)activity;
-                    IEnumerator<Member> membersDA = didacticActivity.GetEnumerator();
-                    
-                    while(membersDA.MoveNext() == true)
+                    if (activ is AbstractAssignableActivity)
                     {
-                        if (membersDA.Current.EMail.Equals(member.EMail))
+                        AbstractAssignableActivity activity = (AbstractAssignableActivity)activ;
+                        IEnumerator<Member> team = activity.GetEnumerator();
+                        while (team.MoveNext())
                         {
-                            memberActivities.Add(didacticActivity);
-                            break;
+                            if (member.EMail.Equals(team.Current.EMail))
+                            {
+                                memberActivities.Add(activ);
+                            }
                         }
-                    }       
-                }
-
-                if (activity is ResearchActivity)
-                {
-                    reasearchActivity = (ResearchActivity)activity;
-                    IEnumerator<Member> membersRA = reasearchActivity.GetEnumerator();
-
-                    while (membersRA.MoveNext() == true)
+                    }
+                    else if (activ is AdministrativeActivity)
                     {
-                        if (membersRA.Current.EMail.Equals(member.EMail))
+                        AdministrativeActivity activity = (AdministrativeActivity)activ;
+                        foreach (Member m in (Team)(activity.Teams))
                         {
-                            memberActivities.Add(reasearchActivity);
-                            break;
+                            if (m.EMail.Equals(member.EMail))
+                                memberActivities.Add(activ);
+                        }
+                    }
+                    else if (activ is ResearchProject)
+                    {
+                        ResearchProject activity = (ResearchProject)activ;
+                        foreach (Member m in activity.Team)
+                        {
+                            if (m.EMail.Equals(member.EMail))
+                                memberActivities.Add(activ);
                         }
                     }
                 }
+                error = null;
+                return memberActivities;
+            }
+            catch (Exception exception)
+            {
+                error = exception.Message;
+                return null;
+            }
+        }
+
+        public List<AbstractActivity> GetActivitiesByTypeAndMember(Member member, ActivityType type, out string error)
+        {
+            List<AbstractActivity> filteredActivities = new List<AbstractActivity>();
+            List<AbstractActivity> filteredActivitiesForMember = new List<AbstractActivity>();
+            try
+            {
+                switch (type)
+                {
+                    case ActivityType.Administrative:
+                        filteredActivities = GetActivitiesByType(ActivityType.Administrative, out error);
+                        foreach (AbstractActivity activity in filteredActivities)
+                        {
+                            foreach (Member m in (Team)((AdministrativeActivity)activity).Teams)
+                            {
+                                if (member.EMail.Equals(m.EMail))
+                                {
+                                    filteredActivitiesForMember.Add(activity);
+                                }
+                            }
+                        }
+                        break;
+                    case ActivityType.Research_Project:
+                        filteredActivities = GetActivitiesByType(ActivityType.Research_Project, out error);
+                        foreach (AbstractActivity activity in filteredActivities)
+                        {
+                            foreach (Member m in ((ResearchProject)activity).Team)
+                            {
+                                if (member.EMail.Equals(m.EMail))
+                                {
+                                    filteredActivitiesForMember.Add(activity);
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                error = null;
+                return filteredActivitiesForMember;
+
+            }
+            catch (Exception exception)
+            {
+                error = exception.ToString();
+                return null;
             }
 
-            return memberActivities;
         }
-        public void aproveActivity(AbstractActivity a,bool aproved)
+
+        public void aproveActivity(AbstractActivity a, bool aproved)
         {
-            allActivities.aproveActivity(a,aproved);
+            allActivities.aproveActivity(a, aproved);
         }
 
         public IEnumerable<AbstractActivity> TryGetAll(out string errorMessage)
         {
             try
             {
-                errorMessage = null;
+                errorMessage = "";
                 return allActivities.AsEnumerable;
             }
             catch (Exception exception)
@@ -87,7 +144,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             try
             {
                 errorMessage = null;
-                foreach(AbstractActivity a in allActivities.AsEnumerable)
+                foreach (AbstractActivity a in allActivities.AsEnumerable)
                 {
                     if (a.State == State.Proposed)
                     {
@@ -126,65 +183,108 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public IEnumerable<string> selectedTeamEmails { get; set; }
 
 
+        public List<AbstractActivity> GetMemberActivity(Member member, out string a)
+        {
+            a = null;
+            return new List<AbstractActivity>();
+        }
         public List<ResearchProject> GetMemberResearchProjects(Member member, out string error)
         {
-        List<AbstractActivity> activities = GetMemberActivity(member, out error);
-        List<ResearchProject> researchProjects = null;
-        selectedMember = member;
-        foreach (ResearchProject activity in activities)
-        {
-        if (activity is ResearchProject)
-        {
-        ResearchProject researchProject = (ResearchProject)activity;
-        researchProjects.Add(researchProject);
-        }
-        }
-        return researchProjects;
+            List<AbstractActivity> activities = GetMemberActivity(member, out error);
+            List<ResearchProject> researchProjects = null;
+            selectedMember = member;
+            foreach (ResearchProject activity in activities)
+            {
+                if (activity is ResearchProject)
+                {
+                    ResearchProject researchProject = (ResearchProject)activity;
+                    researchProjects.Add(researchProject);
+                }
+            }
+            return researchProjects;
         }
 
 
         public IEnumerator<ResearchPhase> GetPhasesForResearchProject(ResearchProject researchProject)
         {
-        selectedResearchProject = researchProject;
-        return researchProject.GetEnumerator();
+            selectedResearchProject = researchProject;
+            return researchProject.GetEnumerator();
         }
 
 
         public bool TryCreateActivity(ResearchPhase researchPhase, out string error)
         {
-        try
-        {
-        ResearchActivity researchActivity = new ResearchActivity(
-        researchPhase,
-        title,
-        description,
-       DateTime.ParseExact(
-                        startDate,
-                        "dd/MM/yyyy",
-                        CultureInfo.InvariantCulture
-                    ).AddMilliseconds(selectedResearchProject.Count + researchPhase.Count),
-                    DateTime.ParseExact(
-                        endDate,
-                        "dd/MM/yyyy",
-                        CultureInfo.InvariantCulture
-                    ).AddMilliseconds(selectedResearchProject.Count + researchPhase.Count + 1),
-        selectedResearchProject.Team.Where((teamMember) => selectedTeamEmails.Contains(teamMember.EMail)),
-        new FinancialResource(mobilityCost, (Currency)mobilityCostSelectedIndex),
-        new FinancialResource(laborCost, (Currency)laborCostSelectedIndex),
-        new FinancialResource(logisticalCost, (Currency)logisticalCostSelectedIndex),
-        isConfidential
-        );
-        researchActivity.State = State.Proposed;
-        //add the activity
-        error = null;
-        return true;
-        }
-        catch (Exception exception)
-        {
-        error = exception.Message;
-        return false;
-        }
-        }
-        
+            try
+            {
+                ResearchActivity researchActivity = new ResearchActivity(
+                researchPhase,
+                title,
+                description,
+               DateTime.ParseExact(
+                                startDate,
+                                "dd/MM/yyyy",
+                                CultureInfo.InvariantCulture
+                            ).AddMilliseconds(selectedResearchProject.Count + researchPhase.Count),
+                            DateTime.ParseExact(
+                                endDate,
+                                "dd/MM/yyyy",
+                                CultureInfo.InvariantCulture
+                            ).AddMilliseconds(selectedResearchProject.Count + researchPhase.Count + 1),
+                selectedResearchProject.Team.Where((teamMember) => selectedTeamEmails.Contains(teamMember.EMail)),
+                new FinancialResource(mobilityCost, (Currency)mobilityCostSelectedIndex),
+                new FinancialResource(laborCost, (Currency)laborCostSelectedIndex),
+                new FinancialResource(logisticalCost, (Currency)logisticalCostSelectedIndex),
+                isConfidential
+                );
+                researchActivity.State = State.Proposed;
+                //add the activity
+                error = null;
+                return true;
             }
+            catch (Exception exception)
+            {
+                error = exception.Message;
+                return false;
+            }
+        }
+
+        public List<AbstractActivity> GetActivitiesByType(ActivityType type, out string error)
+        {
+            IEnumerable<AbstractActivity> activities = TryGetAll(out error);
+            List<AbstractActivity> filteredActivities = new List<AbstractActivity>();
+
+            if (activities == null)
+                return new List<AbstractActivity>();
+            try
+            {
+                switch (type)
+                {
+                    case ActivityType.Administrative:
+                        foreach (AbstractActivity activity in activities)
+                            if (activity is AdministrativeActivity)
+                                filteredActivities.Add(activity);
+                        break;
+                    case ActivityType.Didactic:
+                        foreach (AbstractActivity activity in activities)
+                            if (activity is DidacticActivity)
+                                filteredActivities.Add(activity);
+                        break;
+                    case ActivityType.Research_Project:
+                        foreach (AbstractActivity activity in activities)
+                            if (activity is ResearchProject)
+                                filteredActivities.Add(activity);
+                        break;
+                    default:
+                        break;
+                }
+                error = null;
+                return filteredActivities;
+            }
+            catch (Exception exception)
+            {
+                error = exception.ToString();
+                return new List<AbstractActivity>();
+            }
+        }
+    }
 }

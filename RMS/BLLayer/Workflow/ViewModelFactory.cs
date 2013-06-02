@@ -134,7 +134,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
             public static readonly IAllActivities AllActivities = new DALayer.Database.AllActivities();
 
-            public static readonly IAllAdministrativeActivity AllAdministrativeActivity = null;
+            public static readonly IAllAdministrativeActivities AllAdministrativeEvents = null;
         }
     }
 }

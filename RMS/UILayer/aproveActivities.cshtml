@@ -19,7 +19,7 @@
     string errorMessage;
     ActivitiesViewModel activitiesViewModel = Session["activitiesViewModel"] as ActivitiesViewModel ?? ViewModelFactory.ActivitiesViewModel;
     Session["activitiesViewModel"] = activitiesViewModel;
-    IEnumerable<AbstractActivity> activities = activitiesViewModel.TryGetAll(out errorMessage);
+    IEnumerable<AbstractActivity> activities = activitiesViewModel.getAllPending(out errorMessage);
     AbstractActivity selectedActivity = null;
 
     if (Request["id"] != null && activities != null)
@@ -42,17 +42,7 @@
          }
         }
     }
-    <!--switch (step)
-    {
-        case 0:
-
-            break;
-        case 1:
-          
-
-            break;
-      
-    }-->
+    
 }
 @section body{
     <ul class="nav nav-tabs">
@@ -126,8 +116,9 @@
                                 }
                             }
                             break;
-                        case ActivityType.Research_Project:
-                            ResearchProject researchProject = activity as ResearchProject;
+                   case ActivityType.Research_Project:
+                   ResearchProject researchProject = activity as ResearchProject;
+                  <div class="researchProject">
                 <h1>@researchProject.Title</h1>
                 <p>
                     <b>Start date:</b> @researchProject.StartDate.ToString("d MMM yyyy")<br />
@@ -195,6 +186,7 @@
                  <input type="submit" value="Aprove"  id="aproReje" name="aproReje"/>
                  <input type="submit" value="Reject" id="aproReje" name="aproReje"/>   
                  </form>
+            </div>
                     break;
 
                         case ActivityType.Didactic:

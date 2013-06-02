@@ -191,8 +191,8 @@
 
                 <label for="endDate">End date: </label>
                 <input name="endDate" id="endDate" type="text" value="@researchProjectsViewModel.EndDate" data-date-format="dd/mm/yyyy" class="datepicker" />
-
-                <input type="submit" value="Next" />
+                <p></p>
+                <p><input type="submit" value="Next" /></p>
             </form>
         </div>
                 break;
@@ -212,7 +212,8 @@
                         </li>
                     }
                 </ul>
-                <input type="submit" value="Next" />
+                <p></p>
+                <p><input type="submit" value="Next" /></p>
             </form>
         </div>
                     break;
@@ -325,8 +326,8 @@
 
                 <label for="endDate">End date: </label>
                 <input name="endDate" id="endDate" type="text" value="@researchProjectsViewModel.EndDate" data-date-format="dd/mm/yyyy" class="datepicker" />
-
-                <input type="submit" value="Add phase" />
+                <p></p>
+               <p> <input type="submit" value="Add phase" /></p>
             </form>
         </div>
                 break;
@@ -348,6 +349,7 @@
             </form>
             <form action="addResearchProject.cshtml" style="display: inline;" method="post">
                 <input type="hidden" value="3" name="step" id="step" />
+                
                 <input type="submit" value="Submit phase" />
             </form>
         </div>

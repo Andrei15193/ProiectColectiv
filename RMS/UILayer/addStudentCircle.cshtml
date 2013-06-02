@@ -116,7 +116,7 @@
 
         case 1:        
         <div class="well">
-            @if (programs != null)
+            @if (programs.Count()>0)
             {
                 <h1>Select the study program:</h1>
                 <form action="addStudentCircle.cshtml" class="form-horizontal" method="post">

@@ -17,7 +17,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             activity = null;
         }
 
-        
+
 
         public List<AbstractActivity> GetMemberActivity(Member member, out string error)
         {
@@ -33,7 +33,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                     didacticActivity = (DidacticActivity)activity;
                     if (didacticActivity.Contains(member))
                         memberActivities.Add(didacticActivity);
-                            
+
                 }
 
                 if (activity is ResearchActivity)
@@ -46,9 +46,41 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
             return memberActivities;
         }
-        public void aproveActivity(AbstractActivity a,bool aproved)
+        public void aproveActivity(AbstractActivity a, bool aproved)
         {
-            allActivities.aproveActivity(a,aproved);
+            switch(a.Type)
+            {
+                case ActivityType.Research_Project:
+                    {
+                        allActivities.aproveActivity(a, aproved);
+                        ResearchProject project=a as ResearchProject;
+                        foreach(ResearchPhase phase  in project.AsEnumerable())
+                        {
+                            allActivities.aproveActivity(phase, aproved);
+                            foreach (ResearchActivity activ in phase.AsEnumerable())
+                            {
+                                allActivities.aproveActivity(activ, aproved);
+                            }
+                        }
+                    }
+                    break;
+                case ActivityType.Research_Phase:
+                    {
+                        ResearchPhase phase=a as ResearchPhase;
+                        allActivities.aproveActivity(a, aproved);
+                            allActivities.aproveActivity(phase, aproved);
+                            foreach (ResearchActivity activ in phase.AsEnumerable())
+                            {
+                                allActivities.aproveActivity(activ, aproved);
+                            }
+                        
+                    }
+                    break;
+                    
+                default:
+                    allActivities.aproveActivity(a, aproved); 
+                    break;
+        }
         }
 
         public IEnumerable<AbstractActivity> TryGetAll(out string errorMessage)
@@ -70,7 +102,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             try
             {
                 errorMessage = null;
-                foreach(AbstractActivity a in allActivities.AsEnumerable)
+                foreach (AbstractActivity a in allActivities.AsEnumerable)
                 {
                     if (a.State == State.Proposed)
                     {
@@ -109,56 +141,56 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
 
         public List<AbstractActivity> GetMemberResearchProjects(Member member, out string error)
-{
-List<AbstractActivity> activities = GetMemberActivity(member, out error);
-List<AbstractActivity> researchProjects = null;
-selectedMember = member;
-foreach (AbstractActivity activity in activities)
-{
-if (activity is ResearchProject)
-{
-ResearchProject researchProject = (ResearchProject)activity;
-researchProjects.Add(researchProject);
-}
-}
-return researchProjects;
-}
+        {
+            List<AbstractActivity> activities = GetMemberActivity(member, out error);
+            List<AbstractActivity> researchProjects = null;
+            selectedMember = member;
+            foreach (AbstractActivity activity in activities)
+            {
+                if (activity is ResearchProject)
+                {
+                    ResearchProject researchProject = (ResearchProject)activity;
+                    researchProjects.Add(researchProject);
+                }
+            }
+            return researchProjects;
+        }
 
 
-public IEnumerator<ResearchPhase> GetPhasesForResearchProject(ResearchProject researchProject)
-{
-selectedResearchProject = researchProject;
-return researchProject.GetEnumerator();
-}
+        public IEnumerator<ResearchPhase> GetPhasesForResearchProject(ResearchProject researchProject)
+        {
+            selectedResearchProject = researchProject;
+            return researchProject.GetEnumerator();
+        }
 
 
-public bool TryCreateActivity(ResearchPhase researchPhase, out string error)
-{
-try
-{
-ResearchActivity researchActivity = new ResearchActivity(
-researchPhase,
-title,
-description,
-startDate,
-endDate,
-selectedResearchProject.Team,
-new FinancialResource(mobilityCost, (Currency)mobilityCostSelectedIndex),
-new FinancialResource(laborCost, (Currency)laborCostSelectedIndex),
-new FinancialResource(logisticalCost, (Currency)logisticalCostSelectedIndex),
-isConfidential
-);
-researchActivity.State = State.Proposed;
-//add the activity
-error = null;
-return true;
-}
-catch (Exception exception)
-{
-error = exception.Message;
-return false;
-}
-}
-        
+        public bool TryCreateActivity(ResearchPhase researchPhase, out string error)
+        {
+            try
+            {
+                ResearchActivity researchActivity = new ResearchActivity(
+                researchPhase,
+                title,
+                description,
+                startDate,
+                endDate,
+                selectedResearchProject.Team,
+                new FinancialResource(mobilityCost, (Currency)mobilityCostSelectedIndex),
+                new FinancialResource(laborCost, (Currency)laborCostSelectedIndex),
+                new FinancialResource(logisticalCost, (Currency)logisticalCostSelectedIndex),
+                isConfidential
+                );
+                researchActivity.State = State.Proposed;
+                //add the activity
+                error = null;
+                return true;
+            }
+            catch (Exception exception)
+            {
+                error = exception.Message;
+                return false;
+            }
+        }
+
     }
 }

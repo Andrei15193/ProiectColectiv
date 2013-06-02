@@ -154,9 +154,9 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         public bool 
             insertTaskIntoTaskBreakdownActivity(TaskBreakdownActivity taskBreakdownActivity, 
-            string title, string description, string startDate, string endDate, IEnumerable<Member> assignees, 
-            FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost,
-            out string errorMessage)
+            string title, string description, string startDate, string endDate, IEnumerable<string> emailList, 
+            int mobilityCostValue, Currency mobilityCostCurrency, int laborCostValue, Currency laborCostCurrency,
+            int logisticalCostValue, Currency logisticalCostCurrency, out string errorMessage)
         {
             try
             {
@@ -171,7 +171,12 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                         endDate,
                         "dd/MM/yyyy",
                         CultureInfo.InvariantCulture
-                    ).AddDays(1).AddMilliseconds(-1), assignees, mobilityCost, laborCost, logisticalCost);
+                    ).AddDays(1).AddMilliseconds(-1),
+                    allMembers.AsEnumerable.Where(
+                            (localMember) => SelectedTeamEmails.Contains(localMember.EMail)), 
+                    new FinancialResource(mobilityCostValue, mobilityCostCurrency), 
+                    new FinancialResource(laborCostValue, laborCostCurrency), 
+                    new FinancialResource(logisticalCostValue, logisticalCostCurrency));
                 errorMessage = null;
                 return true;
             }

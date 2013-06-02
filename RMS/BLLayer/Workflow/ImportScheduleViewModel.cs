@@ -59,6 +59,21 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         /// </value>
         public List<byte[]> Files { get; set; }
 
+        public DateTime? ParseDate(string str)
+        {
+            DateTime date;
+            string dateStr = str.Trim();
+            List<string> dateSplit = dateStr.Split('-').ToList();
+            if (dateSplit.Count == 3 && DateTime.TryParse(string.Format("{0}-{1}-{2}", dateSplit[1], dateSplit[0], dateSplit[2]), out date))
+            {
+                return date;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public bool TrySave(out string errorMessage)
         {
             errorMessage = string.Empty;

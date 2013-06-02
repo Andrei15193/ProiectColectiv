@@ -43,16 +43,66 @@
             }
         }
 
-        if(validInput && viewModel.SemesterEnd < viewModel.SemesterStart){
+        if (validInput && viewModel.SemesterEnd < viewModel.SemesterStart)
+        {
             validInput = false;
             ModelState.AddError("", "End date must be greater than start date!");
         }
-        
+
+        int numberOfHolidays = Request.Form.AllKeys.Where(k => k.StartsWith("Holidays")).Count() / 2;
+        List<string> keys = Request.Form.AllKeys.Where(k => k.StartsWith("Holidays")).ToList();
+        List<KeyValuePair<DateTime, DateTime>> holidays = new List<KeyValuePair<DateTime, DateTime>>();
+
+        bool holidayErrors = false;
+
+        for (int i = 0; i < numberOfHolidays && !holidayErrors; i++)
+        {
+            string startDate = string.Format("Holidays[{0}][0]", i);
+            string endDate = string.Format("Holidays[{0}][1]", i);
+
+            startDate = Request[startDate];
+            endDate = Request[endDate];
+
+            if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
+            {
+                DateTime? holidayStart = viewModel.ParseDate(startDate);
+                DateTime? holidayEnd = viewModel.ParseDate(endDate);
+
+                if (holidayStart == null || holidayEnd == null)
+                {
+                    ModelState.AddError("", string.Format("Holiday from {0} to {1} is incorrect!", startDate, endDate));
+                }
+                else
+                {
+                    try
+                    {
+                        holidays.Add(new KeyValuePair<DateTime, DateTime>(holidayStart.Value, holidayEnd.Value));
+                    }
+                    catch (Exception e)
+                    {
+                        ModelState.AddError("", e.Message);
+                    }
+                }
+            }
+            else
+            {
+                holidayErrors = true;
+            }
+        }
+
+        viewModel.Holidays = holidays;
+
+        if (holidayErrors)
+        {
+            ModelState.AddError("", "Some holiday dates were incorrect!");
+        }
+
         if (validInput)
         {
             if (Request.Files.Count == 0)
             {
                 ModelState.AddError("", "No files selected!");
+                viewModel.Files = null;
             }
             else
             {
@@ -64,33 +114,42 @@
                     Request.Files[i].InputStream.Read(bytes, 0, Request.Files[i].ContentLength);
                     files.Add(bytes);
                 }
-                
+
                 viewModel.Files = files;
 
-                string errorMessage;
-                if(viewModel.TrySave(out errorMessage)){
-                    Response.Redirect("~/index.cshtml");
+                if (viewModel.Files != null && viewModel.Files.Count > 0)
+                {
+                    string errorMessage;
+                    if (viewModel.TrySave(out errorMessage))
+                    {
+                        Session.Remove("importSchedule");
+                        Response.Redirect("~/index.cshtml");
+                    }
+                    else
+                    {
+                        ModelState.AddError("", errorMessage);
+                    }
                 }else{
-                    ModelState.AddError("", errorMessage);   
+                    ModelState.AddError("", "No files selected!");
                 }
             }
         }
-
-        Session["importSchedule"] = viewModel;
     }
+
+    Session["importSchedule"] = viewModel;
     
 }
 
 @section body{
     <form action="~/importSchedule" method="post" enctype="multipart/form-data">
-        @Html.ValidationSummary(true)
+        @Html.ValidationSummary()
 
         <label for="startDate">Semester start: </label>
-        <input name="semesterStart" id="semesterStart" type="text" value="" data-date-format="dd-mm-yyyy" class="datepicker" />
+        <input name="semesterStart" id="semesterStart" value="@viewModel.SemesterStart.ToString("dd-MM-yyyy")" type="text" data-date-format="dd-mm-yyyy" class="datepicker" />
         @Html.ValidationMessage("semesterStart")
 
         <label for="semesterEnd">Semester end: </label>
-        <input name="semesterEnd" id="semesterEnd" type="text" value="" data-date-format="dd-mm-yyyy" class="datepicker" />
+        <input name="semesterEnd" id="semesterEnd" value="@viewModel.SemesterEnd.ToString("dd-MM-yyyy")" type="text" data-date-format="dd-mm-yyyy" class="datepicker" />
         @Html.ValidationMessage("semesterEnd")
 
         <br />
@@ -102,7 +161,7 @@
         <h3>Holiday intervals</h3>
 
         <div class="row">
-            <div class="span3">
+            <div class="span4">
                 <div id="noHolidays"  @(!( viewModel.Holidays == null || viewModel.Holidays.Count == 0 ) ? "style=display:none" : "")>
                     <span>No holidays selected!</span>
                     <br />
@@ -111,10 +170,25 @@
                 <table id="holidaysTable" @(viewModel.Holidays == null || viewModel.Holidays.Count == 0 ? "style=display:none" : "") class="table table-striped">
                     <thead>
                         <tr>
-                            <th>#</th>
                             <th>Holiday start</th>
                             <th>Holiday end</th>
+                            <th></th>
                         </tr>
+                        @if (viewModel.Holidays != null && viewModel.Holidays.Count > 0)
+                        {
+                            for (int i = 0; i < viewModel.Holidays.Count; i++)
+                            {
+                            <tr>
+                                <th>@viewModel.Holidays[i].Key.ToString("dd-MM-yyyy")</th>
+                                <th>@viewModel.Holidays[i].Value.ToString("dd-MM-yyyy")</th>
+                                <th>
+                                    <a href="#" class="delete">Delete</a>
+                                    <input type="text" name="Holidays[@i][0]" style="display:none" value="@viewModel.Holidays[i].Key.ToString("dd-MM-yyyy")">
+                                    <input type="text" name="Holidays[@i][1]" style="display:none" value="@viewModel.Holidays[i].Value.ToString("dd-MM-yyyy")">
+                                </th>
+                            </tr>   
+                            }
+                        }
                     </thead>
                     <tbody>
                     </tbody>
@@ -133,12 +207,12 @@
                         </div>
                     </div>
                     <div class="row">
-                         <div class="span2">
-                           <span>Holiday end&nbsp;&nbsp;</span>
+                        <div class="span2">
+                            <span>Holiday end&nbsp;&nbsp;</span>
                         </div>
                         <div class="span2">
                             <input id="holidayEnd" type="text" value="" data-date-format="dd-mm-yyyy" class="datepicker" />
-                                <span></span>
+                            <span></span>
                         </div>
                     </div>
                 </div>
@@ -159,16 +233,64 @@
 @section scripts{
     <script>
         $(document).ready(function () {
-            $("#startDate").datepicker();
-            $("#endDate").datepicker();
+            $("#semesterStart").datepicker();
+            $("#semesterEnd").datepicker();
+            if($("#semesterStart").val()=="01-01-0001"){
+                $("#semesterStart").val('');
+            }
+
+            if($("#semesterEnd").val()=="01-01-0001"){
+                $("#semesterEnd").val('');
+            }
+
             $("#holidayStart").datepicker();
             $("#holidayEnd").datepicker();
 
+            $("a.delete").live("click", function(){
+                $(this).parent().parent().remove();                      
+                refreshTable();
+                renumerotateInputs();
+            });
+
             $("#saveHoliday").click(function () {
                 if (validHolidayDates()) {
-                    console.log("salut");
+                    $("#noHolidays").hide();
+                    var table$ = $("#holidaysTable");
+                    table$.show();
+                    var tableBody$ = table$.find("tbody");
+
+                    var holidayStart$ = $("<th>" +  $("#holidayStart").val() + "</th>");
+                    var holidayEnd$ = $("<th>" + $("#holidayEnd").val() + "</th>");
+                    var hiddenInput1$= $("<input type='text' style='display:none' name='Holidays[x][0]' value='"+$("#holidayStart").val() +"'/>");
+                    var hiddenInput2$= $("<input type='text' style='display:none' name='Holidays[x][1]' value='"+$("#holidayEnd").val() +"'/>");
+                    var delete$ = $("<th><a href='#' class='delete'>Delete</a></th>");
+                    delete$.append(hiddenInput1$);
+                    delete$.append(hiddenInput2$);
+
+                    var tableRow$ = $("<tr></tr>");
+                    tableRow$.append(holidayStart$);
+                    tableRow$.append(holidayEnd$);
+                    tableRow$.append(delete$);
+
+                    tableBody$.append(tableRow$);
+
+                    renumerotateInputs();
+
+                    $("#holidayStart").val('');
+                    $("#holidayEnd").val('');
                 }
             });
+
+            function renumerotateInputs(){
+                var ths = $("#holidaysTable tr th:nth-child(3)").slice(1);
+                for(var i = 0; i < ths.size(); i++){
+                    $startDate = $(ths[i]).find('input[name$="[0]"]');
+                    $endDate = $(ths[i]).find('input[name$="[1]"]');
+
+                    $startDate.attr('name', 'Holidays[' + i + '][0]');
+                    $endDate.attr('name', 'Holidays[' + i + '][1]');
+                }
+            }
 
             $("#cancelHolidaySave").click(function () {
                 $("#holidayStart").val('');
@@ -195,19 +317,41 @@
                 endDate$.next().text("Invalid holiday end!");
                 result = false;
             } else {
-                endDate$.text("");
+                endDate$.next().text("");
             }
 
-            return true;
+            if( dateMatch(startDate$.val()) && dateMatch(endDate$.val()) && 
+                getDate(startDate$.val()) > getDate(endDate$.val())){
+                endDate$.next().text("End date must be greater than start date!");
+                result = false;
+            }
+
+            return result;
+        }
+
+        function refreshTable(){
+            if($("#holidaysTable tbody tr").size() == 0){
+                $("#holidaysTable").hide();
+                $("#noHolidays").show();
+            }
         }
 
         function dateMatch(date) {
-            var regex = new RegExp("@ResourceManagementSystem.ApplicationConstants.ValidDateRegex");
-            if (date.match(regex)) {
+            if(/@ResourceManagementSystem.BusinessLogic.Constants.ValidDateRegex/.test(date)){
                 return true;
             }
 
-            return false;
+        return false;
+        }
+
+        function getDate(dateStr){
+            if(dateMatch(dateStr)){
+                var splittedDate = dateStr.split('-');
+
+                return new Date(splittedDate[2], splittedDate[1] - 1, splittedDate[0]);
+            }
+
+            return undefined;
         }
     </script>
 }

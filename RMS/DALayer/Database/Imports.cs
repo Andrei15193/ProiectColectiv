@@ -131,7 +131,14 @@ namespace DALayer.Database
                 }
             }
 
+            AddDidacticActivities(schedules, semesterStart, semesterEnd, vacations);
+
             return true;
+        }
+
+        private void AddDidacticActivities(List<ScheduleDetails> schedules, DateTime semesterStart, DateTime semesterEnd, IEnumerable<KeyValuePair<DateTime, DateTime>> vacations)
+        {
+            
         }
 
         private CourseType GetCourseType(string type)

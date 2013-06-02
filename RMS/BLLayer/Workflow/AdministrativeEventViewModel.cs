@@ -20,25 +20,24 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public IEnumerable<string> SelectedTeamEmails { get; set; }
         public AdministrativeActivity administrativeActivity { get; private set; }
 
-        private ICollection<AdministrativeActivity> activities;
-        private IAllAdministrativeEvents allEvents;
+        private IAllAdministrativeActivity allActivities;
         private IAllMembers allMembers;
 
 
-        public AdministrativeEventViewModel(IAllMembers allMembers, IAllAdministrativeEvents allEvents)
+        public AdministrativeEventViewModel(IAllMembers allMembers, IAllAdministrativeActivity allActivities)
         {
-            this.allEvents = allEvents;
+            this.allActivities = allActivities;
             this.allMembers = allMembers;
             activities = new List<AdministrativeActivity>();
             this.allMembers = allMembers;
         }
 
-        public IEnumerable<AdministrativeEvent> TryGetAllAdministrativeEvents(out string errorMessage)
+        public IEnumerable<AdministrativeActivity> TryGetAllAdministrativeActivities(out string errorMessage)
         {
             try
             {
                 errorMessage = string.Empty;
-                return allEvents.AsEnumerable;
+                return allActivities.AsEnumerable;
             }
             catch (Exception exception)
             {
@@ -95,7 +94,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             try
             {
-                //allEvents.Add(administrativeActivity);
+                allActivities.Add(administrativeActivity);
                 errorMessage = null;
                 return true;
             }
@@ -106,24 +105,29 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
-        public bool addTeam(IEnumerable<string> SelectedTeamEmails, String teamName)
+        public Team addTeam(IEnumerable<string> SelectedTeamEmails, String teamName, out string errorMessage)
         {
+            NamedTeam team = null;
             try
             {
-                administrativeActivity.Teams.Add(new NamedTeam(teamName, allMembers.AsEnumerable.Where(
+                team = new NamedTeam(teamName, allMembers.AsEnumerable.Where(
                             (localMember) => SelectedTeamEmails.Contains(localMember.EMail)
-                        )));
-                return true;
+                        ));
+                administrativeActivity.Teams.Add(team);
+                errorMessage = null;
+                return team;
             }
             catch (Exception ex)
             {
-                return false;
+                errorMessage = ex.Message;
+                return team;
             }
         }
 
-        public bool addTaskBreakdownActivity(string title, string description, string startDate, string endDate,
-            out TaskBreakdownActivity taskBreakdownActivity)
+        public TaskBreakdownActivity addTaskBreakdownActivity(string title, string description, string startDate, string endDate,
+            out string errorMessage)
         {
+            TaskBreakdownActivity taskBreakdownActivity = null;
             try
             {
                 taskBreakdownActivity = new TaskBreakdownActivity(administrativeActivity,
@@ -139,23 +143,45 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                         CultureInfo.InvariantCulture
                     ).AddDays(1).AddMilliseconds(-1));
                 administrativeActivity.BreakdownActvities.Add(taskBreakdownActivity);
-                return true;
+
+                errorMessage = null;
+                return taskBreakdownActivity;
             }
             catch (Exception ex)
             {
-                taskBreakdownActivity = null;
-                return false;
+                errorMessage = ex.Message;
+                return taskBreakdownActivity;
             }
         }
 
-        public void AddAdministrativeActivity(string title, string description, DateTime startDate, DateTime endDate)
+        public ResourceManagementSystem.BusinessLogic.Entities.Task 
+            insertTaskIntoTaskBreakdownActivity(TaskBreakdownActivity taskBreakdownActivity, TaskType type, 
+            string title, string description, string startDate, string endDate, IEnumerable<Member> assignees, 
+            FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost,
+            out string errorMessage)
         {
-            //AdministrativeActivity activity = new AdministrativeActivity
-            //    (title, description, startDate, endDate);
-            //activity.team = new Team(allMembers.AsEnumerable.Where(
-            //            (localMember) => SelectedTeamEmails.Contains(allMembers.AsEnumerable.EMail)
-            //        ));
-            //activities.Add(activity);
+            try
+            {
+                ResourceManagementSystem.BusinessLogic.Entities.Task task
+                    = new ResourceManagementSystem.BusinessLogic.Entities.Task(type, title, description,
+                    DateTime.ParseExact(
+                        startDate,
+                        "dd/MM/yyyy",
+                        CultureInfo.InvariantCulture
+                    ).AddDays(1).AddMilliseconds(-1),
+                    DateTime.ParseExact(
+                        endDate,
+                        "dd/MM/yyyy",
+                        CultureInfo.InvariantCulture
+                    ).AddDays(1).AddMilliseconds(-1), assignees, mobilityCost, laborCost, logisticalCost);
+                errorMessage = null;
+                return task;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return null;
+            }
         }
     }
 }

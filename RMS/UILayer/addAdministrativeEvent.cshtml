@@ -15,7 +15,7 @@
     
     bool hasError = false;
     int step = 0;
-    const int lastStep = 9;
+    const int lastStep = 10;
     string requestStep = IsPost ? Request["step"] : null;
     if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
     {
@@ -39,12 +39,17 @@
                 step = 0;
             }
             break;
+        
         case 2:
             members = administrativeEventViewModel.TryGetAllMembers(out errorMessage);
             break;
+        
+        case 5:
+            step = 1;
+            break;
+            
         case 6:
-
-            hasError = !administrativeEventViewModel.addTeam(Request.Form.AllKeys.AsEnumerable(), "t", out errorMessage);
+            hasError = !administrativeEventViewModel.addTeam(Request.Form.AllKeys.AsEnumerable(), "Team " + administrativeEventViewModel.administrativeActivity.Teams.Count, out errorMessage);
             
             if (!hasError)
             {
@@ -64,24 +69,76 @@
 
             Session["currentActivity"] = currentActivity;
             
+            if (hasError)
+            {
+                step = 3;
+            }
+            
             break;
         case 8:
             query1 = administrativeEventViewModel.administrativeActivity.Teams.SelectMany(member => member);
+                //.Distinct(new ResourceManagementSystem.BusinessLogic.Entities.Collections.Comparer<Member>((x, y) => x.EMail.CompareTo(y.EMail)));
             break;
         case 9:
-            //hasError = !administrativeEventViewModel.insertTaskIntoTaskBreakdownActivity(currentActivity,
-                
+            hasError = !administrativeEventViewModel.insertTaskIntoTaskBreakdownActivity(currentActivity,
+                Request["title"], Request["description"], Request["startDate"], Request["endDate"], 
+                Request.Form.AllKeys.ToList().GetRange(11, Request.Form.AllKeys.Count() - 11).AsEnumerable(),
+                (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"])),
+                (Currency)int.Parse(Request["mobilityCostSelectedIndex"]),
+                (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"])),
+                (Currency)int.Parse(Request["mobilityCostSelectedIndex"]),
+                (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"])),
+                (Currency)int.Parse(Request["mobilityCostSelectedIndex"]),
+                out errorMessage);
+
+            
+            if (!hasError)
+            {
+                step = 7;
+            }
+            else
+            {
+                step = 8;
+            }
+            
+            break;
+            
+        case 10:
+            hasError = !administrativeEventViewModel.TrySaveAdministrativeActivity(out errorMessage);
+            if (!hasError)
+            {
+                step = 0;
+            }
+            else
+            {
+                step = 5;
+            }
             break;
     }
 }
 
 
 @section body{
+
     <ul class="nav nav-tabs">
-        <li class="active"><a>Define Study Programs</a></li>
+        @if (step <= 1)
+        {
+            <li class="active"><a>Define Administrative Event</a></li>
+        }
+        else if (step == 2)
+        {
+            <li class="active"><a>Define Administrative Event :: Add team</a></li>
+        }
+        else if (step <= 7)
+        {
+            <li class="active"><a>Define Administrative Event :: Add activity</a></li>
+        }
+        else if (step <= lastStep)
+        {
+            <li class="active"><a>Define Administrative Event :: Add activity :: Add task</a></li>
+        }
+
     </ul>
-
-
     <p>Step: @step</p>
     @if (hasError)
     {
@@ -108,7 +165,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Descritpion</th>
+                            <th>Description</th>
                             <td style="width: 100%;">
                                 <input type="text" class="description" name="description" />
                             </td>
@@ -153,6 +210,34 @@
                     <input type="submit" value="Add new activity" />
 
                 </form>
+    
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
+                 
+                    <input type="hidden" value="10" name="step" id="step" />
+                    <input type="submit" value="Finish" />
+
+                </form>
+    
+                if (administrativeEventViewModel.administrativeActivity.Teams.Count > 0)
+                {
+                    <h2>Teams</h2>
+                        <ul>
+                            @foreach (ResourceManagementSystem.BusinessLogic.Entities.Collections.NamedTeam team in administrativeEventViewModel.administrativeActivity.Teams)
+	                        {
+                                <li>
+		                            <h3>@team.Name</h3>
+                                    <ul>
+                                        @foreach (Member m in team)
+                                        {
+                                            <li>@m.ToString()</li>
+                                        }
+
+                                    </ul>
+                                </li>
+	                        }
+
+                        </ul>
+                }
                 break;  
                 
             case 2:
@@ -184,7 +269,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Descritpion</th>
+                            <th>Description</th>
                             <td style="width: 100%;">
                                 <input type="text" class="description" name="description" />
                             </td>
@@ -217,7 +302,7 @@
                 </p>
     
                 <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal" method="post">
-                    <input type="hidden" name="step" id="step" value="1" />
+                    <input type="hidden" name="step" id="step" value="5" />
                     <input type="submit" value="Finish" />
                 </form>
     
@@ -225,6 +310,17 @@
                     <input type="hidden" name="step" id="step" value="8" />
                     <input type="submit" value="Add task" />
                 </form>
+    
+                if (currentActivity.tasks.Count > 0)
+                {
+                    <h2>Tasks</h2>
+                    <ul>
+                        @foreach(Task t in currentActivity.tasks)
+                        {
+                            <li>@t.Title</li>
+                        }
+                    </ul>
+                }
                 break;
                 
             case 8:

@@ -173,10 +173,11 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                         CultureInfo.InvariantCulture
                     ).AddDays(1).AddMilliseconds(-1),
                     allMembers.AsEnumerable.Where(
-                            (localMember) => SelectedTeamEmails.Contains(localMember.EMail)), 
+                            (localMember) => emailList.Contains(localMember.EMail)), 
                     new FinancialResource(mobilityCostValue, mobilityCostCurrency), 
                     new FinancialResource(laborCostValue, laborCostCurrency), 
                     new FinancialResource(logisticalCostValue, logisticalCostCurrency));
+                taskBreakdownActivity.tasks.Add(task);
                 errorMessage = null;
                 return true;
             }

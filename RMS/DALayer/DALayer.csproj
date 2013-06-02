@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\AllActivities.cs" />
+    <Compile Include="Database\AllActivityEvents.cs" />
     <Compile Include="Database\AllDidacticActivities.cs" />
     <Compile Include="Database\AllEquipments.cs" />
     <Compile Include="Database\AllFinancialResources.cs" />
@@ -48,6 +49,8 @@
     <Compile Include="Database\AllResearchActivity.cs" />
     <Compile Include="Database\AllResearchProjects.cs" />
     <Compile Include="Database\AllStudentCircles.cs" />
+    <Compile Include="Database\AllTaskBreakDownActivities.cs" />
+    <Compile Include="Database\AllTasks.cs" />
     <Compile Include="Database\ResearchPhases.cs" />
     <Compile Include="DBImpl\AllMembers.cs" />
     <Compile Include="Database\AllClassRooms.cs" />

@@ -97,5 +97,48 @@ namespace DALayer.Database
             }
             return equipments;
         }
+
+        internal ICollection<Equipment> getByActivity(int activity)
+        {
+
+            LinkedList<Equipment> equipments = new LinkedList<Equipment>();
+            SqlCommand cmd = new SqlCommand("select equipment from activityequipments where activity = @activity", DatabaseConstants.SqlConnection);
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                Value = activity,
+                ParameterName = "@activity"
+            });
+            cmd.Connection.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                command.CommandType = System.Data.CommandType.Text;
+                command.CommandText = @"select brand, model, serialNumber, description from equipments where serialNumer = @sn";
+                command.Parameters.Clear();
+                command.Parameters.Add(new SqlParameter()
+                {
+                    Value = dr["equipment"],
+                    ParameterName = "@sn"
+                });
+                SqlDataReader reader = null;
+                try
+                {
+                    command.Connection.Open();
+                    reader = command.ExecuteReader();
+                    equipments.AddLast(ReadEquipments(reader).First);
+                }
+                finally
+                {
+                    if (reader != null)
+                    {
+                        reader.Close();
+                    }
+                    command.Connection.Close();
+                }
+            }
+            dr.Close();
+            cmd.Connection.Close();
+            return equipments;
+        }
     }
 }

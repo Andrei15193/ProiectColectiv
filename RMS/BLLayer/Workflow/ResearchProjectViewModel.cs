@@ -126,16 +126,8 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                         CultureInfo.InvariantCulture
                     ).AddDays(1).AddMilliseconds(-1)
                 );
-                if (CurrentPhase != null)
-                {
-                    errorMessage = null;
-                    return true;
-                }
-                else
-                {
-                    errorMessage = "Unknwon";
-                    return false;
-                }
+                errorMessage = null;
+                return true;
             }
             catch (Exception exception)
             {
@@ -148,7 +140,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             try
             {
-                CurrentPhase.Add(
+                ResearchActivity researchActivity = CurrentPhase.Add(
                     Title,
                     Description,
                     DateTime.ParseExact(
@@ -161,9 +153,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                         "dd/MM/yyyy",
                         CultureInfo.InvariantCulture
                     ).AddMilliseconds(ResearchProject.Count + CurrentPhase.Count + 1),
-                    localAllMembers.Where(
-                        (localMember) => SelectedTeamEmails.Contains(localMember.EMail)
-                    ),
+                    ResearchProject.Team.Where((teamMember) => SelectedTeamEmails.Contains(teamMember.EMail)),
                     new FinancialResource(MobilityCost, (Currency)MobilityCostSelectedIndex),
                     new FinancialResource(LaborCost, (Currency)LaborCostSelectedIndex),
                     new FinancialResource(LogisticalCost, (Currency)LogisticalCostSelectedIndex),

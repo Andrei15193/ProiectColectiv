@@ -87,5 +87,47 @@ namespace DALayer.Database
             }
             return classrooms;
         }
+
+        internal ICollection<ClassRoom> getByActivity(int activity)
+        {
+            LinkedList<ClassRoom> classrooms = new LinkedList<ClassRoom>();
+            SqlCommand cmd = new SqlCommand("select classRoom from activityclassrooms where activity = @activity", DatabaseConstants.SqlConnection);
+            cmd.Parameters.Add(new SqlParameter()
+            {
+                Value = activity,
+                ParameterName = "@activity"
+            });
+            cmd.Connection.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                command.CommandType = System.Data.CommandType.Text;
+                command.CommandText = @"select name, description from classrooms where name = @name";
+                command.Parameters.Clear();
+                command.Parameters.Add(new SqlParameter()
+                {
+                    Value = dr["classRoom"],
+                    ParameterName = "@name"
+                });
+                SqlDataReader reader = null;
+                try
+                {
+                    command.Connection.Open();
+                    reader = command.ExecuteReader();
+                    classrooms.AddLast(ReadClassRooms(reader).First);
+                }
+                finally
+                {
+                    if (reader != null)
+                    {
+                        reader.Close();
+                    }
+                    command.Connection.Close();
+                }
+            }
+            dr.Close();
+            cmd.Connection.Close();
+            return classrooms;
+        }
     }
 }

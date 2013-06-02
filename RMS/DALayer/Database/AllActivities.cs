@@ -56,102 +56,107 @@ namespace DALayer.Database
             {
                 while (reader.Read())
                 {
-                    ActivityType a = (ActivityType) Convert.ToInt32(reader["type"].ToString());
+                    ActivityType a = (ActivityType)Convert.ToInt32(reader["type"].ToString());
                     switch (a)
                     {
                         case ActivityType.Administrative:
-                        {
-                            activities.AddLast(new AdministrativeActivity(reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(5), reader.GetDateTime(6)));
-                            break;
-                        }
+                            {
+                                activities.AddLast(new AdministrativeActivity(reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(5), reader.GetDateTime(6)));
+                                break;
+                            }
                         #region 1
                         case ActivityType.Didactic:
-                        {
-                            CourseType courseType = CourseType.Course;
-                            Member m = null;
-                            string formation = null;
-                            SqlCommand cmd = new SqlCommand(@"select formation, assignee, coursetype from didacticactivities where activity = @id", DatabaseConstants.SqlConnection);
-                            cmd.Parameters.Clear();
+                            {
+                                CourseType courseType = CourseType.Course;
+                                Member m = null;
+                                string formation = null;
+                                SqlCommand cmd = new SqlCommand(@"select formation, assignee, coursetype from didacticactivities where activity = @id", DatabaseConstants.SqlConnection);
+                                cmd.Parameters.Clear();
 
-                            SqlDataReader dr = null;
-                            cmd.Parameters.Add(new SqlParameter()
-                            {
-                                ParameterName = "@id",
-                                Value = Convert.ToInt32(reader["id"])
-                            });
-                            try
-                            {
-                                cmd.Connection.Open();
-                                dr = cmd.ExecuteReader();
-                                if (dr.Read())
+                                SqlDataReader dr = null;
+                                cmd.Parameters.Add(new SqlParameter()
                                 {
-                                    courseType = (CourseType)Convert.ToInt32(dr["coursetype"].ToString());
-                                    m = new AllMembers().Where(dr["assignee"].ToString());
-                                    formation = dr["formation"].ToString();
-                                }
-                            }
-                            finally
-                            {
-                                if (dr != null)
+                                    ParameterName = "@id",
+                                    Value = Convert.ToInt32(reader["id"])
+                                });
+                                try
                                 {
-                                    dr.Close();
+                                    cmd.Connection.Open();
+                                    dr = cmd.ExecuteReader();
+                                    if (dr.Read())
+                                    {
+                                        courseType = (CourseType)Convert.ToInt32(dr["coursetype"].ToString());
+                                        m = new AllMembers().Where(dr["assignee"].ToString());
+                                        formation = dr["formation"].ToString();
+                                    }
                                 }
-                                cmd.Connection.Close();
+                                finally
+                                {
+                                    if (dr != null)
+                                    {
+                                        dr.Close();
+                                    }
+                                    cmd.Connection.Close();
+                                }
+                                activities.AddLast(new DidacticActivity(courseType, reader["title"].ToString(), reader["description"].ToString(), formation, reader.GetDateTime(4), reader.GetDateTime(5), m)
+                                {
+                                    Id = Convert.ToInt32(reader["id"]),
+                                    Equipments = new AllEquipments().getByActivity(Convert.ToInt32(reader["id"])),
+                                    ClassRooms = new AllClassRooms().getByActivity(Convert.ToInt32(reader["id"]))
+                                });
+                                break;
                             }
-                            activities.AddLast(new DidacticActivity(courseType,  reader["title"].ToString(), reader["description"].ToString(), formation, reader.GetDateTime(4), reader.GetDateTime(5), m));
-                            break;
-                        }
                         #endregion
                         #region 2
                         case ActivityType.General_Activity:
-                        {
-                            //
-                            break;
-                        }
+                            {
+                                //
+                                break;
+                            }
                         #endregion
                         #region 3
                         case ActivityType.Research:
-                        {
-                            ResearchPhase rp = null;
-                            IEnumerable<Member> members = null;
-                            FinancialResource  mobilittyCost = null;
-                            FinancialResource laborCost = null;
-                            FinancialResource logisticalCost = null;
-                            bool isConfidential = false;
-                            SqlCommand cmd = new SqlCommand(@"select team, phase, researchProject, laborCosts, logisticalCosts, mobilityCosts, isConfidential from researchActivities where activity = @id", DatabaseConstants.SqlConnection);
-                            cmd.Parameters.Clear();
+                            {
+                                ResearchPhase rp = null;
+                                IEnumerable<Member> members = null;
+                                FinancialResource mobilittyCost = null;
+                                FinancialResource laborCost = null;
+                                FinancialResource logisticalCost = null;
+                                bool isConfidential = false;
+                                SqlCommand cmd = new SqlCommand(@"select team, phase, researchProject, laborCosts, logisticalCosts, mobilityCosts, isConfidential from researchActivities where activity = @id", DatabaseConstants.SqlConnection);
+                                cmd.Parameters.Clear();
 
-                            SqlDataReader dr = null;
-                            cmd.Parameters.Add(new SqlParameter()
-                            {
-                                ParameterName = "@id",
-                                Value = Convert.ToInt32(reader["id"])
-                            });
-                            try
-                            {
-                                cmd.Connection.Open();
-                                dr = cmd.ExecuteReader();
-                                if (dr.Read())
+                                SqlDataReader dr = null;
+                                cmd.Parameters.Add(new SqlParameter()
                                 {
-                                    members = new AllMembers().getTeam(Convert.ToInt32(dr["team"].ToString()));
-                                    mobilittyCost = new AllFinancialResources().getbyPK(Convert.ToInt32(dr["mobilityCosts"].ToString()));
-                                    laborCost = new AllFinancialResources().getbyPK(Convert.ToInt32(dr["laborCosts"].ToString()));
-                                    logisticalCost = new AllFinancialResources().getbyPK(Convert.ToInt32(dr["logisticalCosts"].ToString())); 
-                                    isConfidential = Convert.ToBoolean(dr["isConfidential"]);
-                                    rp = new AllResearchPhases().getByPK(Convert.ToInt32(dr["phase"].ToString()));
-                                }
-                            }
-                            finally
-                            {
-                                if (dr != null)
+                                    ParameterName = "@id",
+                                    Value = Convert.ToInt32(reader["id"])
+                                });
+                                try
                                 {
-                                    dr.Close();
+                                    cmd.Connection.Open();
+                                    dr = cmd.ExecuteReader();
+                                    if (dr.Read())
+                                    {
+                                        members = new AllMembers().getTeam(Convert.ToInt32(dr["team"].ToString()));
+                                        mobilittyCost = new AllFinancialResources().getbyPK(Convert.ToInt32(dr["mobilityCosts"].ToString()));
+                                        laborCost = new AllFinancialResources().getbyPK(Convert.ToInt32(dr["laborCosts"].ToString()));
+                                        logisticalCost = new AllFinancialResources().getbyPK(Convert.ToInt32(dr["logisticalCosts"].ToString()));
+                                        isConfidential = Convert.ToBoolean(dr["isConfidential"]);
+                                        rp = new AllResearchPhases().getByPK(Convert.ToInt32(dr["phase"].ToString()));
+                                    }
                                 }
-                                cmd.Connection.Close();
+                                finally
+                                {
+                                    if (dr != null)
+                                    {
+                                        dr.Close();
+                                    }
+                                    cmd.Connection.Close();
+                                }
+                                activities.AddLast(new ResearchActivity(rp, reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5), members, mobilittyCost, laborCost, logisticalCost, isConfidential));
+                                break;
                             }
-                            activities.AddLast(new ResearchActivity(rp, reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5), members, mobilittyCost, laborCost, logisticalCost, isConfidential));
-                            break;
-                        }
                         #endregion
                         #region 4
                         case ActivityType.Research_Phase:

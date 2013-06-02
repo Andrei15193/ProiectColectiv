@@ -33,16 +33,31 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 if (activity is DidacticActivity)
                 {
                     didacticActivity = (DidacticActivity)activity;
-                    if (didacticActivity.Contains(member))
-                        memberActivities.Add(didacticActivity);
-                            
+                    IEnumerator<Member> membersDA = didacticActivity.GetEnumerator();
+                    
+                    while(membersDA.MoveNext() == true)
+                    {
+                        if (membersDA.Current.EMail.Equals(member.EMail))
+                        {
+                            memberActivities.Add(didacticActivity);
+                            break;
+                        }
+                    }       
                 }
 
                 if (activity is ResearchActivity)
                 {
                     reasearchActivity = (ResearchActivity)activity;
-                    if (reasearchActivity.Contains(member))
-                        memberActivities.Add(reasearchActivity);
+                    IEnumerator<Member> membersRA = reasearchActivity.GetEnumerator();
+
+                    while (membersRA.MoveNext() == true)
+                    {
+                        if (membersRA.Current.EMail.Equals(member.EMail))
+                        {
+                            memberActivities.Add(reasearchActivity);
+                            break;
+                        }
+                    }
                 }
             }
 

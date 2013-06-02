@@ -3,7 +3,7 @@
 
 @{   
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
-    Page.Title = "Get Projects Info";
+    Page.Title = "All Projects";
     string errorMessage;
 
     ResearchProjectViewModel researchProjectViewModel = Session["researchProjectViewModel"] as ResearchProjectViewModel ?? ViewModelFactory.ResearchProjectViewModel;
@@ -21,55 +21,90 @@
 
 @section body{
     <ul class="nav nav-tabs">
-        <li class="active"><a>Get Projects Info</a></li>
+        <li class="active"><a>Department Projects</a></li>
     </ul>
 
     @if (researchProjects != null)
     {
-        if (selectedProject != null)
+        if (researchProjects.Count() > 0)
         {
+            if (selectedProject != null)
+            {
         <div class="well">
+            <h1>@selectedProject.Title</h1>
             <p>
-                <b>Title: </b>@selectedProject.Title<br />
-                <b>Description: </b>
-                <br />@selectedProject.Description<br />
-                <b>Start Date: </b>@selectedProject.StartDate<br />
-                <b>End Date: </b>@selectedProject.EndDate<br />
-                <br />
-                <b>Team:</b>
+                <b>Start date:</b> @selectedProject.StartDate.ToString("d MMM yyyy")<br />
+                <b>End date:</b> @selectedProject.EndDate.ToString("d MMM yyyy")
             </p>
-            <ul>
+            <p>
+                @selectedProject.Description
+            </p>
+
+            <h2>Team:</h2>
+            <ul style="margin: 0 0 30px;">
                 @foreach (Member member in selectedProject.Team)
                 {
-                    <li>@member.Name, @member.EMail</li>
+                    <li>@member.ToString()</li>
                 }
             </ul>
         </div>
-                foreach (ResearchPhase rp in selectedProject)
+    
+                if (selectedProject.Count > 0)
                 {
         <div class="well">
-            <h3>Phase: @rp.Title</h3>
-            <p>
-                <b>Description: </b>
-                <br />
-                @rp.Description<br />
-                <b>Start Date: </b>@rp.StartDate<br />
-                <b>End Date: </b>@rp.EndDate<br />
-                <b>Activities:</b>
-            </p>
-            @foreach (ResearchActivity ra in rp)
+            <h2>Phases</h2>
+            @foreach (ResearchPhase phase in selectedProject)
             {
-                if (!ra.IsConfidential)
-                {
-                <h3>@ra.Title (@ra.StartDate, @ra.EndDate)</h3>
-                <p><b>Description:</b><br />@ra.Description</p>
-                }
+                <div class="activityContainment">
+                    <h2>@phase.Title</h2>
+                    <p>
+                        @phase.Description
+                    </p>
+                    <p>
+                        <b>Start date: </b>@phase.StartDate.ToString("d MMM yyyy")
+                        <br />
+                        <b>End date: </b>@phase.EndDate.ToString("d MMM yyyy")
+                    </p>
+                    @if (phase.Count((activity) => !activity.IsConfidential) > 0)
+                    {
+                        <h3>Activities</h3>
+                        foreach (ResearchActivity researchActivity in phase)
+                        {
+                            if (!researchActivity.IsConfidential)
+                            {
+                        <div class="activityContainment">
+                            <h4>@researchActivity.Title</h4>
+                            <p>
+                                @researchActivity.Description
+                            </p>
+                            <p>
+                                <b>Start date: </b>@researchActivity.StartDate.ToString("d MMM yyyy")<br />
+                                <b>End date: </b>@researchActivity.EndDate.ToString("d MMM yyyy")<br />
+                                <b>Assignee@(researchActivity.AssigneeCount > 1 ? "s" : ""):</b> @string.Join(", ", researchActivity.Select((assignee) => assignee.Name))
+                            </p>
+                            @if (researchActivity.ClassRooms.Count > 0)
+                            {
+                                <p>
+                                    <b>Class rooms used:</b> @string.Join(", ", researchActivity.ClassRooms.Select((classRoom) => classRoom.Name))
+                                </p>
+                            }
+                            @if (researchActivity.Equipments.Count > 0)
+                            {
+                                <p>
+                                    <b>Equipment used:</b> @string.Join(", ", researchActivity.Equipments.Select((equipment) => string.Format("{0} {1} ({2})", equipment.Brand, equipment.Model, equipment.SerialNumber)))
+                                </p>
+                            }
+                        </div>
+                            }
+                        }
+                    }
+                </div>
             }
         </div>
                 }
-        }
-        else
-        {    
+            }
+            else
+            { 
         <div class="well">
             <ul>
                 @foreach (ResearchProject project in researchProjects)
@@ -79,6 +114,12 @@
                 }
             </ul>
         </div>
+            }
+        }
+        else
+        {
+        <h1>No projects... :(</h1>
+        <p>There are no active projects, fix it!</p>
         }
     }
     else

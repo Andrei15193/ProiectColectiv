@@ -152,7 +152,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAIAAAQAAAAAABAAAAAABAQAAAEAAAAEAgAAAAAQAAA=</HashCode>
+      <HashCode>AAIAAAQAAAAAABAAAAAABAQAAAEAAAAEAgAABAAQAAA=</HashCode>
       <FileName>Entities\Phase.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -314,16 +314,16 @@
     <Position X="6.25" Y="10" Width="4.25" />
     <AssociationLine Name="phases" Type="ResourceManagementSystem.BusinessLogic.Entities.ResearchPhase" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="7.885" Y="12.646" />
-        <Point X="7.885" Y="14.562" />
-        <Point X="7.25" Y="14.562" />
+        <Point X="7.885" Y="12.838" />
+        <Point X="7.885" Y="14.614" />
+        <Point X="7.25" Y="14.614" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.087" Y="-0.284" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>ACIAAAAAAAAAABAAAAAABAQAAAAAAAAAEAAEAAAQAAA=</HashCode>
+      <HashCode>ACIAAAAAAAAAABAAAAAABAQAAAAAAAAAEAAEBAAQAAA=</HashCode>
       <FileName>Entities\ResearchProject.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

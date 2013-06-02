@@ -40,32 +40,33 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         }
         */
 
-        public List<AbstractActivity> GetMemberActivity(Member member, out string error)
+        public IEnumerable<AbstractActivity> GetMemberActivity(Member member, out string error)
         {
             IEnumerable<AbstractActivity> activities = TryGetAll(out error);
-            List<AbstractActivity> memberActivities = null;
-            DidacticActivity didacticActivity;
-            ResearchActivity reasearchActivity;
-
-            foreach (AbstractActivity activity in activities)
+            if (activities != null)
             {
-                if (activity is DidacticActivity)
+                ICollection<AbstractActivity> memberActivities = new LinkedList<AbstractActivity>();
+                foreach (AbstractActivity activity in activities)
                 {
-                    didacticActivity = (DidacticActivity)activity;
-                    if (didacticActivity.Contains(member))
-                        memberActivities.Add(didacticActivity);
-                            
-                }
+                    if (activity is DidacticActivity)
+                    {
+                        DidacticActivity didacticActivity = (DidacticActivity)activity;
+                        if (didacticActivity.Contains(member))
+                            memberActivities.Add(didacticActivity);
 
-                if (activity is ResearchActivity)
-                {
-                    reasearchActivity = (ResearchActivity)activity;
-                    if (reasearchActivity.Contains(member))
-                        memberActivities.Add(reasearchActivity);
+                    }
+
+                    if (activity is ResearchActivity)
+                    {
+                        ResearchActivity reasearchActivity = (ResearchActivity)activity;
+                        if (reasearchActivity.Contains(member))
+                            memberActivities.Add(reasearchActivity);
+                    }
                 }
+                return memberActivities;
             }
-
-            return memberActivities;
+            else
+                return null;
         }
 
         public IEnumerable<AbstractActivity> TryGetAll(out string errorMessage)
@@ -77,7 +78,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
             catch (Exception exception)
             {
-                errorMessage = exception.ToString();
+                errorMessage = exception.Message;
                 return null;
             }
         }

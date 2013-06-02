@@ -67,6 +67,21 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
         }
 
+        public override State State
+        {
+            get
+            {
+                return base.State;
+            }
+            set
+            {
+                if (phases != null)
+                    foreach (ResearchPhase phase in phases)
+                        phase.State = value;
+                base.State = value;
+            }
+        }
+
         public Collections.Team Team { get; private set; }
 
         private ISet<ResearchPhase> phases;

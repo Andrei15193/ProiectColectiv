@@ -5,7 +5,7 @@
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
     Page.Title = "View Activity Calendar";
 
-  
+
     string errorMessage = "";
 
     MemberViewModel membersViewModel = Session["membersViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
@@ -13,9 +13,8 @@
 
     ActivitiesViewModel activitiesViewModel = Session["activitiesViewModel"] as ActivitiesViewModel ?? ViewModelFactory.ActivitiesViewModel;
     Session["activitiesViewModel"] = activitiesViewModel;
-    IEnumerable<AbstractActivity> activities = activitiesViewModel.GetMemberActivity(membersViewModel.member, out errorMessage);
-    
-    }
+    IEnumerable<AbstractActivity> activities = activitiesViewModel.GetMemberActivity(membersViewModel.Member, out errorMessage);
+}
 
 @section body{
     <ul class="nav nav-tabs">
@@ -23,44 +22,52 @@
 
     </ul>
 
-    
-        @if (activities != null)
+
+    @if (activities != null)
+    {
+        if (activities.Count() > 0)
         {
-            
-                foreach (var activity in activities)
-                {
-                    <div class="well">
-                        @if (activity is DidacticActivity)
-                        {
-                            DidacticActivity didacticActivity = (DidacticActivity) activity;
-                            <p><b>Course type: </b> @didacticActivity.CourseType</p>
-                            <p><b>Course name: </b> @didacticActivity.CourseName</p>
-                            <p><b>Description: </b> @didacticActivity.Description</p>
-                            <p><b>Formation: </b> @didacticActivity.Formation</p>
-                            <p><b>Start date: </b> @didacticActivity.StartDate.ToShortDateString()</p>
-                            <p><b>End date: </b> @didacticActivity.EndDate.ToShortDateString()</p>
-                        }
-                    
-                        @if(activity is ResearchActivity)
-                        {
-                            ResearchActivity researchActivity = (ResearchActivity)activity;
-                            <p><b>Title: </b> @researchActivity.Title</p>
-                            <p><b>Description: </b> @researchActivity.Description</p>
-                            <p><b>Start date: </b> @researchActivity.StartDate.ToShortDateString()</p>
-                            <p><b>End date: </b> @researchActivity.EndDate.ToShortDateString()</p>
-                            <p><b>Mobility cost: </b> @researchActivity.MobilityCost.Value @researchActivity.MobilityCost.Currency</p>
-                            <p><b>Labor cost: </b> @researchActivity.LaborCost.Value @researchActivity.LaborCost.Currency</p>
-                            <p><b>Logistical cost: </b> @researchActivity.LogisticalCost.Value @researchActivity.LogisticalCost.Currency</p>
-                        }
-                    </div>
-                }
-        
+            foreach (var activity in activities)
+            {
+        <div class="well">
+            @if (activity is DidacticActivity)
+            {
+                DidacticActivity didacticActivity = (DidacticActivity)activity;
+                <p><b>Course type: </b>@didacticActivity.CourseType</p>
+                <p><b>Course name: </b>@didacticActivity.CourseName</p>
+                <p><b>Description: </b>@didacticActivity.Description</p>
+                <p><b>Formation: </b>@didacticActivity.Formation</p>
+                <p><b>Start date: </b>@didacticActivity.StartDate.ToShortDateString()</p>
+                <p><b>End date: </b>@didacticActivity.EndDate.ToShortDateString()</p>
+            }
+
+            @if (activity is ResearchActivity)
+            {
+                ResearchActivity researchActivity = (ResearchActivity)activity;
+                <p><b>Title: </b>@researchActivity.Title</p>
+                <p><b>Description: </b>@researchActivity.Description</p>
+                <p><b>Start date: </b>@researchActivity.StartDate.ToShortDateString()</p>
+                <p><b>End date: </b>@researchActivity.EndDate.ToShortDateString()</p>
+                <p><b>Mobility cost: </b>@researchActivity.MobilityCost.Value @researchActivity.MobilityCost.Currency</p>
+                <p><b>Labor cost: </b>@researchActivity.LaborCost.Value @researchActivity.LaborCost.Currency</p>
+                <p><b>Logistical cost: </b>@researchActivity.LogisticalCost.Value @researchActivity.LogisticalCost.Currency</p>
+            }
+        </div>
+            }
         }
         else
         {
-            <h1>Error!</h1>
-            <p>@errorMessage</p>
-            <p>We are terebly sorry for the inconvenience...</p>
+        <div class="well">
+            <h1>So much time!</h1>
+            <p>You do not have any activities in the comming days...</p>
+        </div>
         }
-   
+    }
+    else
+    {
+        <h1>Error!</h1>
+        <p>@errorMessage</p>
+        <p>We are terebly sorry for the inconvenience...</p>
+    }
+
 }

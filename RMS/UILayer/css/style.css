@@ -196,7 +196,8 @@ body, .menu, .sidebar, .header-form
 
 .info
 {
-    margin: 0 260px 0 100px;
+    /*margin: 0 260px 0 100px;*/
+    margin: 0 30px 0 100px;
 }
 
 #myContent

@@ -5,15 +5,15 @@
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
     Page.Title = "Members Info";
 
-  
+
     string errorMessage;
-   
+
     MemberViewModel membersViewModel = Session["membersViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
     Session["membersViewModel"] = membersViewModel;
     IEnumerable<Member> members = membersViewModel.TryGetAll(out errorMessage);
 
     
-    }
+}
 
 @section body{
     <ul class="nav nav-tabs">
@@ -21,65 +21,63 @@
 
     </ul>
 
-    
-        @if (members != null)
+    @if (members != null)
+    {
+        foreach (var member in members)
         {
-            
-                foreach (var member in members)
-                {
-                    <div class="well">
-                        @switch (member.Type)
-                        {
-                            case MemberType.Administrator:
-                                Administrator admin = member as Administrator;
-                                <h3>@admin.Name, @admin.Type </h3>
-                                 <p><b>Email: </b> @admin.EMail</p>
-                                break;
-                                
-                            case MemberType.Director:
-                                Director director = member as Director;
-                                <h3>@director.Name , @director.Type</h3>
-                                <p><b>Email: </b>@director.EMail</p>
-                                break;
-                            case MemberType.PhD_Student:
-                                PhDStudent student = member as PhDStudent;
-                                <h3>@student.Name, @student.Type </h3>
-                                <p><b>Email: </b>@student.EMail</p>
-                                <p><b>Website: </b><a href="@student.Website"> @student.Website</a></p>
-                                <p><b>Adress: </b>@student.Address, Tel: @student.Telephone</p>
-                                <p><b>Domains of interest: </b>@student.DomainsOfInterest</p>
-                        
-                                break;
-                            case MemberType.Teacher:
-                                Teacher teacher = member as Teacher;
-                                if (teacher.HasPhD)
-                                    {
-                                        <h3>Dr. @teacher.Name, @teacher.Position </h3>
-                                    }
-                                else
-                                    {
-                                        <h3>@teacher.Name, @teacher.Position </h3>
-                                    }
-                                <p><b>Email: </b> @teacher.EMail</p> 
-                                <p><b>Website: </b> <a href="@teacher.Website">@teacher.Website</a></p> 
-                                <p><b>Adress: </b> @teacher.Address, Tel: @teacher.Telephone</p>
-                                <p><b>Domains of interest: </b>@teacher.DomainsOfInterest</p>    
-                                
-                                break;
-                            default:
-                                break;
-                        }
+        <div class="well">
+            @switch (member.Type)
+            {
+                case MemberType.Administrator:
+                    Administrator admin = member as Administrator;
+                <h3>@admin.Name, @admin.Type </h3>
+                <p><b>Email: </b>@admin.EMail</p>
+                    break;
 
-                    </div>
-                }
-           
-          
+                case MemberType.Director:
+                    Director director = member as Director;
+                <h3>@director.Name, @director.Type</h3>
+                <p><b>Email: </b>@director.EMail</p>
+                    break;
+                case MemberType.PhD_Student:
+                    PhDStudent student = member as PhDStudent;
+                <h3>@student.Name, @student.Type </h3>
+                <p><b>Email: </b>@student.EMail</p>
+                <p><b>Website: </b><a href="@student.Website">@student.Website</a></p>
+                <p><b>Adress: </b>@student.Address, Tel: @student.Telephone</p>
+                <p><b>Domains of interest: </b>@student.DomainsOfInterest</p>
+                        
+                    break;
+                case MemberType.Teacher:
+                    Teacher teacher = member as Teacher;
+                    if (teacher.HasPhD)
+                    {
+                <h3>Dr. @teacher.Name, @teacher.Position </h3>
+                    }
+                    else
+                    {
+                <h3>@teacher.Name, @teacher.Position </h3>
+                    }
+                <p><b>Email: </b>@teacher.EMail</p> 
+                <p><b>Website: </b><a href="@teacher.Website">@teacher.Website</a></p> 
+                <p><b>Adress: </b>@teacher.Address, Tel: @teacher.Telephone</p>
+                <p><b>Domains of interest: </b>@teacher.DomainsOfInterest</p>    
+                                
+                    break;
+                default:
+                    break;
+            }
+
+        </div>
         }
-        else
-        {
-            <h1>Error!</h1>
-            <p>@errorMessage</p>
-            <p>We are terebly sorry for the inconvenience...</p>
-        }
-   
+
+
+    }
+    else
+    {
+        <h1>Error!</h1>
+        <p>@errorMessage</p>
+        <p>We are terebly sorry for the inconvenience...</p>
+    }
+
 }

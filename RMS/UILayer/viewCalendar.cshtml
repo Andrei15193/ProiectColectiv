@@ -30,17 +30,19 @@
                         @if (activity is DidacticActivity)
                         {
                             DidacticActivity didacticActivity = (DidacticActivity) activity;
+                            <p><b>Type: </b> Didactic</p>
                             <p><b>Course type: </b> @didacticActivity.CourseType</p>
                             <p><b>Course name: </b> @didacticActivity.CourseName</p>
                             <p><b>Description: </b> @didacticActivity.Description</p>
                             <p><b>Formation: </b> @didacticActivity.Formation</p>
-                            <p><b>Start date: </b> @didacticActivity.StartDate.ToShortDateString()</p>
-                            <p><b>End date: </b> @didacticActivity.EndDate.ToShortDateString()</p>
+                            <p><b>Start date: </b> @didacticActivity.StartDate.ToShortDateString() @didacticActivity.StartDate.ToShortTimeString()</p>
+                            <p><b>End date: </b> @didacticActivity.EndDate.ToShortDateString() @didacticActivity.EndDate.ToShortTimeString()</p>
                         }
                     
                         @if(activity is ResearchActivity)
                         {
                             ResearchActivity researchActivity = (ResearchActivity)activity;
+                            <p><b>Type: </b> Research</p>
                             <p><b>Title: </b> @researchActivity.Title</p>
                             <p><b>Description: </b> @researchActivity.Description</p>
                             <p><b>Start date: </b> @researchActivity.StartDate.ToShortDateString()</p>

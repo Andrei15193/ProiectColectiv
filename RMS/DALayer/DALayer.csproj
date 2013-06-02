@@ -45,6 +45,7 @@
     <Compile Include="Database\AllFinancialResources.cs" />
     <Compile Include="Database\AllMembers.cs" />
     <Compile Include="DatabaseConstants.cs" />
+    <Compile Include="Database\AllResearchActivity.cs" />
     <Compile Include="Database\AllResearchProjects.cs" />
     <Compile Include="Database\AllStudentCircles.cs" />
     <Compile Include="Database\ResearchPhases.cs" />

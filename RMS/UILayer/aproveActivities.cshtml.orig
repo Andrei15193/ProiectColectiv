@@ -1,0 +1,359 @@
+﻿@using ResourceManagementSystem.BusinessLogic.Entities;
+@using ResourceManagementSystem.BusinessLogic.Entities.Collections;
+@using ResourceManagementSystem.BusinessLogic.Workflow;
+
+@{   
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "Aprove Activities";
+    
+<<<<<<< HEAD
+    
+=======
+    String aproReje=String.Empty;
+
+>>>>>>> origin/Paula
+    string errorMessage;
+    ActivitiesViewModel activitiesViewModel = Session["activitiesViewModel"] as ActivitiesViewModel ?? ViewModelFactory.ActivitiesViewModel;
+    Session["activitiesViewModel"] = activitiesViewModel;
+    IEnumerable<AbstractActivity> activities = activitiesViewModel.getAllPending(out errorMessage);
+    AbstractActivity selectedActivity = null;
+
+    if (Request["id"] != null && activities != null)
+    {
+        int id = int.Parse(Request["id"]);
+        selectedActivity = activities.Where((activity) => activity.Id == id).First();
+    }
+    if (IsPost)
+    {
+        if (Request["aproved"] != null && Request["aproved"].Equals("Aprove"))
+        {
+            activitiesViewModel.aproveActivity(selectedActivity, true);  
+            Response.Redirect("~/aproveActivities.cshtml");
+   
+
+        }
+
+        if (Request["aproved"] != null && Request["aproved"].Equals("Reject"))
+        {
+            activitiesViewModel.aproveActivity(selectedActivity, false);
+            Response.Redirect("~/aproveActivities.cshtml");
+
+        }
+         
+    }
+<<<<<<< HEAD
+    
+}
+=======
+>>>>>>> origin/Paula
+
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a>Aprove activities</a></li>
+
+    </ul>
+
+
+    @if (activities!=null && activities.AsEnumerable().Count().CompareTo(0)>0)
+    {
+        <div class="well">
+            @if (selectedActivity == null)
+            {
+                <ul>
+                    @foreach (var activity in activities)
+                    {
+                        <li><a href="aproveActivities.cshtml?id=@activity.Id">@activity.Title</a>&nbsp; <b>Description&nbsp;:&nbsp; </b>@activity.Description &nbsp; <b>StartDate&nbsp;:&nbsp; </b>@activity.StartDate.ToString("dd-mm-yyyy") &nbsp; <b>EndDate&nbsp;:&nbsp;</b>@activity.EndDate.ToString("dd-mm-yyyy")&nbsp;</li>
+                    }
+                </ul>
+            }
+            else
+            {
+               
+                  switch (selectedActivity.Type)
+                    {
+                        case ActivityType.Administrative:
+                            AdministrativeActivity administrativeActivity = selectedActivity as AdministrativeActivity;
+                          <div class="adminActivity">
+                             <h1>@selectedActivity.Title</h1>
+                            <p>
+                            <b>Description:</b><br />@selectedActivity.Description<br />
+                            <b>Start date:</b> @selectedActivity.StartDate<br />
+                            <b>End date:</b> @selectedActivity.EndDate
+                            </p>
+                            <h4>Tasks:</h4>
+                            @foreach (TaskBreakdownActivity taskBreak in administrativeActivity.BreakdownActvities)
+                            {
+                                foreach (Task task in taskBreak)
+                                {
+                                     <p>
+                                    <b>Title:</b>@task.Title<br />
+                                    <b>Labor cost: </b>@task.LaborCost.Value @task.LaborCost.Currency<br />
+                                    <b>Logistical cost: </b>@task.LogisticalCost.Value @task.LogisticalCost.Currency<br />
+                                    <b>Mobility cost: </b>@task.MobilityCost.Value @task.MobilityCost.Currency
+                                     </p>
+                                if(task.ClassRooms.Count()>0)
+                                {   <h4>Class rooms required:</h4>
+                                    <ul>
+                                        @foreach (ClassRoom classRoom in task.ClassRooms)
+                                        {
+                                            <li>@classRoom.Name</li>
+                                        }
+                                    </ul>
+                            }
+                            if(task.Equipments.Count()>0)
+                            {        <h4>Equipment required</h4>
+                                    <ul>
+                                    @foreach (Equipment equipment in task.Equipments)
+                                    {
+                                        <li>@equipment.Brand + @equipment.Model (@equipment.SerialNumber)</li>
+                                    }
+                                    </ul>
+                                }
+                                }
+                                if(administrativeActivity.Teams.Count()>0)
+                                { <h1>Teams:</h1>
+                                foreach (NamedTeam team in administrativeActivity.Teams)
+                                {
+                                     if(team.Count()>0)
+                                     {
+                                    <h1>@team.Name:</h1>
+                                    <ul>
+                                        @foreach (Member member in team)
+                                        {
+                                            <li>@member.ToString()</li>
+                                        }
+                                    </ul>
+                            }
+                            
+                                 }
+                                 } 
+                              } 
+                        </div>  
+                               
+                            break;
+                            
+                           case ActivityType.Research_Project:
+                               ResearchProject researchProject = selectedActivity as ResearchProject;
+                               <div class="researchProject">
+                                    <h1>@researchProject.Title</h1>
+                                    <p>
+                                        <b>Start date:</b> @researchProject.StartDate.ToString("d MMM yyyy")<br />
+                                        <b>End date:</b> @researchProject.EndDate.ToString("d MMM yyyy")
+                                    </p>
+                                    <p>@researchProject.Description</p>
+                                   @if(researchProject.Team.Count()>0)
+                                   { <h1>Team:</h1>
+                                    <ul style="margin: 0 0 30px;">
+                                        @foreach (Member member in researchProject.Team)
+                                        {
+                                            <li>@member.ToString()</li>
+                                        }
+                                    </ul>
+                                   }
+                                    @if (researchProject.Count() > 0)
+                                    {
+                                        <div class="well">
+                                        <h1>Phases:</h1>
+                                        @foreach (ResearchPhase phase in researchProject)
+                                        {
+                                            <h1>@phase.Title</h1>
+                                            <p>
+                                                <b>Start date: </b>@phase.StartDate
+                                                <br />
+                                                <b>End date: </b>@phase.EndDate
+                                            </p>
+                                            <p>
+                                                @phase.Description
+                                            </p>
+                                            if (phase.Count() > 0)
+                                            {
+                                            <div class="researchActivity">
+                                                <h1>Activities:</h1>
+                                                @foreach (ResearchActivity activityy in phase)
+                                                {
+                                                    <h1>@activityy.Title</h1>
+                                                    <p>
+                                                        <b>Start date: </b>@activityy.StartDate<br />
+                                                        <b>End date: </b>@activityy.EndDate<br />
+                                                        <b>Description: </b>@activityy.Description<br />
+
+                                                    </p>
+                    
+                                                    <b>Labor cost: </b>@activityy.LaborCost.Value @activityy.LaborCost.Currency<br />
+                                    <b>Logistical cost: </b>@activityy.LogisticalCost.Value @activityy.LogisticalCost.Currency<br />
+                                    <b>Mobility cost: </b>@activityy.MobilityCost.Value @activityy.MobilityCost.Currency
+                                                    if(activityy.Count()>0)
+                                                    {<h1>Asignees:</h1>
+                                                    <ul style="margin: 0 0 30px;">
+                                                        @foreach (Member member in activityy.AsEnumerable())
+                                                        {
+                                                            <li>@member.ToString()</li>
+                                                        }
+                                                    </ul>
+                                                }
+                                                }
+                                            </div>
+                        
+                                            }
+                                        }       
+
+                                    }
+                                     
+                             </div>
+                                    }
+                                   <form method="post">  
+                          
+                                     <input type="submit" value="Aprove"  id="aproved" name="aproved"/>
+                                     <input type="submit" value="Reject" id="aproved" name="aproved"/>   
+                                     </form>
+                              </div>
+                          
+                            break;
+
+                        case ActivityType.Didactic:
+                            DidacticActivity didacticActivity = selectedActivity as DidacticActivity;         
+                            <div class="didacticActivity">
+
+                            <h1>@didacticActivity.CourseName</h1>
+                            <p>
+                                <b>Professor : </b>@didacticActivity.AsEnumerable().ElementAt(0).Name <br/>
+                                <b>Description: </b>@didacticActivity.Description<br />
+                                <b>Course type: </b>@didacticActivity.CourseType<br />
+                                <b>Formation: </b>@didacticActivity.Formation<br />
+                                <b>Start date: </b>@didacticActivity.StartDate<br />
+                                <b>End date: </b>@didacticActivity.EndDate<br />
+                            </p>
+                            <p><b>Research Phase: </b>@didacticActivity.</p>
+       
+
+                
+                             <form method="post">  
+                          
+                             <input type="submit" value="Aprove"  id="aproved" name="aproved"/>
+                             <input type="submit" value="Reject" id="aproved" name="aproved"/>   
+                             </form>
+                            </div> 
+                            break;
+
+                        case ActivityType.Research:
+                                ResearchActivity researchActivity = selectedActivity as ResearchActivity;
+                   
+                                <div class="resActivity">
+
+                                <h1>@researchActivity.Title</h1>
+                                <p>
+                                    <b>Start date: </b>@researchActivity.StartDate<br />
+                                    <b>End date: </b>@researchActivity.EndDate
+                                    <b>Description: </b>@researchActivity.Description<br />
+
+                                </p>
+                                <p><b>Research Phase: </b>@researchActivity.ResearchPhase.Title</p>
+                                <b>Labor cost: </b>@researchActivity.LaborCost.Value @researchActivity.LaborCost.Currency<br />
+                                    <b>Logistical cost: </b>@researchActivity.LogisticalCost.Value @researchActivity.LogisticalCost.Currency<br />
+                                    <b>Mobility cost: </b>@researchActivity.MobilityCost.Value @researchActivity.MobilityCost.Currency
+
+                                    @if(researchActivity.Count() >0){
+                                <h1>Asignees:</h1>
+                                    <ul style="margin: 0 0 30px;">
+                                        @foreach (Member member in researchActivity.AsEnumerable())
+                                        {
+                                            <li>@member.ToString()</li>
+                                        }
+                                    </ul>
+
+                                    }
+                
+                                <form method="post">  
+                          
+                                 <input type="submit" value="Aprove"  id="aproved" name="aproved"/>
+                                 <input type="submit" value="Reject" id="aproved" name="aproved"/>   
+                                 </form>  
+                            </div>                 
+                            break;
+                            
+                            case ActivityType.Research_Phase:
+                                ResearchPhase researchPhase = selectedActivity as ResearchPhase;
+                   
+                                <div class="resPhase">
+
+                                <h1>@researchPhase.Title</h1>
+                                <p>
+                                    <b>Start date: </b>@researchPhase.StartDate<br />
+                                    <b>End date: </b>@researchPhase.EndDate<br/>
+                                    <b>Description: </b>@researchPhase.Description<br />
+
+                                </p> 
+                                    @if (researchPhase.Count() > 0){
+                                    <h1>Activities:</h1>
+                                                foreach (ResearchActivity activityy in researchPhase.AsEnumerable())
+                                                {
+                                                    <h1>@activityy.Title</h1>
+                                                    <p>
+                                                        <b>Start date: </b>@activityy.StartDate<br />
+                                                        <b>End date: </b>@activityy.EndDate<br />
+                                                        <b>Description: </b>@activityy.Description<br />
+
+                                                    </p>
+                    
+                                                    <b>Labor cost: </b>@activityy.LaborCost.Value @activityy.LaborCost.Currency<br />
+                                    <b>Logistical cost: </b>@activityy.LogisticalCost.Value @activityy.LogisticalCost.Currency<br />
+                                    <b>Mobility cost: </b>@activityy.MobilityCost.Value @activityy.MobilityCost.Currency
+                                                    if(activityy.Count()>0)
+                                                    { <h1>Asignees:</h1>
+                                                    <ul style="margin: 0 0 30px;">
+                                                        @foreach (Member member in activityy.AsEnumerable())
+                                                        {
+                                                            <li>@member.ToString()</li>
+                                                        }
+                                                    </ul>
+                                                }
+                                                }
+                                    }
+                                     <form method="post">  
+                          
+                                 <input type="submit" value="Aprove"  id="aproved" name="aproved"/>
+                                 <input type="submit" value="Reject" id="aproved" name="aproved"/>   
+                                 </form>  
+                            </div>                 
+                            break;
+
+                            case ActivityType.Student_Circle:
+
+                            StudentCircle studentCircle = selectedActivity as StudentCircle;
+                             <div class="studentCircle">
+                            
+                                  <h1>studentCircle.Title</h1>
+                                <p>
+                                    <b>Description:</b> studentCircle.Description<br />
+                                    <b>Start date:</b> studentCircle.StartDate<br />
+                                    <b>End date:</b> studentCircle.EndDate
+                                </p>
+              
+                                <p>Study Program :studentCircle.StudyProgram.ToString()</p>
+                                 <form method="post">  
+                          
+                                 <input type="submit" value="Aprove"  id="aproved" name="aproved"/>
+                                 <input type="submit" value="Reject" id="aproved" name="aproved"/>   
+                                 </form>      
+                            </div>
+                            break;
+
+                        default:
+                        break;
+                    }
+
+                
+            }
+           
+            
+        </div>
+    }
+    else
+    {
+        
+        <p>There are no proposed activities</p>
+        
+    }
+    
+
+}

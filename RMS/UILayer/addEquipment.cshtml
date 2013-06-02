@@ -68,24 +68,27 @@
                     <input type="text" name="serialNumber" id="serialNumber" />
                 
                     <label for="description">Description:</label>
-                    <input type="text" name="description" id="description" />
-                   
-                
-                    <input type="submit" value="Next" />
+                    <textarea type="text" name="description" id="description"></textarea>
+                    <br />
+                    <div class="row">
+                        <input class="btn pull-right" type="submit" value="Next" />
+                    </div>
                         break;
 
                     case 1:
                         if (equipmentsViewModel.TryAddEquipment(out errorMessage))
                         {
-                    <h1>Success!</h1>
+                    <p><b>Success!</b></p>
                     <p>The equipment has been added to logistical resources!</p>
                         }
                         else
                         {
-                    <h1>Error!</h1>
+                     <p><b>Error!</b></p>
                     <p>Could not add equipment @errorMessage</p>
                         }
-                    <input type="submit" value="Finish" />
+                    <div class="row">
+                        <input class="btn pull-right" type="submit" value="Finish" />
+                    </div>
                         break;
 
                 }

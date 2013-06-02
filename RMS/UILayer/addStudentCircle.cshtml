@@ -108,8 +108,9 @@
                 <label for="endDate">End date: </label>
                 <input name="endDate" id="endDate" type="text" value="@studentCirclesViewModel.EndDate" data-date-format="dd-mm-yyyy" class="datepicker" />
                 @Html.ValidationMessage("endDate")
-                <p></p>
-                <p><input type="submit" value="Next" /></p>
+                <div class="row">
+                    <input class="btn pull-right" type="submit" value="Next" />
+                </div>
             </form>
         </div>
             break;
@@ -118,10 +119,10 @@
         <div class="well">
             @if (programs != null)
             {
-                <h1>Select the study program:</h1>
+                <h3 class="page-header">Select the study program:</h3>
                 <form action="addStudentCircle.cshtml" class="form-horizontal" method="post">
                     <input type="hidden" value="2" name="step" id="step" />
-                    <ul>
+                    <ul class="unstyled">
                         @foreach (var program in programs)
                         {
                             <li>
@@ -130,7 +131,9 @@
                             </li>
                         }
                     </ul>
-                    <input type="submit" value="Finish"  />
+                    <div class="row">
+                        <input class="pull-right btn" type="submit" value="Finish"  />
+                    </div>
                 </form>
             }
             else
@@ -148,17 +151,14 @@
             if (studyAddedSuccessfully)
             {
         <div class="well">
-            <h1>@studentCirclesViewModel.Title</h1>
-            <p>
-                
-                <b>Description:</b> @studentCirclesViewModel.Description<br />
-                <b>Start date:</b> @studentCirclesViewModel.StartDate<br />
-                <b>End date:</b> @studentCirclesViewModel.EndDate
-            </p>
-            
-            
-            <p>Study Program :@studentCirclesViewModel.StudyProgram.ToString()</p>
-            
+            <p>The <b>@studentCirclesViewModel.Title </b> student circle was successfully added.</p>
+            <br />
+            <div class="row">
+            <form class="form-horizontal" action="/addStudentCircle.cshtml" method="post">
+                <input type="hidden" name="step" id="step" value="0" />
+                <input class="btn pull-right" type="submit" value="Go back" />
+            </form>
+            </div>
         </div>
             }
             else
@@ -167,10 +167,13 @@
             <h1>Error!</h1>
             <p>@errorMessage</p>
             <p>We are terebly sorry for the inconvenience...</p>
+
+            <div class="row">
             <form class="form-horizontal" action="/addStudentCircle.cshtml" method="post">
                 <input type="hidden" name="step" id="step" value="0" />
-                <input type="submit" value="Go back" />
+                <input class="btn pull-right" type="submit" value="Go back" />
             </form>
+            </div>
         </div>
             }
             break;

@@ -58,23 +58,27 @@
                     <input type="text" name="name" id="name" />
                 
                     <label for="description">Description:</label>
-                    <input type="text" name="description" id="description" />
-               
-                    <input type="submit" value="Next" />
+                    <textarea name="description" id="description"></textarea>
+                    <br />
+                    <div class="row">
+                        <input class="btn pull-right" type="submit" value="Next" />
+                    </div>
                         break;
 
                     case 1:
                         if (classRoomViewModel.TryAddClassRoom(out errorMessage))
                         {
-                    <h1>Success!</h1>
+                    <p><b>Success!</b></p>
                     <p>The classroom has been added to ClassRooms!</p>
                         }
                         else
                         {
-                    <h1>Error!</h1>
+                    <p><b>Error!</b></p>
                     <p>Could not add the classroom @errorMessage</p>
                         }
-                    <input type="submit" value="Finish" />
+                        <div class="row">
+                            <input class="btn pull-right" type="submit" value="Finish" />
+                        </div>
                         break;
 
                 }

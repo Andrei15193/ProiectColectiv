@@ -271,7 +271,33 @@ namespace DALayer.Database
 
         public void aproveActivity(AbstractActivity activity,bool aproved)
         {
-            throw new NotImplementedException();
+            command.CommandType = System.Data.CommandType.Text;
+            command.CommandText = @"update activities set state = @state where id = @id";
+            command.Parameters.Clear();
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@state",
+                Value = aproved ? State.Aproved : State.Rejected
+            });
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@id",
+                Value = activity.Id
+            });
+            SqlDataReader reader = null;
+            try
+            {
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+                command.Connection.Close();
+            }
         }
     }
 }

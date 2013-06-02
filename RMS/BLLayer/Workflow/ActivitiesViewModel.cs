@@ -78,6 +78,18 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             {
                 switch (type)
                 {
+                    case ActivityType.Didactic:
+                        filteredActivities = GetActivitiesByType(ActivityType.Didactic, out error);
+                        foreach (DidacticActivity da in filteredActivities)
+                        {
+
+                            if (member.EMail.Equals(da.AsEnumerable().ElementAt(0).EMail))
+                            {
+                                    filteredActivitiesForMember.Add(activity);
+                                }
+                            
+                        }
+                        break;
                     case ActivityType.Administrative:
                         filteredActivities = GetActivitiesByType(ActivityType.Administrative, out error);
                         foreach (AbstractActivity activity in filteredActivities)

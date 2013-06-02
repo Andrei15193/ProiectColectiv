@@ -109,6 +109,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="viewFilteredCalendar.cshtml" />
+    <Content Include="getUsageReports.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

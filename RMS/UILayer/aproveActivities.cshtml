@@ -8,14 +8,6 @@
     
     String aproReje=String.Empty;
 
-    <!--   int step = 0;
-    const int lastStep = 2;
-    string errorMessage;
-    string requestStep = IsPost ? Request["step"] : null;
-    if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
-    {
-        step = 0;
-    }-->
     string errorMessage;
     ActivitiesViewModel activitiesViewModel = Session["activitiesViewModel"] as ActivitiesViewModel ?? ViewModelFactory.ActivitiesViewModel;
     Session["activitiesViewModel"] = activitiesViewModel;
@@ -42,18 +34,7 @@
          }
         }
     }
-    <!--switch (step)
-    {
-        case 0:
 
-            break;
-        case 1:
-          
-
-            break;
-      
-    }-->
-}
 @section body{
     <ul class="nav nav-tabs">
         <li class="active"><a>Aprove activities</a></li>

@@ -8,8 +8,8 @@
   
     string errorMessage = "";
 
-    MemberViewModel membersViewModel = Session["membersViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
-    Session["membersViewModel"] = membersViewModel;
+    MemberViewModel membersViewModel = Session["memberViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
+    Session["memberViewModel"] = membersViewModel;
 
     ActivitiesViewModel activitiesViewModel = Session["activitiesViewModel"] as ActivitiesViewModel ?? ViewModelFactory.ActivitiesViewModel;
     Session["activitiesViewModel"] = activitiesViewModel;

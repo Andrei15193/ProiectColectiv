@@ -17,14 +17,12 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             this.allActivities = allActivities;
             activity = null;
-        }
-
-        
+        }      
 
         public List<AbstractActivity> GetMemberActivity(Member member, out string error)
         {
             IEnumerable<AbstractActivity> activities = TryGetAll(out error);
-            List<AbstractActivity> memberActivities = null;
+            List<AbstractActivity> memberActivities = new List<AbstractActivity>();
             DidacticActivity didacticActivity;
             ResearchActivity reasearchActivity;
 
@@ -87,7 +85,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             try
             {
                 errorMessage = null;
-                foreach(AbstractActivity a in allActivities.AsEnumerable)
+                foreach (AbstractActivity a in allActivities.AsEnumerable)
                 {
                     if (a.State == State.Proposed)
                     {
@@ -103,9 +101,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
-        Member selectedMember = null;
-        public ResearchProject selectedResearchProject = null;
-
         private IAllActivities allActivities;
         private AbstractActivity activity;
         public int id { get; set; }
@@ -115,76 +110,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public string description { get; set; }
         public string startDate { get; set; }
         public string endDate { get; set; }
-        public int mobilityCost { get; set; }
-        public int logisticalCost { get; set; }
-        public int laborCost { get; set; }
-        public int mobilityCostSelectedIndex { get; set; }
-        public int laborCostSelectedIndex { get; set; }
-        public int logisticalCostSelectedIndex { get; set; }
-        public readonly string[] currency = Enum.GetNames(typeof(Currency)).Select((currency) => currency.Replace('_', ' ')).ToArray();
-        public bool isConfidential { get; set; }
-        public IEnumerable<string> selectedTeamEmails { get; set; }
-
-
-        public List<ResearchProject> GetMemberResearchProjects(Member member, out string error)
-        {
-        List<AbstractActivity> activities = GetMemberActivity(member, out error);
-        List<ResearchProject> researchProjects = null;
-        selectedMember = member;
-        foreach (ResearchProject activity in activities)
-        {
-        if (activity is ResearchProject)
-        {
-        ResearchProject researchProject = (ResearchProject)activity;
-        researchProjects.Add(researchProject);
-        }
-        }
-        return researchProjects;
-        }
-
-
-        public IEnumerator<ResearchPhase> GetPhasesForResearchProject(ResearchProject researchProject)
-        {
-        selectedResearchProject = researchProject;
-        return researchProject.GetEnumerator();
-        }
-
-
-        public bool TryCreateActivity(ResearchPhase researchPhase, out string error)
-        {
-        try
-        {
-        ResearchActivity researchActivity = new ResearchActivity(
-        researchPhase,
-        title,
-        description,
-       DateTime.ParseExact(
-                        startDate,
-                        "dd/MM/yyyy",
-                        CultureInfo.InvariantCulture
-                    ).AddMilliseconds(selectedResearchProject.Count + researchPhase.Count),
-                    DateTime.ParseExact(
-                        endDate,
-                        "dd/MM/yyyy",
-                        CultureInfo.InvariantCulture
-                    ).AddMilliseconds(selectedResearchProject.Count + researchPhase.Count + 1),
-        selectedResearchProject.Team.Where((teamMember) => selectedTeamEmails.Contains(teamMember.EMail)),
-        new FinancialResource(mobilityCost, (Currency)mobilityCostSelectedIndex),
-        new FinancialResource(laborCost, (Currency)laborCostSelectedIndex),
-        new FinancialResource(logisticalCost, (Currency)logisticalCostSelectedIndex),
-        isConfidential
-        );
-        researchActivity.State = State.Proposed;
-        //add the activity
-        error = null;
-        return true;
-        }
-        catch (Exception exception)
-        {
-        error = exception.Message;
-        return false;
-        }
-        }
-        
-            }
+   
+    }
 }

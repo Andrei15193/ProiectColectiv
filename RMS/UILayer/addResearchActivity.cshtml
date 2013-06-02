@@ -17,12 +17,13 @@
         step = 0;
     }
 
-    MemberViewModel membersViewModel = Session["membersViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
-    Session["membersViewModel"] = membersViewModel;
+    MemberViewModel membersViewModel = Session["memberViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
+    Session["memberViewModel"] = membersViewModel;
     
-    ActivitiesViewModel activitiesViewModel = Session["activitiesViewModel"] as ActivitiesViewModel ?? ViewModelFactory.ActivitiesViewModel;
-    Session["activitiesViewModel"] = activitiesViewModel;
-    List<ResearchProject> projects = activitiesViewModel.GetMemberResearchProjects(membersViewModel.member, out errorMessage);
+    ResearchProjectViewModel researchProjectViewModel = Session["researchProjectViewModel"] as ResearchProjectViewModel ?? ViewModelFactory.ResearchProjectViewModel;
+    Session["researchProjectViewModel"] = researchProjectViewModel;
+    
+    List<ResearchProject> projects = researchProjectViewModel.GetMemberResearchProjects(membersViewModel.member, out errorMessage);
     IEnumerator<ResearchPhase> phases = null;
     
     switch(step)
@@ -33,7 +34,7 @@
                 int val;
                 if (int.TryParse(Request["ResearchProject"], out val))
                 {
-                    phases = activitiesViewModel.GetPhasesForResearchProject(projects.ElementAt(val));
+                    phases = researchProjectViewModel.GetPhasesForResearchProject(projects.ElementAt(val));
                 }
             }
             break;
@@ -50,18 +51,18 @@
             break;
         
         case 2:
-            activitiesViewModel.title = Request["title"];
-            activitiesViewModel.description = Request["description"];
-            activitiesViewModel.startDate = Request["startDate"];
-            activitiesViewModel.endDate = Request["endDate"];
-            activitiesViewModel.laborCost = (Request["laborCost"] == string.Empty ? 0 : int.Parse(Request["laborCost"]));
-            activitiesViewModel.laborCostSelectedIndex = int.Parse(Request["laborCostSelectedIndex"]);
-            activitiesViewModel.mobilityCost = (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"]));
-            activitiesViewModel.mobilityCostSelectedIndex = int.Parse(Request["mobilityCostSelectedIndex"]);
-            activitiesViewModel.logisticalCost = (Request["logisticalCost"] == string.Empty ? 0 : int.Parse(Request["logisticalCost"]));
-            activitiesViewModel.logisticalCostSelectedIndex = int.Parse(Request["logisticalCostSelectedIndex"]);
-            activitiesViewModel.isConfidential = Request["isConfidential"] != null;
-            activitiesViewModel.selectedTeamEmails = Request.Form.AllKeys.Where((key) => Regex.IsMatch(key, Constants.EmailCheckRegex));
+            researchProjectViewModel.Title = Request["title"];
+            researchProjectViewModel.Description = Request["description"];
+            researchProjectViewModel.StartDate = Request["startDate"];
+            researchProjectViewModel.EndDate = Request["endDate"];
+            researchProjectViewModel.LaborCost = (Request["laborCost"] == string.Empty ? 0 : int.Parse(Request["laborCost"]));
+            researchProjectViewModel.LaborCostSelectedIndex = int.Parse(Request["laborCostSelectedIndex"]);
+            researchProjectViewModel.MobilityCost = (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"]));
+            researchProjectViewModel.MobilityCostSelectedIndex = int.Parse(Request["mobilityCostSelectedIndex"]);
+            researchProjectViewModel.LogisticalCost = (Request["logisticalCost"] == string.Empty ? 0 : int.Parse(Request["logisticalCost"]));
+            researchProjectViewModel.LogisticalCostSelectedIndex = int.Parse(Request["logisticalCostSelectedIndex"]);
+            researchProjectViewModel.IsConfidential = Request["isConfidential"] != null;
+            researchProjectViewModel.SelectedTeamEmails = Request.Form.AllKeys.Where((key) => Regex.IsMatch(key, Constants.EmailCheckRegex));
             
             break;
     }
@@ -78,7 +79,7 @@
         <h1>Error!</h1>
         <p>@errorMessage</p>
         <p>We are terebly sorry for the inconvenience...</p>
-        <form action="registerResearchActivity.cshtml" class="form-horizontal" method="post">
+        <form action="addResearchActivity.cshtml" class="form-horizontal" method="post">
             <input type="hidden" name="step" id="step" value="@step" />
             <input type="submit" value="Back" />
         </form>
@@ -92,14 +93,14 @@
                 // Select Research Project
              <div class="well">
                 <h2>Select the research project:</h2>
-                <form action="registerResearchActivity.cshtml" class="form-horizontal" method="post">
+                <form action="addResearchActivity.cshtml" class="form-horizontal" method="post">
                     <input type="hidden" value="1" name="step" id="Hidden1" />
                     <ul>
                         @for (i = 0; i < projects.Count(); i++)
                         {
                             <li>
                                 <input type="radio" name="ResearchProject" value="@i" />
-                                @(projects.ElementAt(i).ToString())
+                                @(projects.ElementAt(i).Title)
                             </li>
                         }
                     </ul>
@@ -113,14 +114,14 @@
             i = 0;
              <div class="well">
                 <h2>Select the project phase:</h2>
-                <form action="registerResearchActivity.cshtml" class="form-horizontal" method="post">
+                <form action="addResearchActivity.cshtml" class="form-horizontal" method="post">
                     <input type="hidden" value="2" name="step" id="Hidden2" />
                     <ul>
                         @while(phases.MoveNext() == true)
                         {
                             <li>
                                 <input type="radio" name="ResearchPhase" value="@i"/>
-                                @(phases.Current.ToString())
+                                @(phases.Current.Title)
                             </li>
                             i++;
                         }
@@ -132,56 +133,56 @@
             
             case 2:
                 //Add Research Activity
-                <form class="form-horizontal" action="/addResearchProject.cshtml" method="post">
+                <form class="form-horizontal" action="/addResearchActivity.cshtml" method="post">
             <div>
                 <input type="hidden" name="step" id="Hidden3" value="8" />
 
                 <label for="title">Title: </label>
-                <input type="text" name="title" id="title" value="@activitiesViewModel.title" />
+                <input type="text" name="title" id="title" value="@researchProjectViewModel.Title" />
 
                 <label for="description">Description: </label>
-                <textarea name="description" id="description">@activitiesViewModel.description</textarea>
+                <textarea name="description" id="description">@researchProjectViewModel.Description</textarea>
 
                 <label for="startDate">Start date: </label>
-                <input name="startDate" id="startDate" type="text" value="@activitiesViewModel.startDate" data-date-format="dd/mm/yyyy" class="datepicker" />
+                <input name="startDate" id="startDate" type="text" value="@researchProjectViewModel.StartDate" data-date-format="dd/mm/yyyy" class="datepicker" />
 
                 <label for="endDate">End date: </label>
-                <input name="endDate" id="endDate" type="text" value="@activitiesViewModel.endDate" data-date-format="dd/mm/yyyy" class="datepicker" />
+                <input name="endDate" id="endDate" type="text" value="@researchProjectViewModel.EndDate" data-date-format="dd/mm/yyyy" class="datepicker" />
 
                 <label for="laborCost">Labor cost: </label>
-                <input type="number" value="@activitiesViewModel.laborCost" name="LaborCost" id="LaborCost" />
+                <input type="number" value="@researchProjectViewModel.LaborCost" name="LaborCost" id="LaborCost" />
                 <select name="LaborCostSelectedIndex" id="LaborCostSelectedIndex">
-                    @for (i = 0; i < activitiesViewModel.currency.Length; i++)
+                    @for (i = 0; i < researchProjectViewModel.Currency.Length; i++)
                     {
-                        <option value="@i">@activitiesViewModel.currency[i]</option>
+                        <option value="@i">@researchProjectViewModel.Currency[i]</option>
                     }
                 </select>
 
                 <label for="mobilityCost">Mobility cost: </label>
-                <input type="number" value="@activitiesViewModel.mobilityCost" name="MobilityCost" id="MobilityCost" />
+                <input type="number" value="@researchProjectViewModel.MobilityCost" name="MobilityCost" id="MobilityCost" />
                 <select name="MobilityCostSelectedIndex" id="MobilityCostSelectedIndex">
-                    @for (i = 0; i < activitiesViewModel.currency.Length; i++)
+                    @for (i = 0; i < researchProjectViewModel.Currency.Length; i++)
                     {
-                        <option value="@i">@activitiesViewModel.currency[i]</option>
+                        <option value="@i">@researchProjectViewModel.Currency[i]</option>
                     }
                 </select>
 
                 <label for="logisticalCost">Mobility cost: </label>
-                <input type="number" value="@activitiesViewModel.logisticalCost" name="LogisticalCost" id="LogisticalCost" />
+                <input type="number" value="@researchProjectViewModel.LogisticalCost" name="LogisticalCost" id="LogisticalCost" />
                 <select name="LogisticalCostSelectedIndex" id="LogisticalCostSelectedIndex">
-                    @for (i = 0; i < activitiesViewModel.currency.Length; i++)
+                    @for (i = 0; i < researchProjectViewModel.Currency.Length; i++)
                     {
-                        <option value="@i">@activitiesViewModel.currency[i]</option>
+                        <option value="@i">@researchProjectViewModel.Currency[i]</option>
                     }
                 </select>
 
                 <p style="margin: 10px 0 0;">
                     Is confidential:
-                <input type="checkbox" @(activitiesViewModel.isConfidential ? "checked=\"checked\"" : "") name="isConfidential" id="isConfidential" />
+                <input type="checkbox" @(researchProjectViewModel.IsConfidential ? "checked=\"checked\"" : "") name="isConfidential" id="isConfidential" />
                 </p>
 
                 <h5>Team members participating to this activity: </h5>
-                @foreach (Member teamMember in activitiesViewModel.selectedResearchProject.Team)
+                @foreach (Member teamMember in researchProjectViewModel.ResearchProject.Team)
                 {
                     <p>
                         <input type="checkbox" name="@teamMember.EMail" />@teamMember.ToString()

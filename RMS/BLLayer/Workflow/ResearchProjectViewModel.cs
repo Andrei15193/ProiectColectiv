@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DALayer.Database;
 
 namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
@@ -194,6 +195,71 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        public List<ResearchProject> GetMemberResearchProjects(Member member, out string error)
+        {
+            List<ResearchProject> memberResearchProjects = new List<ResearchProject>();
+            selectedMember = member;
+
+            foreach (ResearchProject rp in TryGetAll(out error))
+            {
+                IEnumerable<Member> members = rp.Team;
+                foreach (Member m in members)
+                {
+                    if (m.EMail.Equals(selectedMember.EMail))
+                    {
+                        memberResearchProjects.Add(rp);
+                    }
+                }
+            }
+            return memberResearchProjects;
+        }
+
+
+        public IEnumerator<ResearchPhase> GetPhasesForResearchProject(ResearchProject researchProject)
+        {
+            ResearchProject = researchProject;
+            return researchProject.GetEnumerator();
+        }
+
+        public bool TryCreateActivity(ResearchPhase researchPhase, out string error)
+        {
+            try
+            {
+                ResearchActivity researchActivity = new ResearchActivity(
+                    researchPhase,
+                    Title,
+                    Description,
+                    DateTime.ParseExact(
+                            StartDate,
+                            "dd/MM/yyyy",
+                            CultureInfo.InvariantCulture
+                        ).AddMilliseconds(ResearchProject.Count + researchPhase.Count),
+                        DateTime.ParseExact(
+                            EndDate,
+                            "dd/MM/yyyy",
+                            CultureInfo.InvariantCulture
+                        ).AddMilliseconds(ResearchProject.Count + researchPhase.Count + 1),
+                    ResearchProject.Team.Where((teamMember) => SelectedTeamEmails.Contains(teamMember.EMail)),
+                    new FinancialResource(MobilityCost, (Currency)MobilityCostSelectedIndex),
+                    new FinancialResource(LaborCost, (Currency)LaborCostSelectedIndex),
+                    new FinancialResource(LogisticalCost, (Currency)LogisticalCostSelectedIndex),
+                    IsConfidential
+                    );
+                researchActivity.State = State.Proposed;
+                //add the activity
+
+                error = null;
+                new AllResearchActivity().Add(ResearchProject.Id, researchPhase.Id, researchActivity);
+                
+                return true;
+            }
+            catch (Exception exception)
+            {
+                error = exception.Message;
+                return false;
+            }
+        }
+
         public ResearchProject ResearchProject { get; private set; }
 
         public ResearchPhase CurrentPhase { get; private set; }
@@ -246,6 +312,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        private Member selectedMember;
         private IEnumerable<ResearchProject> localAllResearchProjects;
         private IAllMembers allMembers;
         private IEnumerable<Member> localAllMembers;

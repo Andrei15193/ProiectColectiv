@@ -143,7 +143,7 @@ namespace DALayer.Database
                                         laborCost = new AllFinancialResources().getbyPK(Convert.ToInt32(dr["laborCosts"].ToString()));
                                         logisticalCost = new AllFinancialResources().getbyPK(Convert.ToInt32(dr["logisticalCosts"].ToString()));
                                         isConfidential = Convert.ToBoolean(dr["isConfidential"]);
-                                        rp = new AllResearchPhases().getByPK(Convert.ToInt32(dr["phase"].ToString()));
+                                        rp = new AllResearchPhases().getByPK(Convert.ToInt32(dr["researchProject"].ToString()));
                                     }
                                 }
                                 finally

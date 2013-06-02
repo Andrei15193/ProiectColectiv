@@ -76,7 +76,5 @@ namespace ResourceManagementSystem.DataAccess.Mocks
                 return lista;
             }
         }
-
-
     }
 }

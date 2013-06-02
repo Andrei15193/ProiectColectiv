@@ -14,7 +14,7 @@ namespace DALayer.Database
     {
         private SqlCommand command;
 
-        
+
         public AllFinancialResources()
         {
             command = new SqlCommand() { Connection = DatabaseConstants.SqlConnection };
@@ -65,7 +65,7 @@ namespace DALayer.Database
             try
             {
                 command.Connection.Open();
-                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                reader = command.ExecuteReader();
                 financialResources = ReadFinancialResources(reader);
             }
             finally
@@ -86,11 +86,42 @@ namespace DALayer.Database
             {
                 while (reader.Read())
                 {
-                    financialResources.AddLast(new FinancialResource(Convert.ToInt32(reader["value"].ToString()),  (Currency)Convert.ToInt32(reader["currency"].ToString())));
-                    //financialResources.ElementAt(financialResources.Count - 1).Status = (State)Convert.ToInt32(reader["status"].ToString());
+                    financialResources.AddLast(new FinancialResource(Convert.ToInt32(reader["value"].ToString()), (Currency)Convert.ToInt32(reader["currency"].ToString())));
                 }
             }
             return financialResources;
+        }
+
+        public FinancialResource getbyPK(int p)
+        {
+            LinkedList<FinancialResource> financialResources = new LinkedList<FinancialResource>();
+            command.CommandType = System.Data.CommandType.Text;
+            command.CommandText = @"select value, status, currency from financialResources where operationId = @id";
+            command.Parameters.Clear();
+            command.Parameters.Add(new SqlParameter()
+            {
+                Value = p,
+                ParameterName = "@id"
+            });
+            SqlDataReader reader = null;
+            try
+            {
+                command.Connection.Open();
+                reader = command.ExecuteReader();
+                financialResources = ReadFinancialResources(reader);
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+                command.Connection.Close();
+            }
+            if (financialResources.Count() > 0)
+                return financialResources.First();
+            else
+                return null;
         }
     }
 }

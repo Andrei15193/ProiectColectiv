@@ -9,5 +9,9 @@ insert into Members(type, name, email, password, teachingPosition, hasPhd, telep
 
 insert into Members(type, name, email, password, teachingPosition, hasPhd, telephone, website, address, domainsOfInterest)
     values (1, 'Szasz Paul', 'paul@cs.ubbcluj.ro', '123456', NULL, 0, '5815', NULL, 'Campus 331', NULL)
-
+	
+insert into Members(type, name, email, password, teachingPosition, hasPhd, telephone, website, address, domainsOfInterest)
+    values (1, 'Admin', 'a@a.ro', 'a', NULL, 0, '5815', NULL, 'Campus 331', NULL)
+insert into Members(type, name, email, password, teachingPosition, hasPhd, telephone, website, address, domainsOfInterest)
+    values (0, 'Director', 'd@d.ro', 'd', NULL, 0, '5815', NULL, 'Campus 331', NULL)
 select * from Members

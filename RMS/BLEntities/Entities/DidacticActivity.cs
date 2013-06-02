@@ -28,8 +28,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         public string Formation { get; private set; }
 
-        public ICollection<ClassRoom> ClassRooms { get; private set; }
+        public ICollection<ClassRoom> ClassRooms { get; set; }
 
-        public ICollection<Equipment> Equipments { get; private set; }
+        public ICollection<Equipment> Equipments { get; set; }
     }
 }

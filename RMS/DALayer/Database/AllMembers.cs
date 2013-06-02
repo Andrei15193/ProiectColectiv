@@ -1,4 +1,5 @@
 ﻿using ResourceManagementSystem.BusinessLogic.Entities;
+using ResourceManagementSystem.BusinessLogic.Entities.Collections;
 using ResourceManagementSystem.DAOInterface;
 using System;
 using System.Collections.Generic;
@@ -127,13 +128,14 @@ namespace ResourceManagementSystem.DataAccess.Database
             try
             {
                 command.Connection.Open();
-                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                reader = command.ExecuteReader();
                 members = ReadMembers(reader);
             }
             finally
             {
                 if (reader != null)
                     reader.Close();
+                command.Connection.Close();
             }
             if (members.Count() > 0)
                 return members.First();
@@ -154,7 +156,7 @@ namespace ResourceManagementSystem.DataAccess.Database
                 try
                 {
                     command.Connection.Open();
-                    reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+                    reader = command.ExecuteReader();
                     members = ReadMembers(reader);
                 }
                 finally
@@ -229,5 +231,62 @@ namespace ResourceManagementSystem.DataAccess.Database
 
         private SqlCommand command;
 
+
+        public Member Where(string email)
+        {
+            command.CommandType = System.Data.CommandType.Text;
+            command.CommandText = @"select type, name, email, password, teachingPosition, hasPhD, telephone, website, address, domainsOfInterest
+                                            from Members
+                                            where email = @email ";
+            command.Parameters.Clear();
+            command.Parameters.Add(new SqlParameter("@email", System.Data.SqlDbType.VarChar, 100) { Value = email });
+            SqlDataReader reader = null;
+            IEnumerable<Member> members = null;
+            try
+            {
+                command.Connection.Open();
+                reader = command.ExecuteReader();
+                members = ReadMembers(reader);
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
+                command.Connection.Close();
+            }
+            if (members.Count() > 0)
+                return members.First();
+            else
+                return null;
+        }
+
+        public Team getTeam(int id)
+        {
+            LinkedList<Member> members = new LinkedList<Member>();
+
+            command.CommandType = System.Data.CommandType.Text;
+            command.CommandText = @"select member from teamMembers where team = @team";
+            command.Parameters.Clear();
+            command.Parameters.Add(new SqlParameter(){
+                ParameterName = "@team",
+                Value = id });
+            SqlDataReader reader = null;
+            try
+            {
+                command.Connection.Open();
+                reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    members.AddLast(new AllMembers().Where(reader["member"].ToString()));
+                }
+            }
+            finally
+            {
+                if (reader != null)
+                    reader.Close();
+                command.Connection.Close();
+            }
+            return new Team(members);
+        }
     }
 }

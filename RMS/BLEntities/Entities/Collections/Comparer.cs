@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
 {
-    class Comparer<T> : IComparer<T>
+    public class Comparer<T> : IComparer<T>
     {
         public Comparer(Func<T, T, int> compareFunction)
         {

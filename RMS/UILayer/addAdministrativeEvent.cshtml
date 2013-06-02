@@ -8,10 +8,14 @@
     string errorMessage = string.Empty;
     AdministrativeEventViewModel administrativeEventViewModel = Session["administrativeEventViewModel"] as AdministrativeEventViewModel ?? ViewModelFactory.AdministrativeEventViewModel;
     Session["administrativeEventViewModel"] = administrativeEventViewModel;
+    
+    TaskBreakdownActivity currentActivity = Session["currentActivity"] as TaskBreakdownActivity ?? null;
 
+    System.Collections.IEnumerable query1 = null;
+    
     bool hasError = false;
     int step = 0;
-    const int lastStep = 6;
+    const int lastStep = 10;
     string requestStep = IsPost ? Request["step"] : null;
     if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
     {
@@ -35,12 +39,17 @@
                 step = 0;
             }
             break;
+        
         case 2:
             members = administrativeEventViewModel.TryGetAllMembers(out errorMessage);
             break;
+        
+        case 5:
+            step = 1;
+            break;
+            
         case 6:
-
-            hasError = !administrativeEventViewModel.addTeam(Request.Form.AllKeys.AsEnumerable(), "motherfucking team");
+            hasError = !administrativeEventViewModel.addTeam(Request.Form.AllKeys.AsEnumerable(), "Team " + administrativeEventViewModel.administrativeActivity.Teams.Count, out errorMessage);
             
             if (!hasError)
             {
@@ -52,23 +61,91 @@
             }
             
             break;
+            
+        case 7:
+            hasError = !administrativeEventViewModel.addTaskBreakdownActivity(Request["title"],
+                Request["description"], Request["startDate"], Request["endDate"], 
+                out currentActivity, out errorMessage);
+
+            Session["currentActivity"] = currentActivity;
+            
+            if (hasError)
+            {
+                step = 3;
+            }
+            
+            break;
+        case 8:
+            query1 = administrativeEventViewModel.administrativeActivity.Teams.SelectMany(member => member);
+                //.Distinct(new ResourceManagementSystem.BusinessLogic.Entities.Collections.Comparer<Member>((x, y) => x.EMail.CompareTo(y.EMail)));
+            break;
+        case 9:
+            hasError = !administrativeEventViewModel.insertTaskIntoTaskBreakdownActivity(currentActivity,
+                Request["title"], Request["description"], Request["startDate"], Request["endDate"], 
+                Request.Form.AllKeys.ToList().GetRange(11, Request.Form.AllKeys.Count() - 11).AsEnumerable(),
+                (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"])),
+                (Currency)int.Parse(Request["mobilityCostSelectedIndex"]),
+                (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"])),
+                (Currency)int.Parse(Request["mobilityCostSelectedIndex"]),
+                (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"])),
+                (Currency)int.Parse(Request["mobilityCostSelectedIndex"]),
+                out errorMessage);
+
+            
+            if (!hasError)
+            {
+                step = 7;
+            }
+            else
+            {
+                step = 8;
+            }
+            
+            break;
+            
+        case 10:
+            hasError = !administrativeEventViewModel.TrySaveAdministrativeActivity(out errorMessage);
+            if (!hasError)
+            {
+                step = 0;
+            }
+            else
+            {
+                step = 5;
+            }
+            break;
     }
 }
 
 
 @section body{
+
     <ul class="nav nav-tabs">
-        <li class="active"><a>Define Study Programs</a></li>
+        @if (step <= 1)
+        {
+            <li class="active"><a>Define Administrative Event</a></li>
+        }
+        else if (step == 2)
+        {
+            <li class="active"><a>Define Administrative Event :: Add team</a></li>
+        }
+        else if (step <= 7)
+        {
+            <li class="active"><a>Define Administrative Event :: Add activity</a></li>
+        }
+        else if (step <= lastStep)
+        {
+            <li class="active"><a>Define Administrative Event :: Add activity :: Add task</a></li>
+        }
+
     </ul>
-
-
     <p>Step: @step</p>
     @if (hasError)
     {
         <h1>Error!</h1>
         <p>@errorMessage</p>
         <p>We are terebly sorry for the inconvenience...</p>
-        <form action="addResearchProject.cshtml" class="form-horizontal" method="post">
+        <form action="addAdministrativeEvent.cshtml" class="form-horizontal" method="post">
             <input type="hidden" name="step" id="step" value="@step" />
             <input type="submit" value="Back" />
         </form>
@@ -88,7 +165,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Descritpion</th>
+                            <th>Description</th>
                             <td style="width: 100%;">
                                 <input type="text" class="description" name="description" />
                             </td>
@@ -133,6 +210,54 @@
                     <input type="submit" value="Add new activity" />
 
                 </form>
+    
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
+                 
+                    <input type="hidden" value="10" name="step" id="step" />
+                    <input type="submit" value="Finish" />
+
+                </form>
+    
+                if (administrativeEventViewModel.administrativeActivity.Teams.Count > 0)
+                {
+                    <h2>Teams</h2>
+                        <ul>
+                            @foreach (ResourceManagementSystem.BusinessLogic.Entities.Collections.NamedTeam team in administrativeEventViewModel.administrativeActivity.Teams)
+	                        {
+                                <li>
+		                            <h3>@team.Name</h3>
+                                    <ul>
+                                        @foreach (Member m in team)
+                                        {
+                                            <li>@m.ToString()</li>
+                                        }
+
+                                    </ul>
+                                </li>
+	                        }
+
+                        </ul>
+                }
+                if (administrativeEventViewModel.administrativeActivity.BreakdownActvities.Count > 0)
+                {
+                    <h2>Activities</h2>
+                        <ul>
+                            @foreach (ResourceManagementSystem.BusinessLogic.Entities.TaskBreakdownActivity act in administrativeEventViewModel.administrativeActivity.BreakdownActvities)
+	                        {
+                                <li>
+		                            <h3>@act.Title</h3>
+                                    <ul>
+                                        @foreach (Task t in act.tasks)
+                                        {
+                                            <li>@t.Title</li>
+                                        }
+
+                                    </ul>
+                                </li>
+	                        }
+
+                        </ul>
+                }
                 break;  
                 
             case 2:
@@ -164,7 +289,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Descritpion</th>
+                            <th>Description</th>
                             <td style="width: 100%;">
                                 <input type="text" class="description" name="description" />
                             </td>
@@ -185,291 +310,116 @@
                     <input type="submit" value="Next" />
                 </form>
                 break;
+                
+            case 7:
+                <h1>@currentActivity.Title</h1>
+                <p>
+                    <b>Start date:</b> @currentActivity.StartDate.ToString("d MMM yyyy")<br />
+                    <b>End date:</b> @currentActivity.EndDate.ToString("d MMM yyyy")
+                </p>
+                <p>
+                    @currentActivity.Description
+                </p>
+    
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal" method="post">
+                    <input type="hidden" name="step" id="step" value="5" />
+                    <input type="submit" value="Finish" />
+                </form>
+    
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal" method="post">
+                    <input type="hidden" name="step" id="step" value="8" />
+                    <input type="submit" value="Add task" />
+                </form>
+    
+                if (currentActivity.tasks.Count > 0)
+                {
+                    <h2>Tasks</h2>
+                    <ul>
+                        @foreach(Task t in currentActivity.tasks)
+                        {
+                            <li>@t.Title</li>
+                        }
+                    </ul>
+                }
+                break;
+                
+            case 8:
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
+                    <input type="hidden" value="9" name="step" id="step" />
+                    <table style="width: 100%;">
+                        <tr>
+                            <th>Task Title</th>
+                            <td style="width: 100%;">
+                                <input type="text" class="title" name="title" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td style="width: 100%;">
+                                <input type="text" class="description" name="description" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Start date</th>
+                            <td style="width: 100%;">
+                                <input type="text" name="startDate" class="datepicker" data-date-format="dd/mm/yyyy" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>End date</th>
+                            <td style="width: 100%;">
+                                <input type="text" name="endDate" class="datepicker" data-date-format="dd/mm/yyyy" />
+                            </td>
+                        </tr>
+                    </table>
+
+                    <label for="value">Labor cost: </label>
+                    <input type="number" name="LaborCost" id="LaborCost" />
+                    <select name="LaborCostSelectedIndex" id="LaborCostSelectedIndex">
+                        @for (int i = 0; i < administrativeEventViewModel.Currency.Length; i++)
+                        {
+                            <option value="@i">@administrativeEventViewModel.Currency[i]</option>
+                        }
+                    </select>
+
+                    <label for="value">Mobility cost: </label>
+                    <input type="number" name="MobilityCost" id="MobilityCost" />
+                    <select name="MobilityCostSelectedIndex" id="MobilityCostSelectedIndex">
+                        @for (int i = 0; i < administrativeEventViewModel.Currency.Length; i++)
+                        {
+                            <option value="@i">@administrativeEventViewModel.Currency[i]</option>
+                        }
+                    </select>
+
+                    <label for="value">Logistical cost: </label>
+                    <input type="number" name="LogisticalCost" id="LogisticalCost" />
+                    <select name="LogisticalCostSelectedIndex" id="LogisticalCostSelectedIndex">
+                        @for (int i = 0; i < administrativeEventViewModel.Currency.Length; i++)
+                        {
+                            <option value="@i">@administrativeEventViewModel.Currency[i]</option>
+                        }
+                    </select>
+
+                    <h2>Asignees</h2>
+                    <ul>                        
+                        @foreach (Member member in query1)
+                        {
+                            <li>
+                                <input type="checkbox" name="@member.EMail" />
+                                @(member.ToString())
+                            </li>
+                        }
+                    </ul>
+
+                    <br />  
+
+                    <input type="submit" value="Next" />
+
+                </form>
+                break;
         }
     }
-
-    @if (!IsPost)
-        {
-            <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
-                <table style="width: 100%;">
-                    <tr>
-                        <th>Administrative Event Title</th>
-                        <td style="width: 100%;">
-                            <input type="text" class="administrativeEvent" name="administrativeEvent" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Start date</th>
-                        <td style="width: 100%;">
-                            <input type="text" name="startDate" class="datepicker" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>End date</th>
-                        <td style="width: 100%;">
-                            <input type="text" name="endDate" class="datepicker" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Study&nbsp;degree&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <select class="studyDegree" name="studyDegree">
-                                <option value="0">Bachelor</option>
-                                <option value="1">Master</option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Domain&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="domain" name="domain" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Year&nbsp;length&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="number" class="yearLength" name="yearLength" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Total&nbsp;Ects&nbsp;Credits&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="number" class="totalCredits" name="totalCredits" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Study&nbsp;time&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <select class="studyTime" name="studyTime">
-                                <option value="0">Full time</option>
-                                <option value="1">Distance</option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Higher&nbsp;Education&nbsp;Institution&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="higherEducationInstitution" name="higherEducationInstitution" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Faculty&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="faculty" name="faculty" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Contact&nbsp;Person&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="contactPerson" name="contactPerson" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Phone&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="phone" name="phone" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Fax&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="fax" name="fax" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Email&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="email" name="email" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Profile&nbsp;Of&nbsp;The&nbsp;Degree&nbsp;Programme&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="profileOfTheDegreeProgramme" name="profileOfTheDegreeProgramme" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>TargetGroups&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="targetGroups" name="targetGroups" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Entrance&nbsp;Conditions&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="entranceConditions" name="entranceConditions" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Further&nbsp;Education&nbsp;Possibilities&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="furtherEducationPossibilities" name="furtherEducationPossibilities" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Description&nbsp;Of&nbsp;Study&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="descriptionOfStudy" name="descriptionOfStudy" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Purposes&nbsp;Of&nbsp;The&nbsp;Programme&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="purposesOfTheProgramme" name="purposesOfTheProgramme" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Area&nbsp;Of&nbsp;Expertise&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="areaOfExpertise" name="areaOfExpertise" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Extra&nbsp;Peculiarities&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="extraPeculiarities" name="extraPeculiarities" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Practical&nbsp;Training&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="practicalTraining" name="practicalTraining" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Final&nbsp;Examinations&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="finalExaminations" name="finalExaminations" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Gained&nbsp;Abilities&nbsp;And&nbsp;Skills&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="gainedAbilitiesAndSkills" name="gainedAbilitiesAndSkills" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table style="width: 100%;">
-                    <tr>
-                        <td>Potential&nbsp;Field&nbsp;Of&nbsp;Professional&nbsp;Activity&nbsp;:&nbsp;</td>
-                        <td style="width: 100%;">
-                            <input type="text" class="potentialFieldOfProfessionalActivity" name="potentialFieldOfProfessionalActivity" />
-                        </td>
-                    </tr>
-                </table>
-
-                <div class="pull-right">
-                    <input class="btn" type="submit" value="Add" />
-                </div>
-            </form>@*
-        }
-        else
-        {
-            studyProgramsViewModel.AreaOfExpertise = Request["areaOfExpertise"];
-            studyProgramsViewModel.ContactPerson = Request["contactPerson"];
-            studyProgramsViewModel.StudyDegreeSelectedIndex = Request["studyDegree"] == null ? 0 : Convert.ToInt32(Request["studyDegree"]);
-            studyProgramsViewModel.DescriptionOfStudy = Request["descriptionOfStudy"];
-            studyProgramsViewModel.Domain = Request["domain"];
-            studyProgramsViewModel.EducationalProgramme = Request["edProgramme"];
-            studyProgramsViewModel.EMail = Request["EMail"];
-            studyProgramsViewModel.EntranceConditions = Request["entranceConditions"];
-            studyProgramsViewModel.ExtraPeculiarities = Request["ExtraPeculiarities"];
-            studyProgramsViewModel.Faculty = Request["faculty"];
-            studyProgramsViewModel.Fax = Request["fax"];
-            studyProgramsViewModel.FinalExaminations = Request["finalExaminations"];
-            studyProgramsViewModel.FurtherEducationPossibilities = Request["furtherEducationPossibilities"];
-            studyProgramsViewModel.GainedAbilitiesAndSkills = Request["gainedAbilitiesAndSkills"];
-            studyProgramsViewModel.HigherEducationInstitution = Request["higherEducationInstitution"];
-            studyProgramsViewModel.Phone = Request["Phone"];
-            studyProgramsViewModel.PotentialFieldOfProfessionalActivity = Request["potentialFieldOfProfessionalActivity"];
-            studyProgramsViewModel.PracticalTraining = Request["PracticalTraining"];
-            studyProgramsViewModel.ProfileOfTheDegreeProgramme = Request["profileOfTheDegreeProgramme"];
-            studyProgramsViewModel.PurposesOfTheProgramme = Request["purposesOfTheProgramme"];
-            studyProgramsViewModel.StudyTimeSelectedIndex = Request["studyTime"] == null ? 0 : Convert.ToInt32(Request["studyTime"]);
-            studyProgramsViewModel.TargetGroups = Request["targetGroups"];
-            studyProgramsViewModel.TotalEctsCredits = Request["totalCredits"].Length > 0 ? Convert.ToInt32(Request["totalCredits"]) : 0;
-            studyProgramsViewModel.YearLength = Request["yearLength"].Length > 0 ? Convert.ToInt32(Request["yearLength"]) : 0;
-
-            if (studyProgramsViewModel.TryAddProgramme(out errorMessage))
-            {
-            <h1>Success!</h1>
-            <p>The study program has been inserted!</p>
-            }
-            else
-            {
-            <h1>Error!</h1>
-            <p>Could not add study program! @errorMessage</p>
-            }   
-            
-            *@<a class="btn pull-right" href="/addStudyProgram.cshtml">Finish</a>    
-        }
+        
         <div style="clear: both;"></div>
     </div>
 

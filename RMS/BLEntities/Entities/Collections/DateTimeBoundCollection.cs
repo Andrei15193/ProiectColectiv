@@ -21,7 +21,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
 
         public void Add(T item)
         {
-
+            items.Add(item);
         }
 
         public void Clear()
@@ -41,7 +41,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
 
         public int Count
         {
-            get { throw new NotImplementedException(); }
+            get { return items.Count; }
         }
 
         public bool IsReadOnly
@@ -56,7 +56,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities.Collections
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return items.GetEnumerator();
+            //throw new NotImplementedException();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()

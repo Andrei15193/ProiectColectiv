@@ -100,6 +100,22 @@ namespace DALayer.Database
                     Value = researchProject.Team.GetType() == typeof(NamedTeam) ? ((NamedTeam)researchProject.Team).Name : ""
                 });
                 teamid = Convert.ToInt32(command.ExecuteScalar());
+                foreach (Member m in researchProject.Team)
+                {
+                    command.CommandText = @"insert into teammembers values (@teamId, @email)";
+                    command.Parameters.Clear();
+                    command.Parameters.Add(new SqlParameter()
+                    {
+                        ParameterName = "@teamId",
+                        Value = teamid
+                    });
+                    command.Parameters.Add(new SqlParameter()
+                    {
+                        ParameterName = "@email",
+                        Value = m.EMail
+                    });
+                    command.ExecuteNonQuery();
+                }
                 command.CommandText = @"insert into researchProjects (activity, team) values (@activity, @team)";
                 command.Parameters.Clear();
                 command.Parameters.Add(new SqlParameter()

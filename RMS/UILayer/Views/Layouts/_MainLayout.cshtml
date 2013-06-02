@@ -54,7 +54,7 @@
 
                         case ResourceManagementSystem.BusinessLogic.Entities.MemberType.Director:
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudyProgram.cshtml">Define Study Programs</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Research Grants</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addResearchProject.cshtml">Define Research Grants</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Administrative Events</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudentCircle.cshtml">Define Student Circles</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Get Reports</a></li>
@@ -71,6 +71,17 @@
                 </ul>
             </div>
         }
+        <div class="dropdown icon">
+                <div class="cpl-dropdown" data-toggle="dropdown">
+                    <img src="/img/ico-setting.png" alt="">
+                    <span>Logistical Resources</span>
+                </div>
+
+                <ul id="menu2" class="dropdown-menu" role="menu" aria-labelledby="drop5">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/getClassRoomsInfo.cshtml">ClassRooms</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/getEquipmentsInfo.cshtml">Equipments</a></li>
+                </ul>
+        </div>
         <div class="icon">
             <a href="#">
                 <img src="/img/ico-sch.png" alt="">
@@ -79,14 +90,14 @@
         </div>
 
         <div class="icon">
-            <a href="#">
+            <a href="~/getMembersInfo.cshtml">
                 <img src="/img/ico-user.png" alt="">
                 <span>Members</span>
             </a>
         </div>
 
         <div class="icon">
-            <a href="#">
+            <a href="~/getProjectsInfo.cshtml">
                 <img src="/img/ico-report.png" alt="">
                 <span>Projects</span>
             </a>

@@ -217,7 +217,7 @@ namespace DALayer.Database
                                 }
                                 activities.AddLast(new ResearchProject(reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5), new AllMembers().getTeam(teamid))
                                 {
-                                    phases = new AllResearchPhases().getByResearchProject(Convert.ToInt32(reader["id"].ToString())),
+                                    //phases = new AllResearchPhases().getByResearchProject(Convert.ToInt32(reader["id"].ToString())),
                                     Id = Convert.ToInt32(reader["id"].ToString()),
                                     State = (State)Convert.ToInt32(reader["state"].ToString())
                                 });

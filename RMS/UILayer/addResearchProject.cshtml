@@ -219,8 +219,8 @@
 
                 <label for="endDate">End date: </label>
                 <input name="endDate" id="endDate" type="text" value="@researchProjectsViewModel.EndDate" data-date-format="dd/mm/yyyy" class="datepicker" />
-
-                <input type="submit" value="Next" />
+                <p></p>
+                <p><input type="submit" value="Next" /></p>
             </form>
         </div>
                 break;
@@ -240,7 +240,8 @@
                         </li>
                     }
                 </ul>
-                <input type="submit" value="Next" />
+                <p></p>
+                <p><input type="submit" value="Next" /></p>
             </form>
         </div>
                     break;
@@ -353,8 +354,8 @@
 
                 <label for="endDate">End date: </label>
                 <input name="endDate" id="endDate" type="text" value="@researchProjectsViewModel.EndDate" data-date-format="dd/mm/yyyy" class="datepicker" />
-
-                <input type="submit" value="Add phase" />
+                <p></p>
+               <p> <input type="submit" value="Add phase" /></p>
             </form>
         </div>
                 break;
@@ -376,6 +377,7 @@
             </form>
             <form action="addResearchProject.cshtml" style="display: inline;" method="post">
                 <input type="hidden" value="3" name="step" id="step" />
+                
                 <input type="submit" value="Submit phase" />
             </form>
         </div>
@@ -437,7 +439,7 @@
                 <input name="endDate" id="endDate" type="text" value="@researchProjectsViewModel.EndDate" data-date-format="dd/mm/yyyy" class="datepicker" />
 
                 <label for="laborCost">Labor cost: </label>
-                <input type="number" value="@researchProjectsViewModel.LaborCost" name="LaborCost" id="LaborCost" />
+                <input type="number" value="@researchProjectsViewModel.LaborCost" name="LaborCost" id="LaborCost" min="0"/>
                 <select name="LaborCostSelectedIndex" id="LaborCostSelectedIndex">
                     @for (int i = 0; i < researchProjectsViewModel.Currency.Length; i++)
                     {
@@ -446,7 +448,7 @@
                 </select>
 
                 <label for="mobilityCost">Mobility cost: </label>
-                <input type="number" value="@researchProjectsViewModel.MobilityCost" name="MobilityCost" id="MobilityCost" />
+                <input type="number" value="@researchProjectsViewModel.MobilityCost" name="MobilityCost" id="MobilityCost" min="0"/>
                 <select name="MobilityCostSelectedIndex" id="MobilityCostSelectedIndex">
                     @for (int i = 0; i < researchProjectsViewModel.Currency.Length; i++)
                     {
@@ -454,9 +456,9 @@
                     }
                 </select>
 
-                <label for="logisticalCost">Mobility cost: </label>
-                <input type="number" value="@researchProjectsViewModel.LogisticalCost" name="LogisticalCost" id="LogisticalCost" />
-                <select name="LogisticalCostSelectedIndex" id="LogisticalCostSelectedIndex">
+                <label for="logisticalCost">Labor cost: </label>
+                <input type="number" value="@researchProjectsViewModel.LogisticalCost" name="LogisticalCost" id="LogisticalCost" min="0"/>
+                <select name="LogisticalCostSelectedIndex" id="LogisticalCostSelectedIndex" >
                     @for (int i = 0; i < researchProjectsViewModel.Currency.Length; i++)
                     {
                         <option value="@i">@researchProjectsViewModel.Currency[i]</option>

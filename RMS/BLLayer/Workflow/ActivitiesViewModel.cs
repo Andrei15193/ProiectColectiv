@@ -19,38 +19,38 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             activity = null;
         }
 
-        public IEnumerable<AbstractActivity> GetMemberActivity(Member member, out string error)
+        
+
+        public List<AbstractActivity> GetMemberActivity(Member member, out string error)
         {
             IEnumerable<AbstractActivity> activities = TryGetAll(out error);
-            if (activities != null)
+            List<AbstractActivity> memberActivities = null;
+            DidacticActivity didacticActivity;
+            ResearchActivity reasearchActivity;
+
+            foreach (AbstractActivity activity in activities)
             {
-                ICollection<AbstractActivity> memberActivities = new LinkedList<AbstractActivity>();
-                foreach (AbstractActivity activity in activities)
+                if (activity is DidacticActivity)
                 {
-                    if (activity is DidacticActivity)
-                    {
-                        DidacticActivity didacticActivity = (DidacticActivity)activity;
-                        if (didacticActivity.Contains(member))
-                            memberActivities.Add(didacticActivity);
-
-                    }
-
-                    if (activity is ResearchActivity)
-                    {
-                        ResearchActivity reasearchActivity = (ResearchActivity)activity;
-                        if (reasearchActivity.Contains(member))
-                            memberActivities.Add(reasearchActivity);
-                    }
+                    didacticActivity = (DidacticActivity)activity;
+                    if (didacticActivity.Contains(member))
+                        memberActivities.Add(didacticActivity);
+                            
                 }
-                return memberActivities;
-            }
-            else
-                return null;
-        }
 
-        public void aproveActivity(AbstractActivity activity, bool aproved)
+                if (activity is ResearchActivity)
+                {
+                    reasearchActivity = (ResearchActivity)activity;
+                    if (reasearchActivity.Contains(member))
+                        memberActivities.Add(reasearchActivity);
+                }
+            }
+
+            return memberActivities;
+        }
+        public void aproveActivity(AbstractActivity a,bool aproved)
         {
-            allActivities.aproveActivity(activity, aproved);
+            allActivities.aproveActivity(a,aproved);
         }
 
         public IEnumerable<AbstractActivity> TryGetAll(out string errorMessage)

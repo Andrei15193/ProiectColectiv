@@ -1,5 +1,4 @@
-﻿
-using ResourceManagementSystem.BusinessLogic.Entities;
+﻿using ResourceManagementSystem.BusinessLogic.Entities;
 using ResourceManagementSystem.DAOInterface;
 using System;
 using System.Collections.Generic;
@@ -30,16 +29,31 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                     if (activity is DidacticActivity)
                     {
                         DidacticActivity didacticActivity = (DidacticActivity)activity;
-                        if (didacticActivity.Contains(member))
-                            memberActivities.Add(didacticActivity);
+                        IEnumerator<Member> membersDA = didacticActivity.GetEnumerator();
 
+                        while (membersDA.MoveNext() == true)
+                        {
+                            if (membersDA.Current.EMail.Equals(member.EMail))
+                            {
+                                memberActivities.Add(didacticActivity);
+                                break;
+                            }
+                        }
                     }
 
                     if (activity is ResearchActivity)
                     {
-                        ResearchActivity reasearchActivity = (ResearchActivity)activity;
-                        if (reasearchActivity.Contains(member))
-                            memberActivities.Add(reasearchActivity);
+                        ResearchActivity researchActivity = (ResearchActivity)activity;
+                        IEnumerator<Member> membersRA = researchActivity.GetEnumerator();
+
+                        while (membersRA.MoveNext() == true)
+                        {
+                            if (membersRA.Current.EMail.Equals(member.EMail))
+                            {
+                                memberActivities.Add(researchActivity);
+                                break;
+                            }
+                        }
                     }
                 }
                 return memberActivities;

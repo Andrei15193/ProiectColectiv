@@ -69,6 +69,6 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         public Collections.Team Team { get; private set; }
 
-        private ISet<ResearchPhase> phases;
+        public ISet<ResearchPhase> phases;
     }
 }

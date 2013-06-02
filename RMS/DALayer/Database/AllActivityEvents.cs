@@ -11,85 +11,13 @@ using System.Threading.Tasks;
 
 namespace DALayer.Database
 {
-    class AllAdministrativeActivity : IAllAdministrativeActivity
+    class AllAdministrativeActivity : IAllAdministrativeActivities
     {
         private SqlCommand command;
 
         public AllAdministrativeActivity()
         {
             command = new SqlCommand() { Connection = DatabaseConstants.SqlConnection };
-        }
-
-        public void Add()
-        {
-            command.CommandText = @"insert into ClassRooms (name, description) VALUES (@name, @classRoomDescription)";
-            command.Parameters.Clear();
-            command.Parameters.Add(new SqlParameter()
-            {
-                ParameterName = "@classRoomDescription",
-                Value = classRoom.Description
-            });
-            command.Parameters.Add(new SqlParameter()
-            {
-                ParameterName = "@name",
-                Value = classRoom.Name
-            });
-            try
-            {
-                command.Connection.Open();
-                command.ExecuteNonQuery();
-            }
-            finally
-            {
-                command.Connection.Close();
-            }
-        }
-
-        public IEnumerable<ClassRoom> AsEnumerable
-        {
-            get { return getAll(); }
-        }
-
-        private LinkedList<ClassRoom> getAll()
-        {
-            LinkedList<ClassRoom> classrooms = new LinkedList<ClassRoom>();
-            command.CommandType = System.Data.CommandType.Text;
-            command.CommandText = @"select name, description from classrooms";
-            command.Parameters.Clear();
-            SqlDataReader reader = null;
-            try
-            {
-                command.Connection.Open();
-                reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
-                classrooms = ReadClassRooms(reader);
-            }
-            finally
-            {
-                if (reader != null)
-                {
-                    reader.Close();
-                }
-                command.Connection.Close();
-            }
-            return classrooms;
-        }
-
-        private LinkedList<ClassRoom> ReadClassRooms(SqlDataReader reader)
-        {
-            LinkedList<ClassRoom> classrooms = new LinkedList<ClassRoom>();
-            if (reader != null)
-            {
-                while (reader.Read())
-                {
-                    classrooms.AddLast(new ClassRoom(reader["name"].ToString(), reader["description"].ToString()));
-                }
-            }
-            return classrooms;
-        }
-
-        IEnumerable<ResourceManagementSystem.BusinessLogic.Entities.AdministrativeActivity> IAllAdministrativeActivity.AsEnumerable
-        {
-            get { throw new NotImplementedException(); }
         }
 
         public void Add(ResourceManagementSystem.BusinessLogic.Entities.AdministrativeActivity administrativeActivity)
@@ -174,15 +102,57 @@ namespace DALayer.Database
                     });
                     command.ExecuteNonQuery();
                 }
-                //foreach (ResearchPhase rp in researchProject)
-                //{
-                //    new AllResearchPhases().Add(activityid, rp);
-                //}
+                foreach (TaskBreakdownActivity tb in administrativeActivity.BreakdownActvities)
+                {
+                    new AllTaskBreakDownActivities().Add(activityid, tb);
+                }
             }
             finally
             {
                 command.Connection.Close();
             }
+        }
+
+        IEnumerable<AdministrativeActivity> IAllAdministrativeActivities.AsEnumerable
+        {
+            get { return getAll(); }
+        }
+
+        private LinkedList<AdministrativeActivity> getAll()
+        {
+            LinkedList<AdministrativeActivity> researchProjects = new LinkedList<AdministrativeActivity>();
+            command.CommandType = System.Data.CommandType.Text;
+            command.CommandText = @"select activity, team from administrativeActivities";
+            command.Parameters.Clear();
+            SqlDataReader reader = null;
+            try
+            {
+                command.Connection.Open();
+                reader = command.ExecuteReader();
+                researchProjects = ReadAdministrativeActivitys(reader);
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+                command.Connection.Close();
+            }
+            return researchProjects;
+        }
+
+        private LinkedList<AdministrativeActivity> ReadAdministrativeActivitys(SqlDataReader reader)
+        {
+            LinkedList<AdministrativeActivity> researchProjects = new LinkedList<AdministrativeActivity>();
+            if (reader != null)
+            {
+                while (reader.Read())
+                {
+                    researchProjects.AddLast((AdministrativeActivity)new AllActivities().getbyPK(reader.GetInt32(0)));
+                }
+            }
+            return researchProjects;
         }
     }
 }

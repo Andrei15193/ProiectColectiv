@@ -17,28 +17,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             activity = null;
         }
 
-        /*
-        public List<AbstractActivity> GetMemberActivity()
-        {
-            Member m = new Teacher(TeachingPosition.Professor , "Bioan Florian", "biona@cs.ubbcluj.ro", "boian", "struneleNebunele");
-            DidacticActivity da1 = new DidacticActivity(CourseType.Course ,"SO", "Sisteme de operare an 1", "an 1", DateTime.Now, DateTime.Now.AddDays(5), m);
-            List<Member> assignees = new List<Member>();
-            assignees.Add(m);
-            Team team = new Team(assignees);
- 
-            FinancialResource fr = new FinancialResource(100, Currency.RON);
-            FinancialResource fr1 = new FinancialResource(200, Currency.RON);
-            FinancialResource fr2 = new FinancialResource(300, Currency.RON);
-            ResearchProject rp = new ResearchProject("Research project title", "description", DateTime.Now, DateTime.Now.AddDays(3), team, 1);
-            ResearchPhase phase = new ResearchPhase(rp, "faza1", "blabla", DateTime.Now, DateTime.Now.AddDays(2));
-            ResearchActivity ra = new ResearchActivity(phase, "ResearchActivity 1", "descriere", DateTime.Now, DateTime.Now.AddDays(1), assignees, fr, fr1, fr2, true);
-
-            List<AbstractActivity> gigi = new List<AbstractActivity>();
-            gigi.Add(da1);
-            gigi.Add(ra);
-            return gigi;
-        }
-        */
+        
 
         public List<AbstractActivity> GetMemberActivity(Member member, out string error)
         {
@@ -107,16 +86,79 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        Member selectedMember = null;
+        ResearchProject selectedResearchProject = null;
+
         private IAllActivities allActivities;
         private AbstractActivity activity;
+        private int id { get; set; }
+        private ActivityType type { get; set; }
+        private State state { get; set; }
+        private string title { get; set; }
+        private string description { get; set; }
+        private DateTime startDate { get; set; }
+        private DateTime endDate { get; set; }
+        public int mobilityCost { get; set; }
+        public int logisticalCost { get; set; }
+        public int laborCost { get; set; }
+        public int mobilityCostSelectedIndex { get; set; }
+        public int laborCostSelectedIndex { get; set; }
+        public int logisticalCostSelectedIndex { get; set; }
+        private readonly string[] currency = Enum.GetNames(typeof(Currency)).Select((currency) => currency.Replace('_', ' ')).ToArray();
+        public bool isConfidential { get; set; }
 
-        private int id;
-        private ActivityType type;
-        private State state;
-        private string title;
-        private string description;
-        private DateTime startDate;
-        private DateTime endDate;
+
+        public List<AbstractActivity> GetMemberResearchProjects(Member member, out string error)
+{
+List<AbstractActivity> activities = GetMemberActivity(member, out error);
+List<AbstractActivity> researchProjects = null;
+selectedMember = member;
+foreach (AbstractActivity activity in activities)
+{
+if (activity is ResearchProject)
+{
+ResearchProject researchProject = (ResearchProject)activity;
+researchProjects.Add(researchProject);
+}
+}
+return researchProjects;
+}
+
+
+public IEnumerator<ResearchPhase> GetPhasesForResearchProject(ResearchProject researchProject)
+{
+selectedResearchProject = researchProject;
+return researchProject.GetEnumerator();
+}
+
+
+public bool TryCreateActivity(ResearchPhase researchPhase, out string error)
+{
+try
+{
+ResearchActivity researchActivity = new ResearchActivity(
+researchPhase,
+title,
+description,
+startDate,
+endDate,
+selectedResearchProject.Team,
+new FinancialResource(mobilityCost, (Currency)mobilityCostSelectedIndex),
+new FinancialResource(laborCost, (Currency)laborCostSelectedIndex),
+new FinancialResource(logisticalCost, (Currency)logisticalCostSelectedIndex),
+isConfidential
+);
+researchActivity.State = State.Proposed;
+//add the activity
+error = null;
+return true;
+}
+catch (Exception exception)
+{
+error = exception.Message;
+return false;
+}
+}
         
     }
 }

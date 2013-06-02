@@ -130,5 +130,40 @@ namespace DALayer.Database
                 command.Connection.Close();
             }
         }
+
+        internal ISet<ResearchActivity> getResearchActivities(ResearchPhase rf, int p)
+        {
+            ISet<ResearchActivity> set = new HashSet<ResearchActivity>();
+            int activity = -1;
+            command.CommandType = System.Data.CommandType.Text;
+            command.CommandText = @"select activity from researchactivities where phase = @phase";
+            command.Parameters.Clear();
+            command.Parameters.Add(new SqlParameter()
+            {
+                Value = p,
+                ParameterName = "@phase"
+            });
+            SqlDataReader reader = null;
+            try
+            {
+                command.Connection.Open();
+                reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    activity = Convert.ToInt32(reader["activity"]);
+                    ResearchActivity ra = (ResearchActivity)new AllActivities().GetResearchActivity(rf, activity);
+                    set.Add(ra);
+                }
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+                command.Connection.Close();
+            }
+            return set;
+        }
     }
 }

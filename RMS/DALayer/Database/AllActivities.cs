@@ -63,7 +63,7 @@ namespace DALayer.Database
                             {
                                 activities.AddLast(new AdministrativeActivity(reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(5), reader.GetDateTime(6))
                                 {
-                                    BreakdownActvities = new AllTaskBreakDownActivities().GetbyAdministrativeActivity(Convert.ToInt32(reader["id"])),
+                                    //BreakdownActvities = new AllTaskBreakDownActivities().GetbyAdministrativeActivity(Convert.ToInt32(reader["id"])),
                                     Id = Convert.ToInt32(reader["id"].ToString()),
                                     State = (State) Convert.ToInt32(reader["state"].ToString())
                                 });
@@ -215,12 +215,13 @@ namespace DALayer.Database
                                     }
                                     cmd.Connection.Close();
                                 }
-                                activities.AddLast(new ResearchProject(reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5), new AllMembers().getTeam(teamid))
+                                ResearchProject rp = new ResearchProject(reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5), new AllMembers().getTeam(teamid))
                                 {
-                                    phases = new AllResearchPhases().getByResearchProject(Convert.ToInt32(reader["id"].ToString())),
                                     Id = Convert.ToInt32(reader["id"].ToString()),
                                     State = (State)Convert.ToInt32(reader["state"].ToString())
-                                });
+                                };
+                                activities.AddLast(rp);
+                                rp.phases = new AllResearchPhases().getByResearchProject(rp, Convert.ToInt32(reader["id"].ToString()));
                                 break;
                             }
                         #endregion
@@ -305,6 +306,121 @@ namespace DALayer.Database
                 }
                 command.Connection.Close();
             }
+        }
+
+        internal ResearchPhase GetResearchPhase(ResearchProject prj, int activity)
+        {
+            LinkedList<ResearchPhase> activities = new LinkedList<ResearchPhase>();
+            command.CommandType = System.Data.CommandType.Text;
+            command.CommandText = @"select id, type, title, description, startDate, endDate, state from Activities where id = @id";
+            command.Parameters.Clear();
+            command.Parameters.Add(new SqlParameter()
+            {
+                Value = activity,
+                ParameterName = "@id"
+            });
+            SqlDataReader reader = null;
+            try
+            {
+                command.Connection.Open();
+                reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    ResearchPhase rf = new  ResearchPhase(prj, reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5))
+                    {
+                        Id = Convert.ToInt32(reader["id"].ToString()),
+                        State = (State)Convert.ToInt32(reader["state"])
+                    };
+                    activities.AddLast(rf);
+                    rf.researchActivities = new AllResearchActivity().getResearchActivities(rf, Convert.ToInt32(reader["id"]));
+                }
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+                command.Connection.Close();
+            }
+            if (activities.Count() > 0)
+                return activities.First();
+            else
+                return null;
+        }
+
+        internal ResearchActivity GetResearchActivity(ResearchPhase rf, int activity)
+        {
+            LinkedList<ResearchActivity> activities = new LinkedList<ResearchActivity>();
+            command.CommandType = System.Data.CommandType.Text;
+            command.CommandText = @"select id, type, title, description, startDate, endDate, state from Activities where id = @id";
+            command.Parameters.Clear();
+            command.Parameters.Add(new SqlParameter()
+            {
+                Value = activity,
+                ParameterName = "@id"
+            });
+            SqlDataReader reader = null;
+            try
+            {
+                command.Connection.Open();
+                reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    IEnumerable<Member> members = null;
+                    FinancialResource mobilittyCost = null;
+                    FinancialResource laborCost = null;
+                    FinancialResource logisticalCost = null;
+                    bool isConfidential = false;
+                    SqlCommand cmd = new SqlCommand(@"select team, phase, researchProject, laborCosts, logisticalCosts, mobilityCosts, isConfidential from researchActivities where activity = @id", DatabaseConstants.SqlConnection);
+                    cmd.Parameters.Clear();
+
+                    SqlDataReader dr = null;
+                    cmd.Parameters.Add(new SqlParameter()
+                    {
+                        ParameterName = "@id",
+                        Value = Convert.ToInt32(activity)
+                    });
+                    try
+                    {
+                        cmd.Connection.Open();
+                        dr = cmd.ExecuteReader();
+                        if (dr.Read())
+                        {
+                            members = new AllMembers().getTeam(Convert.ToInt32(dr["team"].ToString()));
+                            mobilittyCost = new AllFinancialResources().getbyPK(Convert.ToInt32(dr["mobilityCosts"].ToString()));
+                            laborCost = new AllFinancialResources().getbyPK(Convert.ToInt32(dr["laborCosts"].ToString()));
+                            logisticalCost = new AllFinancialResources().getbyPK(Convert.ToInt32(dr["logisticalCosts"].ToString()));
+                            isConfidential = Convert.ToBoolean(dr["isConfidential"]);
+                        }
+                    }
+                    finally
+                    {
+                        if (dr != null)
+                        {
+                            dr.Close();
+                        }
+                        cmd.Connection.Close();
+                    }
+                    activities.AddLast(new ResearchActivity(rf, reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5), members, mobilittyCost, laborCost, logisticalCost, isConfidential)
+                    {
+                        Id = Convert.ToInt32(reader["id"].ToString()),
+                        State = (State)Convert.ToInt32(reader["state"].ToString())
+                    });
+                }
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+                command.Connection.Close();
+            }
+            if (activities.Count() > 0)
+                return activities.First();
+            else
+                return null;
         }
     }
 }

@@ -21,8 +21,8 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public void Authenticate()
         {
             authenticationFailed = false;
-            member = allMembers.Where(email, password);
-            if (member == null)
+            Member = allMembers.Where(email, password);
+            if (Member == null)
             {
                 authenticationFailed = true;
             }

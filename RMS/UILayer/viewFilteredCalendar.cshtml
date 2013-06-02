@@ -1,0 +1,76 @@
+﻿@using ResourceManagementSystem.BusinessLogic.Entities;
+@using ResourceManagementSystem.BusinessLogic.Workflow;
+
+@{   
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "View Filtered Activity Calendar";
+
+  
+    string errorMessage = "";
+
+    MemberViewModel membersViewModel = Session["membersViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
+    Session["membersViewModel"] = membersViewModel;
+
+    ActivitiesViewModel activitiesViewModel = Session["activitiesViewModel"] as ActivitiesViewModel ?? ViewModelFactory.ActivitiesViewModel;
+    Session["activitiesViewModel"] = activitiesViewModel;
+    IEnumerable<AbstractActivity> activities = activitiesViewModel.GetMemberActivity(membersViewModel.member, out errorMessage);
+
+    IEnumerable<Member> members = membersViewModel.TryGetAll(out errorMessage);
+    }
+
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a>View Filtered Activity Calendar</a></li>
+    </ul>
+
+    <div class="well">
+        @if (!IsPost)
+        {
+            <form action="~/addStudyProgram.cshtml" class="form-horizontal addStudyPrograms" method="post">
+                <h3> Choose your filter: </h3>
+                <select id="Select1" name="selectFilter">
+                    <option value="0"> All Research Activities</option>
+                    <option value="1"> All Didactic Activities</option>
+                    <option value="2"> All Administrative Activities</option>
+                    <option value="3"> All Activities of a Member </option>
+                    <option value="4"> All Research Activities of a Member</option>
+                    <option value="5"> All Didactic Activities of a Member</option>
+                    <option value="6"> All Administrative Activities of a Member</option>
+                </select>
+     
+                <h3> Choose your Member: </h3>
+                <form>
+                    @foreach (var member in members)
+                    {
+                        <input type="radio" name ="Membru" value="@member.EMail" />
+                        @(member.ToString())
+                        <br />
+                    }
+                </form>
+                <br />
+                <input id="Button1" type="button" value="View Calendar" />
+            </form>
+        }
+        else
+        {
+            @if (!errorMessage.Equals(""))
+            {
+                <h1>Error!</h1>
+                <p>@errorMessage</p>
+                <p>We are terribly sorry for the inconvenience...</p>
+                <form action="addResearchProject.cshtml" class="form-horizontal" method="post">
+                    <input type="submit" value="Back" />
+                </form>
+            }
+            else
+            {
+                switch (Request["selectFilter"])
+                {
+                    case "0":
+                        //activitiesViewModel.
+                        break;
+                }
+            }
+        }
+    </div>
+}

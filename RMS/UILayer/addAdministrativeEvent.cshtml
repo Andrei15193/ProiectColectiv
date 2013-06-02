@@ -63,6 +63,8 @@
             Session["currentActivity"] = currentActivity;
             
             break;
+        case 8:
+            break;
     }
 }
 
@@ -206,6 +208,49 @@
                 <p>
                     @currentActivity.Description
                 </p>
+    
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal" method="post">
+                    <input type="hidden" name="step" id="step" value="1" />
+                    <input type="submit" value="Finish" />
+                </form>
+    
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal" method="post">
+                    <input type="hidden" name="step" id="step" value="8" />
+                    <input type="submit" value="Add task" />
+                </form>
+                break;
+                
+            case 8:
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
+                    <input type="hidden" value="8" name="step" id="step" />
+                    <table style="width: 100%;">
+                        <tr>
+                            <th>Task Title</th>
+                            <td style="width: 100%;">
+                                <input type="text" class="title" name="title" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Descritpion</th>
+                            <td style="width: 100%;">
+                                <input type="text" class="description" name="description" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Start date</th>
+                            <td style="width: 100%;">
+                                <input type="text" name="startDate" class="datepicker" data-date-format="dd/mm/yyyy" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>End date</th>
+                            <td style="width: 100%;">
+                                <input type="text" name="endDate" class="datepicker" data-date-format="dd/mm/yyyy" />
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="submit" value="Next" />
+                </form>
                 break;
         }
     }

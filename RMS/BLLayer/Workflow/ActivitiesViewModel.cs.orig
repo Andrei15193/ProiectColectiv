@@ -1,5 +1,4 @@
-﻿
-using ResourceManagementSystem.BusinessLogic.Entities;
+﻿using ResourceManagementSystem.BusinessLogic.Entities;
 using ResourceManagementSystem.DAOInterface;
 using System;
 using System.Collections.Generic;
@@ -19,90 +18,70 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             activity = null;
         }
 
-<<<<<<< HEAD
-        public IEnumerable<AbstractActivity> GetMemberActivity(Member member, out string error)
-=======
-
+        
 
         public List<AbstractActivity> GetMemberActivity(Member member, out string error)
->>>>>>> 97aee59442b4e70daff65cbbef010495e675da1b
         {
             IEnumerable<AbstractActivity> activities = TryGetAll(out error);
-            if (activities != null)
+            List<AbstractActivity> memberActivities = null;
+            DidacticActivity didacticActivity;
+            ResearchActivity reasearchActivity;
+
+            foreach (AbstractActivity activity in activities)
             {
-                ICollection<AbstractActivity> memberActivities = new LinkedList<AbstractActivity>();
-                foreach (AbstractActivity activity in activities)
+                if (activity is DidacticActivity)
                 {
 <<<<<<< HEAD
-                    if (activity is DidacticActivity)
-                    {
-                        DidacticActivity didacticActivity = (DidacticActivity)activity;
-                        if (didacticActivity.Contains(member))
-                            memberActivities.Add(didacticActivity);
-=======
                     didacticActivity = (DidacticActivity)activity;
                     if (didacticActivity.Contains(member))
                         memberActivities.Add(didacticActivity);
-
+                            
                 }
->>>>>>> 97aee59442b4e70daff65cbbef010495e675da1b
 
+                if (activity is ResearchActivity)
+                {
+                    reasearchActivity = (ResearchActivity)activity;
+                    if (reasearchActivity.Contains(member))
+                        memberActivities.Add(reasearchActivity);
+=======
+                    if (activity is DidacticActivity)
+                    {
+                        DidacticActivity didacticActivity = (DidacticActivity)activity;
+                        IEnumerator<Member> membersDA = didacticActivity.GetEnumerator();
+
+                        while (membersDA.MoveNext() == true)
+                        {
+                            if (membersDA.Current.EMail.Equals(member.EMail))
+                            {
+                                memberActivities.Add(didacticActivity);
+                                break;
+                            }
+                        }
                     }
 
                     if (activity is ResearchActivity)
                     {
-                        ResearchActivity reasearchActivity = (ResearchActivity)activity;
-                        if (reasearchActivity.Contains(member))
-                            memberActivities.Add(reasearchActivity);
-                    }
-                }
-                return memberActivities;
-            }
-            else
-                return null;
-        }
-<<<<<<< HEAD
+                        ResearchActivity researchActivity = (ResearchActivity)activity;
+                        IEnumerator<Member> membersRA = researchActivity.GetEnumerator();
 
-        public void aproveActivity(AbstractActivity activity, bool aproved)
-        {
-            allActivities.aproveActivity(activity, aproved);
-=======
-        public void aproveActivity(AbstractActivity a, bool aproved)
-        {
-            switch(a.Type)
-            {
-                case ActivityType.Research_Project:
-                    {
-                        allActivities.aproveActivity(a, aproved);
-                        ResearchProject project=a as ResearchProject;
-                        foreach(ResearchPhase phase  in project.AsEnumerable())
+                        while (membersRA.MoveNext() == true)
                         {
-                            allActivities.aproveActivity(phase, aproved);
-                            foreach (ResearchActivity activ in phase.AsEnumerable())
+                            if (membersRA.Current.EMail.Equals(member.EMail))
                             {
-                                allActivities.aproveActivity(activ, aproved);
+                                memberActivities.Add(researchActivity);
+                                break;
                             }
                         }
                     }
-                    break;
-                case ActivityType.Research_Phase:
-                    {
-                        ResearchPhase phase=a as ResearchPhase;
-                        allActivities.aproveActivity(a, aproved);
-                            allActivities.aproveActivity(phase, aproved);
-                            foreach (ResearchActivity activ in phase.AsEnumerable())
-                            {
-                                allActivities.aproveActivity(activ, aproved);
-                            }
-                        
-                    }
-                    break;
-                    
-                default:
-                    allActivities.aproveActivity(a, aproved); 
-                    break;
+>>>>>>> origin/master
+                }
+            }
+
+            return memberActivities;
         }
->>>>>>> 97aee59442b4e70daff65cbbef010495e675da1b
+        public void aproveActivity(AbstractActivity a,bool aproved)
+        {
+            allActivities.aproveActivity(a,aproved);
         }
 
         public IEnumerable<AbstractActivity> TryGetAll(out string errorMessage)
@@ -143,7 +122,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         private IAllActivities allActivities;
         private AbstractActivity activity;
-<<<<<<< HEAD
         public int id { get; set; }
         public ActivityType type { get; set; }
         public State state { get; set; }
@@ -151,76 +129,5 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public string description { get; set; }
         public string startDate { get; set; }
         public string endDate { get; set; }
-=======
-        private int id { get; set; }
-        private ActivityType type { get; set; }
-        private State state { get; set; }
-        private string title { get; set; }
-        private string description { get; set; }
-        private DateTime startDate { get; set; }
-        private DateTime endDate { get; set; }
-        public int mobilityCost { get; set; }
-        public int logisticalCost { get; set; }
-        public int laborCost { get; set; }
-        public int mobilityCostSelectedIndex { get; set; }
-        public int laborCostSelectedIndex { get; set; }
-        public int logisticalCostSelectedIndex { get; set; }
-        private readonly string[] currency = Enum.GetNames(typeof(Currency)).Select((currency) => currency.Replace('_', ' ')).ToArray();
-        public bool isConfidential { get; set; }
-
-
-        public List<AbstractActivity> GetMemberResearchProjects(Member member, out string error)
-        {
-            List<AbstractActivity> activities = GetMemberActivity(member, out error);
-            List<AbstractActivity> researchProjects = null;
-            selectedMember = member;
-            foreach (AbstractActivity activity in activities)
-            {
-                if (activity is ResearchProject)
-                {
-                    ResearchProject researchProject = (ResearchProject)activity;
-                    researchProjects.Add(researchProject);
-                }
-            }
-            return researchProjects;
-        }
-
-
-        public IEnumerator<ResearchPhase> GetPhasesForResearchProject(ResearchProject researchProject)
-        {
-            selectedResearchProject = researchProject;
-            return researchProject.GetEnumerator();
-        }
-
-
-        public bool TryCreateActivity(ResearchPhase researchPhase, out string error)
-        {
-            try
-            {
-                ResearchActivity researchActivity = new ResearchActivity(
-                researchPhase,
-                title,
-                description,
-                startDate,
-                endDate,
-                selectedResearchProject.Team,
-                new FinancialResource(mobilityCost, (Currency)mobilityCostSelectedIndex),
-                new FinancialResource(laborCost, (Currency)laborCostSelectedIndex),
-                new FinancialResource(logisticalCost, (Currency)logisticalCostSelectedIndex),
-                isConfidential
-                );
-                researchActivity.State = State.Proposed;
-                //add the activity
-                error = null;
-                return true;
-            }
-            catch (Exception exception)
-            {
-                error = exception.Message;
-                return false;
-            }
-        }
-
->>>>>>> 97aee59442b4e70daff65cbbef010495e675da1b
     }
 }

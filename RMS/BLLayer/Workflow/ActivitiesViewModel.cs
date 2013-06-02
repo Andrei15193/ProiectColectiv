@@ -1,5 +1,4 @@
-﻿
-using ResourceManagementSystem.BusinessLogic.Entities;
+﻿using ResourceManagementSystem.BusinessLogic.Entities;
 using ResourceManagementSystem.DAOInterface;
 using System;
 using System.Collections.Generic;
@@ -24,31 +23,48 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public List<AbstractActivity> GetMemberActivity(Member member, out string error)
         {
             IEnumerable<AbstractActivity> activities = TryGetAll(out error);
-            List<AbstractActivity> memberActivities = null;
-            DidacticActivity didacticActivity;
-            ResearchActivity reasearchActivity;
-
-            foreach (AbstractActivity activity in activities)
+            if (activities != null)
             {
-                if (activity is DidacticActivity)
+                ICollection<AbstractActivity> memberActivities = new LinkedList<AbstractActivity>();
+                foreach (AbstractActivity activity in activities)
                 {
-                    didacticActivity = (DidacticActivity)activity;
-                    if (didacticActivity.Contains(member))
-                        memberActivities.Add(didacticActivity);
-                            
-                }
+                    if (activity is DidacticActivity)
+                    {
+                        DidacticActivity didacticActivity = (DidacticActivity)activity;
+                        IEnumerator<Member> membersDA = didacticActivity.GetEnumerator();
 
-                if (activity is ResearchActivity)
-                {
-                    reasearchActivity = (ResearchActivity)activity;
-                    if (reasearchActivity.Contains(member))
-                        memberActivities.Add(reasearchActivity);
+                        while (membersDA.MoveNext() == true)
+                        {
+                            if (membersDA.Current.EMail.Equals(member.EMail))
+                            {
+                                memberActivities.Add(didacticActivity);
+                                break;
+                            }
+                        }
+                    }
+
+                    if (activity is ResearchActivity)
+                    {
+                        ResearchActivity researchActivity = (ResearchActivity)activity;
+                        IEnumerator<Member> membersRA = researchActivity.GetEnumerator();
+
+                        while (membersRA.MoveNext() == true)
+                        {
+                            if (membersRA.Current.EMail.Equals(member.EMail))
+                            {
+                                memberActivities.Add(researchActivity);
+                                break;
+                            }
+                        }
+                    }
                 }
+                return memberActivities;
             }
-
-            return memberActivities;
+            else
+                return null;
         }
-        public void aproveActivity(AbstractActivity a,bool aproved)
+
+        public void aproveActivity(AbstractActivity activity, bool aproved)
         {
             allActivities.aproveActivity(a,aproved);
         }

@@ -40,7 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="Entities\AdministrativeEvent.cs" />
     <Compile Include="Entities\DidacticActivity.cs" />
     <Compile Include="Entities\AbstractAssignableActivity.cs" />
     <Compile Include="Entities\AbstractBreakdownActivity.cs" />

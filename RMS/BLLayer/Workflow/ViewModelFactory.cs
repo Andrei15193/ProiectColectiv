@@ -126,7 +126,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             public static readonly IAllResearchProjects AllResearchProjects = new AllResearchProjects();
             public static readonly IAllActivities AllActivities = new AllActivities();
 
-            public static readonly IAllAdministrativeEvents AllAdministrativeEvents;
+            public static readonly IAllAdministrativeActivities AllAdministrativeEvents;
         }
     }
 }

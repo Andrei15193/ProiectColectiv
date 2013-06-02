@@ -42,7 +42,7 @@
             break;
         case 6:
 
-            hasError = !administrativeEventViewModel.addTeam(Request.Form.AllKeys.AsEnumerable(), "motherfucking team");
+            hasError = !administrativeEventViewModel.addTeam(Request.Form.AllKeys.AsEnumerable(), String.Empty, out errorMessage);
             
             if (!hasError)
             {

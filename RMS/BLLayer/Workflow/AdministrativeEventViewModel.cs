@@ -20,11 +20,11 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public IEnumerable<string> SelectedTeamEmails { get; set; }
         public AdministrativeActivity administrativeActivity { get; private set; }
 
-        private IAllAdministrativeActivity allActivities;
+        private IAllAdministrativeActivities allActivities;
         private IAllMembers allMembers;
 
 
-        public AdministrativeEventViewModel(IAllMembers allMembers, IAllAdministrativeActivity allActivities)
+        public AdministrativeEventViewModel(IAllMembers allMembers, IAllAdministrativeActivities allActivities)
         {
             this.allActivities = allActivities;
             this.allMembers = allMembers;

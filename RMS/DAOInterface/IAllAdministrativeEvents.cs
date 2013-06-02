@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace ResourceManagementSystem.DAOInterface
 
 {
-    public interface IAllAdministrativeEvents
+    public interface IAllAdministrativeActivities
     {
-        IEnumerable<AdministrativeEvent> AsEnumerable { get; }
+        IEnumerable<AdministrativeActivity> AsEnumerable { get; }
 
-        void Add(AdministrativeEvent administrativeEvent);
+        void Add(AdministrativeActivity administrativeActivity);
     }
 }

@@ -63,6 +63,7 @@ namespace DALayer.Database
                             {
                                 activities.AddLast(new AdministrativeActivity(reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(5), reader.GetDateTime(6))
                                 {
+                                    Id = Convert.ToInt32(reader["id"].ToString()),
                                     State = (State) Convert.ToInt32(reader["state"].ToString())
                                 });
                                 break;
@@ -160,6 +161,7 @@ namespace DALayer.Database
                                 }
                                 activities.AddLast(new ResearchActivity(rp, reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5), members, mobilittyCost, laborCost, logisticalCost, isConfidential)
                                 {
+                                    Id = Convert.ToInt32(reader["id"].ToString()),
                                     State = (State)Convert.ToInt32(reader["state"].ToString())
                                 });
                                 break;
@@ -168,7 +170,12 @@ namespace DALayer.Database
                         #region 4
                         case ActivityType.Research_Phase:
                             {
-                                activities.AddLast(new ResearchPhase(new AllResearchProjects().getByPhase(Convert.ToInt32(reader["id"])), reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5)));
+                                activities.AddLast(new ResearchPhase(new AllResearchProjects().getByPhase(Convert.ToInt32(reader["id"])), reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5))
+                                {
+
+                                    Id = Convert.ToInt32(reader["id"].ToString()),
+                                    State = (State) Convert.ToInt32(reader["state"])
+                                });
                                 break;
                             }
                         #endregion
@@ -204,6 +211,7 @@ namespace DALayer.Database
                                 }
                                 activities.AddLast(new ResearchProject(reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5), new AllMembers().getTeam(teamid))
                                 {
+                                    Id = Convert.ToInt32(reader["id"].ToString()),
                                     State = (State)Convert.ToInt32(reader["state"].ToString())
                                 });
                                 break;
@@ -214,6 +222,7 @@ namespace DALayer.Database
                             {
                                 activities.AddLast(new StudentCircle(reader["title"].ToString(), reader["description"].ToString(), reader.GetDateTime(4), reader.GetDateTime(5), new Studyprograms().getByStudentCircle(Convert.ToInt32(reader["id"].ToString())))
                                 {
+                                    Id = Convert.ToInt32(reader["id"].ToString()),
                                     State = (State)Convert.ToInt32(reader["state"].ToString())
                                 });
                                 break;

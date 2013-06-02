@@ -106,6 +106,21 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        public bool addTeam(IEnumerable<string> SelectedTeamEmails, String teamName)
+        {
+            try
+            {
+                administrativeActivity.Teams.Add(new NamedTeam(teamName, allMembers.AsEnumerable.Where(
+                            (localMember) => SelectedTeamEmails.Contains(localMember.EMail)
+                        )));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public void AddAdministrativeActivity(string title, string description, DateTime startDate, DateTime endDate)
         {
             //AdministrativeActivity activity = new AdministrativeActivity

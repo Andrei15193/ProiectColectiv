@@ -9,7 +9,7 @@
 
     bool hasError = false;
     int step = 0, i = 0, nrPhases = 0;
-    const int lastStep = 2;
+    const int lastStep = 3;
     string errorMessage = string.Empty;
     string requestStep = IsPost ? Request["step"] : null;
     if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
@@ -19,7 +19,13 @@
 
     MemberViewModel membersViewModel = Session["memberViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
     Session["memberViewModel"] = membersViewModel;
+
+    if (membersViewModel == null || membersViewModel.IsAuthenticated == false || membersViewModel.MemberType != ResourceManagementSystem.BusinessLogic.Entities.MemberType.Teacher)
+    {
+        Response.Redirect("~/index.cshtml");
+    }
     
+        
     ResearchProjectViewModel researchProjectViewModel = Session["researchProjectViewModel"] as ResearchProjectViewModel ?? ViewModelFactory.ResearchProjectViewModel;
     Session["researchProjectViewModel"] = researchProjectViewModel;
     
@@ -36,6 +42,7 @@
                 if (int.TryParse(Request["ResearchProject"], out val))
                 {
                     phases = researchProjectViewModel.GetPhasesForResearchProject(projects.ElementAt(val));
+                    Session["ResearchProjectPhases"] = phases;
                 }
             }
             break;
@@ -43,6 +50,12 @@
         case 2:
             if (Request["ResearchPhase"] != null)
             {
+                phases = Session["ResearchProjectPhases"] as IEnumerator<ResearchPhase>;
+                
+                if(!int.TryParse(Session["ResearchProjectNumberOfPhases"].ToString(), out nrPhases)){
+                    nrPhases = 0;
+                }
+                
                 int val;
                 if (int.TryParse(Request["ResearchPhase"], out val))
                 {
@@ -53,11 +66,15 @@
                         nrPhases--;
                     }
                     phase = phases.Current;
+                    Session["ResearchProjectPhase"] = phase;
                 }
+                
+                Session.Remove("ResearchProjectPhases");
             }
             break;
         
         case 3:
+    
             researchProjectViewModel.Title = Request["title"];
             researchProjectViewModel.Description = Request["description"];
             researchProjectViewModel.StartDate = Request["startDate"];
@@ -71,7 +88,17 @@
             researchProjectViewModel.IsConfidential = Request["isConfidential"] != null;
             researchProjectViewModel.SelectedTeamEmails = Request.Form.AllKeys.Where((key) => Regex.IsMatch(key, Constants.EmailCheckRegex));
 
+            phase = Session["ResearchProjectPhase"] as ResearchPhase;
+            Session.Remove("ResearchProjectPhase");
+
+            errorMessage=string.Empty;
+            
             researchProjectViewModel.TryCreateActivity(phase, out errorMessage);
+
+            Session.Remove("researchProjectViewModel");
+            
+            step = 0;
+            
             break;
     }
 }
@@ -128,11 +155,12 @@
                         @while(phases.MoveNext() == true)
                         {
                             <li>
-                                <input type="radio" name="ResearchPhase" value="@i"/>
+                                <input type="radio" name="ResearchPhase" value="@nrPhases"/>
                                 @(phases.Current.Title)
                             </li>
                             nrPhases++;
                         }
+                        @{Session["ResearchProjectNumberOfPhases"]=nrPhases;}
                     </ul>
                     <input type="submit" value="Next" />
                 </form>
@@ -143,7 +171,7 @@
                 //Add Research Activity
                 <form class="form-horizontal" action="/addResearchActivity.cshtml" method="post">
             <div>
-                <input type="hidden" name="step" id="Hidden3" value="3" />
+                <input type="hidden" value="3" name="step" id="Hidden2" />
 
                 <label for="title">Title: </label>
                 <input type="text" name="title" id="title" value="@researchProjectViewModel.Title" />

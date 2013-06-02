@@ -71,8 +71,8 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
         }
 
-        public AbstractBreakdownActivity BreakdownActivity { get; private set; }
+        public AbstractBreakdownActivity BreakdownActivity { get; set; }
 
-        private ISet<Task> tasks;
+        public ISet<Task> tasks { get; set; }
     }
 }

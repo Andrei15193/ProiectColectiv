@@ -106,11 +106,10 @@
     <Content Include="getClassRoomsInfo.cshtml" />
     <Content Include="getEquipmentsInfo.cshtml" />
     <Content Include="aproveActivities.cshtml" />
-<<<<<<< HEAD
     <Content Include="importSchedule.cshtml" />
-=======
     <Content Include="addStudentCircle.cshtml" />
->>>>>>> origin/Marius
+    <Content Include="addAdministrativeEvent.cshtml" />
+    <Content Include="viewCalendar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,217 @@
+﻿@using ResourceManagementSystem.BusinessLogic.Workflow;
+@using ResourceManagementSystem.BusinessLogic.Entities;
+
+@{   
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "Define Administrative Events";
+
+    string errorMessage = string.Empty;
+    AdministrativeEventViewModel administrativeEventViewModel = Session["administrativeEventViewModel"] as AdministrativeEventViewModel ?? ViewModelFactory.AdministrativeEventViewModel;
+    Session["administrativeEventViewModel"] = administrativeEventViewModel;
+    
+    TaskBreakdownActivity currentActivity = Session["currentActivity"] as TaskBreakdownActivity ?? null;
+
+    bool hasError = false;
+    int step = 0;
+    const int lastStep = 9;
+    string requestStep = IsPost ? Request["step"] : null;
+    if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
+    {
+        step = 0;
+    }
+    IEnumerable<Member> members = null;
+    
+    switch (step)
+    {
+        case 1:
+            administrativeEventViewModel.title = Request["administrativeEvent"];
+            administrativeEventViewModel.description = Request["description"];
+            administrativeEventViewModel.startDate = Request["startDate"];
+            administrativeEventViewModel.endDate = Request["endDate"];
+            
+            administrativeEventViewModel.SelectedTeamEmails = Request.Form.AllKeys;
+            hasError = !administrativeEventViewModel.TryCreateAdministrativeActivity(out errorMessage);
+
+            if (hasError)
+            {
+                step = 0;
+            }
+            break;
+        case 2:
+            members = administrativeEventViewModel.TryGetAllMembers(out errorMessage);
+            break;
+        case 6:
+
+            hasError = !administrativeEventViewModel.addTeam(Request.Form.AllKeys.AsEnumerable(), String.Empty, out errorMessage);
+            
+            if (!hasError)
+            {
+                step = 1;
+            }
+            else
+            {
+                step = 2;
+            }
+            
+            break;
+            
+        case 7:
+            hasError = !administrativeEventViewModel.addTaskBreakdownActivity(Request["title"],
+                Request["description"], Request["startDate"], Request["endDate"], 
+                out currentActivity, out errorMessage);
+
+            Session["currentActivity"] = currentActivity;
+            
+            break;
+    }
+}
+
+
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a>Define Study Programs</a></li>
+    </ul>
+
+
+    <p>Step: @step</p>
+    @if (hasError)
+    {
+        <h1>Error!</h1>
+        <p>@errorMessage</p>
+        <p>We are terebly sorry for the inconvenience...</p>
+        <form action="addResearchProject.cshtml" class="form-horizontal" method="post">
+            <input type="hidden" name="step" id="step" value="@step" />
+            <input type="submit" value="Back" />
+        </form>
+    }
+    else
+    {
+        switch (step)
+        {
+            case 0:
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
+                    <input type="hidden" value="1" name="step" id="step" />
+                    <table style="width: 100%;">
+                        <tr>
+                            <th>Administrative Event Title</th>
+                            <td style="width: 100%;">
+                                <input type="text" class="administrativeEvent" name="administrativeEvent" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Descritpion</th>
+                            <td style="width: 100%;">
+                                <input type="text" class="description" name="description" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Start date</th>
+                            <td style="width: 100%;">
+                                <input type="text" name="startDate" class="datepicker" data-date-format="dd/mm/yyyy" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>End date</th>
+                            <td style="width: 100%;">
+                                <input type="text" name="endDate" class="datepicker" data-date-format="dd/mm/yyyy" />
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="submit" value="Next" />
+                </form>
+                break;
+            
+            case 1:
+                <h1>@administrativeEventViewModel.administrativeActivity.Title</h1>
+                <p>
+                    <b>Start date:</b> @administrativeEventViewModel.administrativeActivity.StartDate.ToString("d MMM yyyy")<br />
+                    <b>End date:</b> @administrativeEventViewModel.administrativeActivity.EndDate.ToString("d MMM yyyy")
+                </p>
+                <p>
+                    @administrativeEventViewModel.administrativeActivity.Description
+                </p>
+    
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
+                 
+                    <input type="hidden" value="2" name="step" id="step" />
+                    <input type="submit" value="Add new team" />
+
+                </form>
+    
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
+                 
+                    <input type="hidden" value="3" name="step" id="step" />
+                    <input type="submit" value="Add new activity" />
+
+                </form>
+                break;  
+                
+            case 2:
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
+                 
+                    <input type="hidden" value="6" name="step" id="step" />
+                    <ul>
+                        @foreach (var member in members)
+                        {
+                            <li>
+                                <input type="checkbox" name="@member.EMail" />
+                                @(member.ToString())
+                            </li>
+                        }
+                    </ul>
+                    <input type="submit" value="Next" />
+
+                </form>
+                break;  
+                
+            case 3:
+                <form action="~/addAdministrativeEvent.cshtml" class="form-horizontal addAdministrativeEvents" method="post">
+                    <input type="hidden" value="7" name="step" id="step" />
+                    <table style="width: 100%;">
+                        <tr>
+                            <th>Activity Title</th>
+                            <td style="width: 100%;">
+                                <input type="text" class="title" name="title" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Descritpion</th>
+                            <td style="width: 100%;">
+                                <input type="text" class="description" name="description" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Start date</th>
+                            <td style="width: 100%;">
+                                <input type="text" name="startDate" class="datepicker" data-date-format="dd/mm/yyyy" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>End date</th>
+                            <td style="width: 100%;">
+                                <input type="text" name="endDate" class="datepicker" data-date-format="dd/mm/yyyy" />
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="submit" value="Next" />
+                </form>
+                break;
+                
+            case 7:
+                <h1>@currentActivity.Title</h1>
+                <p>
+                    <b>Start date:</b> @currentActivity.StartDate.ToString("d MMM yyyy")<br />
+                    <b>End date:</b> @currentActivity.EndDate.ToString("d MMM yyyy")
+                </p>
+                <p>
+                    @currentActivity.Description
+                </p>
+                break;
+        }
+    }
+        
+        <div style="clear: both;"></div>
+    </div>
+
+
+    }

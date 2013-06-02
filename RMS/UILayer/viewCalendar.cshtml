@@ -24,7 +24,7 @@
     </ul>
 
     
-        @if (activities != null)
+        @if (activities != null && activities.Count() > 0)
         {
             
                 foreach (var activity in activities)
@@ -54,13 +54,17 @@
                         }
                     </div>
                 }
-        
         }
+        
+        else if(activities != null && activities.Count() == 0)
+        {
+            <h2>You have no activities!</h2>
+        }
+        
         else
         {
             <h1>Error!</h1>
             <p>@errorMessage</p>
             <p>We are terebly sorry for the inconvenience...</p>
         }
-   
 }

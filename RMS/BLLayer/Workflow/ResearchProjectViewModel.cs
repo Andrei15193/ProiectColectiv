@@ -13,11 +13,14 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
     public class ResearchProjectViewModel
     {
-        public ResearchProjectViewModel(IAllMembers allMembers, IAllResearchProjects allProjects)
+        public ResearchProjectViewModel(IAllMembers allMembers, IAllResearchProjects allResearchProjects, IAllEquipments allEquipments, IAllClassRooms allClassRooms)
         {
-            CurrentPhase = null;
+            // TODO: Complete member initialization
             this.allMembers = allMembers;
-            this.allProjects = allProjects;
+            this.allResearchProjects = allResearchProjects;
+            this.allEquipments = allEquipments;
+            this.allClassRooms = allClassRooms;
+            CurrentPhase = null;
             ResearchProject = null;
             Title = string.Empty;
             Description = string.Empty;
@@ -358,5 +361,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         private IAllClassRooms allClassRooms;
         private IAllResearchProjects allProjects;
         private readonly string[] currency = Enum.GetNames(typeof(Currency)).Select((currency) => currency.Replace('_', ' ')).ToArray();
+        private IAllResearchProjects allResearchProjects;
     }
 }

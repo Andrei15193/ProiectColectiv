@@ -43,9 +43,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return new SelectEquipmentsViewModel(Repositories.AllEquipments);
             }
         }
-
-
-
+        
         public static MemberViewModel MemberViewModel
         {
             get
@@ -124,6 +122,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             public static readonly IStudyPrograms StudyPrograms = new Studyprograms();
 
             public static readonly IAllResearchProjects AllResearchProjects = new AllResearchProjects();
+
             public static readonly IAllActivities AllActivities = new AllActivities();
 
             public static readonly IAllAdministrativeActivities AllAdministrativeEvents;

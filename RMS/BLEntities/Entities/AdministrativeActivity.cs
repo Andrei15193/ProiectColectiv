@@ -9,11 +9,9 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
         public AdministrativeActivity(string title, string description, DateTime startDate, DateTime endDate)
             :base(ActivityType.Administrative, title, description, startDate, endDate)
         {
-            Teams = new SortedSet<Collections.NamedTeam>(new Collections.Comparer<Collections.NamedTeam>((x, y) => x.Name.CompareTo(y.Name)));
+            Teams = new SortedSet<Collections.NamedTeam>(new Collections.Comparer<Collections.NamedTeam>((x, y)=>x.Name.CompareTo(y.Name)));
         }
 
-        
-
-        public ICollection<Collections.NamedTeam> Teams { get; set; }
+        public ICollection<Collections.NamedTeam> Teams { get; private set; }
     }
 }

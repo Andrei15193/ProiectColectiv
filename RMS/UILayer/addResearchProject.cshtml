@@ -1,68 +1,182 @@
-﻿@using ResourceManagementSystem.BusinessLogic.Entities;
+﻿@using ResourceManagementSystem.BusinessLogic;
+@using ResourceManagementSystem.BusinessLogic.Entities;
 @using ResourceManagementSystem.BusinessLogic.Workflow;
+@using System.Text.RegularExpressions;
 
 @{   
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
     Page.Title = "Add Research Project";
 
+    bool hasError = false;
     int step = 0;
-    const int lastStep = 6;
+    const int lastStep = 9;
     string errorMessage = string.Empty;
     string requestStep = IsPost ? Request["step"] : null;
+    IEnumerable<Member> members = null;
     if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
     {
         step = 0;
     }
     ResearchProjectViewModel researchProjectsViewModel = Session["researchProjectViewModel"] as ResearchProjectViewModel ?? ViewModelFactory.ResearchProjectViewModel;
     Session["researchProjectViewModel"] = researchProjectsViewModel;
-    IEnumerable<Member> members = null;
 
     switch (step)
     {
-        case 0:
-            // researchProjectsViewModel.MemberTypeSelectedIndex = 0;
-            //researchProjectsViewModel.ActivityTitle = null;
-            //researchProjectsViewModel.ActivityDescription = null;
-            //researchProjectsViewModel.ActivityStartDate = null;
-            //researchProjectsViewModel.ActivityEndDate = null;
-            //am ramas aici
-            break;
         case 1:
-            //humanResourcesViewModel.MemberTypeSelectedIndex = Request["memberType"] == null ? 0 : Convert.ToInt32(Request["memberType"]);
             researchProjectsViewModel.Title = Request["title"];
             researchProjectsViewModel.Description = Request["description"];
             researchProjectsViewModel.StartDate = Request["startDate"];
             researchProjectsViewModel.EndDate = Request["endDate"];
-            researchProjectsViewModel.TryGetAllHumanResources(out errorMessage, out members);
+            hasError = !researchProjectsViewModel.TryGetAllHumanResources(out errorMessage, out members);
+            if (hasError)
+            {
+                step = 0;
+            }
             break;
         case 2:
             researchProjectsViewModel.SelectedTeamEmails = Request.Form.AllKeys;
+            hasError = !researchProjectsViewModel.TryCreateResearchProject(out errorMessage);
+            if (hasError)
+            {
+                step = 0;
+            }
+            else
+            {
+                researchProjectsViewModel.Title = string.Empty;
+                researchProjectsViewModel.Description = string.Empty;
+                researchProjectsViewModel.StartDate = DateTime.Now.ToString("dd/MM/yyyy");
+                researchProjectsViewModel.EndDate = DateTime.Now.AddDays(10).ToString("dd/MM/yyyy");
+                step = 3;
+            }
             break;
-        case 3:
-            researchProjectsViewModel.Title = string.Empty;
-            researchProjectsViewModel.Description = string.Empty;
-            researchProjectsViewModel.EndDate = researchProjectsViewModel.StartDate = DateTime.Now.ToString("dd/MM/yyyy");
-            break;
-        case 4:
+        case 5:
             researchProjectsViewModel.Title = Request["title"];
             researchProjectsViewModel.Description = Request["description"];
             researchProjectsViewModel.StartDate = Request["startDate"];
             researchProjectsViewModel.EndDate = Request["endDate"];
+            hasError = !researchProjectsViewModel.TryCreatePhase(out errorMessage);
+            if (hasError)
+            {
+                step = 4;
+            }
+            else
+            {
+                researchProjectsViewModel.Title = string.Empty;
+                researchProjectsViewModel.Description = string.Empty;
+                researchProjectsViewModel.StartDate = DateTime.Now.ToString("dd/MM/yyyy");
+                researchProjectsViewModel.EndDate = DateTime.Now.AddDays(10).ToString("dd/MM/yyyy");
+                step = 6;
+            }
             break;
-        case 5:
+        case 6:
+            researchProjectsViewModel.Title = string.Empty;
+            researchProjectsViewModel.Description = string.Empty;
+            researchProjectsViewModel.StartDate = DateTime.Now.ToString("dd/MM/yyyy");
+            researchProjectsViewModel.EndDate = DateTime.Now.AddDays(10).ToString("dd/MM/yyyy");
+            researchProjectsViewModel.LaborCost = 0;
+            researchProjectsViewModel.LaborCostSelectedIndex = 0;
+            researchProjectsViewModel.MobilityCost = 0;
+            researchProjectsViewModel.MobilityCostSelectedIndex = 0;
+            researchProjectsViewModel.LogisticalCost = 0;
+            researchProjectsViewModel.LogisticalCostSelectedIndex = 0;
+            researchProjectsViewModel.IsConfidential = false;
+            break;
+        case 8:
+            researchProjectsViewModel.Title = Request["title"];
+            researchProjectsViewModel.Description = Request["description"];
+            researchProjectsViewModel.StartDate = Request["startDate"];
+            researchProjectsViewModel.EndDate = Request["endDate"];
+            researchProjectsViewModel.LaborCost = (Request["laborCost"] == string.Empty ? 0 : int.Parse(Request["laborCost"]));
+            researchProjectsViewModel.LaborCostSelectedIndex = int.Parse(Request["laborCostSelectedIndex"]);
+            researchProjectsViewModel.MobilityCost = (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"]));
+            researchProjectsViewModel.MobilityCostSelectedIndex = int.Parse(Request["mobilityCostSelectedIndex"]);
+            researchProjectsViewModel.LogisticalCost = (Request["logisticalCost"] == string.Empty ? 0 : int.Parse(Request["logisticalCost"]));
+            researchProjectsViewModel.LogisticalCostSelectedIndex = int.Parse(Request["logisticalCostSelectedIndex"]);
+            researchProjectsViewModel.IsConfidential = Request["isConfidential"] != null;
+            researchProjectsViewModel.SelectedTeamEmails = Request.Form.AllKeys.Where((key) => Regex.IsMatch(key, Constants.EmailCheckRegex));
+            hasError = !researchProjectsViewModel.TryCreateActivity(out errorMessage);
+            if (hasError)
+            {
+                step = 7;
+            }
+            else
+            {
+                step = 6;
+                researchProjectsViewModel.Title = string.Empty;
+                researchProjectsViewModel.Description = string.Empty;
+                researchProjectsViewModel.StartDate = DateTime.Now.ToString("dd/MM/yyyy");
+                researchProjectsViewModel.EndDate = DateTime.Now.AddDays(10).ToString("dd/MM/yyyy");
+                researchProjectsViewModel.LaborCost = 0;
+                researchProjectsViewModel.LaborCostSelectedIndex = 0;
+                researchProjectsViewModel.MobilityCost = 0;
+                researchProjectsViewModel.MobilityCostSelectedIndex = 0;
+                researchProjectsViewModel.LogisticalCost = 0;
+                researchProjectsViewModel.LogisticalCostSelectedIndex = 0;
+                researchProjectsViewModel.IsConfidential = false;
+            }
+            break;
+        case 9:
+            hasError = !researchProjectsViewModel.TrySaveResearchProject(out errorMessage);
+            if (!hasError)
+            {
+                Session.Remove("title");
+                Session.Remove("description");
+                Session.Remove("startDate");
+                Session.Remove("endDate");
+                Session.Remove("laborCost");
+                Session.Remove("laborCostSelectedIndex");
+                Session.Remove("mobilityCost");
+                Session.Remove("mobilityCostSelectedIndex");
+                Session.Remove("logisticalCost");
+                Session.Remove("logisticalCostSelectedIndex");
+                Session.Remove("isConfidential");
+                Session.Remove("researchProjectViewModel");
+                researchProjectsViewModel.Title = string.Empty;
+                researchProjectsViewModel.Description = string.Empty;
+                researchProjectsViewModel.StartDate = DateTime.Now.ToString("dd/MM/yyyy");
+                researchProjectsViewModel.EndDate = DateTime.Now.AddDays(10).ToString("dd/MM/yyyy");
+                step = 0;
+            }
+            else
+            {
+                // TO DO: phase edit/remove activity: edit/remove before research project submit
+                step = 0;
+            }
             break;
     }
 }
 
 @section body{
     <ul class="nav nav-tabs">
-        <li class="active"><a>Add Research Project</a></li>
+        @if (step <= 3)
+        {
+            <li class="active"><a>Add Research Project</a></li>
+        }
+        else if (step <= 6)
+        {
+            <li class="active"><a>Add Research Project :: Add Research Phase</a></li>
+        }
+        else if (step <= lastStep)
+        {
+            <li class="active"><a>Add Research Project :: Add Research Phase :: Add Research Activity</a></li>
+        }
     </ul>
-
-    @switch (step)
+    @if (hasError)
     {
-        case 0:
-            // RP form
+        <h1>Error!</h1>
+        <p>@errorMessage</p>
+        <p>We are terebly sorry for the inconvenience...</p>
+        <form action="addResearchProject.cshtml" class="form-horizontal" method="post">
+            <input type="hidden" name="step" id="step" value="@step" />
+            <input type="submit" value="Back" />
+        </form>
+    }
+    else
+    {
+        switch (step)
+        {
+            case 0:
+                // Show Research Project Form
         <div class="well">
             <form action="addResearchProject.cshtml" class="form-horizontal" method="post">
                 <input type="hidden" value="1" name="step" id="step" />
@@ -81,48 +195,40 @@
                 <input type="submit" value="Next" />
             </form>
         </div>
-            break;
+                break;
 
-        case 1:        
+            case 1:
+                // Select Team Members
         <div class="well">
-            @if (members != null)
-            {
-                <h1>Select who is in your team:</h1>
-                <form action="addResearchProject.cshtml" class="form-horizontal" method="post">
-                    <input type="hidden" value="2" name="step" id="step" />
-                    <ul>
-                        @foreach (var member in members)
-                        {
-                            <li>
-                                <input type="checkbox" name="@member.EMail" />
-                                @(member.ToString())
-                            </li>
-                        }
-                    </ul>
-                    <input type="submit" value="Next" />
-                </form>
-            }
-            else
-            {
-                <h1>Error!</h1>
-                <p>@errorMessage</p>
-                <p>We are terebly sorry for the inconvenience...</p>
-            }
+            <h1>Select who is in your team:</h1>
+            <form action="addResearchProject.cshtml" class="form-horizontal" method="post">
+                <input type="hidden" value="2" name="step" id="step" />
+                <ul>
+                    @foreach (var member in members)
+                    {
+                        <li>
+                            <input type="checkbox" name="@member.EMail" />
+                            @(member.ToString())
+                        </li>
+                    }
+                </ul>
+                <input type="submit" value="Next" />
+            </form>
         </div>
-            // select members
-            break;
+                    break;
 
-        case 2:
-            // create research project
-            if (researchProjectsViewModel.TryCreateResearchProject(out errorMessage))
-            {
+            case 3:
+                    // Show Research Project Details
         <div class="well">
             <h1>@researchProjectsViewModel.ResearchProject.Title</h1>
             <p>
                 <b>Start date:</b> @researchProjectsViewModel.ResearchProject.StartDate.ToString("d MMM yyyy")<br />
                 <b>End date:</b> @researchProjectsViewModel.ResearchProject.EndDate.ToString("d MMM yyyy")
             </p>
-            <p>@researchProjectsViewModel.ResearchProject.Description</p>
+            <p>
+                @researchProjectsViewModel.ResearchProject.Description
+            </p>
+
             <h2>Team:</h2>
             <ul style="margin: 0 0 30px;">
                 @foreach (Member member in researchProjectsViewModel.ResearchProject.Team)
@@ -130,71 +236,83 @@
                     <li>@member.ToString()</li>
                 }
             </ul>
+            <div>
+                <form action="addResearchProject.cshtml" style="display: inline;" method="post">
+                    <input type="hidden" value="4" name="step" id="step" />
+                    <input type="submit" value="Add phase" />
+                </form>
+                <form action="addResearchProject.cshtml" style="display: inline;" method="post">
+                    <input type="hidden" value="@lastStep" name="step" id="step" />
+                    <input type="submit" value="Submit Research Project" />
+                </form>
+            </div>
         </div>
-                if (researchProjectsViewModel.ResearchProject.Count > 0)
+    
+                if (researchProjectsViewModel.HasPhases)
                 {
         <div class="well">
-            <h2>Phases:</h2>
-            @foreach (ResearchPhase phase in researchProjectsViewModel.ResearchProject)
+            <h2>Phases</h2>
+            @foreach (ResearchPhase phase in researchProjectsViewModel.ResearchPhases)
             {
-                <h2>@phase.Title</h2>
-                <p>
-                    <b>Start date: </b>@phase.StartDate
-                    <br />
-                    <b>End date: </b>@phase.EndDate
-                </p>
-                <p>
-                    @phase.Description
-                </p>
-                if (phase.Count > 0)
-                {
-                <div class="researchActivity">
-                    @foreach (ResearchActivity activity in phase)
+                <div class="activityContainment">
+                    <h2>@phase.Title</h2>
+                    <p>
+                        @phase.Description
+                    </p>
+                    <p>
+                        <b>Start date: </b>@phase.StartDate.ToString("d MMM yyyy")
+                        <br />
+                        <b>End date: </b>@phase.EndDate.ToString("d MMM yyyy")
+                    </p>
+                    @if (phase.HasActivities)
                     {
-                        <h3>@activity.Title</h3>
-                        <p>
-                            <b>Start date: </b>@activity.StartDate<br />
-                            <b>End date: </b>@activity.EndDate
-                        </p>
-                        @activity.Description
+                        if (phase.Count > 0)
+                        {
+                        <h3>Activities</h3>
+                            foreach (ResearchActivity researchActivity in phase)
+                            {
+                        <div class="activityContainment">
+                            <h4>@researchActivity.Title</h4>
+                            <p>
+                                @researchActivity.Description
+                            </p>
+                            <p>
+                                <b>Start date: </b>@researchActivity.StartDate.ToString("d MMM yyyy")<br />
+                                <b>End date: </b>@researchActivity.EndDate.ToString("d MMM yyyy")<br />
+                                <b>Labor cost: </b>@researchActivity.LaborCost.Value @researchActivity.LaborCost.Currency.ToString()<br />
+                                <b>Logistical cost: </b>@researchActivity.LogisticalCost.Value @researchActivity.LogisticalCost.Currency.ToString()<br />
+                                <b>Mobility cost: </b>@researchActivity.MobilityCost.Value @researchActivity.MobilityCost.Currency.ToString()<br />
+                                <b>Is confidential: </b>@(researchActivity.IsConfidential ? "Yes" : "No")<br />
+                                <b>Assignee@(researchActivity.AssigneeCount > 1 ? "s" : ""):</b> @string.Join(", ", researchActivity.Select((assignee) => assignee.Name))
+                            </p>
+                            @if (researchActivity.ClassRooms.Count > 0)
+                            {
+                                <p>
+                                    Class rooms used: @string.Join(", ", researchActivity.ClassRooms.Select((classRoom) => classRoom.Name));
+                                </p>
+                            }
+                            @if (researchActivity.Equipments.Count > 0)
+                            {
+                                <p>
+                                    Equipment used: @string.Join(", ", researchActivity.Equipments.Select((equipment) => string.Format("{0} {1} ({2})", equipment.Brand, equipment.Model, equipment.SerialNumber)));
+                                </p>
+                            }
+                        </div>
+                            }
+                        }
                     }
                 </div>
-                }
             }
         </div>
                 }
-        <div>
-            <form action="addResearchProject.cshtml" style="display: inline;" method="post">
-                <input type="hidden" value="3" name="step" id="step" />
-                <input type="submit" value="Add phase" />
-            </form>
-            <form action="addResearchProject.cshtml" style="display: inline;" method="post">
-                <input type="hidden" value="@lastStep" name="step" id="step" />
-                <input type="submit" value="Finish" />
-            </form>
-        </div>
-            }
-            else
-            {
-        <div class="well">
-            <h1>Error!</h1>
-            <p>@errorMessage</p>
-            <p>We are terebly sorry for the inconvenience...</p>
-            <form class="form-horizontal" action="/addResearchProject.cshtml" method="post">
-                <input type="hidden" name="step" id="step" value="0" />
-                <input type="submit" value="Go back" />
-            </form>
-        </div>
-            }
-            break;
 
-        case 3:
-            // show phase form
-            // show activities in phase
-            // show add button (goest to step 4)
+                break;
+
+            case 4:
+                // Show Research Phase Form
         <div class="well">
             <form class="form-horizontal" action="/addResearchProject.cshtml" method="post">
-                <input type="hidden" name="step" id="step" value="4" />
+                <input type="hidden" name="step" id="step" value="5" />
 
                 <label for="title">Title: </label>
                 <input type="text" name="title" id="title" value="@researchProjectsViewModel.Title" />
@@ -211,211 +329,130 @@
                 <input type="submit" value="Add phase" />
             </form>
         </div>
-            break;
+                break;
 
-        case 4:
-            if (researchProjectsViewModel.TryCreatePhase(out errorMessage))
-            {
-
-                if (researchProjectsViewModel.CurrentPhase.Count > 0)
-                {
-                    foreach (ResearchActivity researchActivity in researchProjectsViewModel.CurrentPhase)
-                    {
+            case 6:
+                // Show Research Phase Details
         <div class="well">
-            <h3>@researchActivity.Title</h3>
+            <h3>@researchProjectsViewModel.CurrentPhase.Title</h3>
             <p>
-                <b>Start date: </b>@researchActivity.StartDate
-                <b>End date: </b>@researchActivity.EndDate
-                <b>Labor cost: </b>@researchActivity.LaborCost.Value @researchActivity.LaborCost.Currency.ToString()
-                <b>Logistical cost: </b>@researchActivity.LogisticalCost.Value @researchActivity.LogisticalCost.Currency.ToString()
-                <b>Mobility cost: </b>@researchActivity.MobilityCost.Value @researchActivity.MobilityCost.Currency.ToString()
-                <b>Is confidential: </b>@(researchActivity.IsConfidential ? "Yes" : "No")
+                <b>Start date: </b>@researchProjectsViewModel.CurrentPhase.StartDate.ToString("d MMM yyy")<br />
+                <b>End date: </b>@researchProjectsViewModel.CurrentPhase.EndDate.ToString("d MMM yyyy")
             </p>
             <p>
-                @researchActivity.Description
+                @researchProjectsViewModel.CurrentPhase.Description
             </p>
-            <p>
-                Class rooms used: @string.Join(", ", researchActivity.ClassRooms.Select((classRoom) => classRoom.Name));
-            </p>
-            <p>
-                Equipment used: @string.Join(", ", researchActivity.Equipments.Select((equipment) => string.Format("{0} {1} ({2})", equipment.Brand, equipment.Model, equipment.SerialNumber)));
-            </p>
+            <form action="addResearchProject.cshtml" style="display: inline;" method="post">
+                <input type="hidden" value="7" name="step" id="step" />
+                <input type="submit" value="Add activity" />
+            </form>
+            <form action="addResearchProject.cshtml" style="display: inline;" method="post">
+                <input type="hidden" value="3" name="step" id="step" />
+                <input type="submit" value="Submit phase" />
+            </form>
         </div>
-                    }
-                }
-            }
-            else
+                if (researchProjectsViewModel.CurrentPhase.HasActivities)
+                {
+                    
+        <div class="well">
+            <h3>Activities</h3>
+            @foreach (ResearchActivity researchActivity in researchProjectsViewModel.CurrentPhase)
             {
-        <h1>Error!</h1>
-        <p>@errorMessage</p>
-        <p>We are terebly sorry for the inconvenience...</p>
+                <div class="activityContainment">
+                    <h3>@researchActivity.Title</h3>
+                    <p>
+                        @researchActivity.Description
+                    </p>
+                    <p>
+                        <b>Start date: </b>@researchActivity.StartDate.ToString("d MMM yyyy")<br />
+                        <b>End date: </b>@researchActivity.EndDate.ToString("d MMM yyyy")<br />
+                        <b>Labor cost: </b>@researchActivity.LaborCost.Value @researchActivity.LaborCost.Currency.ToString()<br />
+                        <b>Logistical cost: </b>@researchActivity.LogisticalCost.Value @researchActivity.LogisticalCost.Currency.ToString()<br />
+                        <b>Mobility cost: </b>@researchActivity.MobilityCost.Value @researchActivity.MobilityCost.Currency.ToString()<br />
+                        <b>Is confidential: </b>@(researchActivity.IsConfidential ? "Yes" : "No")<br />
+                        <b>Assignee@(researchActivity.AssigneeCount > 1 ? "s" : ""):</b> @string.Join(", ", researchActivity.Select((assignee) => assignee.Name))
+                    </p>
+                    @if (researchActivity.ClassRooms.Count > 0)
+                    {
+                        <p>
+                            Class rooms used: @string.Join(", ", researchActivity.ClassRooms.Select((classRoom) => classRoom.Name));
+                        </p>
+                    }
+                    @if (researchActivity.Equipments.Count > 0)
+                    {
+                        <p>
+                            Equipment used: @string.Join(", ", researchActivity.Equipments.Select((equipment) => string.Format("{0} {1} ({2})", equipment.Brand, equipment.Model, equipment.SerialNumber)));
+                        </p>
+                    }
+                </div>
             }
-            break;
+        </div>
+                }
+                break;
 
-        case 5:
-     
-           <form class="form-horizontal" action="/addResearchProject.cshtml" method="post">
-            <input type="hidden" name="step" id="step" value="4" />
+            case 7:
+                // Show Research Activity from
+        <form class="form-horizontal" action="/addResearchProject.cshtml" method="post">
+            <div>
+                <input type="hidden" name="step" id="step" value="8" />
 
-            <label for="title">Title: </label>
-            <input type="text" name="title" id="title" value="@researchProjectsViewModel.Title" />
+                <label for="title">Title: </label>
+                <input type="text" name="title" id="title" value="@researchProjectsViewModel.Title" />
 
-            <label for="description">Description: </label>
-            <textarea name="description" id="description">@researchProjectsViewModel.Description</textarea>
+                <label for="description">Description: </label>
+                <textarea name="description" id="description">@researchProjectsViewModel.Description</textarea>
 
-            <label for="startDate">Start date: </label>
-            <input name="startDate" id="startDate" type="text" value="@researchProjectsViewModel.StartDate" data-date-format="dd/mm/yyyy" class="datepicker" />
+                <label for="startDate">Start date: </label>
+                <input name="startDate" id="startDate" type="text" value="@researchProjectsViewModel.StartDate" data-date-format="dd/mm/yyyy" class="datepicker" />
 
-            <label for="endDate">End date: </label>
-            <input name="endDate" id="endDate" type="text" value="@researchProjectsViewModel.EndDate" data-date-format="dd/mm/yyyy" class="datepicker" />
+                <label for="endDate">End date: </label>
+                <input name="endDate" id="endDate" type="text" value="@researchProjectsViewModel.EndDate" data-date-format="dd/mm/yyyy" class="datepicker" />
 
-            <input type="submit" value="Add phase" />
+                <label for="laborCost">Labor cost: </label>
+                <input type="number" value="@researchProjectsViewModel.LaborCost" name="LaborCost" id="LaborCost" />
+                <select name="LaborCostSelectedIndex" id="LaborCostSelectedIndex">
+                    @for (int i = 0; i < researchProjectsViewModel.Currency.Length; i++)
+                    {
+                        <option value="@i">@researchProjectsViewModel.Currency[i]</option>
+                    }
+                </select>
+
+                <label for="mobilityCost">Mobility cost: </label>
+                <input type="number" value="@researchProjectsViewModel.MobilityCost" name="MobilityCost" id="MobilityCost" />
+                <select name="MobilityCostSelectedIndex" id="MobilityCostSelectedIndex">
+                    @for (int i = 0; i < researchProjectsViewModel.Currency.Length; i++)
+                    {
+                        <option value="@i">@researchProjectsViewModel.Currency[i]</option>
+                    }
+                </select>
+
+                <label for="logisticalCost">Mobility cost: </label>
+                <input type="number" value="@researchProjectsViewModel.LogisticalCost" name="LogisticalCost" id="LogisticalCost" />
+                <select name="LogisticalCostSelectedIndex" id="LogisticalCostSelectedIndex">
+                    @for (int i = 0; i < researchProjectsViewModel.Currency.Length; i++)
+                    {
+                        <option value="@i">@researchProjectsViewModel.Currency[i]</option>
+                    }
+                </select>
+
+                <p style="margin: 10px 0 0;">
+                    Is confidential:
+                <input type="checkbox" @(researchProjectsViewModel.IsConfidential ? "checked=\"checked\"" : "") name="isConfidential" id="isConfidential" />
+                </p>
+
+                <h5>Team members participating to this activity: </h5>
+                @foreach (Member teamMember in researchProjectsViewModel.ResearchProject.Team)
+                {
+                    <p>
+                        <input type="checkbox" name="@teamMember.EMail" />@teamMember.ToString()
+                    </p>
+                }
+            </div>
+            <div style="margin: 10px 0 0;">
+                <input type="submit" value="Submit activity" />
+            </div>
         </form>
-        <form>
-            <input type="submit" value="" />
-        </form>
-        
-            // adds activity
-            // show go to phase button (goest to step 3)
-            break;
-        case 6:
-            // Save the research project into the database
-            break;
-
+                break;
+        }
     }
 }
-<!--
-
-//if (members != null)
-{
-    <ul>
-        //foreach (var member in members)
-        {
-            <li>//(member is Teacher ? ((member as Teacher).HasPhD ? "Dr. " : "") : "") //member.Name, //(member is Teacher ? (member as Teacher).Position.ToString() : member.Type.ToString()) [Contact: //member.EMail]</li>
-        }
-    </ul>
-    <form action="addHumanResource.cshtml" class="form-horizontal" method="post">
-        //switch (step)
-        {
-            case 0:
-            <input type="hidden" value="//(step + 1)" name="step" id="step" />
-            <label for="name">Name:</label>
-            <input type="text" name="name" id="name" />
-                
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" />
-                
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" />
-                        
-            <label for="memberType">Member type:</label>
-            <select name="memberType" id="memberType">
-                //for (int i = 0; i < humanResourcesViewModel.MemberTypes.Length; i++)
-                {
-                    <option value="//i">//humanResourcesViewModel.MemberTypes[i]</option>
-                }
-            </select>
-            <input type="submit" value="Next" />
-                break;
-
-            case 1:
-                switch (((MemberType)Convert.ToInt32(Request["memberType"])))
-                {
-                    case MemberType.Administrator:
-                        if (humanResourcesViewModel.TryAddMember(out errorMessage))
-                        {
-            <h1>Success!</h1>
-            <p>The administrator //humanResourcesViewModel.Name has been added to human resources!</p>
-                        }
-                        else
-                        {
-            <h1>Error!</h1>
-            <p>Could not add administrator //humanResourcesViewModel.Name! //errorMessage</p>
-                        }
-            <input type="submit" value="Finish" />
-                        break;
-
-                    case MemberType.Director:
-                        if (humanResourcesViewModel.TryAddMember(out errorMessage))
-                        {
-            <h1>Success!</h1>
-            <p>The director //humanResourcesViewModel.Name has been added to human resources!</p>
-                        }
-                        else
-                        {
-            <h1>Error!</h1>
-            <p>Could not add director //humanResourcesViewModel.Name! //errorMessage</p>
-                        }
-            <input type="submit" value="Finish" />
-                        break;
-
-                    case MemberType.PhD_Student:
-            <input type="hidden" value="//(step + 1)" name="step" id="step" />
-            <label for="address">Address:</label>
-            <input type="text" name="address" id="address" />
-                
-            <label for="telephone">Telephone:</label>
-            <input type="text" name="telephone" id="telephone" />
-                
-            <label for="website">Website:</label>
-            <input type="text" name="website" id="website" />
-                
-            <label for="domainsOfInterest">Domains of interest:</label>
-            <textarea name="domainsOfInterest" id="domainsOfInterest"></textarea>
-            <input type="submit" value="Next" />
-                        break;
-
-                    case MemberType.Teacher:
-            <input type="hidden" value="//lastStep" name="step" id="step" />
-            <label for="address">Address:</label>
-            <input type="text" name="address" id="address" />
-                
-            <label for="telephone">Telephone:</label>
-            <input type="text" name="telephone" id="telephone" />
-                
-            <label for="website">Website:</label>
-            <input type="text" name="website" id="website" />
-                
-            <label for="domainsOfInterest">Domains of interest:</label>
-            <textarea name="domainsOfInterest" id="domainsOfInterest"></textarea>
-                        
-            <label for="teachingPosition">Teaching position:</label>
-            <select name="teachingPosition" id="teachingPosition">
-                //for (int i = 0; i < humanResourcesViewModel.TeachingPositions.Length; i++)
-                {
-                    <option value="//i">//humanResourcesViewModel.TeachingPositions[i]</option>
-                }
-            </select>
-                
-            <label for="hasPhD">Has PhD:</label>
-            <input type="checkbox" checked="checked" name="hasPhD" id="hasPhD" />
-            <input type="submit" value="Next" />
-                break;
-                }
-                break;
-
-            case 2:
-                if (humanResourcesViewModel.TryAddMember(out errorMessage))
-                {
-            <h1>Success!</h1>
-            <p>The member //humanResourcesViewModel.Name has been successfully added!</p>
-                }
-                else
-                {
-            <h1>Error!</h1>
-            <p>The member //humanResourcesViewModel.Name could not be added! //errorMessage</p>
-                }
-            <input type="submit" value="Finish" />
-                break;
-        }
-    </form>
-}
-else
-{
-    <h1>Error!</h1>
-    <p>//errorMessage</p>
-    <p>We are terebly sorry for the inconvenience...</p>
-}
-</div>
-}
--->

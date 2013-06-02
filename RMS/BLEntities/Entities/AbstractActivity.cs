@@ -4,7 +4,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 {
     public abstract class AbstractActivity : IDateTimeBound
     {
-        public int Id { get; private set; }
+        public int Id { get;  set; }
 
         public ActivityType Type { get; private set; }
 

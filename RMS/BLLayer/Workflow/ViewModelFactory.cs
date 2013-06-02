@@ -43,9 +43,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return new SelectEquipmentsViewModel(Repositories.AllEquipments);
             }
         }
-
-
-
+        
         public static MemberViewModel MemberViewModel
         {
             get

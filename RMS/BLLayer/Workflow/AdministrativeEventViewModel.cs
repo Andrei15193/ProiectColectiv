@@ -121,6 +121,33 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+        public bool addTaskBreakdownActivity(string title, string description, string startDate, string endDate,
+            out TaskBreakdownActivity taskBreakdownActivity)
+        {
+            try
+            {
+                taskBreakdownActivity = new TaskBreakdownActivity(administrativeActivity,
+                    title, description,
+                    DateTime.ParseExact(
+                        startDate,
+                        "dd/MM/yyyy",
+                        CultureInfo.InvariantCulture
+                    ).AddDays(1).AddMilliseconds(-1),
+                    DateTime.ParseExact(
+                        endDate,
+                        "dd/MM/yyyy",
+                        CultureInfo.InvariantCulture
+                    ).AddDays(1).AddMilliseconds(-1));
+                administrativeActivity.BreakdownActvities.Add(taskBreakdownActivity);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                taskBreakdownActivity = null;
+                return false;
+            }
+        }
+
         public void AddAdministrativeActivity(string title, string description, DateTime startDate, DateTime endDate)
         {
             //AdministrativeActivity activity = new AdministrativeActivity

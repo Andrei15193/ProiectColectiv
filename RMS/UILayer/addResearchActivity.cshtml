@@ -1,0 +1,199 @@
+﻿@using ResourceManagementSystem.BusinessLogic;
+@using ResourceManagementSystem.BusinessLogic.Entities;
+@using ResourceManagementSystem.BusinessLogic.Workflow;
+@using System.Text.RegularExpressions;
+
+@{   
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "Register Research Activity";
+
+    bool hasError = false;
+    int step = 0, i;
+    const int lastStep = 2;
+    string errorMessage = string.Empty;
+    string requestStep = IsPost ? Request["step"] : null;
+    if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
+    {
+        step = 0;
+    }
+
+    MemberViewModel membersViewModel = Session["membersViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
+    Session["membersViewModel"] = membersViewModel;
+    
+    ActivitiesViewModel activitiesViewModel = Session["activitiesViewModel"] as ActivitiesViewModel ?? ViewModelFactory.ActivitiesViewModel;
+    Session["activitiesViewModel"] = activitiesViewModel;
+    List<ResearchProject> projects = activitiesViewModel.GetMemberResearchProjects(membersViewModel.member, out errorMessage);
+    IEnumerator<ResearchPhase> phases = null;
+    
+    switch(step)
+    {
+        case 0:
+            if (Request["ResearchProject"] != null)
+            {
+                int val;
+                if (int.TryParse(Request["ResearchProject"], out val))
+                {
+                    phases = activitiesViewModel.GetPhasesForResearchProject(projects.ElementAt(val));
+                }
+            }
+            break;
+            
+        case 1:
+            if (Request["ResearchPhase"] != null)
+            {
+                int val;
+                if (int.TryParse(Request["ResearchPhase"], out val))
+                {
+                    
+                }
+            }
+            break;
+        
+        case 2:
+            activitiesViewModel.title = Request["title"];
+            activitiesViewModel.description = Request["description"];
+            activitiesViewModel.startDate = Request["startDate"];
+            activitiesViewModel.endDate = Request["endDate"];
+            activitiesViewModel.laborCost = (Request["laborCost"] == string.Empty ? 0 : int.Parse(Request["laborCost"]));
+            activitiesViewModel.laborCostSelectedIndex = int.Parse(Request["laborCostSelectedIndex"]);
+            activitiesViewModel.mobilityCost = (Request["mobilityCost"] == string.Empty ? 0 : int.Parse(Request["mobilityCost"]));
+            activitiesViewModel.mobilityCostSelectedIndex = int.Parse(Request["mobilityCostSelectedIndex"]);
+            activitiesViewModel.logisticalCost = (Request["logisticalCost"] == string.Empty ? 0 : int.Parse(Request["logisticalCost"]));
+            activitiesViewModel.logisticalCostSelectedIndex = int.Parse(Request["logisticalCostSelectedIndex"]);
+            activitiesViewModel.isConfidential = Request["isConfidential"] != null;
+            activitiesViewModel.selectedTeamEmails = Request.Form.AllKeys.Where((key) => Regex.IsMatch(key, Constants.EmailCheckRegex));
+            
+            break;
+    }
+}
+
+
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a>Register Research Activity</a></li>
+    </ul>
+
+    @if (hasError)
+    {
+        <h1>Error!</h1>
+        <p>@errorMessage</p>
+        <p>We are terebly sorry for the inconvenience...</p>
+        <form action="registerResearchActivity.cshtml" class="form-horizontal" method="post">
+            <input type="hidden" name="step" id="step" value="@step" />
+            <input type="submit" value="Back" />
+        </form>
+    }
+    else
+    {
+        switch (step)
+        {
+
+            case 0:
+                // Select Research Project
+             <div class="well">
+                <h2>Select the research project:</h2>
+                <form action="registerResearchActivity.cshtml" class="form-horizontal" method="post">
+                    <input type="hidden" value="1" name="step" id="Hidden1" />
+                    <ul>
+                        @for (i = 0; i < projects.Count(); i++)
+                        {
+                            <li>
+                                <input type="radio" name="ResearchProject" value="@i" />
+                                @(projects.ElementAt(i).ToString())
+                            </li>
+                        }
+                    </ul>
+                    <input type="submit" value="Next" />
+                </form>
+            </div>
+            break;
+
+            case 1:
+                // Select Research Phase
+            i = 0;
+             <div class="well">
+                <h2>Select the project phase:</h2>
+                <form action="registerResearchActivity.cshtml" class="form-horizontal" method="post">
+                    <input type="hidden" value="2" name="step" id="Hidden2" />
+                    <ul>
+                        @while(phases.MoveNext() == true)
+                        {
+                            <li>
+                                <input type="radio" name="ResearchPhase" value="@i"/>
+                                @(phases.Current.ToString())
+                            </li>
+                            i++;
+                        }
+                    </ul>
+                    <input type="submit" value="Next" />
+                </form>
+            </div>
+            break;
+            
+            case 2:
+                //Add Research Activity
+                <form class="form-horizontal" action="/addResearchProject.cshtml" method="post">
+            <div>
+                <input type="hidden" name="step" id="Hidden3" value="8" />
+
+                <label for="title">Title: </label>
+                <input type="text" name="title" id="title" value="@activitiesViewModel.title" />
+
+                <label for="description">Description: </label>
+                <textarea name="description" id="description">@activitiesViewModel.description</textarea>
+
+                <label for="startDate">Start date: </label>
+                <input name="startDate" id="startDate" type="text" value="@activitiesViewModel.startDate" data-date-format="dd/mm/yyyy" class="datepicker" />
+
+                <label for="endDate">End date: </label>
+                <input name="endDate" id="endDate" type="text" value="@activitiesViewModel.endDate" data-date-format="dd/mm/yyyy" class="datepicker" />
+
+                <label for="laborCost">Labor cost: </label>
+                <input type="number" value="@activitiesViewModel.laborCost" name="LaborCost" id="LaborCost" />
+                <select name="LaborCostSelectedIndex" id="LaborCostSelectedIndex">
+                    @for (i = 0; i < activitiesViewModel.currency.Length; i++)
+                    {
+                        <option value="@i">@activitiesViewModel.currency[i]</option>
+                    }
+                </select>
+
+                <label for="mobilityCost">Mobility cost: </label>
+                <input type="number" value="@activitiesViewModel.mobilityCost" name="MobilityCost" id="MobilityCost" />
+                <select name="MobilityCostSelectedIndex" id="MobilityCostSelectedIndex">
+                    @for (i = 0; i < activitiesViewModel.currency.Length; i++)
+                    {
+                        <option value="@i">@activitiesViewModel.currency[i]</option>
+                    }
+                </select>
+
+                <label for="logisticalCost">Mobility cost: </label>
+                <input type="number" value="@activitiesViewModel.logisticalCost" name="LogisticalCost" id="LogisticalCost" />
+                <select name="LogisticalCostSelectedIndex" id="LogisticalCostSelectedIndex">
+                    @for (i = 0; i < activitiesViewModel.currency.Length; i++)
+                    {
+                        <option value="@i">@activitiesViewModel.currency[i]</option>
+                    }
+                </select>
+
+                <p style="margin: 10px 0 0;">
+                    Is confidential:
+                <input type="checkbox" @(activitiesViewModel.isConfidential ? "checked=\"checked\"" : "") name="isConfidential" id="isConfidential" />
+                </p>
+
+                <h5>Team members participating to this activity: </h5>
+                @foreach (Member teamMember in activitiesViewModel.selectedResearchProject.Team)
+                {
+                    <p>
+                        <input type="checkbox" name="@teamMember.EMail" />@teamMember.ToString()
+                    </p>
+                }
+            </div>
+            <div style="margin: 10px 0 0;">
+                <input type="submit" value="Submit activity" />
+            </div>
+        </form>
+                break;
+         
+        }
+    }
+}

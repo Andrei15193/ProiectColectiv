@@ -114,7 +114,7 @@ namespace DALayer.Database
         }
 
 
-        internal ISet<ResearchPhase> getByResearchProject(int p)
+        internal ISet<ResearchPhase> getByResearchProject(ResearchProject prj, int p)
         {
             ISet<ResearchPhase> set = new HashSet<ResearchPhase>();
             int activity = -1;
@@ -134,7 +134,7 @@ namespace DALayer.Database
                 while (reader.Read())
                 {
                     activity = Convert.ToInt32(reader["activity"]);
-                    ResearchPhase rf = (ResearchPhase)new AllActivities().getbyPK(activity);
+                    ResearchPhase rf = (ResearchPhase)new AllActivities().GetResearchPhase(prj, activity);
                     set.Add(rf);
                 }
             }

@@ -96,6 +96,6 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
 
         public ResearchProject ResearchProject { get; private set; }
 
-        private ISet<ResearchActivity> researchActivities;
+        public ISet<ResearchActivity> researchActivities;
     }
 }

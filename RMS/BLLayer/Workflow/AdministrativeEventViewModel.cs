@@ -28,8 +28,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             this.allActivities = allActivities;
             this.allMembers = allMembers;
-            activities = new List<AdministrativeActivity>();
-            this.allMembers = allMembers;
         }
 
         public IEnumerable<AdministrativeActivity> TryGetAllAdministrativeActivities(out string errorMessage)

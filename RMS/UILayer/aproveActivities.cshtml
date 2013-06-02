@@ -53,14 +53,15 @@
                 <ul>
                     @foreach (var activity in activities)
                     {
-                        <li><a href="aproveActivities.cshtml?id=@activity.Id">@activity.Title</a> <b>Description: </b>@activity.Description</li>
+                        <li><a href="aproveActivities.cshtml?id=@activity.Id">@activity.Title</a>&nbsp; <b>Description&nbsp;:&nbsp; </b>@activity.Description &nbsp; <b>StartDate&nbsp;:&nbsp; </b>@activity.StartDate.ToString("dd-mm-yyyy") &nbsp; <b>EndDate&nbsp;:&nbsp;</b>@activity.EndDate.ToString("dd-mm-yyyy")&nbsp;</li>
                     }
                 </ul>
             }
             else
             {
-                switch (selectedActivity.Type)
-                {
+                 foreach (var activity in activities)
+                 { switch (selectedActivity.Type)
+                    {
                     case ActivityType.Administrative:
                         AdministrativeActivity administrativeActivity = activity as AdministrativeActivity;
                 <h3>@selectedActivity.Title</h3>
@@ -70,7 +71,8 @@
                     <b>End date:</b> @selectedActivity.EndDate
                 </p>
                 <h4>Tasks:</h4>
-                foreach (Task task in administrativeActivity.BreakdownActvities)
+                        foreach (TaskBreakdownActivity taskBreak in administrativeActivity.BreakdownActvities)
+                        {foreach (Task task in taskBreak)
                 {
                 <p>
                     <b>Title:</b>@task.Title<br />
@@ -78,7 +80,7 @@
                     <b>Logistical cost: </b>@task.LogisticalCost.Value @task.LogisticalCost.Currency<br />
                     <b>Mobility cost: </b>@task.MobilityCost.Value @task.MobilityCost.Currency
                 </p>
-                <h4>Class rooms required</h4>
+                <h4>Class rooms required:</h4>
                 <ul>
                     @foreach (ClassRoom classRoom in task.ClassRooms)
                     {
@@ -103,41 +105,100 @@
                         <li>@member.ToString()</li>
                     }
                 </ul>
-                        }
-                        break;
-
+            }
+            }
+            break;
+            case ActivityType.Research_Project:
+                ResearchProject researchProject=activity as ResearchProject;
+                <h1>@researchProject.Title</h1>
+            <p>
+                <b>Start date:</b> @researchProject.StartDate.ToString("d MMM yyyy")<br />
+                <b>End date:</b> @researchProject.EndDate.ToString("d MMM yyyy")
+            </p>
+            <p>@researchProject.Description</p>
+            <h2>Team:</h2>
+            <ul style="margin: 0 0 30px;">
+                @foreach (Member member in researchProject.Team)
+                {
+                    <li>@member.ToString()</li>
+                }
+            </ul>
+        
+                if (researchProject.Count > 0)
+                {
+        <div class="well">
+            <h2>Phases:</h2>
+            @foreach (ResearchPhase phase in researchProject)
+            {
+                <h2>@phase.Title</h2>
+                <p>
+                    <b>Start date: </b>@phase.StartDate
+                    <br />
+                    <b>End date: </b>@phase.EndDate
+                </p>
+                <p>
+                    @phase.Description
+                </p>
+                if (phase.Count > 0)
+                {
+                <div class="researchActivity">
+                    @foreach (ResearchActivity activityy in phase)
+                    {
+                        <h3>@activityy.Title</h3>
+                        <p>
+                            <b>Start date: </b>@activityy.StartDate<br />
+                            <b>End date: </b>@activityy.EndDate
+                        </p>
+                        @activityy.Description
+                    }
+                </div>
+                }
+            }
+        </div>
+            
+                }
+                break;
+                        
                     case ActivityType.Didactic:
+                        DidacticActivity didacticActivity = activity as DidacticActivity;
                 <h4>Teachers:</h4>
                 <ul>
-                    @foreach (Member member in team)
-                    {
-                        <li>@member.ToString()</li>
-                    }
+                  
+                           
+                    
                 </ul>
                     break;
 
                     case ActivityType.Research:
 
-                    ResearchActivity researchActivity = activity as ResearchActivity;
+                        ResearchActivity researchActivity = activity as ResearchActivity;
                     // Copy & paste                        
                     break;
 
-                    case ActivityType.Research_Project:
-
-                    ResearchProject researchProject = activity as ResearchProject;
-                <p><a href="@researchProject.Title">@researchProject.Title</a></p>
-                    break;
+                    
 
                     case ActivityType.Student_Circle:
 
                     StudentCircle studentCircle = activity as StudentCircle;
-                <p><a href="@studentCircle.Title">@studentCircle.Title</a></p>    
+                 
+                    <h1>studentCircle.Title</h1>
+                    <p>
+                <b>Description:</b> studentCircle.Description<br />
+                <b>Start date:</b> studentCircle.StartDate<br />
+                <b>End date:</b> studentCircle.EndDate
+                </p>
+            
+            
+            <p>Study Program :studentCircle.StudyProgram.ToString()</p>
+                    
+                      
                     break;
 
                     default:
                     break;
                 }
 
+            }
             }
         </div>
     }

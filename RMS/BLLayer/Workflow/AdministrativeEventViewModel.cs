@@ -153,15 +153,15 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         }
 
         public bool 
-            insertTaskIntoTaskBreakdownActivity(TaskBreakdownActivity taskBreakdownActivity, TaskType type, 
-            string title, string description, string startDate, string endDate, IEnumerable<Member> assignees, 
-            FinancialResource mobilityCost, FinancialResource laborCost, FinancialResource logisticalCost,
-            out string errorMessage)
+            insertTaskIntoTaskBreakdownActivity(TaskBreakdownActivity taskBreakdownActivity, 
+            string title, string description, string startDate, string endDate, IEnumerable<string> emailList, 
+            int mobilityCostValue, Currency mobilityCostCurrency, int laborCostValue, Currency laborCostCurrency,
+            int logisticalCostValue, Currency logisticalCostCurrency, out string errorMessage)
         {
             try
             {
                 ResourceManagementSystem.BusinessLogic.Entities.Task task
-                    = new ResourceManagementSystem.BusinessLogic.Entities.Task(type, title, description,
+                    = new ResourceManagementSystem.BusinessLogic.Entities.Task(TaskType.Administrative, title, description,
                     DateTime.ParseExact(
                         startDate,
                         "dd/MM/yyyy",
@@ -171,7 +171,12 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                         endDate,
                         "dd/MM/yyyy",
                         CultureInfo.InvariantCulture
-                    ).AddDays(1).AddMilliseconds(-1), assignees, mobilityCost, laborCost, logisticalCost);
+                    ).AddDays(1).AddMilliseconds(-1),
+                    allMembers.AsEnumerable.Where(
+                            (localMember) => SelectedTeamEmails.Contains(localMember.EMail)), 
+                    new FinancialResource(mobilityCostValue, mobilityCostCurrency), 
+                    new FinancialResource(laborCostValue, laborCostCurrency), 
+                    new FinancialResource(logisticalCostValue, logisticalCostCurrency));
                 errorMessage = null;
                 return true;
             }

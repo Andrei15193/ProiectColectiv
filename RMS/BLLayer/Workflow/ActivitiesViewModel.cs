@@ -25,7 +25,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             IEnumerable<AbstractActivity> activities = TryGetAll(out error);
             if (activities != null)
             {
-                ICollection<AbstractActivity> memberActivities = new LinkedList<AbstractActivity>();
+                List<AbstractActivity> memberActivities = new List<AbstractActivity>();
                 foreach (AbstractActivity activity in activities)
                 {
                     if (activity is DidacticActivity)
@@ -66,7 +66,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         public void aproveActivity(AbstractActivity activity, bool aproved)
         {
-            allActivities.aproveActivity(a,aproved);
+            allActivities.aproveActivity(activity, aproved);
         }
 
         public IEnumerable<AbstractActivity> TryGetAll(out string errorMessage)

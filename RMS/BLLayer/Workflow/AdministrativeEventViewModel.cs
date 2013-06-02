@@ -28,8 +28,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             this.allActivities = allActivities;
             this.allMembers = allMembers;
-            activities = new List<AdministrativeActivity>();
-            this.allMembers = allMembers;
         }
 
         public IEnumerable<AdministrativeActivity> TryGetAllAdministrativeActivities(out string errorMessage)
@@ -105,7 +103,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
-        public Team addTeam(IEnumerable<string> SelectedTeamEmails, String teamName, out string errorMessage)
+        public bool addTeam(IEnumerable<string> SelectedTeamEmails, String teamName, out string errorMessage)
         {
             NamedTeam team = null;
             try
@@ -115,12 +113,12 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                         ));
                 administrativeActivity.Teams.Add(team);
                 errorMessage = null;
-                return team;
+                return true;
             }
             catch (Exception ex)
             {
                 errorMessage = ex.Message;
-                return team;
+                return false;
             }
         }
 

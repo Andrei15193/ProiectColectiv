@@ -16,7 +16,7 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
                             if (laborCost != null)
                                 if (logisticalCost != null)
                                     if (assignees.Count() > 0)
-                                        if (assignees.Count((assignee) => assignee == null) > 0)
+                                        if (assignees.Count((assignee) => assignee == null) == 0)
                                             if (title.Length > 0)
                                                 if (startDate < endDate)
                                                 {

@@ -12,11 +12,13 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
     public class ResearchProjectViewModel
     {
-        public ResearchProjectViewModel(IAllMembers allMembers, IAllResearchProjects allProjects)
+        public ResearchProjectViewModel(IAllMembers allMembers, IAllResearchProjects allProjects, IAllEquipments allEquipments, IAllClassRooms allClassRooms)
         {
             CurrentPhase = null;
             this.allMembers = allMembers;
             this.allProjects = allProjects;
+            this.allEquipments = allEquipments;
+            this.allClassRooms = allClassRooms;
             ResearchProject = null;
             Title = string.Empty;
             Description = string.Empty;
@@ -28,7 +30,23 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             LogisticalCostSelectedIndex = 0;
             LaborCostSelectedIndex = 0;
             MobilityCostSelectedIndex = 0;
+            SelectedClassRooms = null;
+            SelectedEquipments = null;
             IsConfidential = false;
+        }
+
+        public IEnumerable<ResearchProject> TryGetAll(out string errorMessage)
+        {
+            try
+            {
+                errorMessage = null;
+                return allProjects.AsEnumerable;
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.Message;
+                return null;
+            }
         }
 
         public bool TryGetAllHumanResources(out string errorMessage, out IEnumerable<Member> members)
@@ -47,18 +65,35 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
-        public IEnumerable<ResearchProject> TryGetAll(out string errorMessage)
+        public bool TryGetAllEquipments(out string errorMessage, out IEnumerable<Equipment> equipments)
         {
             try
             {
                 errorMessage = string.Empty;
-                localAllResearchProjects = allProjects.AsEnumerable;
-                return localAllResearchProjects;
+                equipments = localAllEquipments = allEquipments.AsEnumerable;
+                return true;
             }
             catch (Exception exception)
             {
-                errorMessage = exception.ToString();
-                return null;
+                equipments = null;
+                errorMessage = exception.Message;
+                return false;
+            }
+        }
+
+        public bool TryGetAllClassRooms(out string errorMessage, out IEnumerable<ClassRoom> classRooms)
+        {
+            try
+            {
+                errorMessage = string.Empty;
+                classRooms = localAllClassRooms = allClassRooms.AsEnumerable;
+                return true;
+            }
+            catch (Exception exception)
+            {
+                classRooms = null;
+                errorMessage = exception.Message;
+                return false;
             }
         }
 
@@ -184,6 +219,10 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                     new FinancialResource(LogisticalCost, (Currency)LogisticalCostSelectedIndex),
                     IsConfidential
                 );
+                foreach (ClassRoom classRoom in localAllClassRooms.Where((room) => SelectedClassRooms.Contains(room.Name)))
+                    researchActivity.ClassRooms.Add(classRoom);
+                foreach (Equipment equipment in localAllEquipments.Where((equip) => SelectedEquipments.Contains(equip.SerialNumber)))
+                    researchActivity.Equipments.Add(equipment);
                 errorMessage = null;
                 return true;
             }
@@ -207,6 +246,10 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public string EndDate { get; set; }
 
         public IEnumerable<string> SelectedTeamEmails { get; set; }
+
+        public IEnumerable<string> SelectedClassRooms { get; set; }
+
+        public IEnumerable<string> SelectedEquipments { get; set; }
 
         public string[] Currency
         {
@@ -246,11 +289,13 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
-        private IEnumerable<ResearchProject> localAllResearchProjects;
         private IAllMembers allMembers;
         private IEnumerable<Member> localAllMembers;
-
+        private IEnumerable<Equipment> localAllEquipments;
+        private IEnumerable<ClassRoom> localAllClassRooms;
         private IAllResearchProjects allProjects;
+        private IAllEquipments allEquipments;
+        private IAllClassRooms allClassRooms;
         private readonly string[] currency = Enum.GetNames(typeof(Currency)).Select((currency) => currency.Replace('_', ' ')).ToArray();
     }
 }

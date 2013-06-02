@@ -79,6 +79,21 @@ namespace ResourceManagementSystem.BusinessLogic.Entities
             }
         }
 
+        public override State State
+        {
+            get
+            {
+                return base.State;
+            }
+            set
+            {
+                if (researchActivities != null)
+                    foreach (ResearchActivity activity in researchActivities)
+                        activity.State = value;
+                base.State = value;
+            }
+        }
+
         public ResearchProject ResearchProject { get; private set; }
 
         private ISet<ResearchActivity> researchActivities;

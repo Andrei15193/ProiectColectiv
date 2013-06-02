@@ -123,5 +123,37 @@ namespace DALayer.Database
             else
                 return null;
         }
+
+        internal int AddandGetId(FinancialResource financialResource)
+        {
+            int id = -1;
+            command.CommandText = @"insert into financialResources (value, status, currency) VALUES (@value, @status, @currency);select scope_identity()";
+            command.Parameters.Clear();
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@value",
+                Value = financialResource.Value
+            });
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@currency",
+                Value = financialResource.Currency
+            });
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@status",
+                Value = financialResource.Status
+            });
+            try
+            {
+                command.Connection.Open();
+                id = Convert.ToInt32(command.ExecuteScalar());
+            }
+            finally
+            {
+                command.Connection.Close();
+            }
+            return id;
+        }
     }
 }

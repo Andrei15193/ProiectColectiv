@@ -224,6 +224,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         private IEnumerable<ResearchProject> localAllResearchProjects;
         private IAllMembers allMembers;
         private IEnumerable<Member> localAllMembers;
+
         private IAllResearchProjects allProjects;
         private readonly string[] currency = Enum.GetNames(typeof(Currency)).Select((currency) => currency.Replace('_', ' ')).ToArray();
     }

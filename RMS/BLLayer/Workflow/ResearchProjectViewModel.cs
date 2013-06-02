@@ -63,14 +63,46 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
-        public bool TrySaveResearchProject(out string errorMessage,bool aproved)
+        public bool TryGetAllEquipments(out string errorMessage, out IEnumerable<Equipment> equipments)
+        {
+            try
+            {
+                errorMessage = string.Empty;
+                equipments = localAllEquipments = allEquipments.AsEnumerable;
+                return true;
+            }
+            catch (Exception exception)
+            {
+                equipments = null;
+                errorMessage = exception.Message;
+                return false;
+            }
+        }
+
+        public bool TryGetAllClassRooms(out string errorMessage, out IEnumerable<ClassRoom> classRooms)
+        {
+            try
+            {
+                errorMessage = string.Empty;
+                classRooms = localAllClassRooms = allClassRooms.AsEnumerable;
+                return true;
+            }
+            catch (Exception exception)
+            {
+                classRooms = null;
+                errorMessage = exception.Message;
+                return false;
+            }
+        }
+
+        public bool TrySaveResearchProject(out string errorMessage, bool aproved)
         {
             try
             {
                 if (aproved == true)
                 {
                     ResearchProject.State = State.Aproved;
-                    foreach(ResearchPhase phase in ResearchProject.AsEnumerable())
+                    foreach (ResearchPhase phase in ResearchProject.AsEnumerable())
                     {
                         phase.State = State.Aproved;
                         foreach (ResearchActivity activ in phase.AsEnumerable())
@@ -250,7 +282,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
                 error = null;
                 new AllResearchActivity().Add(ResearchProject.Id, researchPhase.Id, researchActivity);
-                
+
                 return true;
             }
             catch (Exception exception)
@@ -273,6 +305,10 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public string EndDate { get; set; }
 
         public IEnumerable<string> SelectedTeamEmails { get; set; }
+
+        public IEnumerable<string> SelectedClassRooms { get; set; }
+
+        public IEnumerable<string> SelectedEquipments { get; set; }
 
         public string[] Currency
         {
@@ -316,7 +352,10 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         private IEnumerable<ResearchProject> localAllResearchProjects;
         private IAllMembers allMembers;
         private IEnumerable<Member> localAllMembers;
-
+        private IEnumerable<Equipment> localAllEquipments;
+        private IEnumerable<ClassRoom> localAllClassRooms;
+        private IAllEquipments allEquipments;
+        private IAllClassRooms allClassRooms;
         private IAllResearchProjects allProjects;
         private readonly string[] currency = Enum.GetNames(typeof(Currency)).Select((currency) => currency.Replace('_', ' ')).ToArray();
     }

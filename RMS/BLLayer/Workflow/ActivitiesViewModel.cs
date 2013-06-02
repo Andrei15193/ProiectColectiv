@@ -17,53 +17,40 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             this.allActivities = allActivities;
             activity = null;
-        }      
+        }
 
-        public List<AbstractActivity> GetMemberActivity(Member member, out string error)
+        public IEnumerable<AbstractActivity> GetMemberActivity(Member member, out string error)
         {
             IEnumerable<AbstractActivity> activities = TryGetAll(out error);
-            List<AbstractActivity> memberActivities = new List<AbstractActivity>();
-            DidacticActivity didacticActivity;
-            ResearchActivity reasearchActivity;
-
-            foreach (AbstractActivity activity in activities)
+            if (activities != null)
             {
-                if (activity is DidacticActivity)
+                ICollection<AbstractActivity> memberActivities = new LinkedList<AbstractActivity>();
+                foreach (AbstractActivity activity in activities)
                 {
-                    didacticActivity = (DidacticActivity)activity;
-                    IEnumerator<Member> membersDA = didacticActivity.GetEnumerator();
-                    
-                    while(membersDA.MoveNext() == true)
+                    if (activity is DidacticActivity)
                     {
-                        if (membersDA.Current.EMail.Equals(member.EMail))
-                        {
+                        DidacticActivity didacticActivity = (DidacticActivity)activity;
+                        if (didacticActivity.Contains(member))
                             memberActivities.Add(didacticActivity);
-                            break;
-                        }
-                    }       
-                }
 
-                if (activity is ResearchActivity)
-                {
-                    reasearchActivity = (ResearchActivity)activity;
-                    IEnumerator<Member> membersRA = reasearchActivity.GetEnumerator();
+                    }
 
-                    while (membersRA.MoveNext() == true)
+                    if (activity is ResearchActivity)
                     {
-                        if (membersRA.Current.EMail.Equals(member.EMail))
-                        {
+                        ResearchActivity reasearchActivity = (ResearchActivity)activity;
+                        if (reasearchActivity.Contains(member))
                             memberActivities.Add(reasearchActivity);
-                            break;
-                        }
                     }
                 }
+                return memberActivities;
             }
-
-            return memberActivities;
+            else
+                return null;
         }
-        public void aproveActivity(AbstractActivity a,bool aproved)
+
+        public void aproveActivity(AbstractActivity activity, bool aproved)
         {
-            allActivities.aproveActivity(a,aproved);
+            allActivities.aproveActivity(activity, aproved);
         }
 
         public IEnumerable<AbstractActivity> TryGetAll(out string errorMessage)
@@ -75,10 +62,11 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
             catch (Exception exception)
             {
-                errorMessage = exception.ToString();
+                errorMessage = exception.Message;
                 return null;
             }
         }
+
         public IEnumerable<AbstractActivity> getAllPending(out string errorMessage)
         {
             ICollection<AbstractActivity> toRet = new HashSet<AbstractActivity>();
@@ -110,6 +98,5 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         public string description { get; set; }
         public string startDate { get; set; }
         public string endDate { get; set; }
-   
     }
 }

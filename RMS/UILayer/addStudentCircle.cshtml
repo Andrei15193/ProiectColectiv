@@ -7,7 +7,7 @@
 
     int step = 0;
     const int lastStep = 2;
-    bool studyAddedSuccessfully=false;
+    bool studyAddedSuccessfully = false;
     string errorMessage = string.Empty;
     string requestStep = IsPost ? Request["step"] : null;
     if (requestStep == null || !int.TryParse(requestStep, out step) || step > lastStep)
@@ -16,7 +16,7 @@
     }
     StudentCirclesViewModel studentCirclesViewModel = Session["studentCirclesViewModel"] as StudentCirclesViewModel ?? ViewModelFactory.StudentCirclesViewModel;
     Session["studentCirclesViewModel"] = studentCirclesViewModel;
-    
+
     StudyProgramsViewModel studyProgramsViewModel = Session["studyProgramsViewModel"] as StudyProgramsViewModel ?? ViewModelFactory.StudyProgramsViewModel;
     Session["studyProgramsViewModel"] = studyProgramsViewModel;
     IEnumerable<StudyProgram> programs = studyProgramsViewModel.TryGetAll(out errorMessage);
@@ -27,14 +27,12 @@
         case 0:
             studentCirclesViewModel.Title = Request["title"];
             studentCirclesViewModel.Description = Request["description"];
-            studentCirclesViewModel.StartDate = Request["startDate"];
-            studentCirclesViewModel.EndDate = Request["endDate"];
+            studentCirclesViewModel.StartDate = Request["startDate"] ?? DateTime.Now.ToString("dd/MM/yyyy");
+            studentCirclesViewModel.EndDate = Request["endDate"] ?? DateTime.Now.AddDays(10).ToString("dd/MM/yyyy");
             programs = studyProgramsViewModel.TryGetAll(out errorMessage);
             break;
 
         case 1:
-           
-            
             studentCirclesViewModel.Title = Request["title"];
             studentCirclesViewModel.Description = Request["description"];
             studentCirclesViewModel.StartDate = Request["startDate"];
@@ -59,26 +57,29 @@
                 ModelState.AddError("endDate", "Please type an end date");
                 step = 0;
             }
-            
+
             break;
-       
+
     }
-    
-    
-    if(IsPost && step==2){
-        if(Request["StudyPrograme"]!=null){
+
+
+    if (IsPost && step == 2)
+    {
+        if (Request["StudyPrograme"] != null)
+        {
             int val;
-            if(int.TryParse(Request["StudyPrograme"], out val)){
-                
-                 foreach (var program in programs)
-                        {
-                    if(program.Id==val)
+            if (int.TryParse(Request["StudyPrograme"], out val))
+            {
+
+                foreach (var program in programs)
+                {
+                    if (program.Id == val)
                     {
-                           studentCirclesViewModel.StudyProgram = program;
-                    }          
-                 }
-                 studyAddedSuccessfully = studentCirclesViewModel.TryAddStudentCircles(out errorMessage);
-                
+                        studentCirclesViewModel.StudyProgram = program;
+                    }
+                }
+                studyAddedSuccessfully = studentCirclesViewModel.TryAddStudentCircles(out errorMessage);
+
             }
         }
     }
@@ -109,7 +110,8 @@
                 <input name="endDate" id="endDate" type="text" value="@studentCirclesViewModel.EndDate" data-date-format="dd-mm-yyyy" class="datepicker" />
                 @Html.ValidationMessage("endDate")
                 <p></p>
-                <p><input type="submit" value="Next" /></p>
+                <p>
+                    <input type="submit" value="Next" /></p>
             </form>
         </div>
             break;
@@ -130,7 +132,7 @@
                             </li>
                         }
                     </ul>
-                    <input type="submit" value="Finish"  />
+                    <input type="submit" value="Finish" />
                 </form>
             }
             else
@@ -150,15 +152,14 @@
         <div class="well">
             <h1>@studentCirclesViewModel.Title</h1>
             <p>
-                
+
                 <b>Description:</b> @studentCirclesViewModel.Description<br />
                 <b>Start date:</b> @studentCirclesViewModel.StartDate<br />
                 <b>End date:</b> @studentCirclesViewModel.EndDate
             </p>
-            
-            
+
             <p>Study Program :@studentCirclesViewModel.StudyProgram.ToString()</p>
-            
+
         </div>
             }
             else

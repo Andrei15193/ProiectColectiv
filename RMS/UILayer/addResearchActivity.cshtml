@@ -23,7 +23,7 @@
     ResearchProjectViewModel researchProjectViewModel = Session["researchProjectViewModel"] as ResearchProjectViewModel ?? ViewModelFactory.ResearchProjectViewModel;
     Session["researchProjectViewModel"] = researchProjectViewModel;
     
-    List<ResearchProject> projects = researchProjectViewModel.GetMemberResearchProjects(membersViewModel.member, out errorMessage);
+    List<ResearchProject> projects = researchProjectViewModel.GetMemberResearchProjects(membersViewModel.Member, out errorMessage);
     IEnumerator<ResearchPhase> phases = null;
     
     switch(step)

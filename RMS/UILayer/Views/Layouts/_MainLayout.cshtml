@@ -1,5 +1,10 @@
 ﻿@using ResourceManagementSystem.BusinessLogic.Workflow;
 
+@{
+    MemberViewModel memberViewModel = Session["memberViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
+    Session["memberViewModel"] = memberViewModel;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,10 +18,7 @@
     <script src="/js/bootstrap-datepicker.js"></script>
 
     <!-- <meta name="viewport" content="width=device-width"> -->
-    @{
-        MemberViewModel memberViewModel = Session["memberViewModel"] as MemberViewModel ?? ViewModelFactory.MemberViewModel;
-        Session["memberViewModel"] = memberViewModel;
-    }
+
 </head>
 
 <body>
@@ -44,33 +46,41 @@
                     @switch (memberViewModel.MemberType)
                     {
                         case ResourceManagementSystem.BusinessLogic.Entities.MemberType.Administrator:
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addHumanResource.cshtml">Add Human Resources</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addFinancialResource.cshtml">Add  Financial Resources</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addClassRoom.cshtml">Add ClassRoom</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addEquipment.cshtml">Add Equipment</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addHumanResource.cshtml">Register Human Resources</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addFinancialResource.cshtml">Register  Financial Resources</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addClassRoom.cshtml">Register ClassRoom</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addEquipment.cshtml">Register Equipment</a></li>
                         <li role="presentation" class="divider"></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Import Schedule</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Import Schedule (TO DO)</a></li>
                             break;
 
                         case ResourceManagementSystem.BusinessLogic.Entities.MemberType.Director:
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudyProgram.cshtml">Define Study Programs</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addResearchProject.cshtml">Define Research Grants</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Administrative Events</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudentCircle.cshtml">Define Student Circles</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Get Reports</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/aproveActivities.cshtml">Approve Activities</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Approve Projects and Events Requests</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudyProgram.cshtml">Define Study Program</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addResearchProject.cshtml">Define Research Project</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Administrative Event (TO DO)</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudentCircle.cshtml">Define Student Research Group</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Get Resource Usage Report (TO DO)</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/aproveActivities.cshtml">Approve Research Activities Requests</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Approve Research Projects and<br />Administrative Events Requests (TO DO)</a></li>
                             break;
 
                         default:
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/viewCalendar.cshtml">Get Attending Activities</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Make Projects Requests</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addResearchActivity.cshtml">Make Activities Requests</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/viewCalendar.cshtml">View Attending Activities</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addResearchProject.cshtml">Make a Research Project Request</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addResearchActivity.cshtml">Make Research Activity Request</a></li>
                             break;
                     }
                 </ul>
             </div>
         }
+
+        <div class="icon">
+            <a href="~/getMembersInfo.cshtml">
+                <img src="/img/ico-user.png" alt="">
+                <span>Members</span>
+            </a>
+        </div>
+
         <div class="dropdown icon">
                 <div class="cpl-dropdown" data-toggle="dropdown">
                     <img src="/img/ico-setting.png" alt="">
@@ -85,14 +95,7 @@
         <div class="icon">
             <a href="#">
                 <img src="/img/ico-sch.png" alt="">
-                <span>Schedule</span>
-            </a>
-        </div>
-
-        <div class="icon">
-            <a href="~/getMembersInfo.cshtml">
-                <img src="/img/ico-user.png" alt="">
-                <span>Members</span>
+                <span>Schedule (TO DO)</span>
             </a>
         </div>
 
@@ -104,12 +107,14 @@
         </div>
     </div>
 
+    <!--
     <div class="sidebar">
         <div class="header-logo">
             <img src="/img/logo.png" alt="221/1" />
         </div>
-        @RenderPage("~/Views/_SideCalendar.cshtml")
+         RenderPage("~/Views/_SideCalendar.cshtml") 
     </div>
+    -->
 
     <div class="info">
         <div class="header-form">

@@ -1,10 +1,15 @@
-﻿@using ResourceManagementSystem.BusinessLogic.Workflow;
+﻿@using ResourceManagementSystem.BusinessLogic.Entities;
+@using ResourceManagementSystem.BusinessLogic.Workflow;
 
 @{
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
     Page.Title = "Home Page";
 
+    string errorMessage;
     MemberViewModel memberViewModel = Session["memberViewModel"] as MemberViewModel;
+    ResearchProjectViewModel researchProjectViewModel = Session["researchProjectViewModel"] as ResearchProjectViewModel ?? ViewModelFactory.ResearchProjectViewModel;
+    Session["researchProjectViewModel"] = researchProjectViewModel;
+    IEnumerable<ResearchProject> researchProjects = researchProjectViewModel.TryGetAll(out errorMessage);
     if (memberViewModel == null)
     {
         memberViewModel = ViewModelFactory.MemberViewModel;
@@ -33,40 +38,34 @@
 }
 
 @section body{
-    <h1>ADSSWSDAD</h1>
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p>
+    <div class="well">
+        <h1>Hello!</h1>
+        <p>
+            Welcome to Resource Management System! Please have a look at our projects:
+        </p>
 
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p>
-
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p>
-
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p>
+        @if (researchProjects != null)
+        {
+            if (researchProjects.Count() > 0)
+            {
+            <ul>
+                @foreach (ResearchProject project in researchProjects)
+                {
+                    <li><a href =" getProjectsInfo.cshtml?id=@project.Id">@project.Title </a></li>
+                }
+            </ul>
+            }
+            else
+            {
+            <h1>No projects... :(</h1>
+            <p>There are no active projects!</p>
+            }
+        }
+        else
+        {
+            <h1>Error!</h1>
+            <p>@errorMessage</p>
+            <p>We are terebly sorry for the inconvenience...</p>
+        }
+    </div>
 }

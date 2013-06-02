@@ -28,7 +28,8 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             errorMessage = string.Empty;
             try
             {
-                allClassRooms.Add(new ClassRoom(Name, Description));
+                ClassRoom classRoom = new ClassRoom(Name, Description);
+                allClassRooms.Add(classRoom);
                 return true;
                 
             }

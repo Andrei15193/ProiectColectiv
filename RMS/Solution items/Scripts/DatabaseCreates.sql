@@ -94,8 +94,7 @@ create table Activities(
     startDate datetime not null,
     endDate datetime not null,
     state int not null,
-    constraint pkActivities primary key (id),
-    constraint checkActivitiesDateIntegrity check (datediff(day, startDate, endDate) > 0)
+    constraint pkActivities primary key (id)
 )
 
 create table ActivityClassRooms(

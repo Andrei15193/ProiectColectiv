@@ -49,5 +49,68 @@ namespace DALayer.Database
             ResearchPhase rf = (ResearchPhase)new AllActivities().getbyPK(activity);
             return rf;
         }
+
+        public void Add(int researchProject, ResearchPhase researchphases)
+        {
+            int activityid = -1;
+            command.CommandText = @"insert into activities (type, title, description, state, startDate, endDate) values (@type, @title, @description, @state, @startdate, @enddate); select scope_identity()";
+            command.Parameters.Clear();
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@type",
+                Value = researchphases.Type
+            });
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@title",
+                Value = researchphases.Title
+            });
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@description",
+                Value = researchphases.Description
+            });
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@state",
+                Value = researchphases.State
+            });
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@startdate",
+                Value = researchphases.StartDate
+            });
+            command.Parameters.Add(new SqlParameter()
+            {
+                ParameterName = "@enddate",
+                Value = researchphases.EndDate
+            });
+            try
+            {
+                command.Connection.Open();
+                activityid = Convert.ToInt32(command.ExecuteScalar());
+                command.CommandText = @"insert into researchProjectPhases (activity, researchProject) values (@activity, @research)";
+                command.Parameters.Clear();
+                command.Parameters.Add(new SqlParameter()
+                {
+                    ParameterName = "@activity",
+                    Value = activityid
+                });
+                command.Parameters.Add(new SqlParameter()
+                {
+                    ParameterName = "@research",
+                    Value = researchProject
+                });
+                command.ExecuteNonQuery();
+                foreach (ResearchActivity ra in researchphases)
+                {
+                    new AllResearchActivity().Add(researchProject, activityid, ra);
+                }
+            }
+            finally
+            {
+                command.Connection.Close();
+            }
+        }
     }
 }

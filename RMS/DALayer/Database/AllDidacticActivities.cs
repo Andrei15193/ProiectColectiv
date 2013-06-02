@@ -27,7 +27,7 @@ namespace DALayer.Database
             command.Parameters.Add(new SqlParameter()
             {
                 ParameterName = "@type",
-                Value = didacticActivity.Type
+                Value = (int)didacticActivity.Type
             });
             command.Parameters.Add(new SqlParameter()
             {
@@ -76,12 +76,12 @@ namespace DALayer.Database
                 command.Parameters.Add(new SqlParameter()
                 {
                     ParameterName = "@assignee",
-                    Value = e.Current
+                    Value = e.Current.EMail
                 });
                 command.Parameters.Add(new SqlParameter()
                 {
                     ParameterName = "@coursetype",
-                    Value = didacticActivity.Formation
+                    Value = (int)didacticActivity.CourseType
                 });
                 command.ExecuteNonQuery();
                 foreach (ClassRoom c in didacticActivity.ClassRooms)

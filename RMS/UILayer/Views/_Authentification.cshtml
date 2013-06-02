@@ -32,5 +32,9 @@ else
         <div class="pull-right">
             <input type="submit" class="btn" value="Sign in" />
         </div>
+        @if (memberViewModel.AuthenticationFailed)
+        {
+            <span>Login failed!</span>
+        }
     </form>
 }

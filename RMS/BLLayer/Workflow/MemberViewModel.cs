@@ -10,6 +10,8 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 {
     public class MemberViewModel
     {
+        private bool authenticationFailed = false;
+
         public MemberViewModel(IAllMembers allMembers)
         {
             this.allMembers = allMembers;
@@ -18,7 +20,20 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         public void Authenticate()
         {
+            authenticationFailed = false;
             member = allMembers.Where(email, password);
+            if (member == null)
+            {
+                authenticationFailed = true;
+            }
+        }
+
+        public bool AuthenticationFailed
+        {
+            get
+            {
+                return authenticationFailed;
+            }
         }
 
         public void Logout()

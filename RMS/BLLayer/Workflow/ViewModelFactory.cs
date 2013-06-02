@@ -1,4 +1,5 @@
-﻿using ResourceManagementSystem.BusinessLogic.Workflow;
+﻿using DAOInterface;
+using ResourceManagementSystem.BusinessLogic.Workflow;
 using ResourceManagementSystem.DAOInterface;
 using ResourceManagementSystem.DataAccess.Database;
 using ResourceManagementSystem.DataAccess.Mocks;
@@ -112,7 +113,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             get
             {
-                return new ImportScheduleViewModel();
+                return new ImportScheduleViewModel(Repositories.ImportsDB);
             }
         }
 
@@ -120,7 +121,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             get
             {
-                return new AdministrativeEventViewModel(Repositories.AllMembers, Repositories.AllAdministrativeEvents);
+                return new AdministrativeEventViewModel(Repositories.AllMembers, Repositories.AllAdministrativeActivity);
             }
         }
 
@@ -143,6 +144,8 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             public static readonly IAllActivities AllActivities = new DALayer.Database.AllActivities();
 
             public static readonly IAllAdministrativeActivities AllAdministrativeActivity = null;
+
+            public static readonly IImports ImportsDB = new DALayer.Database.Imports();
         }
     }
 }

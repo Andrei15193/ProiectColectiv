@@ -186,6 +186,13 @@ namespace DALayer.Database
 
         private void AddDidacticActivities(List<ScheduleDetails> schedules, DateTime semesterStart, DateTime semesterEnd, IEnumerable<KeyValuePair<DateTime, DateTime>> vacations)
         {
+            List<KeyValuePair<DateTime, DateTime>> vacationsList = null;
+            if (vacations != null)
+            {
+                vacationsList = vacations.ToList();
+            }
+           
+
             AllDidacticActivities allDidacticActivities = new AllDidacticActivities();
 
             List<DidacticActivity> didacticActivitiesToAdd = new List<DidacticActivity>();
@@ -220,11 +227,11 @@ namespace DALayer.Database
 
                     if (schedule.MemberType == MemberType.PhD_Student)
                     {
-                        member = new PhDStudent(schedule.ProfessorName, string.Format("{0}@cs.ubbcluj.ro", schedule.ProfessorName.Replace(" ", "")), "123456");
+                        member = new PhDStudent(schedule.ProfessorName, string.Format("{0}@cs.ubbcluj.ro", schedule.ProfessorName.Replace(" ", ".").ToLower()), "123456");
                     }
                     else
                     {
-                        member = new Teacher(schedule.TeachingPosition, schedule.ProfessorName, string.Format("{0}@cs.ubbcluj.ro", schedule.ProfessorName.Replace(" ", "")), "123456", "Mate-Info");
+                        member = new Teacher(schedule.TeachingPosition, schedule.ProfessorName, string.Format("{0}@cs.ubbcluj.ro", schedule.ProfessorName.Replace(" ", ".").ToLower()), "123456", "Mate-Info");
                     }
 
                     DidacticActivity didacticActivity = new DidacticActivity(schedule.CourseType, schedule.Lecture, string.Empty, schedule.Formation, startDate, endDate, member);
@@ -233,7 +240,24 @@ namespace DALayer.Database
                         new ClassRoom(schedule.ClassRoomName)
                     };
 
-                    didacticActivitiesToAdd.Add(didacticActivity);
+                    bool isInHoliday = false;
+
+                    if (vacationsList != null)
+                    {
+                        for (int i = 0; i < vacationsList.Count && !isInHoliday; i++)
+                        {
+                            if (( vacationsList[i].Key <= startDate && vacationsList[i].Value >= startDate ) ||
+                                ( vacationsList[i].Key <= endDate && vacationsList[i].Value >= endDate ))
+                            {
+                                isInHoliday = true;
+                            }
+                        }
+                    }
+
+                    if (!isInHoliday)
+                    {
+                        didacticActivitiesToAdd.Add(didacticActivity);
+                    }
                 }
             }
 
@@ -249,13 +273,20 @@ namespace DALayer.Database
                     {
                         if (members.Count(m => m.EMail == didacticActivity.ToList()[0].EMail) == 0)
                         {
-                            if (didacticActivity.ToList()[0].Type == MemberType.Teacher)
+                            try
                             {
-                                allMembers.Add(didacticActivity.ToList()[0] as Teacher);
+                                if (didacticActivity.ToList()[0].Type == MemberType.Teacher)
+                                {
+                                    allMembers.Add(didacticActivity.ToList()[0] as Teacher);
+                                }
+                                else
+                                {
+                                    allMembers.Add(didacticActivity.ToList()[0] as PhDStudent);
+                                }
                             }
-                            else
+                            catch (Exception ex)
                             {
-                                allMembers.Add(didacticActivity.ToList()[0] as PhDStudent);
+
                             }
                         }
 
@@ -263,7 +294,7 @@ namespace DALayer.Database
                     }
                     catch (Exception ex)
                     {
-                        errorMessage = ex.Message;
+                        //errorMessage = ex.Message;
                     }
                 }
             }

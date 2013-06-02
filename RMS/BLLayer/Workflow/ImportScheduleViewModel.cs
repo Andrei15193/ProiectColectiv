@@ -13,9 +13,9 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         /// <summary>
         /// Initializes a new instance of the <see cref="ImportScheduleViewModel"/> class.
         /// </summary>
-        public ImportScheduleViewModel()
+        public ImportScheduleViewModel(IImports _imports)
         {
-            this.imports = new Imports();
+            this.imports = _imports;
         }
 
         /// <summary>

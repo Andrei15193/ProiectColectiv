@@ -4,8 +4,18 @@
     Layout = "~/Views/Layouts/_MainLayout.cshtml";
     Page.Title = "Import Schedule";
 
+    MemberViewModel memberViewModel = Session["memberViewModel"] as MemberViewModel;
+    if (memberViewModel == null || memberViewModel.IsAuthenticated == false || memberViewModel.MemberType != ResourceManagementSystem.BusinessLogic.Entities.MemberType.Administrator)
+    {
+        Response.Redirect("~/index.cshtml");
+    }
+    
     ImportScheduleViewModel viewModel = Session["importSchedule"] as ImportScheduleViewModel ?? ViewModelFactory.ImportScheduleViewModel;
-
+    if(Session["importSchedule"]==null){
+        viewModel.SemesterStart = DateTime.Now;
+        viewModel.SemesterEnd = DateTime.Now;   
+    }
+    
     if (IsPost)
     {
         bool validInput = true;

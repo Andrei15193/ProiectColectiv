@@ -60,7 +60,7 @@
     <Content Include="css\bootstrap.css" />
     <Content Include="css\style.css" />
     <Content Include="Global.asax" />
-    <Content Include="img\computer.png" />
+    <Content Include="img\batman.png" />
     <Content Include="img\favico.ico" />
     <Content Include="img\glyphicons-halflings-white.png" />
     <Content Include="img\glyphicons-halflings.png" />
@@ -75,6 +75,7 @@
     <Content Include="img\ico-setting.png" />
     <Content Include="img\ico-user.png" />
     <Content Include="img\logo.png" />
+    <Content Include="img\s_Darius_Bufnea.jpg" />
     <Content Include="img\user.png" />
     <Content Include="js\bootstrap.js" />
     <Content Include="js\jquery.min.js" />

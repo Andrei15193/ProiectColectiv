@@ -1,7 +1,14 @@
 ﻿body
 {
 	margin-bottom: 20px;
+    /*-webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);   
     /*background-color: #f1f1f1;*/
+}
+
+#batmandiv
+{
+     position: fixed; bottom: 30px; left:18px;
 }
 
 .header-form

@@ -235,6 +235,8 @@ namespace DALayer.Database
                     }
 
                     DidacticActivity didacticActivity = new DidacticActivity(schedule.CourseType, schedule.Lecture, string.Empty, schedule.Formation, startDate, endDate, member);
+                    didacticActivity.State = State.Aproved;
+
                     didacticActivity.ClassRooms = new List<ClassRoom>()
                     {
                         new ClassRoom(schedule.ClassRoomName)

@@ -57,11 +57,10 @@
                         case ResourceManagementSystem.BusinessLogic.Entities.MemberType.Director:
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudyProgram.cshtml">Define Study Programs</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addResearchProject.cshtml">Define Research Grants</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Define Administrative Events</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addAdministrativeEvent.cshtml">Define Administrative Events</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="~/addStudentCircle.cshtml">Define Student Circles</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Get Reports</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/aproveActivities.cshtml">Approve Activities</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Approve Projects and Events Requests</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/getUsageReports">Get Usage Reports</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="~/aproveActivities.cshtml">Approve Activities, Projects and Events Requests</a></li>
                             break;
 
                         default:
@@ -83,8 +82,8 @@
 
         <div class="dropdown icon">
                 <div class="cpl-dropdown" data-toggle="dropdown">
-                    <img src="/img/computer.png" alt="">
-                    <span>Logistical Resources</span>
+                    <img src="/img/ico-more.png" alt="">
+                    <span>Resources</span>
                 </div>
 
                 <ul id="menu2" class="dropdown-menu" role="menu" aria-labelledby="drop5">
@@ -92,10 +91,11 @@
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="~/getEquipmentsInfo.cshtml">Equipments</a></li>
                 </ul>
         </div>
+
         <div class="icon">
-            <a href="#">
+            <a href="~/viewFilteredCalendar.cshtml">
                 <img src="/img/ico-sch.png" alt="">
-                <span>Schedule (TO DO)</span>
+                <span>Schedule</span>
             </a>
         </div>
 
@@ -105,16 +105,22 @@
                 <span>Projects</span>
             </a>
         </div>
+
+        <div id="batmandiv" class="">
+            <input type="hidden" name="batmanrotation" value="180" />
+            <img src="~/img/batman.png" id="batmanimg" onclick="if (document.body.style.webkitTransform=='rotate(180deg)') document.body.style.webkitTransform='rotate(0deg)'; else document.body.style.webkitTransform='rotate(180deg)';" />
+
+        </div>
     </div>
 
-    <!--
+    
     <div class="sidebar">
         <div class="header-logo">
             <img src="/img/logo.png" alt="221/1" />
         </div>
         @RenderPage("~/Views/_SideCalendar.cshtml") 
     </div>
-    -->
+    
 
     <div class="info">
         <div class="header-form">

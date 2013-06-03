@@ -60,6 +60,11 @@
     <Content Include="css\bootstrap.css" />
     <Content Include="css\style.css" />
     <Content Include="Global.asax" />
+<<<<<<< HEAD
+    <Content Include="img\computer.png" />
+=======
+    <Content Include="img\batman.png" />
+>>>>>>> origin/master
     <Content Include="img\favico.ico" />
     <Content Include="img\glyphicons-halflings-white.png" />
     <Content Include="img\glyphicons-halflings.png" />
@@ -74,6 +79,7 @@
     <Content Include="img\ico-setting.png" />
     <Content Include="img\ico-user.png" />
     <Content Include="img\logo.png" />
+    <Content Include="img\s_Darius_Bufnea.jpg" />
     <Content Include="img\user.png" />
     <Content Include="js\bootstrap.js" />
     <Content Include="js\jquery.min.js" />
@@ -105,15 +111,12 @@
     <Content Include="aproveActivities.cshtml" />
     <Content Include="importSchedule.cshtml" />
     <Content Include="addStudentCircle.cshtml" />
-<<<<<<< HEAD
-    <Content Include="addAdministrativeEvent.cshtml" />    
-    <Content Include="viewCalendar.cshtml">
-=======
-    <Content Include="viewCalendar.cshtml"/>
+    <Content Include="viewCalendar.cshtml" />
     <Content Include="addAdministrativeEvent.cshtml">
->>>>>>> origin/master
       <SubType>Code</SubType>
     </Content>
+    <Content Include="viewFilteredCalendar.cshtml" />
+    <Content Include="getUsageReports.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

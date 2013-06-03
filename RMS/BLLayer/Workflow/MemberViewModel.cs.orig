@@ -20,10 +20,9 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
         public void Authenticate()
         {
-<<<<<<< HEAD
             authenticationFailed = false;
-            member = allMembers.Where(email, password);
-            if (member == null)
+            Member = allMembers.Where(email, password);
+            if (Member == null)
             {
                 authenticationFailed = true;
             }
@@ -35,9 +34,6 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             {
                 return authenticationFailed;
             }
-=======
-            Member = allMembers.Where(email, password);
->>>>>>> origin/master
         }
 
         public void Logout()
@@ -123,7 +119,25 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             }
         }
 
+
         public Member Member { get; private set; }
+        public Member GetMemberByEmail(string email, out string errorMessage)
+        {
+            Member member;
+            try
+            {
+
+               member =  allMembers.Where(email);
+               errorMessage = null;
+               return member;
+
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.Message;
+                return null;
+            }
+        }
 
         private IAllMembers allMembers;
         private string email;

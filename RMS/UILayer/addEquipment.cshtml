@@ -46,12 +46,6 @@
     <div class="well">
         @if (equipments != null)
         {
-            <ul>
-                @foreach (var eq in equipments)
-                {
-                    <li>@eq.Brand @eq.Model @eq.SerialNumber @eq.Description</li>
-                }
-            </ul>
             <form action="addEquipment.cshtml" class="form-horizontal" method="post">
                 @switch (step)
                 {

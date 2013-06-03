@@ -1,0 +1,265 @@
+﻿@using ResourceManagementSystem.BusinessLogic.Entities;
+@using ResourceManagementSystem.BusinessLogic.Workflow;
+
+@{   
+    Layout = "~/Views/Layouts/_MainLayout.cshtml";
+    Page.Title = "Get Usage Reports";
+    string errorMessage = string.Empty;
+    HumanResourcesViewModel humanResourcesViewModel = Session["humanResourceViewModel"] as HumanResourcesViewModel ?? ViewModelFactory.HumanResourcesViewModel;
+    Session["humanResourceViewModel"] = humanResourcesViewModel;
+    IEnumerable<Member> members = humanResourcesViewModel.TryGetAll(out errorMessage);
+
+    ActivitiesViewModel activitiesViewModel = Session["activitiesViewModel"] as ActivitiesViewModel ?? ViewModelFactory.ActivitiesViewModel;
+    Session["activitiesViewModel"] = activitiesViewModel;
+
+     ResearchProjectViewModel researchProjectViewModel = Session["researchProjectViewModel"] as ResearchProjectViewModel ?? ViewModelFactory.ResearchProjectViewModel;
+    Session["researchProjectViewModel"] = researchProjectViewModel;
+     IEnumerable<ResearchProject> researchProjects = researchProjectViewModel.TryGetAll(out errorMessage);
+
+    
+     IEnumerable<AbstractActivity> activities = activitiesViewModel.TryGetAll(out errorMessage);
+     
+    
+}
+
+
+@section body{
+    <ul class="nav nav-tabs">
+        <li class="active"><a>Get Usage Reports</a></li>
+
+    </ul>
+
+    @if(Request["for"] == null || Request["for"].Length == 0)
+    {
+        <h2>Get logistical and financial resource usage reports for:</h2>
+        <ul>
+            <li><a href="getUsageReports.cshtml?for=members">Members</a></li>
+            <li><a href="getUsageReports.cshtml?for=rprojects">Research projects</a></li>
+            <li><a href="getUsageReports.cshtml?for=ractivities">Research activities</a></li>
+        </ul>
+    }
+    else
+    {
+        switch (Request["for"])
+        {
+            case "members":
+                if (!IsPost)
+                {
+                    <form action="~/getUsageReports.cshtml?for=members" method="post">
+                        <select name="member" id="member">
+                            @foreach (Member m in members)
+                            {
+                                <option value="@m.EMail">@m.Name</option>
+                            }
+                        </select>
+                       <br/>
+                        <p><input  type="submit" value="View" /></p>
+
+                    </form>
+                }
+                else
+                {
+                    List<Equipment> echipamente = new List<Equipment>();
+                    List<FinancialResource> resFinanciare = new List<FinancialResource>();
+
+                    List<AbstractActivity> activitati = ViewModelFactory.ActivitiesViewModel.
+                       GetActivitiesByTypeAndMember(
+                            ViewModelFactory.MemberViewModel.GetMemberByEmail(Request["member"],out errorMessage), ActivityType.Didactic,
+                            out errorMessage);
+
+                    foreach (AbstractActivity act in activitati)
+                    {
+                        
+                                echipamente.AddRange(((DidacticActivity)act).Equipments);
+                    }
+                   
+                    
+
+                     activitati =ViewModelFactory.ActivitiesViewModel.
+                   GetActivitiesByTypeAndMember(
+                        ViewModelFactory.MemberViewModel.GetMemberByEmail(Request["member"], out errorMessage), ActivityType.Research_Project,
+                        out errorMessage);
+
+                     foreach (AbstractActivity act in activitati)
+                     { 
+                         ResearchProject rp=act as ResearchProject;
+                         foreach (ResearchPhase phase in rp.AsEnumerable()){
+                            
+                             foreach(ResearchActivity activ in  phase){
+                             resFinanciare.Add(activ.MobilityCost);
+                             resFinanciare.Add(activ.LaborCost);
+                             resFinanciare.Add(activ.LogisticalCost);
+                             echipamente.AddRange(activ.Equipments);
+                             }
+                         }
+                         
+
+                     }
+                    if(echipamente.Count()>0 || resFinanciare.Count()>0)
+                    {
+                        if (echipamente.Count() > 0){<h3>Equipments:</h3>
+                     foreach (var equipment in echipamente)
+                {
+                    <div class="well">
+                        <h6>@equipment.Brand, @equipment.Model (@equipment.SerialNumber)</h6>
+                        <p><b>Description: </b><br />@equipment.Description</p>
+                        
+                    </div>
+                }
+                }   if (resFinanciare.Count() > 0){
+                <h3>Logistical Resources:</h3>
+                     foreach (var financial in resFinanciare)
+                {
+                    <div class="well">
+                        <h6>@financial.Value @financial.Currency</h6>
+         
+                    </div>
+                }}}
+                else{
+                        <p>There are no financial resources or equipments used by this member</p>
+                    }
+                }
+                
+                break;
+            case "rprojects":
+             if (!IsPost)
+                {
+                    <form action="~/getUsageReports.cshtml?for=rprojects" method="post">
+                        <select name="project" id="project">
+                            @foreach (ResearchProject rp in researchProjects.AsEnumerable())
+                            {
+                                <option value="@rp.Id">@rp.Title</option>
+                            }
+                        </select>
+                       <br/>
+                        <p><input  type="submit" value="View" /></p>
+
+                    </form>
+                }
+                else
+                {
+                    List<Equipment> echipamente = new List<Equipment>();
+                    List<FinancialResource> resFinanciare = new List<FinancialResource>();
+
+                    ResearchProject selected = null;
+                 foreach(ResearchProject rp in researchProjects){
+                     if(rp.Id.ToString()==Request["project"])
+                     {
+                         selected = rp;
+                     }
+                 }
+               
+                 
+                         foreach (ResearchPhase phase in selected){
+                            
+                             foreach(ResearchActivity activ in  phase){
+                             resFinanciare.Add(activ.MobilityCost);
+                             resFinanciare.Add(activ.LaborCost);
+                             resFinanciare.Add(activ.LogisticalCost);
+                             echipamente.AddRange(activ.Equipments);
+                             }
+                         }
+                         
+
+                     
+                    if(echipamente.Count()>0 || resFinanciare.Count()>0)
+                    {
+                        if (echipamente.Count() > 0) { 
+                            <h3>Equipments:</h3>
+                     foreach (var equipment in echipamente)
+                {
+                    <div class="well">
+                        <h6>@equipment.Brand, @equipment.Model (@equipment.SerialNumber)</h6>
+                        <p><b>Description: </b><br />@equipment.Description</p>
+                        
+                    </div>
+    }
+                }
+                        if (resFinanciare.Count() > 0){
+                <h3>Logistical Resources:</h3>
+                     foreach (var financial in resFinanciare)
+                {
+                    <div class="well">
+                        <h6>@financial.Value @financial.Currency</h6>
+         
+                    </div>
+                }}}
+                else{
+                        <p>There are no financial resources or equipments used by this research project</p>
+                    }
+                }
+            
+                
+                break;
+            case "ractivities":
+                if (!IsPost)
+                {
+                    <form action="~/getUsageReports.cshtml?for=ractivities" method="post">
+                        <select name="activity" id="activity">
+                            @foreach (AbstractActivity a in activities.AsEnumerable())
+                            {
+                                ResearchActivity act = a as ResearchActivity;
+                                <option value="@a.Id">@a.Title</option>
+                            }
+                        </select>
+                       <br/>
+                        <p><input  type="submit" value="View" /></p>
+
+                    </form>
+                }
+                else
+                {
+                    List<Equipment> echipamente = new List<Equipment>();
+                    List<FinancialResource> resFinanciare = new List<FinancialResource>();
+
+                    ResearchActivity activ = null;
+                foreach (AbstractActivity act in activities.AsEnumerable())
+                            {
+                      ResearchActivity a = act as ResearchActivity;
+                     if(a.Id.ToString()==Request["activity"])
+                     {
+                         activ = a;
+                     }
+                 }
+               
+                 
+                             resFinanciare.Add(activ.MobilityCost);
+                             resFinanciare.Add(activ.LaborCost);
+                             resFinanciare.Add(activ.LogisticalCost);
+                             echipamente.AddRange(activ.Equipments);
+                            
+                         
+
+                     
+                    if(echipamente.Count()>0 || resFinanciare.Count()>0)
+                    { 
+                       if( echipamente.Count()>0)
+                        {<h3>Equipments:</h3>
+                     foreach (var equipment in echipamente)
+                {
+                    <div class="well">
+                        <h6>@equipment.Brand, @equipment.Model (@equipment.SerialNumber)</h6>
+                        <p><b>Description: </b><br />@equipment.Description</p>
+                        
+                    </div>
+                }
+                }
+                        if (resFinanciare.Count() > 0){
+                <h3>Logistical Resources:</h3>
+                     foreach (var financial in resFinanciare)
+                {
+                    <div class="well">
+                        <h6>@financial.Value @financial.Currency</h6>
+         
+                    </div>
+    }
+                }}
+                else{
+                        <p>There are no financial resources or equipments used by this activity</p>
+                    }
+                }
+                break;
+        }
+    }
+
+}

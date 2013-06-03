@@ -27,8 +27,8 @@
         case 0:
             studentCirclesViewModel.Title = Request["title"];
             studentCirclesViewModel.Description = Request["description"];
-            studentCirclesViewModel.StartDate = Request["startDate"] ?? DateTime.Now.ToString("dd/MM/yyyy");
-            studentCirclesViewModel.EndDate = Request["endDate"] ?? DateTime.Now.AddDays(10).ToString("dd/MM/yyyy");
+            studentCirclesViewModel.StartDate = Request["startDate"] ?? DateTime.Now.ToString("dd-MM-yyyy");
+            studentCirclesViewModel.EndDate = Request["endDate"] ?? DateTime.Now.AddDays(10).ToString("dd-MM-yyyy");
             programs = studyProgramsViewModel.TryGetAll(out errorMessage);
             break;
 
@@ -120,6 +120,8 @@
         <div class="well">
             @if (programs != null)
             {
+                if (programs.Count() > 0)
+                {
                 <h3 class="page-header">Select the study program:</h3>
                 <form action="addStudentCircle.cshtml" class="form-horizontal" method="post">
                     <input type="hidden" value="2" name="step" id="step" />
@@ -133,9 +135,18 @@
                         }
                     </ul>
                     <div class="row">
-                        <input class="pull-right btn" type="submit" value="Finish"  />
+                        <input class="pull-right btn" type="submit" value="Finish" />
                     </div>
                 </form>
+                }
+                else
+                {
+                <h4>Please add first a study program</h4>
+                <form>
+                    <input type="hidden" name="step" value="1" />
+                    <input type="submit" class="btn" value="Go back" />
+                </form>
+                }
             }
             else
             {
@@ -152,13 +163,13 @@
             if (studyAddedSuccessfully)
             {
         <div class="well">
-            <p>The <b>@studentCirclesViewModel.Title </b> student circle was successfully added.</p>
+            <p>The <b>@studentCirclesViewModel.Title </b>student circle was successfully added.</p>
             <br />
             <div class="row">
-            <form class="form-horizontal" action="/addStudentCircle.cshtml" method="post">
-                <input type="hidden" name="step" id="step" value="0" />
-                <input class="btn pull-right" type="submit" value="Go back" />
-            </form>
+                <form class="form-horizontal" action="/addStudentCircle.cshtml" method="post">
+                    <input type="hidden" name="step" id="step" value="0" />
+                    <input class="btn pull-right" type="submit" value="Go back" />
+                </form>
             </div>
         </div>
             }
@@ -170,10 +181,10 @@
             <p>We are terebly sorry for the inconvenience...</p>
 
             <div class="row">
-            <form class="form-horizontal" action="/addStudentCircle.cshtml" method="post">
-                <input type="hidden" name="step" id="step" value="0" />
-                <input class="btn pull-right" type="submit" value="Go back" />
-            </form>
+                <form class="form-horizontal" action="/addStudentCircle.cshtml" method="post">
+                    <input type="hidden" name="step" id="step" value="0" />
+                    <input class="btn pull-right" type="submit" value="Go back" />
+                </form>
             </div>
         </div>
             }

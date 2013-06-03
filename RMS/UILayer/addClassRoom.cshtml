@@ -42,12 +42,6 @@
     <div class="well">
         @if (classRooms != null)
         {
-            <ul>
-                @foreach (var cls in classRooms)
-                {
-                    <li>@cls.Name @cls.Description</li>
-                }
-            </ul>
             <form action="addClassRoom.cshtml" class="form-horizontal" method="post">
                 @switch (step)
                 {

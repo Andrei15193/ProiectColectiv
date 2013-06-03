@@ -38,6 +38,6 @@ namespace ResourceManagementSystem.DataAccess
 
         //private static readonly string connectionString = "Initial Catalog=Andrei15193_sqldb; Data Source=andrei15193.tk,779; User=Andrei15193_RMSuser; Password=d3m3nt14l123";
 
-        //private static readonly string connectionString = "Initial Catalog=PC; Data Source=ALEXANDRUIO-LAP;;Integrated Security= true";
+        private static readonly string connectionString = "Initial Catalog=PC; Data Source=ALEXANDRUIO-LAP;;Integrated Security= true";
     }
 }

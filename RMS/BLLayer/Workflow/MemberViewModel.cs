@@ -120,8 +120,26 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         }
 
         public Member Member { get; private set; }
+        
+        public Member GetMemberByEmail(string email, out string errorMessage)
+        {
+            Member member;
+            try
+            {
 
+               member =  allMembers.Where(email);
+               errorMessage = null;
+               return member;
+
+            }
+            catch (Exception exception)
+            {
+                errorMessage = exception.Message;
+                return null;
+            }
+        }
         private IAllMembers allMembers;
+        public Member member { get; private set; }
         private string email;
         private string password;
     }

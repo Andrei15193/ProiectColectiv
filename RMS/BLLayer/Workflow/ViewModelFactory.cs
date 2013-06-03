@@ -44,12 +44,13 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
                 return new SelectEquipmentsViewModel(Repositories.AllEquipments);
             }
         }
-
+        
         public static MemberViewModel MemberViewModel
         {
             get
             {
                 return new MemberViewModel(Repositories.AllMembers);
+
             }
         }
 
@@ -90,6 +91,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
             {
                 return new TasksViewModel();
             }
+
         }
 
         public static ResearchProjectViewModel ResearchProjectViewModel
@@ -119,7 +121,7 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
         {
             get
             {
-                return new AdministrativeEventViewModel(Repositories.AllMembers, Repositories.AllAdministrativeActivity);
+                return new AdministrativeEventViewModel(Repositories.AllMembers, Repositories.AllAdministrativeEvents);
             }
         }
 
@@ -143,7 +145,9 @@ namespace ResourceManagementSystem.BusinessLogic.Workflow
 
             public static readonly IAllAdministrativeActivities AllAdministrativeActivity;
 
-	    public static readonly IImports ImportsDB = new DALayer.Database.Imports();        
+            public static readonly IAllAdministrativeActivities AllAdministrativeEvents = null;
+
+	        public static readonly IImports ImportsDB = new DALayer.Database.Imports();        
        }
     }
 }

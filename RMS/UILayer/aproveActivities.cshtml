@@ -313,14 +313,14 @@
                             StudentCircle studentCircle = selectedActivity as StudentCircle;
                              <div class="studentCircle">
                             
-                                  <h1>studentCircle.Title</h1>
+                                  <h1>@studentCircle.Title</h1>
                                 <p>
-                                    <b>Description:</b> studentCircle.Description<br />
-                                    <b>Start date:</b> studentCircle.StartDate<br />
-                                    <b>End date:</b> studentCircle.EndDate
+                                    <b>Description:</b> @studentCircle.Description<br />
+                                    <b>Start date:</b> @studentCircle.StartDate<br />
+                                    <b>End date:</b> @studentCircle.EndDate
                                 </p>
               
-                                <p>Study Program :studentCircle.StudyProgram.ToString()</p>
+                                <p>Study Program : @studentCircle.StudyProgram.ToString()</p>
                                  <form method="post">  
                           
                                  <input type="submit" value="Aprove"  id="aproved" name="aproved"/>

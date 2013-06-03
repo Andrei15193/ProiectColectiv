@@ -37,6 +37,8 @@
                             <p><b>Formation: </b> @didacticActivity.Formation</p>
                             <p><b>Start date: </b> @didacticActivity.StartDate.ToShortDateString() @didacticActivity.StartDate.ToShortTimeString()</p>
                             <p><b>End date: </b> @didacticActivity.EndDate.ToShortDateString() @didacticActivity.EndDate.ToShortTimeString()</p>
+                            <p><b>Class room: </b> @didacticActivity.ClassRooms.First().Name</p>
+                            
                         }
                     
                         @if(activity is ResearchActivity)

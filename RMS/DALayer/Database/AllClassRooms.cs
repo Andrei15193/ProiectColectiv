@@ -114,7 +114,8 @@ namespace DALayer.Database
                 {
                     command.Connection.Open();
                     reader = command.ExecuteReader();
-                    classrooms.AddLast(ReadClassRooms(reader).First);
+
+                    classrooms.AddLast(ReadClassRooms(reader).First.Value);
                 }
                 finally
                 {
